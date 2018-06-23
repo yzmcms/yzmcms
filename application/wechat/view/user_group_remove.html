@@ -1,0 +1,37 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>批量移动 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 微信用户 <span class="c-gray en">&gt;</span> 移动分组 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<article class="page-container">
+<div class="formdoby_normal"> 
+	<form method="post" onsubmit="return check_all()">
+		<ul>
+			 <li><label><i class="Hui-iconfont">&#xe67a;</i>移动分组</label></li>
+			 <li><label>移动到组：</label><span style="display:inline-block;">
+			 <select name="to_groupid" class="select">
+				<?php 
+					foreach($wechat_group as $val){
+						echo '<option value="'.$val['id'].'">'.$val['name'].'</option>';
+					}
+				?>
+			</select>
+			 </span></li>
+			 <li><input type="hidden" name="ids" value="<?php echo $ids;?>"><input type="hidden" name="openids" value="<?php echo $openids;?>">&nbsp;</li>
+			 <li><input class="btn btn-primary radius w_120" name="dosubmit" type="submit" value="提交"> <input type="button" class="btn btn-default radius w_120" value="返回" onclick="javascript:history.go(-1)"></li>
+		</ul>
+	</form>
+</div>
+</article>
+<?php include $this->admin_tpl('footer', 'admin');?>
+<script type="text/javascript">
+function check_all(){
+	if($("select[name='to_groupid']").val()=='0'){
+		layer.msg('请选择组别！');
+		return false;
+	}
+	return true;			
+}
+</script>
+</body>
+</html>

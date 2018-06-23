@@ -1,0 +1,19 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <div class="main_right">
+	<div class="tit"><h3>系统消息</h3></div>
+	<div class="main_cont">
+		<div class="message">
+		  <div class="message_header">{$data['subject']}</div>
+		  <div class="message_content">{nl2br($data['content'])}</div>
+		  <div class="message_footer"> 收件人：{$username}&nbsp;&nbsp;时间：{date('Y-m-d H:i:s',$data['inputtime'])}&nbsp;&nbsp;发件人：系统信息 </div>
+		</div>
+		<div class="footer_button">
+			<a href="javascript:history.go(-1);">返回</a>
+			<a href="javascript:void(0)">暂无</a>
+		</div>
+	</div>
+  </div>		  
+</div>
+{m:include "member","footer"} 

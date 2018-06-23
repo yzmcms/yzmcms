@@ -1,0 +1,290 @@
+<?php include $this->admin_tpl('meta');?>
+<title>系统设置 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span> 系统设置 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<form class="form form-horizontal" method="post" action="<?php echo U('save');?>" onsubmit="return check_all()">
+		<div id="tab_system" class="HuiTab">
+			<div class="tabBar cl"><span>基本设置</span><span>附加设置</span><span>安全设置</span><span>邮件设置</span><span>支付配置</span></div>
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>站点名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" placeholder="控制在25个字、50个字节以内" name="site_name" value="<?php echo $data["site_name"];?>" class="input-text" style="width:50%">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>站点根网址：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" placeholder="格式如：http://www.yzmcms.com/" name="site_url" value="<?php echo $data["site_url"];?>" class="input-text" style="width:50%"> <a href="<?php echo SITE_URL;?>index.php?m=mobile" target="_blank" style="font-size:12px;text-decoration:none;line-height:22px"  title="手机站点"><i class="Hui-iconfont">&#xe696;</i>WAP</a>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">站点关键词：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" placeholder="5个左右,8汉字以内,用英文,隔开" name="site_keyword" value="<?php echo $data["site_keyword"];?>" class="input-text" style="width:50%">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">网站版权信息：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" placeholder="&copy; 2014-2018 www.yzmcms.com" name="site_copyright" value="<?php echo $data["site_copyright"];?>" class="input-text" style="width:50%">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">网站备案号：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" placeholder="如京ICP备00000000号" name="site_filing" value="<?php echo $data["site_filing"];?>" class="input-text" style="width:50%">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">站点描述：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea class="textarea" name="site_description" style="width:80%"><?php echo $data["site_description"];?></textarea>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">统计代码：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea class="textarea" name="site_code" style="width:80%"><?php echo $data["site_code"];?></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>模板风格：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box" style="width:120px;"><select name="site_theme" class="select">
+						  <?php 
+						      foreach($theme_list as $val){
+									$str = $data["site_theme"]==$val ? ' selected="selected" ' : '';
+									echo '<option value="'.$val.'" '.$str.'>'.$val.'</option>';
+							  }
+						  ?>
+						</select>
+						</span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>站点Logo：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input class="input-text uploadfile" type="text" name="site_logo"  value="<?php echo $data["site_logo"];?>"  onmouseover="yzm_img_preview('site_logo', this.value)" onmouseout="layer.closeAll();" id="site_logo" style="width:370px" >
+						<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>'site_logo'));?>')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+						<span style="color:#888">前端调用方式： {$site[site_logo]}</span>
+					</div>
+				</div>	
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>前端URL规则：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="url_rule" type="radio" <?php echo $data["url_rule"]? '' : 'checked' ?> value="0"> 兼容模式</label>
+						<label class="label_radio"><input name="url_rule" type="radio" <?php echo $data["url_rule"]? 'checked' : '' ?> value="1"> 伪静态模式</label>
+					</div>
+				</div>					
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>允许上传附件大小（KB）</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="upload_maxsize" value="<?php echo $data["upload_maxsize"];?>"  class="input-text w_120">
+						<span style="color:#888">[最大限制不能超过服务器“upload_max_filesize”配置]</span>
+					</div>
+				</div>	
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择上传附件插件类型</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="ishtml5" type="radio" <?php echo $data["ishtml5"]? 'checked' : '' ?> value="1"> HTML5版本</label>
+						<label class="label_radio"><input name="ishtml5" type="radio" <?php echo $data["ishtml5"]? '' : 'checked' ?> value="0"> FLASH版本</label>
+						<span style="color:#888">[html5版本支持PC与手机端，flash版本兼容低版本浏览器]</span>
+					</div>
+				</div>	
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>是否开启图片水印：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="watermark_enable" type="radio" <?php echo $data["watermark_enable"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="watermark_enable" type="radio" <?php echo $data["watermark_enable"]? '' : 'checked' ?> value="0"> 关闭</label>
+					</div>
+				</div>	
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>水印图片名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="watermark_name" value="<?php echo $data["watermark_name"];?>"  class="input-text w_420"> <span style="color:#888">[水印存放路径:/common/data/water]</span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">水印的位置：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input type="radio" value="0" <?php echo $data["watermark_position"]==0 ? 'checked' : '' ?> name="watermark_position">随机</label>
+						<label class="label_radio"><input type="radio" value="1" <?php echo $data["watermark_position"]==1 ? 'checked' : '' ?> name="watermark_position">顶部居左</label>
+						<label class="label_radio"><input type="radio" value="2" <?php echo $data["watermark_position"]==2 ? 'checked' : '' ?> name="watermark_position">顶部居中</label>
+						<label class="label_radio"><input type="radio" value="3" <?php echo $data["watermark_position"]==3 ? 'checked' : '' ?> name="watermark_position">顶部居右</label>
+						<label class="label_radio"><input type="radio" value="4" <?php echo $data["watermark_position"]==4 ? 'checked' : '' ?> name="watermark_position">中部居左</label>
+						<label class="label_radio"><input type="radio" value="5" <?php echo $data["watermark_position"]==5 ? 'checked' : '' ?> name="watermark_position">中部居中</label>
+						<label class="label_radio"><input type="radio" value="6" <?php echo $data["watermark_position"]==6 ? 'checked' : '' ?> name="watermark_position">中部居右</label>
+						<label class="label_radio"><input type="radio" value="7" <?php echo $data["watermark_position"]==7 ? 'checked' : '' ?> name="watermark_position">底部居左</label>
+						<label class="label_radio"><input type="radio" value="8" <?php echo $data["watermark_position"]==8 ? 'checked' : '' ?> name="watermark_position">底部居中</label>
+						<label class="label_radio"><input type="radio" value="9" <?php echo $data["watermark_position"]==9 ? 'checked' : '' ?> name="watermark_position">底部居右</label>
+					</div>
+				</div>				
+			</div>
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">禁止登录后台的IP列表：<br><span style="color:#888">匹配IP段用“*”占位<br>多个IP用“,”分割</span></label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea class="textarea" name="admin_prohibit_ip" placeholder="匹配IP段用“*”占位，如192.168.*.*，多个IP地址请用英文逗号“,”分割"><?php echo $data["admin_prohibit_ip"];?></textarea>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">启用后台管理操作日志：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="admin_log" type="radio" <?php echo $data["admin_log"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="admin_log" type="radio" <?php echo $data["admin_log"]? '' : 'checked' ?> value="0"> 关闭</label>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">是否开启前端留言功能：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="is_words" type="radio" <?php echo $data["is_words"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="is_words" type="radio" <?php echo $data["is_words"]? '' : 'checked' ?> value="0"> 关闭</label>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">允许用户申请友情链接：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="is_link" type="radio" <?php echo $data["is_link"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="is_link" type="radio" <?php echo $data["is_link"]? '' : 'checked' ?> value="0"> 关闭</label>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">是否开启评论审核：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="comment_check" type="radio" <?php echo $data["comment_check"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="comment_check" type="radio" <?php echo $data["comment_check"]? '' : 'checked' ?> value="0"> 关闭</label>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">是否允许游客评论：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="comment_tourist" type="radio" <?php echo $data["comment_tourist"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="comment_tourist" type="radio" <?php echo $data["comment_tourist"]? '' : 'checked' ?> value="0"> 关闭</label>
+					</div>
+				</div>
+			</div>
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">SMTP服务器：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="mail_server" value="<?php echo $data["mail_server"];?>"  class="input-text" style="width:50%">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">SMTP 端口：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" name="mail_port" value="<?php echo $data["mail_port"];?>" style="width:100px">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">发件人地址：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" class="input-text" name="mail_from" value="<?php echo $data["mail_from"];?>" style="width:50%">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">AUTH LOGIN验证：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="mail_auth" type="radio" <?php echo $data["mail_auth"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="mail_auth" type="radio" <?php echo $data["mail_auth"]? '' : 'checked' ?> value="0"> 关闭</label>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">验证用户名：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="mail_user" value="<?php echo $data["mail_user"];?>"  class="input-text" style="width:50%">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">验证密码：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="password" name="mail_pass" value="<?php echo $data["mail_pass"];?>" readonly onfocus="this.removeAttribute('readonly');" class="input-text" style="width:50%">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">站点默认邮箱：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="email" name="mail_inbox" value="<?php echo $data["mail_inbox"];?>"  class="input-text" style="width:50%"> [用于接收“用户留言”等消息通知]
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">邮件设置测试：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="email" name="mail_to" value=""  class="input-text" style="width:50%">
+						<input type="button" class="btn btn-primary radius" value="测试发送" onclick="test_mail()"> [先保存，在发送]
+					</div>
+				</div>
+			</div>
+			<div class="tabCon">
+			
+				<div class="formControls col-xs-8 col-sm-9 mt-20">
+					<p>如需使用在线支付功能，请联系开发者（QQ/微信）：214243830 </p>
+					<p>YzmCMS官方QQ群： 161208398</p>
+				</div>
+
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				
+				<input type="submit" class="btn btn-primary radius" name="dosubmit" value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
+				<input type="reset" class="btn btn-default radius" value="&nbsp;&nbsp;取消&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</div>
+
+<?php include $this->admin_tpl('footer');?>
+
+<script type="text/javascript">
+function check_all(){
+	var reg = /^http(.+)\/$/;
+	if($("input[name='site_name']").val()==''){
+		layer.alert('站点名称不能为空！');
+		return false;
+	}
+	if(!reg.test($("input[name='site_url']").val())){
+		layer.alert('站点根网址格式为：http://www.yzmcms.com/，请以“/”结尾！');
+		return false;
+	}
+	if($("input[name='site_logo']").val()==''){
+		layer.alert('站点Logo不能为空！');
+		return false;
+	}
+	if($("input[name='upload_maxsize']").val()=='' || isNaN($("input[name='upload_maxsize']").val())){
+		layer.alert('允许上传附件大小只能为数字！');
+		return false;
+	}
+	if($("input[name='watermark_name']").val()==''){
+		layer.alert('水印图片名称不能为空！');
+		return false;
+	}
+	return true;			
+}
+function test_mail() {
+	var mail_to = $("input[name='mail_to']").val();
+	if(mail_to == ''){
+		layer.alert('请输入邮件测试地址！');
+		return false;
+	}
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo U('public_test_mail');?>', 
+		data: "mail_to="+mail_to,
+		success: function (msg) {
+			layer.alert(msg);
+		}
+	})
+}
+$(function(){
+	$.Huitab("#tab_system .tabBar span","#tab_system .tabCon","current","click","<?php echo isset($_GET['tab']) ? intval($_GET['tab']) : '0'?>");
+});
+</script>
+
+</body>
+</html>

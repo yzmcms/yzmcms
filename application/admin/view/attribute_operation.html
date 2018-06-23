@@ -1,0 +1,61 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>内容属性操作 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<article class="page-container">
+
+    <form class="form form-horizontal" onsubmit="return dosub(this)" method="post">
+		<div class="row cl">
+			<label class="form-label col-xs-3"><span class="c-red">*</span>属性：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+                <label>置顶[1] <input name="flag[]" type="checkbox" value="1"/></label>&nbsp;&nbsp;
+                <label>头条[2] <input name="flag[]" type="checkbox" value="2"/></label>&nbsp;&nbsp;
+                <label>特荐[3] <input name="flag[]" type="checkbox" value="3"/></label>&nbsp;&nbsp;
+                <label>推荐[4] <input name="flag[]" type="checkbox" value="4"/></label>&nbsp;&nbsp;
+                <label>热点[5] <input name="flag[]" type="checkbox" value="5"/></label>&nbsp;&nbsp;
+                <label>幻灯[6] <input name="flag[]" type="checkbox" value="6"/></label>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-3"><span class="c-red">*</span>内容ID：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value=""  name="ids" id="ids">
+				<input type="hidden" class="input-text" value="<?php echo $modelid; ?>"  name="modelid">
+				<input type="hidden" class="input-text" value="<?php echo $op; ?>"  name="op">
+				<input type="hidden" class="input-text" value="1"  name="dosubmit">
+			</div>
+		</div>
+		<div style="margin-top:20px;margin-left:10px">
+                <button name="dosubmit" class="btn btn-primary radius" type="submit">&nbsp;&nbsp;确定&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
+				<button onclick="yzmcms_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
+		</div>
+    </form>
+
+</article>
+<?php include $this->admin_tpl('footer', 'admin');?>
+
+<script type="text/javascript">
+function dosub(obj){
+	if($("input[name='ids']").val()==''){
+		layer.msg('内容ID不能为空！');
+		return false;
+	}
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo U('attribute_operation')?>', 
+		data: $(obj).serialize(),
+		dataType: "json", 
+		success: function (msg) {
+			if(msg.status == 1){
+				parent.location.reload();       
+			}else{
+				layer.msg(msg.message);
+			}
+		}
+	})
+	return false;		
+}
+</script> 
+
+</body>
+</html>

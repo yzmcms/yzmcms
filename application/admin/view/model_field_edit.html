@@ -1,0 +1,114 @@
+<?php include $this->admin_tpl('meta');?>
+<title>编辑字段 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 字段管理 <span class="c-gray en">&gt;</span> 编辑字段 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<article class="page-container">
+<div class="formdoby_info"> 
+	  <fieldset>
+		<legend><?php echo $modelname ?></legend>
+		    <form action="" method="post" onsubmit="return check_all()">
+			<table class="table table-border yzmcms_table">			
+				<tr>
+					<td width="180"><span class="c-red">*</span>字段类型</td> 
+					<td>
+					<span class="select-box inline">
+					<select name="fieldtype" id="fieldtype" class="select" onchange="javascript:field_setting(this.value);" disabled>
+					<option value='0' selected>请选择字段类型</option>
+					<option value="input" <?php if($data['fieldtype'] == 'input') echo 'selected';?>>单行文本</option>
+					<option value="textarea" <?php if($data['fieldtype'] == 'textarea') echo 'selected';?>>多行文本</option>
+					<option value="number" <?php if($data['fieldtype'] == 'number') echo 'selected';?>>整数类型</option>
+					<option value="datetime" <?php if($data['fieldtype'] == 'datetime') echo 'selected';?>>时间类型</option>
+					<option value="image" <?php if($data['fieldtype'] == 'image') echo 'selected';?>>图片上传</option>					
+					<option value="images" <?php if($data['fieldtype'] == 'images') echo 'selected';?>>多图片上传</option>					
+					<option value="attachment" <?php if($data['fieldtype'] == 'attachment') echo 'selected';?>>附件上传</option>					
+					<option value="select" <?php if($data['fieldtype'] == 'select') echo 'selected';?>>option下拉框</option>
+					<option value="radio" <?php if($data['fieldtype'] == 'radio') echo 'selected';?>>radio选项卡</option>
+					<option value="checkbox" <?php if($data['fieldtype'] == 'checkbox') echo 'selected';?>>checkbox多选框</option>
+					<option value="editor" <?php if($data['fieldtype'] == 'editor') echo 'selected';?>>编辑器</option>
+					<option value="editor_mini" <?php if($data['fieldtype'] == 'editor_mini') echo 'selected';?>>编辑器(Mini版)</option>
+					</select>
+					</span>
+                    </td>
+				</tr>
+				<tr>
+					<td><span class="c-red">*</span>字段名</td> 
+					<td><input type="text" name="field" value="<?php echo $data['field'];?>" class="input-text w_300" id="field" onblur="check_field()" disabled><span class="tip">只能由英文字母、数字和下划线组成，例如：name</span></td>
+				</tr>
+				<tr>
+					<td><span class="c-red">*</span>字段别名</td> 
+					<td><input type="text" name="name" value="<?php echo $data['name'];?>" class="input-text w_300" id="name" onblur="check_name()"><span class="tip">例如：姓名</span></td>
+				</tr>				
+				<tr>
+					<td>字段提示</td> 
+					<td><input type="text" name="tips" value="<?php echo $data['tips'];?>"  class="input-text w_300"><span class="c-red"></span><span class="tip">显示在字段别名下方作为表单输入提示</span></td>
+				</tr>
+				<tr <?php if(!in_array($data['fieldtype'], array('select','radio','checkbox'))) echo 'style="display:none"';?> id="options">
+					<td>选项列表</td> 
+					<td><textarea style="height:100px;width:400px;" name="setting" id="textarea" class="textarea"><?php if(in_array($data['fieldtype'], array('select','radio','checkbox')) && $data['setting']) echo join('|',string2array($data['setting']));?></textarea><span class="tip">用“|”分开，如“男|女|人妖”</span></td>
+				</tr>
+				<tr <?php if($data['fieldtype'] != 'datetime') echo 'style="display:none"';?> id="dates">
+					<td>时间格式</td> 
+					<td> 
+					 <label><input type="radio" name="dateset" value="0" <?php if($data['fieldtype']== 'datetime' && $data['setting']=='0') echo 'checked';?>> 日期（<?php echo date('Y-m-d')?>）</label>
+					 <br><label><input type="radio" name="dateset" value="1" <?php if($data['fieldtype']== 'datetime' && $data['setting']=='1') echo 'checked';?>> 日期+时间（<?php echo date('Y-m-d H:i:s')?>）</label>
+					</td>
+				</tr>				
+				<tr>
+					<td>默认值</td> 
+					<td><input class="input-text w_300" type="text" value="<?php echo $data['defaultvalue'];?>"  name="defaultvalue"></td>
+				</tr>				
+				<tr>
+					<td>字符长度取值范围</td> 
+					<td>最小值：<input class="input-text w_120" type="text" value="<?php echo $data['minlength'];?>" name="minlength">
+                        最大值：<input class="input-text w_120" type="text" value="<?php echo $data['maxlength'];?>" name="maxlength"></td>
+				</tr>	
+				<tr>
+					<td>数据校验未通过的提示信息</td> 
+					<td><input type="text" name="errortips" value="<?php echo $data['errortips'];?>" class="input-text w_300"></td>
+				</tr>
+				<tr>
+					<td>在会员投稿中显示</td> 
+					<td>
+					 <label><input type="radio" name="isadd" value="1"  <?php if($data['isadd']) echo 'checked';?>> 是</label>
+					 &nbsp;&nbsp;<label><input type="radio" name="isadd" value="0"  <?php if(!$data['isadd']) echo 'checked';?>> 否</label>
+					</td>
+				</tr>				
+				<tr>
+					<td>禁用</td> 
+					<td>
+					 <label><input type="radio" name="disabled" value="1" <?php if($data['disabled']) echo 'checked';?>> 是</label>
+					 &nbsp;&nbsp;<label><input type="radio" name="disabled" value="0" <?php if(!$data['disabled']) echo 'checked';?>> 否</label>
+					</td>
+				</tr>				
+                <tr>
+					<td></td>
+					<td>
+					<input type="hidden" name="fieldtype" value="<?php echo $data['fieldtype'];?>">
+					<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
+					</td>
+				</tr>				
+			</table>
+            </form>			
+	  </fieldset>
+</div>
+</article>
+<?php include $this->admin_tpl('footer');?> 
+<script type="text/javascript">	
+	
+	function check_all(){
+		
+	    if($("input[name='name']").val()==''){
+			layer.msg('字段别名不能为空！');
+			return false;
+		}
+		
+	    if(isNaN($("input[name='minlength']").val()) || isNaN($("input[name='maxlength']").val())){
+		    layer.msg('字符长度取值范围 只能为数字类型！');
+		    return false;
+		}		
+        return true;			
+	}
+</script> 
+</body>
+</html>

@@ -1,0 +1,76 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <div class="main_right">
+	<div class="tit"><h3>发信息</h3></div>
+	<div class="main_cont">
+	  <form method="post" action="" onsubmit="return chcekall()">
+	  <table>
+	   <tr><td>收信人：</td><td><input type="text" name="send_to" value="{if isset($data['send_from'])}{$data['send_from']}{/if}" id="username" required class="input">
+	   <span class="red">*</span></td></tr>
+	   <tr><td>标 题：</td><td><input type="text" name="subject" required value="{if isset($data['subject'])}{$data['subject']}{/if}" class="input"><span class="red">*</span></td></tr>
+	   <tr><td>内 容：</td><td><textarea name="content" class="textarea" required></textarea></td></tr>
+	   <tr><td>验证码：</td><td> <input type="text" class="input" required  name="code" id="code" style="width:80px;"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="codeimg" title="看不清，换一张"></td></tr>
+	   <tr><td></td><td><input type="submit" name="dosubmit" id="dosubmit" class="submit" value="提交"></td></tr>
+	  </table>
+	  </form>
+	</div>
+  </div>		  
+</div>
+<script>
+$(function(){
+   $("#username").blur(function(){
+	  checkname();
+   });		   
+})
+
+function checkname(){
+	var res = false;
+	if($("#username").val() != ''){
+		$.ajax({   
+			type: "post",   
+			url: "{U('member/index/public_checkname')}",   
+			dataType: "html",
+			async: false,	
+			data: "username="+$('#username').val(), 
+			beforeSend: function(){
+				$("#dosubmit").attr({ disabled: "disabled" });
+			},				
+			success: function(msg){  
+			if(msg == '-1'){
+				$("#dosubmit").removeAttr("disabled");
+				res = true;				  
+			}else if(msg == '1'){
+				layer.msg('用户名不存在');		  
+			}else if(msg == '0'){
+				layer.msg('用户名格式不正确');		  
+			}else{
+				layer.msg('未知错误');			  
+			}				 
+			} 
+		});
+		return res;
+	}else{
+		layer.msg('用户名不能为空');
+		return res;
+	}		   
+}
+
+function chcekall(){
+    checkname();
+	if($(".error").text()) return false;
+	if($("input[name='subject']").val()==''){
+	  layer.msg('标题不能为空！');
+	  return false;
+	}
+	if($("input[name='content']").val()==''){
+	  layer.msg('内容不能为空！');
+	  return false;
+	}
+	if($("input[name='code']").val()==''){
+	  layer.msg('验证码不能为空！');
+	  return false;
+	}	
+}
+</script>
+{m:include "member","footer"} 

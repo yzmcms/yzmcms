@@ -1,0 +1,42 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <div class="main_right">
+	<div class="tit"><h3>收藏夹</h3></div>
+	<div class="main_cont">
+	  <form method="post" action="{U('favorite_del')}">
+		<table class="tablelist">
+			<thead>
+			<tr>
+			<th width="5%"><input type="checkbox"   onclick="cz(this)"/></th>
+			<th width="70%">标题</th>
+			<th width="25%">收藏时间</th>
+			</tr>
+			</thead>
+			<tbody>
+			{loop $data $val}		
+			<tr>
+			<td><input name="fx[]" type="checkbox" value="{$val['id']}" /></td>
+			<td><a href="{$val['url']}" target="_blank">{$val['title']}</a></td>
+			<td>{date('Y-m-d H:i:s',$val['inputtime'])}</td>
+			</tr> 
+			{/loop}					
+		   	<tr class="tablast">
+			 <td></td><td colspan="2"><input type="submit" class="submit"  value="删除选中" onclick="return confirm('你确定要删除所选内容吗？')" name="dosubmit"></td>
+			</tr>
+			</tbody>
+		</table>
+	  </form>
+		<div id="page">{$pages}</div>		  
+	</div>
+  </div>		  
+</div>
+<script>
+var fx=document.getElementsByName("fx[]");
+function cz(obj){
+for(var i=0;i<fx.length;i++){
+	  fx[i].checked=obj.checked;
+	}
+}
+</script> 
+{m:include "member","footer"} 

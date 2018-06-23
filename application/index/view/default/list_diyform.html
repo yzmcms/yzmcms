@@ -1,0 +1,37 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	  <title>{$seo_title}</title>
+	  <link href="{STATIC_URL}css/default_common.css" rel="stylesheet" type="text/css" />
+	  <link href="{STATIC_URL}css/default_style.css" rel="stylesheet" type="text/css" />
+	  <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
+	  <script type="text/javascript" src="{STATIC_URL}js/js.js"></script>
+	  <meta name="keywords" content="{$keywords}" />
+	  <meta name="description" content="{$description}" />
+  </head>
+  <body>
+	{m:include "index","header"} 
+		 <div class="main_left">
+			    <h3 class="ind_bt"><a href="{SITE_URL}">首页</a> &gt; 自定义表单</h3>
+				 <div class="news_list">
+					<ul>
+					  {loop $formdata $v}	
+				       <li><span>{date('Y-m-d H:i:s',$v['inputtime'])}</span><a href="{U('show', array('modelid'=>$v['modelid']))}">{$v[name]}</a></li>
+					  {/loop}				 
+					</ul>
+				 </div>					 
+                 <div id="page">{$pages}</div>				 
+		  </div>
+		 <div class="main_right">
+				<h2 class="ind_bt pl_10">频道点击排行</h2>
+				<div class="l_list">
+				<ul>
+				{m:hits field="title,url,status" modelid="1" limit="10"}
+				{loop $data $v}	
+					<li><a href="{$v[url]}" title="{$v[title]}">{str_cut($v['title'], 63)}</a></li>
+				{/loop}
+				</ul>
+				</div>				 
+		 </div>		  	
+    {m:include "index","footer"} 

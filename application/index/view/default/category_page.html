@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	  <title>{$seo_title}</title>
+	  <link href="{STATIC_URL}css/default_common.css" rel="stylesheet" type="text/css" />
+	  <link href="{STATIC_URL}css/default_style.css" rel="stylesheet" type="text/css" />
+	  <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
+	  <script type="text/javascript" src="{STATIC_URL}js/js.js"></script>
+	  <meta name="keywords" content="{$keywords}" />
+	  <meta name="description" content="{$description}" />	  
+  </head>
+  <body>
+	{m:include "index","header"} 
+	<div class="page_left">
+	<h1 class="ind_bt">点击排行</h1>
+	 <div class="l_list">
+		<ul>				  
+			{m:hits field="title,url" modelid="1" limit="10"}
+			{loop $data $v}
+			   <li><a href="{$v[url]}" title="{$v[title]}" target="_blank">{str_cut($v['title'], 54)}</a></li>	
+			{/loop}					
+		</ul>
+	 </div>	
+	</div>
+	<div class="page_right">
+	   <div class="page_img"><img src="{STATIC_URL}images/about_ad.png" alt="{$title}"></div>   
+	   <div class="page_content">
+	       <h2>{$title}</h2>
+		  {$content}
+	   </div>
+	</div>
+{m:include "index","footer"} 

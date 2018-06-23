@@ -1,0 +1,21 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>表结构预览 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<article class="page-container">
+<div class="formdoby_normal"> 
+	<pre><?php echo $data['Create Table'];?></pre>
+</div>
+
+<div style="position:fixed;bottom:20px;right:10px;z-index:99;"><input type="button" class="btn btn-primary radius w_120" onclick="myclose()" value="确定"></div>
+</article>
+<?php include $this->admin_tpl('footer', 'admin');?>
+<script type="text/javascript">
+	function myclose(){
+		var index = parent.layer.getFrameIndex(window.name);
+		parent.layer.close(index);
+	}
+</script> 
+
+</body>
+</html>

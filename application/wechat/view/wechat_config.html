@@ -1,0 +1,95 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>微信配置 - YzmCMS内容管理系统</title>
+<style>.input-text{height:27px;padding:2px}.select-box{height:28px;line-height:20px}</style>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 微信配置<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<article class="page-container">
+<div class="formdoby_info"> 
+	  <fieldset>
+		<legend>微信配置</legend>
+		    <form action="<?php echo U('save');?>" method="post" onsubmit="return check_all()">
+			<table class="table table-border yzmcms_table">			
+				<tr>
+					<td width="120">微信URL</td> 
+					<td><input type="text" name="field" readonly value="<?php echo U('wechat/index/init');?>" class="input-text w_420"><span class="tip">复制此URL到微信公众号后台开发者中心</span></td>
+				</tr>
+				<tr>
+					<td>微信Token</td> 
+					<td><input type="text" name="wx_token" value="<?php echo $data["wx_token"];?>" class="input-text w_300"><span class="tip">必填，一般不需要修改</span> &nbsp;&nbsp;<a href="javascript:;" class="btn btn-default radius" onclick="rand()">随机生成</a></td>
+				</tr>				
+				<tr>
+					<td>EncodingAESKey</td> 
+					<td><input type="text" name="wx_encodingaeskey" value="<?php echo $data["wx_encodingaeskey"];?>" class="input-text w_420"><span class="c-red"></span><span class="tip">选填，在开发模式中点随机生成，然后复制到这边</span></td>
+				</tr>				
+				<tr>
+					<td>AppID</td> 
+					<td><input class="input-text w_300" type="text" value="<?php echo $data["wx_appid"];?>" name="wx_appid"><span class="tip">必填，微信开发者ID</span></td>
+				</tr>					
+				<tr>
+					<td>AppSecret</td> 
+					<td><input type="password" name="wx_secret" value="<?php echo $data["wx_secret"];?>" id="wx_secret" class="input-text w_420" readonly onfocus="this.removeAttribute('readonly');"><span class="tip">必填，微信开发者密码</span>&nbsp;&nbsp;<a href="javascript:;" class="btn btn-default radius" onclick="show()" id="wx_secret_text">显示密码</a></a></td>
+				</tr>
+				<tr>
+					<td>关联模型</td> 
+					<td>
+					<span class="select-box inline">
+					<select name="wx_relation_model" class="select">
+					<option value="">请选择模型</option>
+					<?php  
+					foreach($modelinfo as $val){
+						$str = $val['tablename'] == $data['wx_relation_model'] ? 'selected' : '';
+						echo '<option value="'.$val['tablename'].'" '.$str.'>'.$val['name'].'</option>';
+					}
+					?>
+					</select>
+					</span>
+                    </td>
+				</tr>				
+                <tr>
+					<td></td>
+					<td>
+					<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
+					</td>
+				</tr>				
+			</table>
+            </form>			
+	  </fieldset>
+</div>
+</article>
+<?php include $this->admin_tpl('footer', 'admin');?>
+<script type="text/javascript">
+function rand(){
+	var str = Math.random().toString(36).substr(2);
+	$("input[name='wx_token']").val(str);
+}
+
+function show(){
+	var wx_secret = document.getElementById("wx_secret");
+	if(wx_secret.type == "password"){
+		wx_secret.type = "text";
+		$("#wx_secret_text").text('隐藏密码');  
+	}else{
+		wx_secret.type = "password";
+		$("#wx_secret_text").text('显示密码');  
+	} 
+}
+
+function check_all(){
+	if($("input[name='wx_token']").val()==''){
+		layer.msg('微信Token不能为空！');
+		return false;
+	}
+	if($("input[name='wx_appid']").val()==''){
+		layer.msg('微信APPID不能为空！');
+		return false;
+	}
+	if($("input[name='wx_secret']").val()==''){
+		layer.msg('微信AppSecret不能为空！');
+		return false;
+	}
+	return true;			
+}
+</script> 
+</body>
+</html>

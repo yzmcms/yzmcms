@@ -1,0 +1,19 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <div class="main_right">
+	<div class="tit"><h3>我的关注</h3></div>
+	<div class="main_cont">
+	  <div class="follow">
+	    <ul>
+		{loop $data $val}	
+		  <li><a href="{U('member/myhome/init', array('userid'=>$val['followid']))}" target="_blank"><img src="{get_memberavatar($val['followid'])}" title="{$val['followname']}"></a><strong><a href="{U('member/myhome/init', array('userid'=>$val['followid']))}" target="_blank">{$val['followname']}</a></strong><span><a href="{U('follow', array('followid'=>$val['followid']))}" onclick="return confirm('你确定要取消关注吗？')">[取消关注]</a></span></li>
+		{/loop}		
+		</ul>
+	  </div>
+	  <div class="clearfix"></div>
+		<div id="page">{$pages}</div>	  
+	</div>
+  </div>		  
+</div> 
+{m:include "member","footer"}

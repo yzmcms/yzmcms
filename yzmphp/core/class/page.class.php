@@ -1,0 +1,175 @@
+<?php
+/**
+ * page.class.php	 数据分页类
+ *
+ * @author           袁志蒙  
+ * @license          http://www.yzmcms.com
+ * @lastmodify       2016-09-25
+ */
+
+class page{
+	
+	private $url;         //当前URL
+	private $total_rows;  //一共多少条数据
+	private $list_rows;   //每页显示记录数
+	private $total_page;  //总的分页数
+	private $now_page; 	  //当前页
+	private $parameter;   //分页跳转的参数
+	private $url_rule;    //URL规则
+
+	
+    /**
+     * 构造函数
+     * @param int $total_rows  一共多少条数据
+     * @param int $list_rows   每页显示记录数
+     * @param array $parameter  分页跳转的参数
+     */
+	function __construct($total_rows, $list_rows = 10, $parameter = array()){
+		$this->total_rows = $total_rows;	
+		$this->list_rows = $list_rows; 
+		$this->total_page = ceil($this->total_rows/$this->list_rows); 
+		$this->now_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+		$this->now_page = $this->now_page>0 ? $this->now_page : 1;
+        $this->parameter  = empty($parameter) ? $_GET : $parameter;	
+        $this->url_rule = defined('LIST_URL') && LIST_URL ? true : false;		
+        $this->url = $this->geturl();		
+	}
+
+	
+	/**
+	 * 获得当前地址
+	 */
+	protected function geturl(){
+        unset($this->parameter['m'],$this->parameter['c'],$this->parameter['a']);
+		$this->parameter['page'] = 'PAGE';
+		
+		if($this->url_rule){
+			$request_url = trim($_SERVER['REQUEST_URI'], '/');
+			$pos = strpos($request_url, '/list');
+			if($pos) $request_url = substr($request_url, 0, $pos);
+			return SITE_URL.$request_url.'/list_PAGE.html';
+		}
+		return U(ROUTE_A, $this->parameter);
+	}
+	
+	
+	/**
+	 * 生成链接URL
+	 */
+    private function make_url($page){
+        return str_replace('PAGE', $page, $this->url);
+    }
+
+	
+	/**
+	 * 总页数
+	 */
+	function total(){
+		return $this->total_page;
+	}
+
+	
+	/**
+	 * 获得当前页
+	 */
+	public function getpage(){
+		return $this->now_page;
+	}
+
+	
+	/**
+	 * 获得首页
+	 */
+	public function gethome(){	
+		return '<a href="'.$this->make_url(1).'" class="homepage">'.L('home_page').'</a>';
+	}
+
+	
+	/**
+	 * 获得尾页
+	 */
+	function getend(){	
+		return '<a href="'.$this->make_url($this->total_page).'" class="endpage">'.L('end_page').'</a>';
+	}
+
+	
+	/**
+	 * 获得上页
+	 */
+	public function getpre(){
+		if($this->now_page<=1){
+			return '<a href="'.$this->make_url(1).'" class="nopage">'.L('pre_page').'</a>';
+		}
+		return '<a href="'.$this->make_url($this->now_page-1).'" class="prepage">'.L('pre_page').'</a>';
+	}
+
+	
+	/**
+	 * 获得下页
+	 */
+	public function getnext(){
+		if($this->now_page>=$this->total_page){
+			return '<a href="'.$this->make_url($this->now_page).'" class="nopage">'.L('next_page').'</a>';	
+		}
+		return '<a href="'.$this->make_url($this->now_page+1).'" class="nextpage">'.L('next_page').'</a>';
+	}
+	
+	
+	/**
+	 * 获取开始数列
+	 */
+	public function start_rows(){ 
+		if($this->total_page && $this->now_page > $this->total_page) $this->now_page = $this->total_page;
+		return ($this->now_page-1)*($this->list_rows);
+	}
+	
+
+	/**
+	 * 每页显示的条数
+	 */
+	public function list_rows(){
+		return $this->list_rows;
+	}	
+	
+	
+	/**
+	 * 供外部分页使用
+	 */
+	public function limit(){
+		return $this->start_rows().','.$this->list_rows();
+	}	
+	
+	
+	/**
+	 * 数字数字列表页---[1][2][3][4][5]
+	 */
+	public function getlist(){
+		$str = '';
+		if($this->total_page<=5){
+			for($i=1; $i<=$this->total_page; $i++){
+				$class = $this->now_page==$i ? ' curpage' : '';
+				$str.='<a href="'.$this->make_url($i).'" class="listpage'.$class.'">'.$i.'</a>';
+			}
+		}else{	
+			if($this->now_page <= 3){
+				$p =5;
+			}else{
+				$p = ($this->now_page+2)>=$this->total_page ? $this->total_page : $this->now_page+2;
+			} 
+			for($i=$p-4; $i<=$p; $i++){
+				$class = $this->now_page==$i ? ' curpage' : '';
+				$str.='<a href="'.$this->make_url($i).'" class="listpage'.$class.'">'.$i.'</a>';
+			}
+		}
+		return $str;
+	}	
+	
+	
+	/**
+	 * 获取全部列表---首页上页[1][2][3][4][5]下页尾页
+	 */
+	public function getfull(){
+		if($this->total_rows == 0) return '';
+	    return ($this->gethome()).($this->getpre()).($this->getlist()).($this->getnext()).($this->getend());
+	}
+}

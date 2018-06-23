@@ -1,0 +1,234 @@
+<?php include $this->admin_tpl('meta');?>
+<title>添加栏目 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<div class="page-container">
+	<form class="form form-horizontal" method="" action="" onsubmit="return dosub(this)">
+		<div id="tab_system" class="HuiTab">
+			<div class="tabBar cl"><span>基本选项</span><span>模板设置</span><span>SEO设置</span><span>其他设置</span></div>
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择模型：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box">
+						<select name="modelid" class="select" onchange="javascript:yzmcms_msg(this.value)">
+						  <?php 
+						      foreach($modelinfo as $val){
+									$str = $modelid==$val['modelid'] ? ' selected="selected" ' : '';
+									echo '<option value="'.$val['modelid'].'"'.$str.'>'.$val['name'].'</option>';
+							  }
+						  ?>
+						</select>
+						</span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>上级栏目：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box">
+						 <?php echo select_category('parentid', $catid, '', 0, '', false, false); ?>
+						</span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>栏目名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="catname" value="" class="input-text"  onblur="yzmcms_pinyin()">
+					</div>
+				</div>
+				<input type="hidden" name="catdir" value="" class="input-text">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>英文目录：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="catdir" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">栏目图片：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input class="input-text" type="text" name="catimg" style="width:400px" id="uploadfile" onmouseover="yzm_img_preview('uploadfile', this.value)"  onmouseout="layer.closeAll();">
+						<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M));?>')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">在导航显示：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="display" type="radio" value="1" checked> 是</label>
+						<label class="label_radio"><input name="display" type="radio" value="0"> 否</label>
+					</div>
+				</div>	
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">允许投稿：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="member_publish" type="radio" value="1"> 是</label>
+						<label class="label_radio"><input name="member_publish" type="radio" value="0" checked> 否</label>
+					</div>
+				</div>	
+			</div>
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>频道页模板：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box">
+						<select name="category_template" class="select">
+						  <?php 
+						      foreach($category_temp as $key => $val){
+									 echo '<option value="'.$key.'">'.$val.'('.$key.')</option>';
+							  }
+						  ?>
+						</select>
+						</span>
+					</div>
+				</div>	
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>列表页模板：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box">
+						<select name="list_template" class="select">
+						  <?php 
+						      foreach($list_temp as $key => $val){
+									 echo '<option value="'.$key.'">'.$val.'('.$key.')</option>';
+							  }
+						  ?>
+						</select>
+						</span>
+					</div>
+				</div>	
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>内容页模板：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box">
+						<select name="show_template" class="select">
+						  <?php 
+						      foreach($show_temp as $key => $val){
+									 echo '<option value="'.$key.'">'.$val.'('.$key.')</option>';
+							  }
+						  ?>
+						</select>
+						</span>
+					</div>
+				</div>					
+			</div>
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">栏目标题：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="seo_title" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">栏目关键词：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="seo_keywords" value="" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">栏目描述：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea class="textarea" name="seo_description"></textarea>
+					</div>
+				</div>
+			</div>
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">栏目副标题：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="subtitle" value="" placeholder="栏目副标题可留空" class="input-text">
+					</div>
+				</div>				
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">手机版名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="mobname" value="" placeholder="手机版栏目名称，为空则与电脑端一致" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">手机版地址：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="moblink" value="" placeholder="手机版栏目地址，为空则为系统默认" class="input-text">
+					</div>
+				</div>	
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">栏目排序：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="listorder" value="0" class="input-text" style="width:200px">
+					</div>
+				</div>				
+			</div>
+
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="type" value="<?php echo $type;?>">
+				<input type="submit" class="btn btn-primary radius" name="dosubmit" value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
+				<input type="reset" class="btn btn-default radius" value="&nbsp;&nbsp;取消&nbsp;&nbsp;" onclick="yzmcms_close()">
+			</div>
+		</div>
+	</form>
+</div>
+
+<?php include $this->admin_tpl('footer');?>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>js/pinyin.js"></script> 
+
+<script type="text/javascript">
+function yzmcms_pinyin(){
+	var pinyin = codefans_net_CC2PY($("input[name='catname']").val());
+	$("input[name='catdir']").val(pinyin.toLowerCase());
+}
+
+function yzmcms_msg(modelid){
+	if(modelid != 1){
+		layer.alert('您选择的非文章模型，记得选择不同的模板哦');
+	}
+}
+
+function dosub(obj){
+	var reg = /^[A-Za-z0-9]+$/
+	if($("input[name='catname']").val()==''){
+		layer.msg('栏目名称不能为空！');
+		return false;
+	}
+	if($("input[name='catdir']").val()==''){
+		layer.msg('栏目目录不能为空！');
+		return false;
+	}
+	if(!reg.test($("input[name='catdir']").val())){
+		layer.msg('栏目目录只能是拼音或英文字符！');
+		return false;
+	}
+	if($("select[name='category_template']").val()=='0'){
+		layer.msg('请选择频道页模板！');
+		$.Huitab("#tab_system .tabBar span","#tab_system .tabCon","current","click","1");
+		return false;
+	}
+	if($("select[name='list_template']").val()=='0'){
+		layer.msg('请选择列表页模板！');
+		return false;
+	}
+	if($("select[name='show_template']").val()=='0'){
+		layer.msg('请选择内容页模板！');
+		return false;
+	}
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo U('add');?>', 
+		data: $(obj).serialize(),
+		dataType: "json", 
+		success: function (msg) {
+			if(msg.status == 1){
+				parent.location.reload();       
+			}else{
+				layer.msg(msg.message);
+			}
+		}
+	})
+	return false;		
+}
+
+$(function(){
+	$.Huitab("#tab_system .tabBar span","#tab_system .tabCon","current","click","<?php echo isset($_GET['tab']) ? intval($_GET['tab']) : '0'?>");
+});
+</script>
+
+</body>
+</html>

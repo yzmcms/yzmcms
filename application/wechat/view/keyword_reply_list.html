@@ -1,0 +1,47 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>关键字回复 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 消息回复 <span class="c-gray en">&gt;</span> 关键字回复 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+  <div class="sub_menu"><a href="<?php echo U('init');?>" class="on">关键字回复</a> <a href="<?php echo U('reply_list', array('type'=>2));?>">自动回复</a> <a href="<?php echo U('reply_list', array('type'=>3));?>">关注回复</a></div>
+  <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+  <a href="<?php echo U('add');?>" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加关键字回复</a> <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
+  </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
+  <form method="post" action="<?php echo U('del');?>" id="myform">
+  <table class="table table-border table-bordered table-bg table-hover">
+    <thead>
+      <tr class="text-c">
+        <th width="25"><input type="checkbox"></th>
+		<th>关键字</th>
+		<th>关键字模式</th>
+		<th>回复模式</th>
+		<th>回复内容</th>
+		<th width="60">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+		<?php 
+		foreach($data as $val){
+		?>
+		  <tr class="text-c">
+			<td><input type="checkbox" value="<?php echo $val['id']?>" name="ids[]"></td>
+			<td><?php echo $val['keyword']?></td>
+			<td><?php echo $val['keyword_type'] ? '完全匹配' : '模糊匹配';?></td>
+			<td><?php echo $val['relation_id'] ? '图文回复' : '文本回复';?></td>
+			<td><?php echo $val['relation_id'] ? '关联ID：'.$val['relation_id'] : $val['content'];?></td>
+			<td class="td-manage"><a title="编辑" href="<?php echo U('edit', array('id'=>$val['id']));?>" class="btn-mini btn-secondary ml-5" style="text-decoration:none">编辑</a></td>
+		  </tr>		
+		<?php 
+		}
+		?>
+    </tbody>
+  </table>
+  </form>
+  <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
+  <span class="page_right"><?php echo $page->getfull();?></span></div>
+</div>
+<?php include $this->admin_tpl('footer', 'admin');?>
+
+</body>
+</html>

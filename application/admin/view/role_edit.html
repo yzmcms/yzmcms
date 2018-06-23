@@ -1,0 +1,45 @@
+<?php include $this->admin_tpl('meta');?>
+<title>编辑角色 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<article class="page-container">
+<div class="formdoby"> 
+	<form method="post" onsubmit="return dosub(this)">
+		<ul>
+			 <li><label><span class="c-red">*</span>角色名称：</label><input type="text" class="input" placeholder="角色名称" name="rolename" value="<?php echo $data['rolename'];?>"></li>
+			 <li><label><span class="c-red">*</span>是否启用：</label>
+			 <span class="span_input">
+			 	<label class="label_radio"><input name="disabled" type="radio" value="0" <?php echo $data['disabled']==0 ? ' checked="checked" ' : '';?>> 启用</label>
+			 	<label class="label_radio"><input name="disabled" type="radio" value="1" <?php echo $data['disabled']==1 ? ' checked="checked" ' : '';?>> 禁用</label>
+			 </span>
+			 </li>
+			 <li><label>角色描述：</label><span class="span_input"><textarea name="description" cols="" rows="" class="textarea"  placeholder="角色描述"><?php echo $data['description'];?></textarea></span></li>
+			 <li><input type="hidden" name="dosubmit" value="1"><input type="hidden" name="roleid" value="<?php echo $data['roleid'];?>">
+			 <input class="dosubmit m_left_21 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;"></li>
+		</ul>
+	</form>
+</div>
+</article>
+<?php include $this->admin_tpl('footer');?>
+
+<script type="text/javascript">
+	function dosub(obj){
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo U('edit');?>', 
+            data: $(obj).serialize(),
+		    dataType: "json", 
+            success: function (msg) {
+				if(msg.status == 1){
+					parent.location.reload();       
+			    }else{
+					layer.msg(msg.message);
+				}
+            }
+        })		 
+		return false;			 
+	}
+</script> 
+
+</body>
+</html>

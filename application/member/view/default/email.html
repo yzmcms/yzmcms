@@ -1,0 +1,54 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <div class="main_right">
+	<div class="tit"><h3>邮箱/安全问题</h3></div>
+	<div class="main_cont">
+	  <form method="post" action="" onsubmit="return chcekall()">
+	  <table>
+	   <tr><td>邮箱：</td><td><input type="email" name="email" value="{$email}" required class="input" {if $email_status}readonly{/if}> {if $email_status}<span class="green">[已验证]</span>{/if}</td></tr>
+	   <tr><td>安全问题：</td><td>
+	   <select name="problem" onchange="change_problem()">
+	   <option value="0">没有安全问题</option>
+		{loop $problemarr $v}
+			{php $str = $problem == $v ? 'selected="selected"' : '';}
+			<option value="{$v}" {$str}>{$v}</option>
+		{/loop}
+	   </select>
+	   <span class="red">找回密码时使用！</span></td></tr>
+	   <tr style="display:none" id="answer"><td>答案：</td><td><input type="text" name="answer" value="" class="input"><span class="red">不修改请留空！</span></td></tr>
+	   <tr><td>密码确认：</td><td><input type="text" name="password" required value="" class="input" onfocus="this.type='password'"><span class="red">*</span></td></tr>
+	   <tr><td>验证码：</td><td><input type="text" name="code" value="" required class="input" style="width:80px;">
+	   <img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" style="height:28px;cursor:pointer" title="看不清，换一张">
+	   </td></tr>
+	   <tr><td></td><td><input type="submit" name="dosubmit" class="submit" value="提交"></td></tr>
+	  </table>
+	  </form>
+	</div>
+  </div>		  
+</div>
+<script>
+function change_problem(){
+	if($("select[name='problem']").val()!='0'){
+		$("#answer").removeAttr("style");
+	}else{
+		$("#answer").css('display','none');
+	}
+}
+function chcekall(){
+	var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+	if(!reg.test($('input[name="email"]').val())){
+		layer.alert('邮箱格式不正确！');
+		return false;
+	}
+	if($('input[name="password"]').val() == ''){
+		layer.alert('请输入密码！');
+		return false;
+	}
+	if($('input[name="code"]').val() == ''){
+		layer.alert('请输入验证码！');
+		return false;
+	}
+}
+</script>
+{m:include "member","footer"} 

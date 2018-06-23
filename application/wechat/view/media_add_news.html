@@ -1,0 +1,49 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>添加图文素材 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 添加图文素材 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<article class="page-container">
+<div class="formdoby_normal"> 
+	<form method="post" action="<?php echo U('add_news');?>" onsubmit="return dosub(this)">
+		<ul>
+			<li><label>图文个数：</label>
+			 <select  name="num" style="width:200px" onchange="javascript:change_num(this.value);">
+				<option value="1" <?php if($num == 1){?> selected <?php }?>>1个</option>			
+				<option value="2" <?php if($num == 2){?> selected <?php }?>>2个</option>			
+				<option value="3" <?php if($num == 3){?> selected <?php }?>>3个</option>			
+				<option value="4" <?php if($num == 4){?> selected <?php }?>>4个</option>			
+				<option value="5" <?php if($num == 5){?> selected <?php }?>>5个</option>			
+				<option value="6" <?php if($num == 6){?> selected <?php }?>>6个</option>			
+				<option value="7" <?php if($num == 7){?> selected <?php }?>>7个</option>			
+				<option value="8" <?php if($num == 8){?> selected <?php }?>>8个</option>					
+			 </select></li>
+			<li><label>素材类型：</label><label><input class="radio" type="radio" name="media_type" value="0" checked="checked">临时素材</label><label><input class="radio" type="radio" name="media_type" value="1">永久素材</label></li>
+			<?php for($i=0; $i<$num; $i++) { ?>		
+			<li><label><span class="c-red">*</span>缩略图ID：</label>
+			<input type="text" class="input" style="width:300px" required name="thumb_media_id_<?php echo $i?>" id="thumb_media_id_<?php echo $i?>" value="">&nbsp;&nbsp;
+			<a href="javascript:;" class="btn btn-default radius" onclick="yzm_open('选择缩略图','<?php echo U('select_thumb', array('thumb_media_id'=>'thumb_media_id_'.$i));?>',900,520)">选择缩略图</a> <span style="color:#666">永久素材的图文消息的缩略图ID必须是永久mediaID！</span></li>
+			<li><label><span class="c-red">*</span>标题：</label><input type="text" class="input" required style="width:300px" name="title_<?php echo $i?>" value=""></li>
+			<li><label>作者：</label><input type="text" class="input" style="width:200px" name="author_<?php echo $i?>" value=""></li>
+			<li><label>原文地址：</label><input type="text" class="input" style="width:300px" name="content_source_url_<?php echo $i?>" value=""></li>
+			<li><label>消息描述：</label><input type="text" class="input" style="width:450px" name="digest_<?php echo $i?>" value=""></li>
+			<li><label>显示封面：</label><label><input checked type="radio" name="show_cover_pic_<?php echo $i?>" value="1"> 是</label> <label><input type="radio" name="show_cover_pic_<?php echo $i?>" value="0"> 否</label></li>
+			<li><label><span class="c-red">*</span>内容：</label><textarea class="textarea" required name="content_<?php echo $i?>" style="height:200px;width:800px"></textarea></li>
+			<?php } ?>	
+			
+			<li></li>
+			<li><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"></li>
+		</ul>
+	</form>
+</div>
+</article>
+<?php include $this->admin_tpl('footer', 'admin');?>
+
+<script type="text/javascript">
+	function change_num(num) {
+		location.href = '?num='+num;
+	}
+</script> 
+
+</body>
+</html>

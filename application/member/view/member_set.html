@@ -1,0 +1,126 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>会员中心设置 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 会员中心设置 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<form class="form form-horizontal" method="post" action="<?php echo U('admin/system_manage/save');?>" onsubmit="return check_all()">
+		<div id="tab_system" class="HuiTab">
+			<div class="tabBar cl"><span>基本设置</span><span>其他设置</span></div>
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">是否开启会员注册：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="member_register" type="radio" <?php echo $data["member_register"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="member_register" type="radio" <?php echo $data["member_register"]? '' : 'checked' ?> value="0"> 关闭</label>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">新会员注册邮件验证：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="member_email" type="radio" <?php echo $data["member_email"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="member_email" type="radio" <?php echo $data["member_email"]? '' : 'checked' ?> value="0"> 关闭</label>
+						<span style="color:#888"> [需填写邮箱配置，且开启后会员注册审核功能无效]</span>
+					</div>		
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">会员注册需要管理员审核：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="member_check" type="radio" <?php echo $data["member_check"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="member_check" type="radio" <?php echo $data["member_check"]? '' : 'checked' ?> value="0"> 关闭</label>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">是否开启会员登录验证码：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="member_yzm" type="radio" <?php echo $data["member_yzm"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="member_yzm" type="radio" <?php echo $data["member_yzm"]? '' : 'checked' ?> value="0"> 关闭</label>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">新会员默认积分：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="member_point" value="<?php echo $data["member_point"];?>" class="input-text" style="width:30%">
+						<span style="color:red"> [积分=经验，区别在于积分可以通过消费减少，经验只增不减，下同]</span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">每日登陆奖励积分：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text"  name="login_point" value="<?php echo $data["login_point"];?>" class="input-text" style="width:30%">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">发布评论奖励积分：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text"  name="comment_point" value="<?php echo $data["comment_point"];?>" class="input-text" style="width:30%">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">投稿奖励积分：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text"  name="publish_point" value="<?php echo $data["publish_point"];?>" class="input-text" style="width:30%">
+					</div>
+				</div>
+			</div>
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">QQ登录 App ID：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="qq_app_id" value="<?php echo $data["qq_app_id"];?>" class="input-text" style="width:50%">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">QQ登录 App key：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="qq_app_key" value="<?php echo $data["qq_app_key"];?>" class="input-text" style="width:50%">
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">QQ登录 回调地址：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="callback" readonly value="<?php echo U('member/other/qq_login');?>" class="input-text" style="width:50%">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				
+				<input type="submit" class="btn btn-primary radius" name="dosubmit" value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
+				<input type="reset" class="btn btn-default radius" value="&nbsp;&nbsp;取消&nbsp;&nbsp;">
+			</div>
+		</div>
+	</form>
+</div>
+
+<?php include $this->admin_tpl('footer', 'admin');?>
+
+<script type="text/javascript">
+function check_all(){
+	if($("input[name='member_point']").val()=='' || isNaN($("input[name='member_point']").val())){
+		layer.msg('新会员默认积分只能为数字！');
+		return false;
+	}
+	if($("input[name='login_point']").val()=='' || isNaN($("input[name='login_point']").val())){
+		layer.msg('每日登陆奖励积分只能为数字！');
+		return false;
+	}
+	if($("input[name='comment_point']").val()=='' || isNaN($("input[name='comment_point']").val())){
+		layer.msg('发布评论奖励积分只能为数字！');
+		return false;
+	}
+	if($("input[name='login_point']").val()=='' || isNaN($("input[name='login_point']").val())){
+		layer.msg('投稿奖励积分只能为数字！');
+		return false;
+	}
+	return true;			
+}
+
+$(function(){
+	$.Huitab("#tab_system .tabBar span","#tab_system .tabCon","current","click","<?php echo isset($_GET['tab']) ? intval($_GET['tab']) : '0'?>");
+});
+</script>
+
+</body>
+</html>

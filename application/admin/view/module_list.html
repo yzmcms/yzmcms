@@ -1,0 +1,68 @@
+<?php include $this->admin_tpl('meta');?>
+<title>模块列表 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 模块列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+  <form method="post" action="<?php echo U('user_config_del');?>" id="myform">
+  <table class="table table-border table-bordered table-bg table-hover table-sort">
+    <thead>
+      <tr class="text-c">
+		<th>模块名称</th>
+        <th>模块目录</th>
+        <th>版本号</th>
+        <th>安装日期</th>
+        <th>更新日期</th>
+        <th width="75">管理操作</th>
+      </tr>
+    </thead>
+    <tbody>
+		<?php 
+		foreach($directory as $d){
+			if (array_key_exists($d, $modules)) {
+		?>
+		  <tr class="text-c">
+			<td><?php echo $modules[$d]['name']?></td>
+			<td><?php echo $d?></td>
+			<td><?php echo $modules[$d]['version']?></td>
+			<td><?php echo $modules[$d]['installdate']?></td>
+			<td><?php echo $modules[$d]['updatedate']?></td>
+			<td><?php if ($modules[$d]['iscore']) {?><span style="color:#999">禁止</span><?php } else {?><span><a href="javascript:void(0);" onclick="uninstall('<?php echo $d?>','<?php echo U('uninstall',array('module'=>$d));?>')" style="color:red">卸载</a></span><?php }?></td>
+		  </tr>		
+		<?php 
+			}else{
+				if(is_file(APP_PATH.$d.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'config.inc.php')) {
+					$isinstall = true;
+				}else{
+					$isinstall = false;
+				}
+			?>
+		  <tr class="text-c">
+			<td></td>
+			<td><?php echo $d?></td>
+			<td>未知</td>
+			<td>未安装</td>
+			<td>未安装</td>
+			<td><?php if($isinstall){?> <span><a href="javascript:void(0);" onclick="yzm_open('模块安装','<?php echo U('install',array('module'=>$d));?>','550','325')" style="color:#009933">安装</a></span><?php } else {?><span style="color:#009933">无法安装</span><?php }?></a></td>
+		  </tr>	
+		<?php
+			}
+		}
+		?>
+    </tbody>
+  </table>
+  </form>
+  <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
+  <span class="page_right"><?php echo $page->getfull();?></span></div>
+</div>
+<?php include $this->admin_tpl('footer');?>
+<script type="text/javascript">
+function uninstall(m, url){
+	layer.confirm('确认要卸载 '+m+' 模块吗？',function(index){
+		window.location.href = url;
+	});
+}
+</script>
+
+</body>
+</html>

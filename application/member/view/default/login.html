@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	  <title>会员登录</title>
+	  <link href="{STATIC_URL}css/member_login.css" rel="stylesheet" type="text/css" />
+	  <meta name="description" content="yzmcms会员登录" />
+  </head>
+  <body>
+		<!--主要内容-->
+		<div class="w880 main">
+		  <div class="main_left">
+		    <p class="logo"><a href="{SITE_URL}"><img src="{STATIC_URL}images/logo.png"></a></p>
+			<p>没有帐号？<a href="{U('register')}">免费注册</a></p>
+			<p>使用合作网站登录</p>
+			<p><a href="{U('member/other/qq_login')}" target="_blank" class="qq_login">腾讯QQ登陆</a></p>
+		  </div>		  
+		  <div class="main_right">
+		    <div class="login">会员登录</div>
+			
+			<div class="form">
+			 <form action="" method="post">
+				<input type="hidden" name="referer" value="<?php echo $referer;?>">
+				<ul>
+				 <li><label>用户名</label><input type="text" class="input" required name="username" placeholder="请输入用户名" value=""></li>
+				 <li><label>密码</label><input type="password" class="input" required name="password" placeholder="请输入密码" value=""></li>
+				 {if get_config('member_yzm')}
+				 <li><label>验证码</label><input type="text" class="input code" required name="code" placeholder="请输入验证码"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="codeimg" title="看不清，换一张"></li>	
+                 {/if}		 
+				 <li><input type="submit" class="submit" name="dosubmit" value="登 录"></li>
+				 <li><a href="{U('member/reset/init')}" target="_blank">忘记密码？</a></li>
+				</ul>
+			 </form>
+			</div>
+			
+		  </div>
+		</div>
+		<div class='clearfix'></div>
+
+		<!--网站底部-->
+		<div class="footer">
+		  <p>Powered by <a href="http://www.yzmcms.com" target="_blank">{YZMCMS_SOFTNAME}</a> © 2014-2018  版权所有</p>
+		</div>
+  </body>
+</html>

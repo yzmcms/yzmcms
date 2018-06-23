@@ -1,0 +1,44 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	  <title>会员账号绑定</title>
+	  <link href="{STATIC_URL}css/member_login.css" rel="stylesheet" type="text/css" />
+	  <meta name="description" content="yzmcms,会员账号绑定" />
+  </head>
+  <body style="background:#fff">
+    <div class="w1">
+			<div class="w880 head">
+			  <div class="right"><a href="{SITE_URL}">回到首页</a></div>
+			  <a href="{U('member/index/register')}" class="current">注册</a> 欢迎登录
+			</div>
+	</div>
+    <div class="bind_content">
+      <p class="logo"><a href="{SITE_URL}"><img src="{STATIC_URL}images/logo.png"></a></p>
+      <p>快速绑定</p>
+	  <div class="bind_left">
+			<div class="bind_title"><img src="{STATIC_URL}images/qq_login.jpg"> QQ</div>
+			<div class="bind_body"><img src="{$userinfo['figureurl_qq_2']}"><p>{$userinfo['nickname']}</p></div>
+	  </div>
+	  <div class="bind_right">
+		    <div class="bind_title">已有的账号</div>
+			<div class="bind_body">
+				<form action="{U('member/other/bind')}" method="post" class="form">
+				 <ul>
+				 <li><label style="width:85px">用户名</label><input type="text" name="username" required placeholder="请输入用户名" class="input input_mini"></li>
+				 <li><label style="width:85px">密码</label><input type="password" name="password" required placeholder="请输入密码" class="input input_mini"></li>
+				 <li><input type="submit" name="dosubmit" value="立刻绑定" class="submit submit2"></li>
+				 <li class="aleft"><a href="{U('member/index/register')}" target="_blank">立即注册</a> | <a href="{U('member/reset/init')}" target="_blank">忘记密码</a></li>
+				 </ul>
+			    </form>
+			</div>
+	  </div>
+    </div>
+	<div class='clearfix'></div>
+
+		<!--网站底部-->
+		<div class="footer">
+		  <p>Powered by <a href="http://www.yzmcms.com" target="_blank">{YZMCMS_SOFTNAME}</a> © 2014-2018  版权所有</p>
+		</div>
+  </body>
+</html>

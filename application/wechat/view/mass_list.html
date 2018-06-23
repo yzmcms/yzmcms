@@ -1,0 +1,49 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>高级群发 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 高级群发 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+  <div class="cl pd-5 bg-1 bk-gray"> <span class="l">
+  <a href="<?php echo U('add');?>" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 新建群发</a> 
+  <a href="<?php echo U('select_status');?>" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe665;</i> 群发状态查询</a>
+  </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
+  <form method="post" action="<?php echo U('del');?>" id="myform">
+  <table class="table table-border table-bordered table-bg table-hover">
+    <thead>
+      <tr class="text-c">
+		<th>消息类型</th>
+		<th>群发模式</th>
+		<th>接收组别/openid</th>
+		<th>media_id/内容</th>
+		<th>任务ID</th>
+		<th>发送时间</th>
+		<th>操作</th>
+      </tr>
+    </thead>
+    <tbody>
+		<?php 
+		foreach($data as $val){
+		?>
+		  <tr class="text-c">
+			<td><?php echo $types[$val['message_type']];?></td>
+			<td><?php echo $val['type']==2 ? '全部用户' : ($val['type'] ? '通过分组群发' : '通过openid群发');?></td>
+			<td><?php echo $val['receive']?></td>
+			<td><?php echo $val['media_id']?></td>
+			<td><?php echo $val['msg_id']?></td>
+			<td><?php echo date('Y-m-d H:i:s', $val['masstime'])?></td>
+			<td><a title="删除群发" href="javascript:;" onclick="yzm_del('<?php echo U('del', array('id'=>$val['id'], 'msg_id'=>$val['msg_id']));?>')" class="btn-mini btn-warning ml-5" style="text-decoration:none">删除群发</a></td>
+		  </tr>		
+		<?php 
+		}
+		?>
+    </tbody>
+  </table>
+  </form>
+  <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
+  <span class="page_right"><?php echo $page->getfull();?></span></div>
+</div>
+<?php include $this->admin_tpl('footer', 'admin');?>
+
+</body>
+</html>

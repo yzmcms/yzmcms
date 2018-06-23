@@ -1,0 +1,47 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>添加微信分组 - YzmCMS内容管理系统</title>
+</head>
+<style>
+.exp{margin:5px 0px 5px 120px;color:#888}
+</style>
+<body>
+<article class="page-container">
+<div class="formdoby formdoby2"> 
+	<form method="post" onsubmit="return dosub(this)">
+		<ul>
+			<li>&nbsp;</li>					 
+			<li><label>分组名称：</label><span class="span_input"><input type="text" name="groupname" class="input-text"></span></li>
+			<li>&nbsp;</li>					
+			<li><input type="hidden" name="dosubmit" value="1">
+			<input class="dosubmit m_left_21 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;"></li>
+		</ul>
+	</form>
+</div>
+</article>
+<?php include $this->admin_tpl('footer', 'admin');?>
+
+<script type="text/javascript">
+	function dosub(obj){
+		 if(obj.groupname.value==''){
+			 layer.msg('分组名称不能为空！');
+			 return false;
+		 }
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo U('add');?>', 
+            data: $(obj).serialize(),
+		    dataType: "json", 
+            success: function (msg) {
+				if(msg.status == 1){
+					parent.location.reload();       
+			    }else{
+					layer.alert(msg.message);
+				}
+            }
+        })		 
+		return false;			 
+	}
+</script> 
+
+</body>
+</html>

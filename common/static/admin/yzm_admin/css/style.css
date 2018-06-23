@@ -1,0 +1,80 @@
+@charset "utf-8";
+/**
+ * YZMCMS 内容管理系统
+ * @author           袁志蒙  
+ * @license          http://www.yzmcms.com
+ */
+
+.curmenu{background:#fafafa;color:#148cf1 !important;}
+.col-sm-2{width:16.6667%;}
+.yzmcms_a{color:#06c;}
+.formdoby{width:80%;margin:0 auto;text-align:center}
+.formdoby ul li{margin-bottom:20px;}
+.formdoby2 ul li{margin-bottom:10px;}
+.formdoby ul li label{width:18%;text-align:right;vertical-align:middle;display:inline-block;}
+.formdoby ul li .label_radio{width:auto;margin-right:10px}
+.formdoby ul li .label_box{width:auto;margin-right:10px}
+.formdoby ul li .input{height:28px;line-height:28px;width:60%;margin-left:5%;padding:0px 3px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}
+.formdoby ul li .span_input{display:inline-block;width:60%;margin-left:5%;padding:0px 3px;text-align:left;}
+.formdoby ul li select{height:28px;line-height:28px;width:61%;margin-left:5%;padding:0px 3px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}
+.formdoby ul li .input:focus{border-color:#75a1f0;box-shadow: 0 0 12px #75a1f0;outline:medium none;transition:all 0.218s ease 0s;}
+.dosubmit{border:0px;outline:none;height:35px;line-height:35px;width:60%;cursor:pointer;transition:background 0.3s}
+.m_left_21{margin-left:21%;}
+.w_120{width:120px;}
+.w_200{width:200px;}
+.w_300{width:300px;}
+.w_420{width:420px;}
+.label_radio{margin-right:10px}
+.pad_bot_0{padding-bottom:0px;}
+a.btn-mini{text-decoration:none}
+.btn-mini{display:inline-block;box-sizing:border-box;height:22px;line-height:22px;padding:0 5px;font-size:12px;border-radius:2px;}
+.btn-disabled{border:1px solid #ddd;color:#999}
+.select optgroup {background:#f0f0f0}
+
+.formdoby_normal{width:100%;text-align:left;}
+.formdoby_normal ul li{margin-bottom:5px;border-bottom: 1px solid #eee;padding-bottom:5px}
+.formdoby_normal ul li label{vertical-align:middle;display:inline-block;width:120px;}
+.formdoby_normal ul li .label_radio{width:auto;margin-right:10px}
+.formdoby_normal ul li .input{width:230px;height:28px;line-height:28px;padding:0px 3px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}
+.formdoby_normal ul li .span_textarea{width:35%;display:inline-block;padding:0px 3px;text-align:left;}
+.formdoby_normal ul li select{height:28px;line-height:28px;padding:0px 3px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}
+.formdoby_normal ul li .input:focus{border-color:#75a1f0;box-shadow: 0 0 12px #75a1f0;outline:medium none;transition:all 0.218s ease 0s;}
+.formdoby_normal ul li:last-child{border-bottom:none}
+
+.explain{background:#fffced;border:1px solid #ffbe7a;padding:8px 10px 0px;}
+.explain p{margin-bottom:8px;}
+
+.search{width:100px;background-color:#fff;transition:width 400ms ease 0s;}
+.search:focus{width:150px;}
+
+.listorder{width:40px;height:20px;line-height:20px;padding:0px 2px;text-align:center}
+.orderbutton{border:0px;outline:none;height:28px;line-height:28px;width:60px;cursor:pointer;transition:background 0.3s}
+.fieldset_list legend{font-size:14px;color:#666;background-color:#f9f9f9;border:1px solid #d8d8d8;padding:0 15px;height:25px;line-height:25px;width:56px;font-weight:bold;margin-bottom:0px;}
+.fieldset_tip{text-align:center;font-size:13px;margin-top:5px;margin-bottom:10px}
+.file_ul li{margin-bottom:5px;margin-left:10px}
+.file_ul li input{margin-right:10px}
+.file_ul li a{color:#06c}
+
+#page{margin-top:10px;font-size:14px;height:30px;line-height:30px;}
+#page .page_left{width:33%;}
+#page .page_right{width:65%;float:right;text-align:right;}
+#page .page_right a{border:1px solid #ccc;background:#fff;color:#666;padding:3px 10px;margin-left:5px;transition:all 0.2s}
+#page .page_right a:hover,#page .page_right  .curpage{background:#5a98de;color:#fff;text-decoration:none}
+#page .page_right .nopage{cursor:not-allowed;}
+#page .page_right .nopage:hover{background:#fff;color:#666;}
+
+.yzmcms_small{margin-left:10px}
+.thumb{height:120px;width:180px;float:right;position:relative;right:0px;top:-80px;}
+.option_label{margin-right:10px}
+
+.formdoby_info  fieldset{border:1px solid #d8d8d8;padding:10px;margin-bottom:15px;}
+.formdoby_info  fieldset legend{background-color: #f9f9f9;border: 1px solid #d8d8d8;font-weight:bold;font-size:14px;padding: 3px 8px;color:#444;width:auto;line-height:25px;margin-bottom:0px}
+.formdoby_info  textarea{border: 1px solid #d0d0d0;padding: 2px 0 2px 5px;line-height:18px; font-size: 12px;width:100%;}
+.formdoby_info  .tip{margin-left:5px;color:#888}
+.yzmcms_table{border-top:none;border-bottom:none;}
+.sub_menu{margin-bottom:20px;}
+.sub_menu a{background-color: #fff; border: 1px solid #ddd;border-radius: 2px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);color: #464646;display:inline-block;margin-right:8px;padding:3px 10px}
+.sub_menu a:hover,.sub_menu .on{background-color: #3498db;border-color: #3498db;border-radius: 2px;color: #ffffff;text-decoration:none}
+
+#yzmcms_notice{width:300px;line-height:50px;color:#468847;background-color:#dff0d8;border:1px solid #d6e9c6;font-size:14px;text-align:center;position:fixed;top:50%;left:50%;margin-top:-30px;margin-left:-150px;overflow:hidden;display:none}
+#yzmcms_notice a{color:#000;font-size:12px}

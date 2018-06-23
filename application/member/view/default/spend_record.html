@@ -1,0 +1,35 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <div class="main_right">
+	<div class="tit"><h3>消费记录</h3></div>
+	<div class="main_cont">
+		<table class="tablelist">
+			<thead>
+			<tr>
+			<th>订单编号</th>
+			<th>消费类型</th>
+			<th>消费说明</th>
+			<th>金额</th>
+			<th>IP地址</th>
+			<th>订单时间</th>
+			</tr>
+			</thead>
+			<tbody>
+			{loop $data $val}			
+			<tr>
+			<td>{$val['trade_sn']}</td>
+			<td>{$val['msg']}</td>
+			<td>{$val['remarks']}</td>
+			<td>{$val['money']}{if $val['type']==1}积分{else}元{/if}</td>
+			<td>{$val['ip']}</td>
+			<td>{date('Y-m-d H:i:s',$val['creat_time'])}</td>
+			</tr> 
+			{/loop}				
+			</tbody>
+		</table>
+		<div id="page">{$pages}</div>
+	</div>
+  </div>		  
+</div> 
+{m:include "member","footer"} 

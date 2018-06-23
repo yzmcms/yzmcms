@@ -1,0 +1,53 @@
+<?php include $this->admin_tpl('meta');?>
+<title>数据备份 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 数据管理 <span class="c-gray en">&gt;</span> 数据备份 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<form method="post" name="myform" id="myform" action="<?php echo U('export_list');?>">
+	<div class="cl pd-5 bg-1 bk-gray"> 
+	<span class="l">
+	<input class="btn btn-primary radius" name="dosubmit" value="立即备份" type="submit">
+	<input class="btn btn-success radius" onclick="document.myform.action='<?php echo U('public_optimize');?>'" name="dosubmit" value="优化表" type="submit">
+	<input class="btn btn-warning radius" onclick="document.myform.action='<?php echo U('public_repair');?>'" name="dosubmit" value="修复表" type="submit">
+	</span>
+	</div>
+	<table class="table table-border table-bordered table-bg table-hover">
+		<thead>
+			<tr class="text-c">
+				<th><input type="checkbox" checked></th>
+				<th>表名</th>
+				<th>类型</th>
+				<th>编码</th>
+				<th>数据量</th>
+				<th>数据大小</th>
+				<th>创建时间</th>
+				<th>碎片</th>
+				<th>操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php 
+			   foreach($data as $val){
+			 ?>
+			<tr class="text-c">
+				<td><input type="checkbox" value="<?php echo $val['Name']?>" name="tables[]" checked></td>
+				<td><?php echo $val['Name'];?></td>
+				<td><?php echo $val['Engine'];?></td>
+				<td><?php echo $val['Collation'];?></td>
+				<td><?php echo $val['Rows'];?></td>
+				<td><?php echo sizecount($val['Data_length']);?></td>
+				<td><?php echo $val['Create_time'];?></td>
+				<td><?php echo $val['Data_free'];?></td>
+				<td class="td-manage"><a title="优化表" href="<?php echo U('public_optimize',array('tables'=>$val['Name']));?>" class="btn-mini btn-secondary ml-5" style="text-decoration:none">优化</a> <a title="修复表" href="<?php echo U('public_repair',array('tables'=>$val['Name']));?>" class="btn-mini btn-warning ml-5" style="text-decoration:none">修复</a> <a title="表结构" href="javascript:;" onclick="yzm_open('表 <?php echo $val['Name'];?> 结构','<?php echo U('public_datatable_structure',array('table'=>$val['Name']));?>', 700, 500)" class="btn-mini btn-success ml-5" style="text-decoration:none">结构</a></td>
+			</tr>
+			<?php 
+			   }		 
+			?>	
+		</tbody>
+	</table>
+	</form>
+</div>
+<?php include $this->admin_tpl('footer');?>
+</body>
+</html>
