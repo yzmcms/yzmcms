@@ -114,6 +114,8 @@ class admin_manage extends common {
 		$adminid = $_SESSION['adminid'];
 		if(isset($_POST['dosubmit'])) {
 			if(D('admin')->update(array('realname' => $_POST['realname'], 'nickname' => $_POST['nickname'], 'email' => $_POST['email']), array('adminid' => $adminid), true)){
+				$res = D('admin')->where(array('adminid' => $adminid))->find();
+				$_SESSION['admininfo'] = $res;
 				showmsg(L('operation_success'));
 			}else{
 				showmsg(L('data_not_modified'));

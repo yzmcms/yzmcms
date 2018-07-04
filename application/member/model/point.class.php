@@ -13,7 +13,7 @@ class point {
 		0 => '每日登陆',
 		1 => '评论奖励',
 		2 => '投稿奖励',
-		3 => '线下支付',
+		3 => '会员充值',
 		4 => '后台充值',
 		5 => '积分兑换',
 		6 => '积分购买',
@@ -47,6 +47,7 @@ class point {
 		$data['creat_time'] = SYS_TIME;
 		$data['ip'] = getip();
 		$data['adminnote'] = $adminnote;
+		if($type == 1) $data['status'] = 1;
 		
 		//自增积分/金钱或经验
 		$update = $type == '1' ? '`point`=`point`+'.$value : '`amount`=`amount`+'.$value;

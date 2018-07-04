@@ -1,0 +1,25 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>订单改价 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<article class="page-container">
+<div class="formdoby_normal"> 
+	<form method="post" onsubmit="return dosub(this)">
+		<ul>
+			 <li><label>下单用户</label> <?php echo $data['username'];?></li>
+			 <li><label>下单时间</label> <?php echo date('Y-m-d H:i:s', $data['addtime']);?></li>
+			 <li><label>下单IP</label> <?php echo $data['ip'];?></li>
+			 <li><label>订单金额</label> <?php echo $data['money'];?> 元 (<?php echo $this->paytype[$data['paytype']]?>)</li>
+			 <li><label>第三方交易单号</label> <?php echo $data['transaction'];?></li>
+			 <li><label>订单详情</label> <?php echo $data['desc'];?></li>
+			 <!-- <li><label>订单状态</label> <?php echo $this->order_status[$data['status']];?></li> -->
+			 <li><input type="hidden" name="dosubmit" value="1"><input type="hidden" name="id" value="<?php echo $data['id'];?>">
+			  <input class="btn w_120 btn-default radius" type="button" value="关闭" onclick="yzmcms_close()"></li>
+		</ul>
+	</form>
+</div>
+</article>
+<?php include $this->admin_tpl('footer', 'admin');?>
+
+</body>
+</html>

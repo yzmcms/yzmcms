@@ -97,7 +97,7 @@ class admin_content extends common {
 				//投稿奖励积分和经验
 				if($publish_point > 0){
 					$member->update('`point`=`point`+'.$publish_point.',`experience`=`experience`+'.$publish_point, array('userid' => $data['userid']));  
-					$pay->insert(array('trade_sn'=>create_tradenum(), 'userid'=>$data['userid'], 'username'=>$data['username'], 'money'=>$publish_point, 'creat_time'=>SYS_TIME, 'msg'=>'投稿奖励','remarks'=>$catid.'_'.$id, 'type'=>'1', 'ip'=>$ip));		
+					$pay->insert(array('trade_sn'=>create_tradenum(), 'userid'=>$data['userid'], 'username'=>$data['username'], 'money'=>$publish_point, 'creat_time'=>SYS_TIME, 'msg'=>'投稿奖励','remarks'=>$catid.'_'.$id, 'type'=>'1', 'status'=>'1', 'ip'=>$ip));		
 				}
 			}
 			showmsg(L('operation_success'));			

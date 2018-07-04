@@ -11,7 +11,7 @@ class menu extends common {
 		$tree = yzm_base::load_sys_class('tree');
 		$tree->icon = array('&nbsp;&nbsp;&nbsp;│ ','&nbsp;&nbsp;&nbsp;├─ ','&nbsp;&nbsp;&nbsp;└─ ');
 		$tree->nbsp = '&nbsp;&nbsp;&nbsp;';
-		$data = D('menu')->order('listorder ASC,id DESC')->select();
+		$data = D('menu')->order('listorder ASC')->select();
 
 		$array = array();
 		foreach($data as $v) {

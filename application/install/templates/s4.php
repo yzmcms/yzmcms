@@ -43,14 +43,15 @@ var n=0;
                     $('#dosubmit').removeAttr("disabled");
                     $('#dosubmit').removeClass("nonext");
                     setTimeout('gonext()',2000);
-                }
-                if(msg.n){
-                    $('#loginner').append(msg.msg);
-                    reloads(msg.n);
                 }else{
-                    //alert('指定的数据库不存在，系统也无法创建，请先通过其他方式建立好数据库！');
-                    alert(msg.msg);
-                }
+					if(msg.n){
+						$('#loginner').append(msg.msg);
+						reloads(msg.n);
+					}else{
+						//alert('指定的数据库不存在，系统也无法创建，请先通过其他方式建立好数据库！');
+						alert(msg.msg);
+					}					
+				}
             }
         });
     }

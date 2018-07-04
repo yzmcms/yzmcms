@@ -14,15 +14,17 @@
   <dd><a href="{U('index/email')}"{if ROUTE_A=='email'} class="left_cur" {/if}>邮箱/安全问题</a></dd>
  </dl>
  <dl>
+  <dt> - 财务中心</dt>
+  <dd><a href="{U('member_pay/pay')}"{if ROUTE_C=='member_pay' && ROUTE_A=='pay'} class="left_cur" {/if}>积分充值</a></dd>
+  <dd><a href="{U('member_pay/order_list')}"{if ROUTE_C=='member_pay' && ROUTE_A=='order_list'} class="left_cur" {/if}>订单管理</a></dd>
+  <dd><a href="{U('member_pay/init')}"{if ROUTE_C=='member_pay' && ROUTE_A=='init'} class="left_cur" {/if}>入账记录</a></dd>
+  <dd><a href="{U('member_pay/spend_record')}"{if ROUTE_A=='spend_record'} class="left_cur" {/if}>消费记录</a></dd>
+ </dl>
+ <dl>
   <dt> - 我的关注</dt>
   <dd><a href="{U('index/follow')}" {if ROUTE_A=='follow'} class="left_cur" {/if}>我的关注</a></dd>
   <dd><a href="{U('index/follow_dynamic')}" {if ROUTE_A=='follow_dynamic'} class="left_cur" {/if}>TA的动态</a></dd>
  </dl> 
- <dl>
-  <dt> - 财务中心</dt>
-  <dd><a href="{U('member_pay/init')}"{if ROUTE_C=='member_pay' && ROUTE_A=='init'} class="left_cur" {/if}>入账记录</a></dd>
-  <dd><a href="{U('member_pay/spend_record')}"{if ROUTE_A=='spend_record'} class="left_cur" {/if}>消费记录</a></dd>
- </dl>
  <dl>
   <dt> - 消息中心</dt>
   <dd><a href="{U('messages/new_messages')}"{if ROUTE_A=='new_messages'} class="left_cur" {/if}>发信息</a></dd>  

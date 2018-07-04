@@ -38,28 +38,34 @@
 					</div>
 				</div>
 				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">1元人民币购买积分数量：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="rmb_point_rate" value="<?php echo $data["rmb_point_rate"];?>" class="input-text w_200">
+					</div>
+				</div>
+				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">新会员默认积分：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" name="member_point" value="<?php echo $data["member_point"];?>" class="input-text" style="width:30%">
+						<input type="text" name="member_point" value="<?php echo $data["member_point"];?>" class="input-text w_200">
 						<span style="color:red"> [积分=经验，区别在于积分可以通过消费减少，经验只增不减，下同]</span>
 					</div>
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">每日登陆奖励积分：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text"  name="login_point" value="<?php echo $data["login_point"];?>" class="input-text" style="width:30%">
+						<input type="text"  name="login_point" value="<?php echo $data["login_point"];?>" class="input-text w_200">
 					</div>
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">发布评论奖励积分：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text"  name="comment_point" value="<?php echo $data["comment_point"];?>" class="input-text" style="width:30%">
+						<input type="text"  name="comment_point" value="<?php echo $data["comment_point"];?>" class="input-text w_200">
 					</div>
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">投稿奖励积分：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text"  name="publish_point" value="<?php echo $data["publish_point"];?>" class="input-text" style="width:30%">
+						<input type="text"  name="publish_point" value="<?php echo $data["publish_point"];?>" class="input-text w_200">
 					</div>
 				</div>
 			</div>
@@ -98,19 +104,28 @@
 
 <script type="text/javascript">
 function check_all(){
-	if($("input[name='member_point']").val()=='' || isNaN($("input[name='member_point']").val())){
+	val = $("input[name='rmb_point_rate']").val();
+	if(val=='' || !(/(^[1-9]\d*$)/.test(val))){
+		layer.msg('人民币购买积分数量只能为正整数！');
+		return false;
+	}
+	val = $("input[name='member_point']").val();
+	if(val=='' || isNaN(val)){
 		layer.msg('新会员默认积分只能为数字！');
 		return false;
 	}
-	if($("input[name='login_point']").val()=='' || isNaN($("input[name='login_point']").val())){
+	val = $("input[name='login_point']").val();
+	if(val=='' || isNaN(val)){
 		layer.msg('每日登陆奖励积分只能为数字！');
 		return false;
 	}
-	if($("input[name='comment_point']").val()=='' || isNaN($("input[name='comment_point']").val())){
+	val = $("input[name='comment_point']").val();
+	if(val=='' || isNaN(val)){
 		layer.msg('发布评论奖励积分只能为数字！');
 		return false;
 	}
-	if($("input[name='login_point']").val()=='' || isNaN($("input[name='login_point']").val())){
+	val = $("input[name='publish_point']").val();
+	if(val=='' || isNaN(val)){
 		layer.msg('投稿奖励积分只能为数字！');
 		return false;
 	}

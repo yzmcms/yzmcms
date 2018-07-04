@@ -30,7 +30,7 @@ class other{
 		session_start();
 		$appid = get_config('qq_app_id');
 		$appkey = get_config('qq_app_key');
-		$callback = SERVER_PORT.HTTP_HOST.U('member/other/qq_login'); //回调地址 默认此方法，不能更改
+		$callback = U('member/other/qq_login'); //回调地址 默认此方法，不能更改
 		
 		yzm_base::load_sys_class('qqapi', '', 0);
 		if($appid=='' || $appkey=='') showmsg('QQ配置项为空，请联系管理员！', 'stop');		

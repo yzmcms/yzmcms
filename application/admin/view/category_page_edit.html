@@ -128,7 +128,7 @@ function yzmcms_pinyin(){
 }
 
 function dosub(obj){
-	var reg = /^[A-Za-z0-9]+$/
+	var reg = /^[a-zA-Z0-9-]+$/
 	if($("input[name='catname']").val()==''){
 		layer.msg('栏目名称不能为空！');
 		return false;

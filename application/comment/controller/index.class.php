@@ -95,7 +95,7 @@ class index{
 		//发布评论奖励积分 [奖励条件为每日获取积分次数不超过5次]
 		if($comment_point > 0 && $total < 5){
 			D('member')->update('`point`=`point`+'.$comment_point.',`experience`=`experience`+'.$comment_point, array('userid' => $userid));  
-			$pay->insert(array('trade_sn'=>create_tradenum(), 'userid'=>$userid, 'username'=>$username, 'money'=>$comment_point, 'creat_time'=>SYS_TIME, 'msg'=>'发布评论','remarks'=>'自动获取', 'type'=>'1', 'ip'=>$ip));
+			$pay->insert(array('trade_sn'=>create_tradenum(), 'userid'=>$userid, 'username'=>$username, 'money'=>$comment_point, 'creat_time'=>SYS_TIME, 'msg'=>'发布评论','remarks'=>'自动获取', 'type'=>'1', 'status'=>'1', 'ip'=>$ip));
 		}
 	}
 

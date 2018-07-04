@@ -1,9 +1,9 @@
 <?php
 /**
- * 会员中心积分操作类
+ * 会员中心财务中心
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
- * @lastmodify       2017-01-17
+ * @lastmodify       2018-06-29
  */
  
 defined('IN_YZMPHP') or exit('Access Denied'); 
@@ -30,6 +30,81 @@ class member_pay extends common{
 		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
 		include template('member', 'pay');
 	}
+	
+	
+	
+	/**
+	 * 积分充值
+	 */	
+	public function pay(){
+		$memberinfo = $this->memberinfo;
+		extract($memberinfo);
+		$data = D('pay_mode')->field('`id`,`name`,`logo`,`desc`,`version`')->where(array('enabled'=>0))->order('id ASC')->select();
+		include template('member', 'point_pay');
+	}	
+	
+	
+	/**
+	 * 生成订单
+	 */	
+	public function create_order(){
+		if(isset($_POST['dosubmit'])){
+			if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
+				$_SESSION['code'] = '';
+				showmsg(L('code_error'));
+			}
+			$_SESSION['code'] = '';
+				
+			$paytype = intval($_POST['paytype']);
+			if(!$paytype) showmsg('请选择支付方式！', 'stop');
+			$money = floatval($_POST['money']);
+			if($money < 0.1) showmsg('最小支付0.1元人民币！', 'stop');
+			$quantity = get_config('rmb_point_rate')*$money;
+			$desc = '积分充值'.$quantity;
+			
+			$data = array();
+			$data['order_sn'] = create_tradenum();
+			$data['userid'] = $this->memberinfo['userid'];
+			$data['username'] = $this->memberinfo['username'];
+			$data['addtime'] = SYS_TIME;
+			$data['paytype'] = $paytype;
+			$data['money'] = $money;
+			$data['quantity'] = $quantity;
+			$data['ip'] = getip();
+			$data['desc'] = $desc;
+			$order_id = D('order')->insert($data);
+			$payment = yzm_base::load_model('payment', 'pay');
+			$payment->pay($paytype, array('order_id'=>$order_id, 'order_sn'=>$data['order_sn'], 'money'=>$money, 'desc'=>$desc));
+		}
+		
+	}
+
+
+	/**
+	 * 订单记录
+	 */	
+	public function order_list(){
+		$memberinfo = $this->memberinfo;
+		extract($memberinfo);
+		$order = D('order');
+		$total = $order->where(array('userid'=>$userid))->total();
+		$page = new page($total, 10);
+		$data = $order->where(array('userid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		include template('member', 'order_list');
+	}
+	
+	
+	/**
+	 * 订单付款
+	 */	
+	public function order_pay(){
+		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		$data = D('order')->where(array('id'=>$id))->find();
+		if(!$data || $data['userid']!=$this->memberinfo['userid']) showmsg(L('lose_parameters'), 'stop');
+		$payment = yzm_base::load_model('payment', 'pay');
+		$payment->pay($data['paytype'], array('order_id'=>$id, 'order_sn'=>$data['order_sn'], 'money'=>$data['money'], 'desc'=>$data['desc']));
+	}	
 	
 
 	

@@ -94,6 +94,12 @@ textarea{width:615px;height:80px;padding:2px 3px;border-radius:2px;border:1px so
 .explain{background:#fffced;border:1px solid #ffbe7a;padding:8px 10px 0px;margin-bottom:20px;}
 .explain p{margin-bottom:8px;}
 
+.point{font-size:20px;}
+.label_img{margin-right:10px}
+.label_img img{height:30px;margin-left:5px;vertical-align:middle;cursor:pointer}
+.pay_but{background:#e23435;color:#fff;padding:3px 6px}
+.pay_but:hover{opacity:0.8;color:#fff;text-decoration:none}
+
 .message{border:1px solid #eee;border-radius:3px;}
 .message_header{color:#333;background:#f5f5f5;padding:0 15px;border-bottom:1px solid #eee;font-size: 16px;height:35px;line-height:35px;font-weight:bold;}
 .message_footer{color:#333;background:#f5f5f5;padding:0 15px;border-top:1px solid #eee;font-size: 14px;height:35px;line-height:35px;}
