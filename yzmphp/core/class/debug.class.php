@@ -4,7 +4,7 @@
  *
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
- * @lastmodify       2016-08-19 
+ * @lastmodify       2018-07-04
  */
  
 class debug {
@@ -30,6 +30,7 @@ class debug {
 		self::$stoptime= microtime(true);  
 	}
 
+	
 	/**
 	 *返回同一脚本中两次获取时间的差值
 	 */
@@ -37,6 +38,7 @@ class debug {
 		return round((self::$stoptime - SYS_START_TIME) , 4);  //计算后以4舍5入保留4位返回
 	}
 
+	
 	/**
 	 * 错误 handler
 	 */
@@ -84,6 +86,22 @@ class debug {
             }
         }
 	}
+	
+	
+	/**
+	 * 捕获异常
+	 * @param	object	$exception
+	 */ 
+	static function exception($exception){
+		if(APP_DEBUG){
+			$mess = '<span style="color:red">';
+			$mess .= '<b>系统异常</b> [文件 '.$exception->getFile().' 中,第 '.$exception->getLine().' 行] ：';
+			$mess .= $exception->getMessage();
+			$mess .= '</span>'; 		
+			self::addmsg($mess);
+		}
+		showmsg($exception->getMessage(), 'stop');
+	}
 
 	
 	/**
@@ -104,6 +122,7 @@ class debug {
 				break;
 		}
 	}
+	
 	
 	/**
 	 * 输出调试消息

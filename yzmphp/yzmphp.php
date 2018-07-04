@@ -84,6 +84,7 @@ class yzm_base {
 	 * @param string $classname 类名
 	 * @param string $path 扩展地址
 	 * @param intger $initialize 是否初始化
+	 * @return object or true
 	 */
 	public static function load_sys_class($classname, $path = '', $initialize = 1) {
 		return self::_load_class($classname, $path, $initialize);
@@ -156,6 +157,7 @@ class yzm_base {
 	 * @param string $c 控制器名
 	 * @param string $m 模块
 	 * @param intger $initialize 是否初始化
+	 * @return object or true
 	 */
 	public static function load_controller($c, $m = '', $initialize = 1) {
 		$m = empty($m) ? ROUTE_M : $m;
@@ -168,11 +170,13 @@ class yzm_base {
 	 * 加载模型
 	 * @param string $classname 模型名
 	 * @param string $m 模块
+	 * @param intger $initialize 是否初始化
+	 * @return object or true
 	 */
-	public static function load_model($classname, $m = '') {
+	public static function load_model($classname, $m = '', $initialize = 1) {
 		$m = empty($m) ? ROUTE_M : $m;
 		if (empty($m)) return false;
-		return self::_load_class($classname, APP_PATH.$m.DIRECTORY_SEPARATOR.'model');
+		return self::_load_class($classname, APP_PATH.$m.DIRECTORY_SEPARATOR.'model', $initialize);
 	}
 
 }

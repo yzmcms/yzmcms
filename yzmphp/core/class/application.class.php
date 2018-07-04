@@ -16,6 +16,7 @@ class application {
 		yzm_base::load_sys_class('debug', '', 0);
 		register_shutdown_function(array('debug','fatalerror'));
 		set_error_handler(array('debug','catcher'));
+		set_exception_handler(array('debug', 'exception'));
 		$param = yzm_base::load_sys_class('param');
 		define('ROUTE_M', $param->route_m());
 		define('ROUTE_C', $param->route_c());
