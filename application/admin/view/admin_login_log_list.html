@@ -8,14 +8,13 @@
   <table class="table table-border table-bordered table-bg table-hover table-sort">
     <thead>
       <tr class="text-c">
-		<th width="5%">ID</th>
-		<th width="20%">用户名</th>
-		<th width="8%">登录结果</th>
-		<th width="10%">类型</th>
-		<th width="20%">登录密码</th>
-		<th width="15%">登录时间</th>
-		<th width="10%">IP</th>
-		<th width="12%">参考地址</th>
+		<th>ID</th>
+		<th>用户名</th>
+		<th>登录结果</th>
+		<th>类型</th>
+		<th>登录密码</th>
+		<th>登录时间</th>
+		<th>登录IP</th>
       </tr>
     </thead>
     <tbody>
@@ -30,7 +29,6 @@
 			<td><?php echo htmlspecialchars($val['password']); ?></td>
 			<td><?php echo date('Y-m-d H:i:s', $val['logintime']); ?></td>
 			<td><?php echo $val['loginip']; ?></td>
-			<td><?php echo $val['address']; ?></td>
 		  </tr>		
 		<?php 
 		}
