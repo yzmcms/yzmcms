@@ -38,17 +38,27 @@ class pagepay{
      * 校检参数
      */
     private static function checkParams($params){
-        if (empty(trim($params['out_trade_no']))) {
+		
+		if(version_compare(phpversion(), '5.5.0', '<')){
+			showmsg('支付宝支持接口要求PHP版本必须>=5.5', 'stop');
+		}
+		
+		if(!function_exists('openssl_sign')){
+			showmsg('请开启openssl扩展', 'stop');
+		}
+		
+        if (empty($params['out_trade_no'])) {
             showmsg('商户订单号(out_trade_no)必填', 'stop');
         }
 
-        if (empty(trim($params['subject']))) {
+        if (empty($params['subject'])) {
             showmsg('商品标题(subject)必填', 'stop');
         }
 
-        if (floatval(trim($params['total_amount'])) <= 0) {
+        if (floatval($params['total_amount']) <= 0) {
             showmsg('退款金额(total_amount)为大于0的数', 'stop');
         }
+
     }
 
 }
