@@ -34,20 +34,31 @@ class system_manage extends common {
 			if(isset($_POST['mail_inbox']) && $_POST['mail_inbox']){
 				if(!is_email($_POST['mail_inbox'])) showmsg(L('mail_format_error'));
 			}
+			if(isset($_POST['upload_types'])){
+				$arr = explode('|', $_POST['upload_types']);
+				$allow = array('gif', 'jpg', 'png', 'jpeg','zip', 'rar', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf','mp4', 'avi', 'wmv', 'rmvb', 'flv','mp3', 'wma', 'wav', 'amr', 'ogg');
+				foreach($arr as $key => $val){
+					if(!in_array($val, $allow)) unset($arr[$key]);
+				}
+				$_POST['upload_types'] = join('|', $arr);
+				if(empty($_POST['upload_types'])) showmsg('允许上传附件类型不能为空！');
+			}
 			$arr = array();
 			$config = D('config');
 			foreach($_POST as $key => $value){
 				if(in_array($key, array('site_theme','watermark_enable','watermark_name','watermark_position'))) {
 					$value = safe_replace(trim($value));
 					$arr[$key] = $value;
-				}elseif($key!='site_code'){
-					$value = htmlspecialchars($value);
+				}else{
+					if($key!='site_code'){
+						$value = htmlspecialchars($value);
+					}
 				}
 				$config->update(array('value'=>$value), array('name'=>$key));
 			}
 			set_config($arr);
 			delcache('configs');
-			showmsg(L('operation_success'));
+			showmsg(L('operation_success'), '', 1);
 		}
 	}		
 

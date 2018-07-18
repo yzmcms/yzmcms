@@ -82,12 +82,19 @@
 					</div>
 				</div>					
 				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>允许上传附件类型</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="upload_types" value="<?php echo $data["upload_types"];?>"  class="input-text w_420">
+						<span style="color:#888">[多个类型直接用“|”分开]</span>
+					</div>
+				</div>		
+				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>允许上传附件大小（KB）</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" name="upload_maxsize" value="<?php echo $data["upload_maxsize"];?>"  class="input-text w_120">
 						<span style="color:#888">[最大限制不能超过服务器“upload_max_filesize”配置]</span>
 					</div>
-				</div>	
+				</div>				
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择上传附件插件类型</label>
 					<div class="formControls col-xs-8 col-sm-9">
@@ -250,6 +257,10 @@ function check_all(){
 	}
 	if($("input[name='upload_maxsize']").val()=='' || isNaN($("input[name='upload_maxsize']").val())){
 		layer.alert('允许上传附件大小只能为数字！');
+		return false;
+	}
+	if($("input[name='upload_types']").val()==''){
+		layer.alert('允许上传附件类型不能为空！');
 		return false;
 	}
 	if($("input[name='watermark_name']").val()==''){

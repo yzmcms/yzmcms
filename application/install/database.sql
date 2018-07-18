@@ -267,7 +267,7 @@ CREATE TABLE `yzm_config` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `type` (`type`)
-) ENGINE=MyISAM AUTO_INCREMENT=47 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yzm_config
@@ -284,40 +284,41 @@ INSERT INTO `yzm_config` VALUES ('9', 'site_logo', '0', '站点logo', '', '', ''
 INSERT INTO `yzm_config` VALUES ('10', 'url_rule', '0', '前端URL规则', '1', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('11', 'is_words', '0', '是否开启前端留言功能', '0', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('12', 'upload_maxsize', '0', '允许上传附件大小', '2048', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('13', 'ishtml5', '0', '选择上传附件插件类型', '1', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('14', 'watermark_enable', '0', '是否开启图片水印', '1', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('15', 'watermark_name', '0', '水印图片名称', 'mark.png', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('16', 'watermark_position', '0', '水印的位置', '9', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('17', 'mail_server', '1', 'SMTP服务器', 'smtp.qq.com', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('18', 'mail_port', '1', 'SMTP服务器端口', '25', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('19', 'mail_from', '1', 'SMTP服务器的用户邮箱', '', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('20', 'mail_auth', '1', 'AUTH LOGIN验证', '1', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('21', 'mail_user', '1', 'SMTP服务器的用户帐号', '', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('22', 'mail_pass', '1', 'SMTP服务器的用户密码', '', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('23', 'mail_inbox', '1', '收件邮箱地址', '', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('24', 'admin_log', '2', '启用后台管理操作日志', '1', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('25', 'admin_prohibit_ip', '2', '禁止登录后台的IP', '', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('26', 'prohibit_words', '2', '屏蔽词', '她妈|它妈|他妈|你妈|去死|贱人', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('27', 'comment_check', '2', '是否开启评论审核', '0', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('28', 'comment_tourist', '2', '是否允许游客评论', '0', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('29', 'is_link', '2', '允许用户申请友情链接', '0', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('30', 'member_register', '3', '是否开启会员注册', '0', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('31', 'member_email', '3', '新会员注册是否需要邮件验证', '0', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('32', 'member_check', '3', '新会员注册是否需要管理员审核', '0', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('33', 'member_point', '3', '新会员默认积分', '0', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('34', 'member_yzm', '3', '是否开启会员登录验证码', '1', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('35', 'rmb_point_rate', '3', '1元人民币购买积分数量', '10', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('36', 'login_point', '3', '每日登陆奖励积分', '1', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('37', 'comment_point', '3', '发布评论奖励积分', '1', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('38', 'publish_point', '3', '投稿奖励积分', '3', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('39', 'qq_app_id', '3', 'QQ App ID', '', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('40', 'qq_app_key', '3', 'QQ App key', '', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('41', 'wx_appid', '4', '微信开发者ID', '', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('42', 'wx_secret', '4', '微信开发者密码', '', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('43', 'wx_token', '4', '微信Token签名', '', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('44', 'wx_encodingaeskey', '4', '微信EncodingAESKey', '', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('45', 'wx_relation_model', '4', '微信关联模型', 'article', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('46', 'advertise', '99', '首页广告位', '免费又好用的CMS建站系统，就选YzmCMS!', 'textarea', '', '1');
+INSERT INTO `yzm_config` VALUES ('13', 'upload_types', '0', '允许上传附件类型', 'zip|rar|mp3|mp4', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('14', 'ishtml5', '0', '选择上传附件插件类型', '1', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('15', 'watermark_enable', '0', '是否开启图片水印', '1', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('16', 'watermark_name', '0', '水印图片名称', 'mark.png', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('17', 'watermark_position', '0', '水印的位置', '9', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('18', 'mail_server', '1', 'SMTP服务器', 'smtp.qq.com', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('19', 'mail_port', '1', 'SMTP服务器端口', '25', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('20', 'mail_from', '1', 'SMTP服务器的用户邮箱', '', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('21', 'mail_auth', '1', 'AUTH LOGIN验证', '1', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('22', 'mail_user', '1', 'SMTP服务器的用户帐号', '', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('23', 'mail_pass', '1', 'SMTP服务器的用户密码', '', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('24', 'mail_inbox', '1', '收件邮箱地址', '', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('25', 'admin_log', '2', '启用后台管理操作日志', '1', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('26', 'admin_prohibit_ip', '2', '禁止登录后台的IP', '', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('27', 'prohibit_words', '2', '屏蔽词', '她妈|它妈|他妈|你妈|去死|贱人', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('28', 'comment_check', '2', '是否开启评论审核', '0', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('29', 'comment_tourist', '2', '是否允许游客评论', '0', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('30', 'is_link', '2', '允许用户申请友情链接', '0', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('31', 'member_register', '3', '是否开启会员注册', '0', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('32', 'member_email', '3', '新会员注册是否需要邮件验证', '0', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('33', 'member_check', '3', '新会员注册是否需要管理员审核', '0', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('34', 'member_point', '3', '新会员默认积分', '0', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('35', 'member_yzm', '3', '是否开启会员登录验证码', '1', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('36', 'rmb_point_rate', '3', '1元人民币购买积分数量', '10', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('37', 'login_point', '3', '每日登陆奖励积分', '1', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('38', 'comment_point', '3', '发布评论奖励积分', '1', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('39', 'publish_point', '3', '投稿奖励积分', '3', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('40', 'qq_app_id', '3', 'QQ App ID', '', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('41', 'qq_app_key', '3', 'QQ App key', '', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('42', 'wx_appid', '4', '微信开发者ID', '', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('43', 'wx_secret', '4', '微信开发者密码', '', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('44', 'wx_token', '4', '微信Token签名', '', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('45', 'wx_encodingaeskey', '4', '微信EncodingAESKey', '', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('46', 'wx_relation_model', '4', '微信关联模型', 'article', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('47', 'advertise', '99', '首页广告位', '免费又好用的CMS建站系统，就选YzmCMS!', 'textarea', '', '1');
 
 -- ----------------------------
 -- Table structure for yzm_collection_content

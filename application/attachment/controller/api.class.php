@@ -57,12 +57,8 @@ class api{
 		$option = array();
 		if($type == 1){
 			$option['allowtype'] = array('gif', 'jpg', 'png', 'jpeg');
-		}elseif($type == 2){		
-			$option['allowtype'] = array('zip', 'rar', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf');
-		}elseif($type == 3){
-			$option['allowtype'] = array('mp4', 'avi', 'wmv', 'rmvb', 'flv');
 		}else{
-			$option['allowtype'] = array('mp3', 'wma', 'wav', 'amr', 'ogg');
+			$option['allowtype'] = explode('|', get_config('upload_types'));
 		}
 		$upload = new upload($option);
 		if($upload->uploadfile($filename)){
@@ -97,21 +93,11 @@ class api{
 		$t = isset($_GET['t']) ? intval($_GET['t']) : 1; //上传类型，1为图片类型
 		$n = isset($_GET['n']) ? 20 : 1;  //上传数量
 		$s = round(get_config('upload_maxsize')/1024, 2).'MB';  //允许上传附件大小
-		switch ($t){
-			case 1:
-			  $type = '*.jpg; *.jpeg; *.png; *.gif;';
-			  break;  
-			case 2:
-			  $type = '*.zip; *.rar; *.doc; *.docx; *.xls; *.xlsx; *.ppt; *.pptx; *.pdf;';
-			  break;
-			case 3:
-			  $type = '*.mp4; *.avi; *.wmv; *.rmvb; *.flv;';
-			  break;
-			case 4:
-			 $type = '*.mp3; *.wma; *.wav; *.amr; *.ogg;';
-			 break;
-			default:
-			  $type = '*.jpg; *.jpeg; *.png; *.gif;';
+		
+		if($t == 1){
+			$type = '*.jpg; *.jpeg; *.png; *.gif;';
+		}else{
+			$type = '*.'.join(',*.', explode('|', get_config('upload_types')));
 		}
 		
 		//如果不是管理员，只列出自己上传的附件
