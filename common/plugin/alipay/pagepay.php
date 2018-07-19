@@ -56,7 +56,7 @@ class pagepay{
         }
 
         if (floatval($params['total_amount']) <= 0) {
-            showmsg('退款金额(total_amount)为大于0的数', 'stop');
+            showmsg('订单金额(total_amount)为大于0的数', 'stop');
         }
 
     }
