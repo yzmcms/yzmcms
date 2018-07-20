@@ -145,28 +145,33 @@
 		if(title != ''){
 			$("input[name='seo_title']").val(title+'_<?php echo get_config('site_name');?>');
 		}else{
-			layer.msg('标题不能为空！');
+			layer.msg('标题不能为空！', {icon:2,time: 2000});
 		}
 	}
 	
 	function myclose(){
-		var index = parent.layer.getFrameIndex(window.name);
-		parent.layer.close(index);
+		if(UE.getEditor('content').getContent()!=''){
+			layer.confirm('内容未保存，确定要关闭吗？',function(index){
+				yzmcms_close();
+			});
+		}else{
+			yzmcms_close();
+		}
 	}
 	
 	function checkall(){
 		if($("input[name='title']").val()==''||$("input[name='seo_title']").val()==''){
-			layer.msg('标题或SEO标题不能为空！');
+			layer.msg('标题或SEO标题不能为空！', {icon:2,time: 2000});
 			return false;
 		}
 		if($("select[name='catid']").val()=='0'){
-			layer.msg('请选择栏目！');
+			layer.msg('请选择栏目！', {icon:2,time: 2000});
 			return false;
 		}
 		var check = true;
 		$(".required").each(function(){
 			if($(this).val() == ''){
-			  layer.msg($(this).attr('errortips'));
+			  layer.msg($(this).attr('errortips'), {icon:2,time: 2000});
 			  $(this).focus();
 			  check = false;
 			  return false;
@@ -174,7 +179,7 @@
 		})
 		if(!check) return false;
 		if(UE.getEditor('content').getContent()==''){
-			layer.msg('内容不能为空！');
+			layer.msg('内容不能为空！', {icon:2,time: 2000});
 			return false;
 		}
 		return true;

@@ -52,7 +52,7 @@
   </div>
   <div class="cl pd-5 bg-1 bk-gray mt-20"> 
   <span class="l">
-  <a href="<?php echo U('add', array('modelid'=>$modelid));?>" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加内容</a>
+  <a href="javascript:;" onclick="yzm_open_full('添加内容','<?php echo U('add', array('modelid'=>$modelid));?>')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加内容</a>
   <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
   <a href="javascript:;" onclick="attribute_operation('移动分类', '<?php echo U('remove', array('modelid' => $modelid))?>')" class="btn btn-primary radius">移动分类</a> 
   <a href="javascript:;" onclick="attribute_operation('增加属性', '<?php echo U('attribute_operation', array('modelid' => $modelid, 'op' => 1))?>')" class="btn btn-primary radius">增加属性</a> 

@@ -80,11 +80,10 @@ class content extends common {
 
 		if(isset($_POST['dosubmit'])) {
 			$r = $this->content->content_add($_POST);
-			$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
 			if($r){
-				showmsg(L('operation_success'), U('search', array('modelid'=>$modelid)), 1);
+				echo '<script type="text/javascript">parent.location.reload();</script>';
 			}else{
-				showmsg(L('operation_failure'));
+				showmsg(L('data_not_modified'));
 			}
 		}else{
 			$catid = isset($_GET['catid']) ? intval($_GET['catid']) : intval(get_cookie('catid'));
