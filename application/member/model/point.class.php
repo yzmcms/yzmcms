@@ -58,6 +58,8 @@ class point {
 		if($mod_experience){
 			//增加经验数量
 			$update .= ',`experience`=`experience`+'.$value;
+			
+			if(!$experience) $experience = D('member')->field('experience')->where(array('userid' => $userid))->one();
 			//检查并更新会员组
 			$this->_check_update_group($value, $experience, $userid);
 		} 
