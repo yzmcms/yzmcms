@@ -36,7 +36,7 @@ class sql{
 		  `status` tinyint(1) NOT NULL DEFAULT '1',
 		  `system` tinyint(1) unsigned NOT NULL DEFAULT '0',
 		  `listorder` tinyint(3) unsigned NOT NULL DEFAULT '1',
-		  `groupids_view` varchar(50) NOT NULL DEFAULT '' COMMENT '阅读权限',
+		  `groupids_view` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '阅读权限',
 		  `readpoint` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '阅读收费',
 		  PRIMARY KEY (`id`),
 		  KEY `status` (`status`,`listorder`),
