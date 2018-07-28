@@ -485,7 +485,7 @@ CREATE TABLE `yzm_link` (
 -- Records of yzm_link
 -- ----------------------------
 INSERT INTO `yzm_link` VALUES ('1', '0', '0', 'YzmCMS官方网站', 'http://www.yzmcms.com/', '', '', '袁志蒙', '', '1', '1', '1483095485');
-INSERT INTO `yzm_link` VALUES ('2', '0', '0', 'YzmCMS官方博客', 'http://blog.yzmcms.com/', '', '', '袁志蒙', '', '1', '1', '1483095496');
+INSERT INTO `yzm_link` VALUES ('2', '0', '0', 'YzmCMS官方论坛', 'http://bbs.yzmcms.com/', '', '', '袁志蒙', '', '1', '1', '1483095496');
 
 -- ----------------------------
 -- Table structure for yzm_member

@@ -1,0 +1,19 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <div class="main_right">
+	<div class="tit"><h3>我的粉丝</h3></div>
+	<div class="main_cont">
+	  <div class="follow">
+	    <ul>
+		{loop $data $val}	
+		  <li><a href="{U('member/myhome/init', array('userid'=>$val['userid']))}" target="_blank"><img src="{get_memberavatar($val['userid'])}" title="{$val['username']}"></a><strong><a href="{U('member/myhome/init', array('userid'=>$val['userid']))}" target="_blank">{$val['username']}</a></strong></span></li>
+		{/loop}		
+		</ul>
+	  </div>
+	  <div class="clearfix"></div>
+		<div id="page">{$pages}</div>	  
+	</div>
+  </div>		  
+</div> 
+{m:include "member","footer"}

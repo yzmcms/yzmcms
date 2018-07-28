@@ -368,7 +368,7 @@ class index extends common{
 		}
 		yzm_base::load_sys_class('page','',0);
 		$total = $member_follow->where(array('userid'=>$userid))->total();
-		$page = new page($total, 10);
+		$page = new page($total, 9);
 		$data = $member_follow->where(array('userid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
 		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
 		include template('member', 'follow');
@@ -396,6 +396,24 @@ class index extends common{
 		}
 		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
 		include template('member', 'follow_dynamic');
+	}
+
+
+
+	/**
+	 * 我的粉丝
+	 */	
+	public function fans(){
+		$memberinfo = $this->memberinfo;
+		extract($memberinfo);
+		
+		$member_follow = D('member_follow');
+		yzm_base::load_sys_class('page','',0);
+		$total = $member_follow->where(array('followid'=>$userid))->total();
+		$page = new page($total, 9);
+		$data = $member_follow->alias('f')->field('m.userid,m.username')->join('yzmcms_member m ON f.userid=m.userid')->where(array('followid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		include template('member', 'fans');
 	}
 	
 }
