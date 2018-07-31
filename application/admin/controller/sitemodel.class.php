@@ -74,5 +74,115 @@ class sitemodel extends common {
 		}
 		
 	}	
+
+
+	/*
+	 * 模型导出
+	 */
+	public function export() {
+		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 0;
+		$data = D('model')->where(array('modelid' => $modelid))->find();
+		if(!$data) showmsg('参数错误！', 'stop');
+		$arr['model_data'] = $data;
+		$field_data = D('model_field')->where(array('modelid' => $modelid))->select();
+		$arr['model_field_data'] = $field_data;
+		$res = array2string($arr);
+		header('Content-Disposition: attachment; filename="yzm_'.$data['tablename'].'.model"');
+		echo $res;exit;
+	}
+
+
+	/*
+	 * 模型导入
+	 */
+	public function import() {
+		if(isset($_POST['dosubmit'])) {
+			$data_import = $_FILES['data_import']['tmp_name'];
+			if(empty($data_import)) return_json(array('status'=>0,'message'=>'请上传文件！'));
+			if(fileext($_FILES['data_import']['name']) != 'model') return_json(array('status'=>0,'message'=>'上传文件类型错误！'));
+			$data_import = @file_get_contents($data_import);
+			if(empty($data_import)) return_json(array('status'=>0,'message'=>'上传文件数据为空！'));
+			$model_import_data = string2array($data_import);
+			if(!is_array($model_import_data))  return_json(array('status'=>0,'message'=>'解析文件数据错误！'));
+			$model_data = $model_import_data['model_data'];
+
+			$modelid = D('model')->field('modelid')->where(array('tablename' => $model_data['tablename']))->one();
+			$model_arr = array();
+			$model_arr['name'] = htmlspecialchars($model_data['name']);
+			$model_arr['description'] = htmlspecialchars($model_data['description']);
+			$model_arr['setting'] = $model_data['setting'];
+			$model_arr['inputtime'] = intval($model_data['inputtime']);
+			$model_arr['disabled'] = intval($model_data['disabled']);
+			$model_arr['type'] = intval($model_data['type']);
+			$model_arr['sort'] = intval($model_data['sort']);
+			$model_arr['issystem'] = intval($model_data['issystem']);	
+
+			//更新模型
+			if($modelid){
+				D('model')->update($model_arr, array('modelid' => $modelid));
+			}else{
+				$model_arr['tablename'] = htmlspecialchars($model_data['tablename']);
+				sql::sql_create($model_data['tablename']);
+				$modelid = D('model')->insert($model_arr);
+			}
+			
+			//更新模型字段
+			$model_field = D('model_field');
+			$model_field_data = $model_import_data['model_field_data'];
+			foreach($model_field_data as $val){
+				$fieldid = $model_field->field('fieldid')->where(array('modelid' => $modelid, 'field' => $val['field']))->one();
+				$arr = array();
+				$arr['modelid'] = $modelid;
+				$arr['name'] = htmlspecialchars($val['name']);
+				$arr['tips'] = htmlspecialchars($val['tips']);
+				$arr['minlength'] = intval($val['minlength']);
+				$arr['maxlength'] = intval($val['maxlength']);
+				$arr['errortips'] = htmlspecialchars($val['errortips']);
+				$arr['fieldtype'] = htmlspecialchars($val['fieldtype']);
+				$arr['defaultvalue'] = htmlspecialchars($val['defaultvalue']);
+				$arr['setting'] = $val['setting'];
+				$arr['isrequired'] = intval($val['isrequired']);
+				$arr['issystem'] = intval($val['issystem']);
+				$arr['isunique'] = intval($val['isunique']);
+				$arr['isadd'] = intval($val['isadd']);
+				$arr['listorder'] = intval($val['listorder']);
+				$arr['disabled'] = intval($val['disabled']);
+				$arr['type'] = intval($val['type']);
+				$arr['status'] = intval($val['status']);
+				if($fieldid){
+					$model_field->update($arr, array('fieldid' => $fieldid));
+				}else{
+					$arr['field'] = htmlspecialchars($val['field']);
+					$model_field->insert($arr);
+					$this->_add_field($arr, $model_data['tablename']);
+				}
+			}			
+			
+			delcache('modelinfo');
+			delcache($modelid.'_model');
+			return_json(array('status'=>1,'message'=>'导入成功！'));
+		}else{
+			$title = '导入模型';
+			$url = U('import');
+			include $this->admin_tpl('data_import');	
+		}
+	}
+	
+
+	/*
+	 * 添加模型字段
+	 */	
+	private function _add_field($data, $table){
+		if($data['fieldtype'] == 'textarea' || $data['fieldtype'] == 'images'){
+		   sql::sql_add_field_mediumtext($table, $data['field']);  
+		}else if($data['fieldtype'] == 'editor' || $data['fieldtype'] == 'editor_mini'){
+		   sql::sql_add_field_text($table, $data['field']);  
+		}else if($data['fieldtype'] == 'number'){
+		   sql::sql_add_field_int($table, $data['field'], intval($data['defaultvalue'])); 
+		   $data['fieldtype'] = 'input';
+		}else{
+		   sql::sql_add_field($table, $data['field'], $data['defaultvalue'], $data['maxlength']);  
+		}		
+	}
 	
 }

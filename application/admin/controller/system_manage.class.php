@@ -170,6 +170,56 @@ class system_manage extends common {
 
 	
 	/*
+	 * 用户自定义配置导出
+	 */
+	public function user_config_export() {
+		$data = D('config')->where(array('type' => 99))->select();
+		$res = array2string($data);
+		header('Content-Disposition: attachment; filename="yzm_config.cfg"');
+		echo $res;exit;
+	}
+	
+	
+	/*
+	 * 用户自定义配置导入
+	 */
+	public function user_config_import() {
+		if(isset($_POST['dosubmit'])) {
+			$data_import = $_FILES['data_import']['tmp_name'];
+			if(empty($data_import)) return_json(array('status'=>0,'message'=>'请上传文件！'));
+			if(fileext($_FILES['data_import']['name']) != 'cfg') return_json(array('status'=>0,'message'=>'上传文件类型错误！'));
+			$data_import = @file_get_contents($data_import);
+			if(empty($data_import)) return_json(array('status'=>0,'message'=>'上传文件数据为空！'));
+			$config_import_data = string2array($data_import);	
+			if(!is_array($config_import_data))  return_json(array('status'=>0,'message'=>'解析文件数据错误！'));
+			$config = D('config');
+			foreach($config_import_data as $val){
+				$name = $config->field('name')->where(array('name' => $val['name']))->one();
+				$arr = array();
+				$arr['type'] = intval($val['type']);
+				$arr['title'] = htmlspecialchars($val['title']);
+				$arr['value'] = htmlspecialchars($val['value']);
+				$arr['fieldtype'] = htmlspecialchars($val['fieldtype']);
+				$arr['setting'] = $val['setting'];
+				$arr['status'] = intval($val['status']);
+				if($name){
+					$config->update($arr, array('name' => $name));
+				}else{
+					$arr['name'] = htmlspecialchars($val['name']);
+					$config->insert($arr);
+				}
+			}
+			delcache('configs');
+			return_json(array('status'=>1,'message'=>'导入成功！'));
+		}else{
+			$title = '导入配置';
+			$url = U('user_config_import');
+			include $this->admin_tpl('data_import');	
+		}
+	}
+	
+	
+	/*
 	 * 根据字段类型获取html
 	 */
 	public function public_gethtml($ftype='', $val='', $setting='') {

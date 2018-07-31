@@ -11,6 +11,8 @@
 	  <span class="l">
 	  <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  
 	  <a class="btn btn-primary radius" onclick="yzm_open('添加配置','<?php echo U('user_config_add');?>','700','500')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加配置</a>
+	  <a href="<?php echo U('user_config_export');?>" class="btn btn-success radius"><i class="Hui-iconfont">&#xe644;</i> 导出配置</a>  
+	  <a onclick="yzm_open('导入配置','<?php echo U('user_config_import');?>','550','300')" href="javascript:;" class="btn btn-warning radius"><i class="Hui-iconfont">&#xe645;</i> 导入配置</a>  
 	  </span> 
 	  <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> 
   </div>
