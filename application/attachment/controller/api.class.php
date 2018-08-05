@@ -58,7 +58,7 @@ class api{
 		if($type == 1){
 			$option['allowtype'] = array('gif', 'jpg', 'png', 'jpeg');
 		}else{
-			$option['allowtype'] = explode('|', get_config('upload_types'));
+			$option['allowtype'] = $this->_get_upload_types();
 		}
 		$upload = new upload($option);
 		if($upload->uploadfile($filename)){
@@ -97,7 +97,7 @@ class api{
 		if($t == 1){
 			$type = '*.jpg; *.jpeg; *.png; *.gif;';
 		}else{
-			$type = '*.'.join(',*.', explode('|', get_config('upload_types')));
+			$type = '*.'.join(',*.', $this->_get_upload_types());
 		}
 		
 		//如果不是管理员，只列出自己上传的附件
@@ -184,6 +184,24 @@ class api{
 	}
 
 	
+	
+	/**
+	 * 获取上传类型
+	 */	
+	private function _get_upload_types(){
+		$arr = explode('|', get_config('upload_types'));
+		$allow = array('gif', 'jpg', 'png', 'jpeg','zip', 'rar', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf','mp4', 'avi', 'wmv', 'rmvb', 'flv','mp3', 'wma', 'wav', 'amr', 'ogg');
+		foreach($arr as $key => $val){
+			if(!in_array($val, $allow)) unset($arr[$key]);
+		}
+		
+		return $arr;
+	}
+	
+
+	/**
+	 * 加载模板
+	 */	
 	public static function admin_tpl($file = 'Undefined', $m = '') {
 		$m = empty($m) ? ROUTE_M : $m;
 		if(empty($m)) return false;
