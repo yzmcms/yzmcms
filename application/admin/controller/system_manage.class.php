@@ -34,7 +34,9 @@ class system_manage extends common {
 			if(isset($_POST['mail_inbox']) && $_POST['mail_inbox']){
 				if(!is_email($_POST['mail_inbox'])) showmsg(L('mail_format_error'));
 			}
-			if(empty($_POST['upload_types'])) showmsg('允许上传附件类型不能为空！', 'stop');
+			if(isset($_POST['upload_types'])){
+				if(empty($_POST['upload_types'])) showmsg('允许上传附件类型不能为空！', 'stop');
+			}
 			$arr = array();
 			$config = D('config');
 			foreach($_POST as $key => $value){
