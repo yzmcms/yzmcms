@@ -1,0 +1,45 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>群发消息 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 群发消息 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+  <div class="cl pd-5 bg-1 bk-gray"> <span class="l">
+  <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
+  <a href="javascript:;" onclick="yzm_open('新建群发','<?php echo U('add_messages');?>','600','400')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 新建群发</a>
+  </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
+  <form method="post" action="<?php echo U('del_messages');?>" id="myform">
+  <table class="table table-border table-bordered table-bg table-hover">
+    <thead>
+      <tr class="text-c">
+        <th width="25"><input type="checkbox"></th>
+		<th>标题</th>
+		<th>内容</th>
+		<th width='100'>组别名称</th>
+		<th width='135'>时间</th>
+      </tr>
+    </thead>
+    <tbody>
+		<?php 
+		foreach($data as $val){
+		?>
+		  <tr class="text-c">
+			<td><input type="checkbox" value="<?php echo $val['id']?>" name="ids[]"></td>
+			<td><?php echo $val['subject']?></td>
+			<td><?php echo $val['content']?></td>
+			<td><?php echo get_groupname($val['groupid']);?></td>
+			<td><?php echo date("Y-m-d H:i:s",$val['inputtime'])?></td>
+		  </tr>		
+		<?php 
+		}
+		?>
+    </tbody>
+  </table>
+  </form>
+  <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
+  <span class="page_right"><?php echo $page->getfull();?></span></div>
+</div>
+<?php include $this->admin_tpl('footer', 'admin');?>
+
+</body>
+</html>

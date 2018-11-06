@@ -1,0 +1,29 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <div class="main_right">
+	<div class="tit"><h3>TA的动态</h3></div>
+	<div class="main_cont">
+		<table class="tablelist">
+			<thead>
+			<tr>
+			<th>动态</th>
+			<th>分类</th>
+			<th>时间</th>
+			</tr>
+			</thead>
+			<tbody>
+			{loop $data $val}			
+			<tr>
+			<td>{$val['event']}</td>
+			<td>{get_catname($val['catid'])}</td>
+			<td>{date('Y-m-d H:i:s',$val['inputtime'])}</td>
+			</tr> 
+			{/loop}			
+			</tbody>
+		</table>
+		<div id="page">{$pages}</div>  
+	</div>
+  </div>		  
+</div> 
+{m:include "member","footer"} 

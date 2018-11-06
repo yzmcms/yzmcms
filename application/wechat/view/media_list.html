@@ -1,0 +1,73 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>素材管理 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 素材管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div> 
+    <form action="<?php echo U('search');?>" method="get" id="search">
+	 <input type="hidden" value="<?php echo ROUTE_M;?>" name="m">
+	 <input type="hidden" value="<?php echo ROUTE_C;?>" name="c">
+	 <input type="hidden" value="search" name="a">
+	 素材类型：
+     <span class="select-box inline">
+		<select name="media_type" class="select">
+			<option value="99">全部素材</option>
+			<option value="1" <?php if(isset($_GET['media_type']) && $_GET['media_type']=='1'){?> selected <?php }?>>永久素材</option>
+			<option value="0" <?php if(isset($_GET['media_type']) && $_GET['media_type']=='0'){?> selected <?php }?>>临时素材</option>
+		</select>
+	</span>
+    <span class="select-box inline">
+		<select name="type" class="select">
+		<option value="">所有类型</option>
+		<option <?php if(isset($_GET['type']) && $_GET['type']=='image'){?> selected <?php }?> value="image">图片</option>
+		<option <?php if(isset($_GET['type']) && $_GET['type']=='voice'){?> selected <?php }?> value="voice">语音</option>	
+		<option <?php if(isset($_GET['type']) && $_GET['type']=='video'){?> selected <?php }?> value="video">视频</option>	
+		<option <?php if(isset($_GET['type']) && $_GET['type']=='thumb'){?> selected <?php }?> value="thumb">缩略图</option>	
+		<option <?php if(isset($_GET['type']) && $_GET['type']=='news'){?> selected <?php }?> value="news">图文</option>	
+		</select>
+	</span>
+	MEDIA_ID：<input type="text" name="media_id" class="input-text" style="width:200px" value="<?php if(isset($_GET['media_id'])) echo $_GET['media_id'];?>">
+    <button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+	 </form>
+	</div>
+  <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l">
+  <a href="<?php echo U('add');?>" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加素材</a> <a href="<?php echo U('add_news');?>" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加图文素材</a> 
+  </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
+  <form method="post" action="<?php echo U('del');?>" id="myform">
+  <table class="table table-border table-bordered table-bg table-hover">
+    <thead>
+      <tr class="text-c">
+		<th>素材</th>
+		<th>类型</th>
+		<th>素材类型</th>
+		<th>media_id</th>
+		<th>上传时间</th>
+		<th width="120">操作</th>
+      </tr>
+    </thead>
+    <tbody>
+		<?php 
+		foreach($data as $val){
+		?>
+		  <tr class="text-c">
+			<td><?php if($val['type']=='image' || $val['type']=='thumb'){echo '<img src="'.$val['filepath'].$val['filename'].'" title="'.$val['originname'].'" height="20">';}elseif($val['type']=='news'){echo $val['url'];}else{echo '<span title="'.$val['originname'].'">'.$val['filename'].'</span>';}?></td>
+			<td><?php echo $types[$val['type']];?></td>
+			<td><?php echo $val['media_type'] ? '永久素材' : '临时素材';?></td>
+			<td><?php echo $val['media_id']?></td>
+			<td><?php echo date('Y-m-d H:i:s', $val['created_at'])?></td>
+			<td class="td-manage"><?php if($val['media_type']) { ?><a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('delete', array('id'=>$val['id'], 'media_type'=>1));?>')" class="btn-mini btn-warning ml-5" style="text-decoration:none">删除</a><?php } else { ?><a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('delete', array('id'=>$val['id'], 'media_type'=>0));?>')" class="btn-mini btn-warning ml-5" style="text-decoration:none">删除</a><?php } ?> <a title="群发" href="<?php echo U('mass/add', array('message_type'=>$val['type'], 'media_id'=>$val['media_id']));?>" class="btn-mini btn-secondary ml-5" style="text-decoration:none">群发</a></td>
+		  </tr>		
+		<?php 
+		}
+		?>
+    </tbody>
+  </table>
+  </form>
+  <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
+  <span class="page_right"><?php echo $page->getfull();?></span></div>
+</div>
+<?php include $this->admin_tpl('footer', 'admin');?>
+
+</body>
+</html>

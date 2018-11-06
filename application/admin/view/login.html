@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>后台管理登录 - YzmCMS内容管理系统</title>
+	<link rel="stylesheet" href="<?php echo STATIC_URL;?>admin/yzm_admin/css/login.css" />
+	<link rel="Shortcut Icon" href="<?php echo STATIC_URL;?>admin/yzm_admin/images/favicon.ico" />
+</head>
+<body>
+	<div class="loginwarrp">
+		<div class="logo">管理员登录</div>
+        <div class="login_form">
+			<form method="post" action="">
+			    <ul>
+					<li class="login_item">
+						<input type="text" name="username" class="login_input" required="required" autofocus="autofocus">
+						<span>用户名：</span>
+					</li>
+					<li class="login_item">					
+						<input type="password" name="password" class="login_input" required="required">
+						<span>密　码：</span>
+					</li>
+					<li class="login_item">
+						<img src="<?php echo U('api/index/code');?>" border="0" class="verifyimg" onclick="this.src=this.src+'?'"/>
+						<input type="text" name="code" class="login_input verify_input" required="required">
+						<span>验证码：</span>
+					</li>
+					<li class="login-sub">
+						<input type="submit" name="dosubmit" value="登　录" />
+					</li> 
+			    </ul>	
+           </form>
+		</div>
+	</div>
+	<div class="footer"><p>Powered By <a href="http://www.yzmcms.com" target="_blank" title="<?php echo YZMCMS_SOFTNAME;?>"><?php echo YZMCMS_SOFTNAME;?></a> © 2014-2019 袁志蒙工作室</p></div>
+</body>
+</html>

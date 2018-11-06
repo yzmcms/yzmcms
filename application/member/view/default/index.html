@@ -1,0 +1,29 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <div class="main_right">
+	<div class="tit"><h3>基本资料</h3></div>
+	<div class="main_cont">
+	  <div class="userimg">
+		  <a href="{U('user_pic')}" title="修改头像"><img src="{if $userpic}{$userpic}{else}{STATIC_URL}images/default.gif{/if}"></a>
+		  <p>{$username}</p>
+		  <ul class="ul_line">
+		  <li><strong>{$experience}</strong><span>经验</span></li>
+		  <li class="no_border"><strong>{$fans}</strong><span>粉丝</span></li>
+		  </ul>
+	  </div>
+	  <div class="usertext">
+	   <ul>
+		<li><b>用户名</b>： {$username} {if $vip}<img src="{STATIC_URL}images/vip.gif" title="vip用户"> vip过期时间：{date('Y-m-d H:i:s',$overduedate)}{else}<img src="{STATIC_URL}images/vip_expired.gif" title="vip未点亮">{/if} <a href="{U('account')}">修改资料</a></li>
+		<li><b>会员积分</b>：{$point}</li>
+		<li><b>会员等级</b>： {$groupinfo['name']} {if $groupinfo['icon']}<img src="{STATIC_URL}images/icon/{$groupinfo['icon']}" height="15">{/if}</li>
+		<li><b>注册时间</b>： {date('Y-m-d H:i:s',$regdate)}</li>
+		<li><b>绑定邮箱</b>： {$email} {if $email_status}<span class="green">[已验证]</span>{/if}</li>
+		<li><b>登陆次数</b>： {$loginnum} 次</li>
+		<li><b>上次登录时间</b>： {date('Y年m月d日 H:i:s',$lastdate)} [ IP地址： {$lastip} ] </li>
+	   </ul>
+	  </div>
+	</div>
+  </div>		  
+</div>
+{m:include "member","footer"} 

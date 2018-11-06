@@ -1,0 +1,19 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <div class="main_right">
+	<div class="tit"><h3>读信息</h3></div>
+	<div class="main_cont">
+		<div class="message">
+		  <div class="message_header">{$data['subject']}</div>
+		  <div class="message_content">{nl2br($data['content'])}</div>
+		  <div class="message_footer"> 收件人：{$data['send_to']}&nbsp;&nbsp;时间：{date('Y-m-d H:i:s',$data['message_time'])}&nbsp;&nbsp;发件人：{$data['send_from']} </div>
+		</div>
+		<div class="footer_button">
+			<a href="javascript:history.go(-1);">返回</a>
+			{if $data['issystem'] || $data['send_from'] == $username}<a href="javascript:void(0)">不可回复</a>{else}<a href="{U('new_messages', array('messageid' => $data['messageid']))}">回复</a>{/if}		
+		</div>
+	</div>
+  </div>		  
+</div>
+{m:include "member","footer"} 

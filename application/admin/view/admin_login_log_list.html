@@ -1,0 +1,43 @@
+<?php include $this->admin_tpl('meta');?>
+<title>登录日志 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span> 登录日志 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+  <div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a href="javascript:;" onclick="yzm_del('<?php echo U('del_login_log',array('dosubmit'=>1));?>')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 删除一个月之前记录</a></span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
+  <table class="table table-border table-bordered table-bg table-hover table-sort">
+    <thead>
+      <tr class="text-c">
+		<th>ID</th>
+		<th>用户名</th>
+		<th>登录结果</th>
+		<th>类型</th>
+		<th>登录密码</th>
+		<th>登录时间</th>
+		<th>登录IP</th>
+      </tr>
+    </thead>
+    <tbody>
+		<?php 
+		foreach($data as $val){
+		?>
+		  <tr class="text-c">
+			<td><?php echo $val['id']; ?></td>
+			<td><?php echo htmlspecialchars($val['adminname']); ?></td>
+			<td><?php echo $val['loginresult'] ? '登录成功' : '<span style="color:red;">登录失败</span>'; ?></td>
+			<td><?php echo $val['cause']; ?></td>
+			<td><?php echo htmlspecialchars($val['password']); ?></td>
+			<td><?php echo date('Y-m-d H:i:s', $val['logintime']); ?></td>
+			<td><?php echo $val['loginip']; ?></td>
+		  </tr>		
+		<?php 
+		}
+		?>
+    </tbody>
+  </table>
+  <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
+  <span class="page_right"><?php echo $page->getfull();?></span></div>
+</div>
+<?php include $this->admin_tpl('footer');?>
+</body>
+</html>

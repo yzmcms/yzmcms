@@ -1,0 +1,37 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <div class="main_right">
+	<div class="tit"><h3>订单管理</h3></div>
+	<div class="main_cont">
+		<table class="tablelist">
+			<thead>
+			<tr>
+			<th>订单编号</th>
+			<th>金额</th>
+			<th>订单详情</th>
+			<th>支付方式</th>
+			<th>下单时间</th>
+			<th>状态</th>
+			<th>操作</th>
+			</tr>
+			</thead>
+			<tbody>
+			{loop $data $val}			
+			<tr>
+			<td>{$val['order_sn']}</td>
+			<td>{$val['money']}元</td>
+			<td>{$val['desc']}</td>
+			<td>{if $val['paytype'] == 1}支付宝{else}微信{/if}</td>
+			<td>{date('Y-m-d H:i:s',$val['addtime'])}</td>
+			<td>{if $val['status'] == 1}<span class="green">已支付</span>{else}<span style="color:red">未支付</span>{/if}</td>
+			<td>{if $val['status'] == 0}<a href="{U('order_pay', array('id'=>$val['id']))}" class="pay_but" target="_blank">付款</a>{/if}</td>
+			</tr> 
+			{/loop}				
+			</tbody>
+		</table>
+		<div id="page">{$pages}</div>
+	</div>
+  </div>		  
+</div> 
+{m:include "member","footer"} 

@@ -1,0 +1,64 @@
+@charset "utf-8";
+/**
+ * YZMCMS 内容管理系统
+ * @author           袁志蒙  
+ * @license          http://www.yzmcms.com
+ */
+/* CSS Document */
+body{font-size:14px;font-family:Verdana,Tahoma,Helvetica,Arial,sans-serif;line-height:22px;padding:0px;margin:0px;background:#f8f8f8;}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0px;padding:0px;}
+table{border-collapse:collapse;}
+a,img{border:0;}
+ol,ul{list-style:none}
+a{color:#666;text-decoration:none;}
+a:hover{color:#888;text-decoration:underline;}
+.clearfix{clear:both;width:0px;height:0px;overflow:hidden;}
+.pic{line-height:0px;}
+
+/* 网站容器 */
+#container{margin:auto;width:100%;max-width:640px;background:#fff;}
+
+/*网站头部 */
+#header{height:40px;background:#09c;padding:0 5%;font-size:20px;line-height:40px;color:#fff;text-align:center;box-shadow: 0px 2px 3px #a6a6a6;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+
+/*导航条*/
+#nav{background-color:#eee;overflow:hidden;padding:5px 0;}
+#nav ul li {float:left;width:30%;text-align:center;background:url(../images/mxian.png) no-repeat right;height:25px;}
+#nav ul li a{line-height:22px;height:22px;font-weight:normal;font-size:14px;color:#666;display:block;}
+#nav ul li a:hover{text-decoration:none;color:#123261;}
+#nav ul li .nav_current{text-decoration:none;color:#123261;}
+
+/* 焦点图*/
+.topPic{background:#000;height:200px;overflow:hidden;}
+.imgSlideMain{clear:both;height:200px;position:relative;overflow:hidden;}
+.imgSlideMain img{width:100%;height:200px;}
+.imgSlide{clear:both;}
+.imgSlide li{overflow:hidden;width:100%;position:relative}
+.imgSlide li p {background:rgba(0,0,0,0.65);position:absolute;bottom:3px;height:35px;line-height:35px;display:block;color:#fff;width:100%;overflow:hidden;text-align:left;text-indent:1em;}
+.navSlide{display:block;bottom:0;right:10px;z-index:999;position: absolute;height:30px;}
+.navSlide .i_point{text-indent:-9999em;width:20px;height:30px;display:block;float:left;background:url(../images/slide.png) no-repeat center;}
+.navSlide .active{background:url(../images/slideActive.png) no-repeat center;}  
+
+/*主要内容*/
+.list_news ul li{border-bottom: 1px solid #eeeeee;padding:8px 0;margin:0 5px}
+.list_news ul li:last-child:{border-bottom:0;}
+.tit{background:#eee;font-weight:normal;height:35px;line-height:35px;border-top:#09c 2px solid}
+.tit a{color:#123261;}
+.img_news{overflow:hidden;margin-bottom:10px;}
+.img_news ul li{width:47%;float:left;height:125px;margin:3% 1%;text-align:center;}
+.img_news ul li img{width:100%;height:90px;float:left;border:1px solid #cdcdcd;padding:1px;}
+.img_news ul li p{color:#444;font-size:12px;}
+
+#fanhui{overflow:hidden;margin-bottom:20px;}
+#fanhui a{display:block;border: 1px solid #c6c6c6;margin:0 auto;text-align:center;width:130px;height:30px;line-height:30px;background:url(../images/fan.png) no-repeat 5px 5px;background-size:20%;background-color:#efefef;color:#333;transition:all 0.3s}
+#fanhui a:hover{text-decoration:none;background-color:#fff;color:#666}
+
+/* 底部导航 */
+#f_nav{line-height:35px;border-top:1px solid #09c;background:url(../images/fx.png) 0 28px repeat-x;overflow:hidden;background-color:#efefef;}
+#f_nav ul li {float:left;width:25%;text-align:center;background:url(../images/mxian.png) no-repeat right;height:35px;}
+#f_nav ul li a{line-height:35px;height:35px;font-weight:normal;font-size:16px;color:#2b2b2b;display:block;}
+
+/* 网站底部 */
+#footer{background:#efefef;text-align:center;color:#333;line-height:30px;}
+#footer p{font-size:14px;color:#666}
+   

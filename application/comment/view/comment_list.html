@@ -1,0 +1,92 @@
+<?php include $this->admin_tpl('meta','admin');?>
+<title>评论管理 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 评论管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+  <div> 
+		<form action="<?php echo U('search');?>" method="get">
+		 <input type="hidden" value="<?php echo ROUTE_M;?>" name="m">
+		 <input type="hidden" value="<?php echo ROUTE_C;?>" name="c">
+		 <input type="hidden" value="search" name="a">
+		 <span class="select-box inline">
+			<select name="modelid" class="select">
+			<option value="0">所有模型</option>
+			<?php 
+				foreach($modelinfo as $val){
+					$str = $val['modelid']==$modelid ? 'selected' : '';
+					echo '<option value="'.$val['modelid'].'" '.$str.'>'.$val['name'].'</option>';
+				}
+			?>
+			</select>
+		</span>		 
+		 <span class="select-box inline">
+			<select name="status" class="select">
+				<option value="99">状态</option>
+				<option <?php if(isset($_GET["status"]) && $_GET["status"]=='0'){echo "selected";} ?> value="0">未审核</option>
+				<option <?php if(isset($_GET["status"]) && $_GET["status"]=='1'){echo "selected";} ?> value="1">通过审核</option>
+			</select>
+		</span>
+		 <span class="select-box inline">
+			<select name="type" class="select">
+				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='1'){echo "selected";} ?> value="1">原文标题</option>
+				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo "selected";} ?> value="2">发布人</option>		
+			</select>
+		</span>
+		 <input type="text" name="searinfo"  class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+		 </form>	
+  </div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6a7;</i> 通过审核</a></span></div>
+	<form method="post" action="<?php echo U('del');?>" id="myform">
+	<table class="table table-border table-bordered table-bg table-hover">
+		<thead>
+			<tr class="text-c">
+				<th width="25"><input type="checkbox"></th>
+				<th width="120">发布人</th>
+				<th>评论内容</th>
+				<th width="260">原文标题</th>	
+				<th width="135">发布时间</th>	
+				<th width="100">发布IP</th>	
+				<th width="70">状态</th>	
+			</tr>
+		</thead>
+		<tbody>
+			<?php 
+			   foreach($data as $val){
+				if(strpos($val['content'], 'original_comment') !==false){
+					$pos = strrpos($val['content'], '</a>');
+					$val['content'] = substr($val['content'], $pos+7);
+				}			   
+			 ?>
+			<tr class="text-c">
+				<td><input type="checkbox" value="<?php echo $val['id']?>" name="id[]"></td>
+				<td><?php echo $val['username']?></td>
+				<td><?php echo $val['content']?></td>
+				<td><?php echo '<a href="'.$val['url'].'" title="'.$val['title'].'" target="_blank">'.str_cut($val['title'],66).'</a>'; ?></td>				
+				<td><?php echo date("Y-m-d H:i:s",$val['inputtime'])?></td>				
+				<td><?php echo $val['ip']?></td>				
+				<td><?php echo $val['status']=='0' ? '<span style="color:#444">[未审核]</span>' : '<span style="color:green">[通过审核]</span>';?></td>				
+			</tr>
+			<?php 
+			   }		 
+			?>	
+		</tbody>
+	</table>
+	</form>
+	<div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
+  <span class="page_right"><?php echo $page->getfull();?></span></div>
+</div>
+<?php include $this->admin_tpl('footer','admin');?> 
+<script type="text/javascript">
+//通过审核
+function adopt(){
+	if ($("input[name='id[]']:checked").length<1){
+	   layer.alert('请勾选信息！');
+	   return false;
+	}	
+	document.getElementById('myform').action='<?php echo U('adopt');?>';
+	document.getElementById('myform').submit();
+}
+</script>	
+</body>
+</html>

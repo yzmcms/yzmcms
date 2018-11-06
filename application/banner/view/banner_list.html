@@ -1,0 +1,55 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>轮播图管理 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 轮播图管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+  <div class="cl pd-5 bg-1 bk-gray"> 
+	  <span class="l">
+	  <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  
+	  <a class="btn btn-primary radius" href="<?php echo U('add');?>"><i class="Hui-iconfont">&#xe600;</i> <?php echo '添加轮播';?></a>
+	  </span> 
+	  <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> 
+  </div>
+  <form method="post" action="<?php echo U('del');?>" id="myform">
+  <table class="table table-border table-bordered table-bg table-hover table-sort">
+    <thead>
+      <tr class="text-c">
+		<th width="25"><input type="checkbox"></th>
+		<th>排序</th>
+		<th>名称</th>
+		<th>图片</th>
+		<th>链接地址</th>
+		<th>添加时间</th>
+		<th>分类</th>
+		<th>状态</th>
+		<th>管理操作</th>
+      </tr>
+    </thead>
+    <tbody>
+		<?php 
+		foreach($data as $val){
+		?>
+		  <tr class="text-c">
+			<td><input type="checkbox" value="<?php echo $val['id']?>" name="id[]"></td>
+			<td><?php echo $val['listorder']?></td>
+			<td><a href="<?php echo $val['url']?>" target="_blank"><?php echo $val['title']?></a></td>
+			<td><?php echo '<a href="'.$val['url'].'"  title="'.$val['title'].'" target="_blank"><img src="'.$val['image'].'" style="height:88px;width:200px"></a>';?></td>
+			<td><a href="<?php echo $val['url']?>" target="_blank"><?php echo $val['url']?></a></td>
+			<td><?php echo date('Y-m-d H:i:s', $val['inputtime'])?></td>
+			<td><?php echo $this->get_banner_type($val['typeid']);?></td>
+			<td><?php echo $val['status']==1 ? '显示' : '<span style="color:red;">隐藏</span>';?></td>
+			<td><a title="编辑" href="<?php echo U('edit',array('id'=>$val['id']));?>" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a></td>
+		  </tr>		
+		<?php 
+		}
+		?>
+    </tbody>
+  </table>
+  </form>
+  <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
+  <span class="page_right"><?php echo $page->getfull();?></span></div>
+</div>
+<?php include $this->admin_tpl('footer', 'admin');?>
+</body>
+</html>

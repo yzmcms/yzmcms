@@ -1,0 +1,48 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>字段管理 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt; 自定义表单 <span class="c-gray en">&gt;</span> 字段管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray"> <span class="l">
+	<a href="<?php echo U('add', array('modelid'=>$modelid));?>" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加字段</a>
+	<a class="btn btn-success radius" href="<?php echo U('diyform/init');?>"><i class="Hui-iconfont">&#xe67d;</i> 表单管理</a>
+	</span></div>
+	<form action="<?php echo U('order');?>" method="post">
+	<table class="table table-border table-bordered table-bg table-hover">
+		<thead>
+			<tr class="text-c">
+				<th>排序</th>
+				<th>字段名</th>
+				<th>别名</th>
+				<th>类型</th>
+				<th>必填</th>
+				<th>禁用</th>		
+				<th>管理操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php 
+			   foreach($data as $val){
+			 ?>
+			<tr class="text-c">
+				<td><?php $dis = $val['modelid'] ? '' : 'disabled'; echo '<input type="text" class="input-text listorder" name="listorder[]" '.$dis.' value="'.$val["listorder"].'">'; if($val['modelid']) echo '<input type="hidden" name="fieldid[]" value="'.$val["fieldid"].'">'?></td>
+				<td><?php echo $val['field'];?></td>
+				<td><?php echo $val['name'];?></td>
+				<td><?php echo $val['fieldtype'];?></td>
+				<td><?php echo $val['isrequired'] ? '<span style="color:red">是</span>' : '否';?></td>
+				<td><?php echo $val['disabled'] ? '<span class="label radius">已禁用</span>' : '<span class="label label-success radius">已启用</span>';?></td>
+				<td class="td-manage"><a title="编辑字段" href="<?php echo U('edit',array('modelid'=>$modelid,'fieldid'=>$val['fieldid']));?>"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">编辑</a> <a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('modelid'=>$modelid, 'fieldid'=>$val['fieldid']));?>')"  class="btn-mini btn-warning ml-5" style="text-decoration:none">删除</a></td>
+			</tr>
+			<?php 
+			   }		 
+			?>	
+		</tbody>
+	</table>
+	<input type="hidden" value="<?php echo $modelid;?>" name="modelid">
+	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><input class="orderbutton btn-primary radius" name="dosubmit" value="排序" type="submit"></span></div>
+	</form>
+</div>
+<?php include $this->admin_tpl('footer', 'admin');?>
+</body>
+</html>

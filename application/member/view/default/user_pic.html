@@ -1,0 +1,31 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <script type="text/javascript" src="{STATIC_URL}js/uploadpreview.js"></script>
+  <div class="main_right">
+	<div class="tit"><h3>修改头像</h3></div>
+	<div class="main_cont">
+	    <div class="userimg">
+			<img id="avatar" src="{if $userpic}{$userpic}{else}{STATIC_URL}images/default.gif{/if}"/>
+		</div>
+		<form action="" method="post" enctype="multipart/form-data" onsubmit="return check()">
+			<p>选择图片：<input type="file" id="user_pic" name="user_pic" /></p>[*支持jpg,jpeg,png,gif格式图片]<br><br>
+			<input type="hidden" name="MAX_FILE_SIZE" value="2048000">
+			<input type="submit" name="dosubmit" value="保存" class="submit" />
+		</form>
+	</div>
+  </div>		  
+</div>
+<script>
+	$(function () {
+	     $("#user_pic").uploadPreview({ Img: "avatar", Width: 120, Height: 120 });
+	});
+    function check(){
+		var file = $("#user_pic").val();
+		if(file == ''){
+		  layer.alert('请选择图片');
+		  return false;
+		}
+    }
+</script>
+{m:include "member","footer"} 

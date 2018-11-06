@@ -1,0 +1,80 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>内容导入 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 采集管理 <span class="c-gray en">&gt;</span> 采集列表 <span class="c-gray en">&gt;</span> 内容导入 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<article class="page-container">
+<div class="formdoby_info"> 
+	  <fieldset>
+		<legend>新建发布方案</legend>
+		    <form action="<?php echo U('create_programme');?>" method="post" onsubmit="return check_all()">
+			<input type="hidden" value="<?php echo $ids;?>" name="ids">
+			<table class="table table-border yzmcms_table">			
+				<tr>
+					<td width="165"><span class="c-red">*</span>选择栏目</td> 
+					<td>
+					<span class="select-box inline">
+					<?php echo select_category('catid', 0, '≡ 请选择栏目 ≡'); ?>
+					</span>
+                    </td>
+				</tr>									
+				<tr>
+					<td><span class="c-red">*</span>作者昵称</td> 
+					<td><input class="input-text w_200" type="text" value="管理员" name="nickname"></td>
+				</tr>
+				<tr>
+					<td>点击量</td> 
+					<td><input class="input-text w_200" type="text" value="0" name="click"></td>
+				</tr>
+				<tr>
+					<td>来源</td> 
+					<td><input class="input-text w_200" type="text" value="原创" name="copyfrom"></td>
+				</tr>	
+				<tr>
+					<td>自动提取摘要</td> 
+					<td>
+					 <label><input type="radio" name="auto_description" value="1" checked> 是</label>
+					 &nbsp;&nbsp;<label><input type="radio" name="auto_description" value="0"> 否</label>
+					</td>
+				</tr>				
+				<tr>
+					<td>获取内容第一张图片为缩略图</td> 
+					<td>
+					 <label><input type="radio" name="auto_thumb" value="1" checked> 是</label>
+					 &nbsp;&nbsp;<label><input type="radio" name="auto_thumb" value="0"> 否</label>
+					</td>
+				</tr>	
+				<tr>
+					<td>导入顺序</td> 
+					<td>
+					 <label><input type="radio" name="order" value="1" checked> 顺序</label>
+					 &nbsp;&nbsp;<label><input type="radio" name="order" value="0"> 倒序</label> &nbsp;&nbsp; [顺序指跟原目标序数一致,否则相反]
+					</td>
+				</tr>				
+                <tr>
+					<td>&nbsp;&nbsp;</td>
+					<td>
+					<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
+					</td>
+				</tr>				
+			</table>
+            </form>			
+	  </fieldset>
+</div>
+</article>
+<?php include $this->admin_tpl('footer', 'admin');?> 
+<script type="text/javascript">
+	function check_all(){ 
+		 if($("#select").val()==0){
+			 layer.alert("请选择文章栏目!");
+			 return false;
+		 }
+		 if($("input[name='nickname']").val()==''){
+			 layer.alert("作者昵称不能为空!");
+			 return false;
+		 }			
+	}
+
+</script> 
+</body>
+</html>

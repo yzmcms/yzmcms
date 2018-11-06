@@ -1,0 +1,27 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>采集测试 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 采集管理 <span class="c-gray en">&gt;</span> 采集测试 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+ <div class="formdoby_normal"> 
+	<form method="post" action="">
+		<ul>
+			<li><label>节点名称：</label><?php echo $data['name'];?></li> 
+			<li>列表测试信息：</li>  			
+			<li><textarea class="textarea" style="height:200px"><?php
+			 if($content['title']) foreach($content['title'] as $k => $v){
+			   echo $v.'&nbsp;'.$content['url'][$k]."\n";
+			 }
+		   ?></textarea></li> 
+		    <li>内容页测试信息（获取第一篇文章地址来测试）：</li>  
+			<li><textarea class="textarea" style="height:200px"><?php print_r($article); ?></textarea></li>		   
+		</ul>
+		
+	</form>
+  </div>
+</div>
+<?php include $this->admin_tpl('footer', 'admin');?>
+
+</body>
+</html>

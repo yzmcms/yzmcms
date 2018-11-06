@@ -1,0 +1,44 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>微信分组管理 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 分组管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a href="javascript:;" onclick="yzm_open('添加分组','<?php echo U('add');?>',600,300)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加分组</a></span></div>
+	<table class="table table-border table-bordered table-bg table-hover">
+		<thead>
+			<tr class="text-c">
+				<th width="50">组别ID</th>
+				<th>分组名称</th>
+				<th width="80">人数</th>		
+				<th width="180">管理操作</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php 
+			   foreach($data as $val){
+			 ?>
+			<tr class="text-c">
+				<td><?php echo $val['id'];?></td>
+				<td><?php echo $val['name'];?></td>
+				<td><?php echo $val['count'];?></td>
+				<td class="td-manage"><a title="编辑" href="javascript:;" onclick="yzm_open('编辑分组','<?php echo U('edit',array('id'=>$val['id']));?>',600,300)" style="text-decoration:none" class="btn-mini btn-secondary ml-5">编辑</a> <a title="删除" href="javascript:;" onclick="wechat_group_del('<?php echo U('delete',array('id'=>$val['id']));?>', '<?php echo $val['name'];?>')" style="text-decoration:none" class="btn-mini btn-warning ml-5">删除</a></td>
+			</tr>			  
+			<?php 
+			   }		 
+			?>	
+		</tbody>
+	</table>
+</div>
+<?php include $this->admin_tpl('footer', 'admin');?>
+<script type="text/javascript">
+
+function wechat_group_del(url, name){
+	layer.confirm('确认要删除 “'+ name +'” 组吗？删除分组后，该分组内的用户自动进入默认分组！',function(index){
+		location.href = url;
+	});
+}
+
+</script>
+</body>
+</html>

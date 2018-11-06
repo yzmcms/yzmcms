@@ -1,0 +1,68 @@
+<?php include $this->admin_tpl('meta');?>
+<title>编辑配置 - YzmCMS内容管理系统</title>
+<style>
+.select{width:230px}
+</style>
+</head>
+<body>
+<article class="page-container">
+<div class="formdoby_normal"> 
+	<form method="post" onsubmit="return dosub(this)">
+		<ul>
+			 <li><label><span class="c-red">*</span>配置名称：</label><input type="text" class="input" placeholder="必须为英文拼音或数字,如：qq" name="name" disabled="disabled" value="<?php echo $data['name'];?>"></li>
+			 <li><label><span class="c-red">*</span>配置类型</label>
+			 <span class="span_input" >
+				<select name="fieldtype" class="select" style="width:230px" disabled>		
+					<option value="textarea" <?php if($fieldtype=='textarea') echo 'selected';?>>文本类型</option>					
+					<option value="image" <?php if($fieldtype=='image') echo 'selected';?>>图片上传</option>
+					<option value="attachment" <?php if($fieldtype=='attachment') echo 'selected';?>>附件上传</option>
+					<option value="radio" <?php if($fieldtype=='radio') echo 'selected';?>>radio选项卡</option>
+					<option value="select" <?php if($fieldtype=='select') echo 'selected';?>>option下拉框</option>
+				</select>
+			 </span>
+			 </li>	
+			<li><label><span class="c-red">*</span>配置值：</label><span class="span_input"><?php echo $this->public_gethtml($fieldtype, $data['value'], $data['setting']);?></span></li>
+			<li><label>简洁说明：</label><input type="text" class="input" style="width:488px" placeholder="例如：这个是站点QQ" name="title" value="<?php echo $data['title'];?>"></li>
+			 <li><label>状态</label>
+			 <span class="span_input">
+			 	<label class="label_radio"><input name="status" type="radio" value="1" <?php if($data['status']=='1') echo 'checked';?>> 启用</label>
+			 	<label class="label_radio"><input name="status" type="radio" value="0" <?php if($data['status']=='0') echo 'checked';?>> 禁用</label>
+			 </span>
+			 </li>	
+			 <li>&nbsp;<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="id" value="<?php echo $data['id'];?>">
+			 </li>				
+			<li>
+			<input class="dosubmit w_120 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			</li>
+		</ul>
+	</form>
+</div>
+</article>
+<?php include $this->admin_tpl('footer');?>
+
+<script type="text/javascript">
+	function dosub(obj){
+		 if($("textarea[name='value']").val()==''){
+			 layer.msg('配置值不能为空！');
+			 return false;
+		 }
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo U('user_config_edit');?>', 
+            data: $(obj).serialize(),
+		    dataType: "json", 
+            success: function (msg) {
+				if(msg.status == 1){
+					parent.location.reload();       
+			    }else{
+					layer.msg(msg.message);
+				}
+            }
+        })		 
+		return false;			 
+	}
+</script> 
+
+</body>
+</html>

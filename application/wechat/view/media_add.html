@@ -1,0 +1,53 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>添加素材 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 添加素材 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<article class="page-container">
+  <div class="explain"> 
+       <p>图片（image）: 2M，支持PNG\JPEG\JPG\GIF格式</p>
+       <p>语音（voice）：2M，播放长度不超过60s，支持AMR\MP3格式</p>
+       <p>视频（video）：10MB，支持MP4格式</p>
+       <p>缩略图（thumb）：64KB，支持JPG格式</p>
+       <p>临时素材保存时间为3天，3天后media_id失效，永久素材库保存总数量有限，推荐上传临时素材！</p>
+  </div>
+<div class="formdoby_normal mt-20"> 
+	<form method="post" action="<?php echo U('add');?>" onsubmit="return dosub(this)" enctype="multipart/form-data">
+		<ul>
+			<li><label>素材类型：</label><label><input class="radio" type="radio" name="media_type" value="0" checked="checked">临时素材</label><label><input class="radio" type="radio" name="media_type" value="1">永久素材</label></li>
+			<li><label>素材类型：</label>
+			 <select  name="type" size="1">
+				<option value="image">图片</option>
+				<option value="voice">语音</option>	
+				<option value="video">视频</option>	
+				<option value="thumb">缩略图</option>			
+			 </select></li>		
+			<li><label><span class="c-red">*</span>上传文件：</label>
+			<span class="btn-upload form-group">
+			  <input class="input-text upload-url radius" type="text" name="uploadfile-1" id="uploadfile-1" readonly> <a href="javascript:void();" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+			  <input type="file" multiple name="filename" class="input-file">
+			</span>
+			</li>
+			<li></li>
+			<li><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"></li>
+		</ul>
+	</form>
+</div>
+</article>
+<?php include $this->admin_tpl('footer', 'admin');?>
+
+<script type="text/javascript">
+
+	function dosub(obj){
+		 if($("input[name='filename']").val()==''){
+			 layer.msg('请上传文件！');
+			 return false;
+		 }
+		 
+	 
+		return true;			 
+	}
+</script> 
+
+</body>
+</html>

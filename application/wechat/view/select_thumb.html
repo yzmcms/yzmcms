@@ -1,0 +1,58 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>选择素材 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<div class="page-container">
+  <form method="post" action="" id="myform">
+  <table class="table table-border table-bordered table-bg table-hover">
+    <thead>
+      <tr class="text-c">
+        <th width="25">选择</th>
+		<th>图片</th>
+		<th>media_id</th>
+		<th>素材类型</th>
+		<th>类型</th>
+		<th>上传时间</th>
+      </tr>
+    </thead>
+    <tbody>
+		<?php 
+		foreach($data as $val){
+		?>
+		  <tr class="text-c">
+			<td><input type="radio" name="thumb_media_id" value="<?php echo $val['media_id']?>"></td>
+			<td><?php echo '<img src="'.$val['filepath'].$val['filename'].'" title="'.$val['originname'].'" height="20">';?></td>
+			<td><?php echo $val['media_id']?></td>
+			<td><?php echo $val['media_type'] ? '永久素材' : '临时素材';?></td>
+			<td><?php echo $types[$val['type']];?></td>
+			<td><?php echo date('Y-m-d H:i:s', $val['created_at'])?></td>
+		  </tr>		
+		<?php 
+		}
+		?>
+    </tbody>
+  </table>
+  <input class="dosubmit w_120 btn-primary radius mt-10" name="dosubmit" type="button" onclick="dosub()" value="确定">
+  </form>
+  <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
+  <span class="page_right"><?php echo $page->getfull();?></span></div>
+</div>
+<?php include $this->admin_tpl('footer', 'admin');?>
+
+<script type="text/javascript">
+
+	function dosub(){
+		var thumb_media_id = $("input[type='radio']:checked").val();
+		if(thumb_media_id == undefined){
+			layer.alert('请选择图片！');		
+			return false;
+		}
+		
+		var index = parent.layer.getFrameIndex(window.name);
+		parent.$("#<?php echo $thumb_media_id;?>").val(thumb_media_id);
+		parent.layer.close(index);
+	}
+</script> 
+
+</body>
+</html>

@@ -1,0 +1,224 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>修改资料 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span>修改资料 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<article class="page-container">
+<div class="formdoby_info"> 
+	<form action="" method="post" onsubmit="return check_all()">
+	  <fieldset>
+		<legend>基本信息</legend>
+			<table class="table table-border yzmcms_table">	
+				<tr>
+					<td>用户名</td> 
+					<td><?php echo $data['username']?></td>
+				</tr>	
+				<tr>
+					<td>注册时间</td>
+					<td>
+					<?php echo date('Y-m-d H:i:s',$data['regdate']).' ['.$data['regip'].']';?>
+					</td>
+				</tr>				
+				<tr>
+					<td>最后登录</td>
+					<td>
+					<?php echo date('Y-m-d H:i:s',$data['lastdate']).' ['.$data['lastip'].']';?>
+					</td>
+				</tr>	
+				<tr>
+					<td>昵称</td> 
+					<td><input type="text" name="nickname" value="<?php echo $data['nickname']; ?>" required class="input-text w_300"></td>
+				</tr>
+				<tr>
+					<td>头像</td> 
+					<td>
+					<img src="<?php echo $data['userpic'] != '' ? $data['userpic'] : STATIC_URL.'images/default.gif'?>" height="90" style="margin:10px"> 
+					<label><input type="checkbox" value="1" name="del_userpic"> 删除头像 </label><input type="hidden" name="userpic" value="<?php echo $data['userpic']; ?>">
+					</td>
+				</tr>
+				<tr>
+					<td>密码</td>
+					<td>
+					<input type="text" name="password" value=""  class="input-text w_300"> <span class="c-red">* 不修改请留空</span>
+					</td>
+				</tr>				
+				<tr>
+					<td>邮箱</td>
+					<td>
+					<input type="email" name="email" value="<?php echo $data['email']; ?>" class="input-text w_300"> <?php if($data['email_status']) echo '<span class="green">[已验证]</span>'; ?>
+					</td>
+				</tr>
+				<tr>
+					<td>手机号码</td>
+					<td>
+					<input type="text" name="mobile" value="<?php echo $data['mobile']; ?>" class="input-text w_300">
+					</td>
+				</tr>
+				<tr>
+					<td>积分点数</td>
+					<td>
+					<input type="text" name="point" value="<?php echo $data['point']; ?>" required class="input-text w_120">
+					</td>
+				</tr>
+				<tr>
+					<td>经验</td>
+					<td>
+					<input type="text" name="experience" value="<?php echo $data['experience']; ?>" required class="input-text w_120"> <span class="c-red">*  用户经验将影响会员用户组</span>
+					</td>
+				</tr>				
+				<tr>
+					<td>会员组</td> 
+					<td>
+					<span class="select-box inline">
+					<select  name="groupid" class="select">
+					  <?php 
+						foreach($member_group as $val){
+							$str = $val['groupid'] == $data['groupid'] ? 'selected' : '';
+							echo '<option value="'.$val['groupid'].'" '.$str.'>'.$val['name'].'</option>';
+						}
+					   ?>			
+					 </select>
+					</span> <span class="c-red">* 会员组别与经验绑定</span>
+                    </td>
+				</tr>
+				<tr>
+					<td>vip会员</td>
+					<td>
+					是否为vip会员 <input name="vip" value="1" <?php if($data['vip']) echo 'checked'; ?> type="checkbox">&nbsp;&nbsp;
+					过期时间 <input type="text" class="input-text laydate-icon" style="width:175px;height:30px;" name="overduedate" value="<?php if($data['vip']) echo date('Y-m-d H:i:s',$data['overduedate']); ?>" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">&nbsp;&nbsp;<span class="c-red">vip会员可以免积分查看付费内容</span>
+					</td>
+				</tr>
+				<tr>
+					<td>会员状态</td> 
+					<td>
+					<span class="select-box inline">
+					<select  name="status" class="select">
+					<option value="0" <?php if($data['status'] == 0) echo 'selected'; ?>>待审核</option>
+					<option value="1" <?php if($data['status'] == 1) echo 'selected'; ?>>正常</option>
+					<option value="2" <?php if($data['status'] == 2) echo 'selected'; ?>>已锁定</option>
+					<option value="3" <?php if($data['status'] == 3) echo 'selected'; ?>>已拒绝</option>			
+					 </select>
+					</span>
+                    </td>
+				</tr>				
+			</table>
+	  </fieldset>
+	  
+	  <fieldset>
+		<legend>详细信息</legend>
+			<table class="table table-border yzmcms_table">		
+				<tr>
+					<td>性别</td> 
+					<td>
+					<label><input class="radio" type="radio" name="sex" value="男" <?php if($data['sex'] != '女') echo 'checked="checked"'; ?>>男</label>&nbsp;&nbsp;
+	                <label><input class="radio" type="radio" name="sex" value="女" <?php if($data['sex'] == '女') echo 'checked="checked"'; ?>>女</label>			
+					</td>
+				</tr>
+				<tr>
+					<td>真实姓名</td> 
+					<td><input type="text" name="realname" value="<?php echo $data['realname']; ?>" class="input-text w_300"></td>
+				</tr>
+				<tr>
+					<td>安全问题及答案</td>
+					<td>
+					安全问题：
+					<span class="select-box inline">
+					<select  name="problem" class="select">
+					<option value="">没有安全问题</option>
+					<?php 
+					foreach($problemarr as $val){
+						$str = $data['problem']==$val ? 'selected="selected"' : '';
+						echo '<option value="'.$val.'" '.$str.'>'.$val.'</option>';
+					}
+					?>
+					 </select>
+					</span>
+					&nbsp;&nbsp;答案：<input type="text" name="answer" value="<?php echo $data['answer']; ?>" class="input-text w_300">
+					</td>
+				</tr>			
+				<tr>
+					<td>QQ</td>
+					<td>
+					<input type="text" name="qq" value="<?php echo $data['qq']; ?>" class="input-text w_300">
+					</td>
+				</tr>
+				<tr>
+					<td>个人电话</td>
+					<td>
+					<input type="text" name="phone" value="<?php echo $data['phone']; ?>" class="input-text w_300">
+					</td>
+				</tr>
+				<tr>
+					<td>生日</td>
+					<td>
+					<input value="<?php echo $data['birthday']; ?>" name="birthday" id="birthday" class="input-text laydate-icon" style="width:300px;height:30px">
+					</td>
+				</tr>				
+				<tr>
+					<td>行业</td>
+					<td>
+					<input type="text" name="industry" value="<?php echo $data['industry']; ?>" class="input-text w_300">
+					</td>
+				</tr>
+				<tr>
+					<td>所在地</td>
+					<td>
+					<span class="select-box inline"><select id="cmbProvince" class="select"></select></span> 
+					<span class="select-box inline"><select id="cmbCity" class="select"></select></span> 
+					<span class="select-box inline"><select id="cmbArea" class="select"></select></span>
+					<input type="hidden" name="area" value="<?php echo $data['area']; ?>" id="area">
+					</td>
+				</tr>				
+				<tr>
+					<td>个性签名</td>
+					<td>
+					<input type="text" name="motto" value="<?php echo $data['motto']; ?>" class="input-text w_300" style="width:60%">
+					</td>
+				</tr>
+				<tr>
+					<td>个人简介</td>
+					<td>
+					<textarea name="introduce" style="height:100px;margin:10px 0;" class="textarea"><?php echo $data['introduce']?></textarea>					
+					</td>
+				</tr>								
+                <tr>
+					<td></td>
+					<td>
+					<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
+					</td>
+				</tr>				
+			</table>
+	  </fieldset>
+	</form>		
+</div>
+</article>
+<?php include $this->admin_tpl('footer', 'admin');?> 
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>js/address.js"></script>
+<script type="text/javascript">
+	!function(){
+		laydate({elem: '#birthday'});  //绑定生日，防止日期插件冲突
+	}();	
+	 addressInit('cmbProvince', 'cmbCity', 'cmbArea', '<?php echo $cmbProvince; ?>', '<?php echo $cmbCity; ?>', '<?php echo $cmbArea; ?>');
+	function check_all(){
+		var reg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/; 
+		$('#area').val($('#cmbProvince').val()+'|'+$('#cmbCity').val()+'|'+$('#cmbArea').val());  //获取地区信息
+	    if($("input[name='nickname']").val()==''){
+			layer.msg('用户昵称不能为空！');
+			return false;
+		}
+		
+		if(!reg.test($("input[name='email']").val())){
+			layer.msg('邮箱格式不正确！');
+			return false;
+		}
+		
+	    if(isNaN($("input[name='point']").val()) || isNaN($("input[name='experience']").val())){
+		    layer.msg('积分和经验 只能为数字类型！');
+		    return false;
+		}		
+        return true;			
+	}
+</script> 
+</body>
+</html>

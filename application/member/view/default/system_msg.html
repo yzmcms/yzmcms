@@ -1,0 +1,29 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <div class="main_right">
+	<div class="tit"><h3>系统消息</h3></div>
+	<div class="main_cont">
+		<table class="tablelist">
+			<thead>
+			<tr>
+			<th width="80%">标题</th>
+			<th width="20%">发送时间</th>
+			</tr>
+			</thead>
+			<tbody>
+			{loop $data $val}			
+			<tr>
+			<td><a href="{U('read_system_message', array('id' => $val['id']))}">
+			{if $read[$val['id']]==0}<span style="color:red;">{str_cut($val['subject'], 100)}</span>{else}{str_cut($val['subject'], 100)}{/if}
+			</a></td>
+			<td>{date('Y-m-d H:i:s',$val['inputtime'])}</td>
+			</tr> 
+			{/loop}			
+			</tbody>
+		</table>
+		<div id="page">{$pages}</div>	
+	</div>
+  </div>		  
+</div>
+{m:include "member","footer"} 

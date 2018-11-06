@@ -1,0 +1,55 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>支付宝支付配置 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<article class="page-container">
+<div class="formdoby_normal"> 
+	<form method="post" onsubmit="return dosub(this)">
+		<ul>
+			 <li><label>支付方式</label> 支付宝</li>
+			 <li><label>签名方式</label> RSA2</li>
+			 <li><label><span class="c-red">*</span>应用ID(APPID)</label><input type="text" class="input" required name="config[app_id]" value="<?php echo $config['app_id'];?>" style="width:400px"></li>
+			 <li><label><span class="c-red">*</span>商户应用私钥</label><span class="span_input"><textarea name="config[merchant_private_key]" class="textarea" style="width:80%" required><?php echo $config['merchant_private_key'];?></textarea></span></li>	
+			 <li><label><span class="c-red">*</span>支付宝公钥</label><span class="span_input"><textarea name="config[alipay_public_key]" class="textarea" style="width:80%" required><?php echo $config['alipay_public_key'];?></textarea></span></li>
+			 <li><label><span class="c-red">*</span>状态</label>
+			 <span class="span_input">
+			 	<label class="label_radio"><input name="enabled" type="radio" value="0" <?php if($data['enabled'] == 0) echo 'checked';?>> 启用</label>
+			 	<label class="label_radio"><input name="enabled" type="radio" value="1" <?php if($data['enabled'] == 1) echo 'checked';?>> 禁用</label>
+			 </span>
+			 </li>
+			 <li><input type="hidden" name="dosubmit" value="1"><input type="hidden" name="id" value="<?php echo $data['id'];?>">
+			  <input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			  <input class="dosubmit w_120 btn-primary radius" type="submit" value="提交"></li>
+		</ul>
+	</form>
+</div>
+</article>
+<?php include $this->admin_tpl('footer', 'admin');?>
+<script type="text/javascript">
+
+	function dosub(obj){
+		 if(<?php echo version_compare(phpversion(), '5.5.0', '<') ? 'true' : 'false';?>){
+			 layer.alert('PHP版本要求>=5.5，当前版本：<?php echo phpversion();?>');
+			 return false;
+		 }
+		 
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo U('edit');?>', 
+            data: $(obj).serialize(),
+		    dataType: "json", 
+            success: function (msg) {
+				if(msg.status == 1){
+					parent.location.reload();       
+			    }else{
+					layer.msg(msg.message);
+				}
+            }
+        })		 
+		return false;			 
+	}
+	
+</script> 
+
+</body>
+</html>

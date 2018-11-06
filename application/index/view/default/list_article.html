@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+  <head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	  <title>{$seo_title}</title>
+	  <link href="{STATIC_URL}css/default_common.css" rel="stylesheet" type="text/css" />
+	  <link href="{STATIC_URL}css/default_style.css" rel="stylesheet" type="text/css" />
+	  <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
+	  <script type="text/javascript" src="{STATIC_URL}js/js.js"></script>
+	  <script type="text/javascript" src="{STATIC_URL}js/koala.min.1.5.js"></script> <!-- 焦点图js -->
+	  <meta name="keywords" content="{$keywords}" />
+	  <meta name="description" content="{$description}" />
+  </head>
+  <body>
+	     {m:include "index","header"} 
+		 <div class="main_left">
+			    <h3 class="ind_bt">{get_location($catid)}</h3>
+				 <div class="news_list">
+					<ul>
+					  {m:lists field="title,inputtime,url,status" catid="$catid" limit="20" page="page"}
+					  {loop $data $v}	
+				       <li><span>{date('Y-m-d H:i:s',$v['inputtime'])}</span><a href="{$v[url]}" title="{$v[title]}">{str_cut($v['title'], 112)}</a></li>
+					  {/loop}				 
+					</ul>
+				 </div>					 
+                 <div id="page">{$pages}</div>				 
+		  </div>
+		 <div class="main_right">
+		  <!-- 焦点图 开始 -->
+			<div id="jiaodian" class="focus">  
+				<div id="fpic" class="fpic">
+				  {m:lists field="title,thumb,url" catid="$catid" thumb="1" limit="3"}
+				  {php $total = count($data);}
+				  {loop $data $v}
+				    <div class="fcon" style="display: none;">
+						<a target="_blank" href="{$v[url]}"><img src="{$v[thumb]}" style="opacity: 1;" title="{$v[title]}"></a>
+						<span class="shadow"><a target="_blank" href="{$v[url]}" title="{$v[title]}">{str_cut($v['title'], 36)}</a></span>
+					</div>
+				  {/loop}					  
+				</div>
+				<div class="fbg">  
+				<div class="d1fbt" id="d1fbt"> 
+					{for $i=1; $i<=$total; $i++}
+					   <a href="javascript:void(0)" hidefocus="true" target="_self"><i>{$i}</i></a>
+					{/for}
+				</div>  
+				</div>     
+			</div>  
+			<script type="text/javascript">
+				Qfast.add('widgets', { path: "{STATIC_URL}js/terminator2.2.min.js", type: "js", requires: ['fx'] });  
+				Qfast(false, 'widgets', function () {
+					K.tabs({
+						id: 'jiaodian',     //焦点图包裹id  
+						conId: 'fpic',      //大图域包裹id  
+						tabId: 'd1fbt',  
+						tabTn: 'a',
+						conCn: '.fcon',    //大图域配置class       
+						auto: 1,           //自动播放 1或0
+						effect: 'fade',    //效果配置
+						eType: 'click',    //鼠标事件
+						pageBt: true,      //是否有按钮切换页码 					
+						interval: 3000     //停顿时间  
+					}) 
+				})  
+			</script>
+			<!-- 焦点图 结束 -->
+			
+				<h2 class="ind_bt mt_20 pl_10">频道点击排行</h2>
+				<div class="l_list">
+				<ul>
+				{m:hits field="title,url,status" catid="$catid" limit="10"}
+				{loop $data $v}	
+					<li><a href="{$v[url]}" title="{$v[title]}">{str_cut($v['title'], 63)}</a></li>
+				{/loop}
+				</ul>
+				</div>	
+				
+				<h2 class="ind_bt mt_20 pl_10">文章归档</h2>
+				{m:content_archives modelid="1" type="2" limit="10"}
+				<ul class="com_list archives_list">
+				{loop $data $v}	
+					<li><a href="{U('search/index/archives',array('pubtime'=>$v['inputtime']))}" target="_blank">{$v[pubtime]}({$v[total]})</a></li>
+				{/loop} 
+				</ul>				 
+		 </div>		  	
+ {m:include "index","footer"} 

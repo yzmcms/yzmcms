@@ -1,0 +1,56 @@
+{m:include "member","header"} 
+<div class="w980 main">
+{m:include "member","left"} 
+  <div class="main_right">
+	<div class="tit"><h3>修改资料</h3></div>
+	<div class="main_cont">
+	  <form method="post" action="" onsubmit="return chcekall()">
+	  <table>
+	   <tr><td>昵称：</td><td><input type="text" name="nickname" value="{$nickname}"  class="input"><span class="red">*</span></td></tr>
+	   <tr><td>性别：</td><td>
+	   <label><input class="radio" type="radio" name="sex" value="男" {if $sex != '女'}checked="checked"{/if}>男</label>
+	   <label><input class="radio" type="radio" name="sex" value="女" {if $sex == '女'}checked="checked"{/if}>女</label>
+	   </td></tr>
+	   <tr><td>QQ：</td><td><input type="text" name="qq"  value="{$qq}" class="input"><span class="red">*</span></td></tr>
+	   <tr><td>手机：</td><td><input type="text" name="mobile"  value="{$mobile}" class="input"><span class="red">*</span></td></tr>
+	   <tr><td>电话：</td><td><input type="text" name="phone" value="{$phone}" class="input"></td></tr>
+	   <tr><td>生日：</td><td>{form::datetime('birthday', $birthday)}</td></tr>
+	   <tr><td>行业：</td><td><input type="text" name="industry" value="{$industry}" class="input"></td></tr>
+	   <tr><td>所在地：</td><td>
+	   <select id="cmbProvince"></select><select id="cmbCity"></select><select id="cmbArea"></select>
+	   <input type="hidden" name="area" id="area" value="{$area}">	   
+	   </td></tr>
+	   <tr><td>真实姓名：</td><td><input type="text" name="realname" value="{$realname}" class="input"></td></tr>	   
+	   <tr><td>个性签名：</td><td><input type="text" name="motto" value="{$motto}" class="input w550"></td></tr>
+	   <tr><td>个人简介：</td><td><textarea name="introduce" class="textarea">{$introduce}</textarea></td></tr>
+	   <tr><td></td><td><input type="submit" name="dosubmit" class="submit" value="保存"></td></tr>
+	  </table>
+	  </form>
+	</div>
+  </div>		  
+</div>
+<script type="text/javascript" src="{STATIC_URL}js/address.js"></script>
+<script>
+  addressInit('cmbProvince', 'cmbCity', 'cmbArea', '{$cmbProvince}', '{$cmbCity}', '{$cmbArea}');
+  var reg = /^0?1[3|4|5|6|7|8|9][0-9]\d{8}$/;
+  function chcekall(){
+    $('#area').val($('#cmbProvince').val()+'|'+$('#cmbCity').val()+'|'+$('#cmbArea').val());  //获取地区信息
+    if($("input[name='nickname']").val()==''){
+	  layer.msg('昵称不能为空！');
+	  return false;
+	}
+	if($("input[name='qq']").val()==''){
+	  layer.msg('QQ号不能为空！');
+	  return false;
+	}
+	if(isNaN($("input[name='qq']").val())){
+	  layer.msg('QQ号格式不正确！');
+	  return false;
+	}
+	if (!reg.test($("input[name='mobile']").val())) {
+	  layer.msg('手机号不正确！');
+	  return false;
+	}
+  }
+</script>
+{m:include "member","footer"} 

@@ -1,0 +1,30 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>消息回复 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 消息回复 <span class="c-gray en">&gt;</span> <?php echo $nav;?> <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+  <div class="sub_menu"><a href="<?php echo U('init');?>">关键字回复</a> <a href="<?php echo U('reply_list', array('type'=>2));?>" <?php if($type==2) echo 'class="on"';?>>自动回复</a> <a href="<?php echo U('reply_list', array('type'=>3));?>" <?php if($type==3) echo 'class="on"';?>>关注回复</a></div>
+ <div class="formdoby_normal"> 
+	<form method="post" action="" onsubmit="return checkall()">
+		<ul>
+			 <li><label>消息内容：</label><textarea class="textarea" name="content" style="height:200px;width:600px" placeholder="<?php echo $mess;?>"><?php echo $data;?></textarea></li>					 
+			 <li><input type="hidden" name="type" value="<?php echo $type;?>"><input class="dosubmit btn-primary radius" style="margin:20px auto 0px;width:120px" name="dosubmit" type="submit" value="提交"></li> 
+		</ul>
+		
+	</form>
+  </div>
+</div>
+<?php include $this->admin_tpl('footer', 'admin');?>
+<script type="text/javascript">
+
+function checkall(){
+	 if($("textarea[name='content']").val()==''){
+		 layer.msg('消息内容不能为空！');
+		 return false;
+	 }	
+}
+</script>
+
+</body>
+</html>

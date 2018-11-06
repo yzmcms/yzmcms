@@ -1,0 +1,74 @@
+<?php include $this->admin_tpl('meta');?>
+<title>批量更新URL - YzmCMS内容管理系统</title>
+<style>
+	.select{border:solid 1px #999;font-size:12px}
+</style>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 批量更新URL <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+  <div class="explain"> 
+       <p>1：仅当修改了网站域名或者修改了前端URL规则时，请批量更新，未改变时，不需要更新 .</p>
+       <p>2：URL规则设置：系统管理 > 系统设置 > 附加设置 > 前端URL规则.</p>
+  </div>
+	<div class="pd-5 mt-20">
+	<table width="100%" cellspacing="0">
+
+	<form action="<?php echo U('change_model');?>" method="post" id="myform">
+	    <input type="hidden" name="dosubmit" value="1"> 
+		<thead height="50" >
+		<tr>
+		<th style="text-align:center;font-size:14px"  width="150">按照模型更新</th>
+		<th style="text-align:center;font-size:14px" width="386">选择栏目范围</th>
+		<th style="font-size:14px" >选择操作内容</th>
+		</tr>
+		</thead>
+		<tbody  height="210">
+			<tr> 
+				<td rowspan="2" style="text-align:center">
+				<select name="modelid" size="2" class="select" style="height:200px;width:140px;" onchange="change_model()">
+					<option value='0' <?php if(!$modelid) echo 'selected';?>>≡ 所有模型 ≡</option>
+					<?php
+					 foreach($modelinfo as $val){
+						$str = $modelid==$val['modelid'] ? 'selected' : '';
+						echo '<option value="'.$val['modelid'].'" '.$str.'>'.$val['name'].'</option>';
+					 }
+					?>
+				</select>
+				</td>
+				<td rowspan="2" style="text-align:center">
+					<?php echo $select;?>
+				</td>
+				<td style="font-size:14px">更新栏目URL &nbsp;&nbsp;<input type="button" name="dosubmit" value="开始更新" class="btn btn-primary radius" onclick="update_category_url()"></td>
+			</tr>
+			<tr> 
+				<td style="font-size:14px">更新内容URL &nbsp;&nbsp;<input type="button" name="dosubmit" value="开始更新" class="btn btn-primary radius" onclick="update_content_url()"><span class="c-red" style="margin-left:10px;font-size:12px">*当内容页有跳转链接时，该URL将会失效</span></td>
+			</tr>
+		</tbody>
+	</form>
+	</table>
+
+	</div>
+</div>
+<script type="text/javascript">
+	function change_model() {
+		document.getElementById('myform').submit();
+	}
+	
+	function update_category_url(){
+		document.getElementById('myform').action='<?php echo U('update_category_url')?>';
+		document.getElementById('myform').submit();
+	}
+	
+	function update_content_url(){
+		document.getElementById('myform').action='<?php echo U('update_content_url')?>';
+		document.getElementById('myform').submit();
+	}
+</script>
+<?php include $this->admin_tpl('footer');?>
+
+<script type="text/javascript">
+	$("#select option:first").prop("selected", 'selected');  
+</script>
+</body>
+</html>

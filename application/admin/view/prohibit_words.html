@@ -1,0 +1,15 @@
+<?php include $this->admin_tpl('meta');?>
+<title>屏蔽词设置 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span> 屏蔽词设置  <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+  <form method="post">
+  <div>
+    <textarea class="textarea" style="width:98%; height:300px; resize:none" name="prohibit_words"><?php echo get_config('prohibit_words');?></textarea>
+  </div>
+  <div class="mt-20"><input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;保存&nbsp;&nbsp;" name="dosubmit"></div>
+  </form>
+</div>
+</body>
+</html>

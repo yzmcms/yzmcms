@@ -1,0 +1,57 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>添加轮播 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 添加轮播 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<article class="page-container">
+<div class="formdoby_normal"> 
+	<form method="post" onsubmit="return checkall()">
+		<ul>
+			 <li><label>标题名称：</label><input type="text" class="input" name="title" value="<?php echo $data['title'];?>" style="width:400px;"></li> 
+			 <li><label>链接地址：</label><input type="text" class="input" value="<?php echo $data['url'];?>" name="url" style="width:400px;"></li> 
+			 <li><label>轮播分类：</label>			
+			 <select  name="typeid" style="width:230px;" id="typeid">
+			 <option value="0">无分类</option>
+			   <?php 
+				 foreach($types as $val){
+					$str = $data['typeid']==$val['tid'] ? 'selected' : '';
+					echo '<option value="'.$val['tid'].'" '.$str.'>'.$val['name'].'</option>';
+				 }
+			   ?>			
+			 </select> <a href="javascript:;" onclick="yzm_open('添加分类','<?php echo U('cat_add');?>','400','260')" class="ml-5">添加</a> | <a href="javascript:;" onclick="yzm_open('管理分类','<?php echo U('cat_manage');?>','400','400')">管理</a></li>
+			 <li><label>轮播图：</label>
+				<input class="input-text" type="text" name="image" value="<?php echo $data['image'];?>" style="width:400px" id="uploadfile" onmouseover="yzm_img_preview('uploadfile', this.value)"  onmouseout="layer.closeAll();">
+				<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M));?>')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+			 </li>
+			 <li><label>排序：</label><input type="text" class="input"  value="<?php echo $data['listorder'];?>" name="listorder" style="width:120px"> <span style="color:#999">[由小到大排列]</span></li>	
+			 <li><label>状态：</label>
+			 	<label class="label_radio"><input name="status" type="radio" value="1" <?php if($data['status']) echo 'checked' ;?>> 显示</label>
+			 	<label class="label_radio"><input name="status" type="radio" value="0" <?php if(!$data['status']) echo 'checked' ;?>> 隐藏</label>
+			 </li>
+		</ul>
+		<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
+	</form>
+</div>
+</article>
+<?php include $this->admin_tpl('footer','admin');?> 
+<script type="text/javascript">
+
+function checkall(){
+		if($("input[name='title']").val()==''){
+			layer.msg('标题名称不能为空！');
+			return false;
+		}
+		if($("input[name='url']").val()=='http://' || $("input[name='url']").val()==''){
+			layer.msg('链接地址不能为空！');
+			return false;
+		}
+		if($("input[name='image']").val()==''){
+			layer.msg('请上传轮播图！');
+			return false;
+		}
+		return true;
+
+}
+</script>
+</body>
+</html>

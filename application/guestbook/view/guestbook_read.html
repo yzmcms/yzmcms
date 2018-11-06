@@ -1,0 +1,45 @@
+<?php include $this->admin_tpl('meta','admin');?>
+<title>读留言 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<article class="page-container">
+<div class="formdoby_normal"> 
+	<form method="post" onsubmit="return dosub(this)">
+		<ul>
+			 <li><label>主　　题：</label><?php echo $data['title'];?></li>
+			 <li><label>主要内容：</label><?php echo $data['bookmsg'];?></li>
+			 <li><label>联 系 人：</label><?php echo $data['name'];?></li>
+			 <li><label>电子邮箱：</label><?php echo $data['email'];?></li>
+			 <li><label>电　　话：</label><?php echo $data['phone'];?></li>
+			 <li><label>Q　　Q：</label><?php echo $data['qq'];?></li>
+			 <li><label>地　　址：</label><?php echo $data['address'];?></li>
+			 <li><label>留言日期：</label><?php echo date("Y-m-d H:i:s",$data['booktime']);?> <span style="color:#888">[<?php echo $data['ip'];?>]</span></li>
+			 <li><label>　　</label></li>
+			<?php		
+				foreach($reply as $value){
+				   echo "<li><span style='color:#de4c1c'>管理员回复 [".date("Y-m-d H:i:s",$value['booktime'])."]</span><br>";
+				   echo "<span style='color:#0072c6'>".$value['bookmsg']."</span></li>";
+				}
+			?>
+			<li><label>管理员回复：</label></li>
+			 <li>
+			  <input type="hidden" name="replyid" value="<?php echo $data['id']?>">
+			  <textarea class="textarea" name="bookmsg" id="bookmsg"></textarea>
+	         </li>
+			 <li><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"></li>
+		</ul>
+	</form>
+</div>
+</article>
+<?php include $this->admin_tpl('footer','admin');?> 
+<script type="text/javascript">
+	function dosub(obj){
+		 if($('#bookmsg').val()==""){
+			layer.msg('回复的内容不能为空！');
+			return false;
+		 }
+		return true;
+	}
+</script> 
+</body>
+</html>

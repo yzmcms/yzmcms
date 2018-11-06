@@ -1,0 +1,215 @@
+<?php include $this->admin_tpl('meta');?>
+<title>编辑内容 - YzmCMS内容管理系统</title>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/1.4.3.3/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/1.4.3.3/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/1.4.3.3/lang/zh-cn/zh-cn.js"></script>
+<style>.date{height:30px;padding:4px;width:265px;font-size:14px}.Hui-tags-token{color:#353535;}</style>
+</head>
+<body>
+<article class="page-container">
+	<form class="form form-horizontal" onsubmit="return checkall()" method="post">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>标　　题：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="<?php echo $data['title'];?>"  name="title" onblur="get_seotitle()">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>SEO标题：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="<?php echo $data['seo_title'];?>"  name="seo_title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">属　　性：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+				<label>置顶[1] <input name="flag[]" type="checkbox" <?php if(strpos($data['flag'], '1') !== false) echo 'checked="checked"';?> value="1" onclick="set_top()" id="settop"></label>&nbsp;&nbsp;
+				<label>头条[2] <input name="flag[]" type="checkbox" <?php if(strpos($data['flag'], '2') !== false) echo 'checked="checked"';?> value="2"/></label>&nbsp;&nbsp;
+				<label>特荐[3] <input name="flag[]" type="checkbox" <?php if(strpos($data['flag'], '3') !== false) echo 'checked="checked"';?> value="3"/></label>&nbsp;&nbsp;
+				<label>推荐[4] <input name="flag[]" type="checkbox" <?php if(strpos($data['flag'], '4') !== false) echo 'checked="checked"';?> value="4"/></label>&nbsp;&nbsp;
+				<label>热点[5] <input name="flag[]" type="checkbox" <?php if(strpos($data['flag'], '5') !== false) echo 'checked="checked"';?> value="5"/></label>&nbsp;&nbsp;
+				<label>幻灯[6] <input name="flag[]" type="checkbox" <?php if(strpos($data['flag'], '6') !== false) echo 'checked="checked"';?> value="6"/></label>&nbsp;&nbsp;
+				<label>跳转[7] <input name="flag[]" type="checkbox" <?php if(strpos($data['flag'], '7') !== false) echo 'checked="checked"';?> value="7" onclick="toggle()"/></label>&nbsp;&nbsp;
+			</div>
+		</div>
+		<div class="row cl" <?php if(strpos($data['flag'], '7') === false) echo 'style="display:none;"';?> id="url">
+			<label class="form-label col-xs-4 col-sm-2">跳转URL：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="<?php echo $data['url'];?>"  name="url" placeholder="格式为“http://开头”">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>栏　　目：</label>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box"><?php echo select_category('catid', $data['catid'], '≡ 请选择栏目 ≡', 0, '', true, true, $modelid); ?></span> </div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">TAG标签：</label>
+			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
+			<div class="Hui-tags" style="width:88%;float:left;margin-right:5px;">
+				<div class="Hui-tags-editor cl" style="padding: 5px 0 5px 24px;">
+				<i class="Hui-tags-icon Hui-iconfont" style="top:5px">&#xe64b;</i>
+					<div id="tag_default">
+						<?php
+							$taglist = '';
+							foreach($tags as $val){
+								$taglist .= $val['tag'].',';
+								echo '<span class="Hui-tags-token">'.$val['tag'].'</span>';
+							}	
+						?>
+					</div>
+					<div class="Hui-tags-iptwrap" style="width:50%">
+						<input type="text" class="Hui-tags-input" maxlength="20" value="" id="tag_input" onblur="change_keyword()">
+						<label class="Hui-tags-label">添加标签，用空格或回车分隔</label>
+					</div>
+				</div>
+				<input type="hidden" class="Hui-tags-val" name="tag" value="<?php echo $taglist;?>" id="taglist">
+			</div>
+			 <a href="javascript:;" onclick="yzm_open('TAG标签选择','<?php echo U('tag/select');?>','650','400')" class="btn btn-primary radius">选择</a>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">关 键 词：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="<?php echo $data['keywords'];?>"  name="keywords" placeholder="每个关键字之间用“,”分割">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">内容摘要：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<textarea name="description" class="textarea"  placeholder="如不填写，则自动提取文章前200字符" datatype="*10-100" dragonfly="true" nullmsg="文章摘要不能为空！" onKeyUp="textarealength(this,200)"><?php echo $data['description'];?></textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
+			</div>
+		</div>		
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">发布时间：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text laydate-icon" style="width:265px;height:30px;" name="inputtime" value="<?php echo date('Y-m-d H:i:s', $data['inputtime']); ?>" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">阅读权限：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<span class="select-box"  style="width:265px">
+				<select id="select" name="groupids_view" class="select">
+				<option value="0">开放浏览</option>
+			    <?php 
+				foreach($member_group as $val){
+					$str = $val['groupid'] == $data['groupids_view'] ? 'selected' : '';
+					echo '<option value="'.$val['groupid'].'" '.$str.'>'.$val['name'].'</option>';
+				}
+			    ?>	
+				</select>
+				</span>  
+				<span class="yzmcms_small">消费积分：<input type="text" id="readpoint" class="input-text" style="width:150px" value="<?php echo $data['readpoint'];?>"  name="readpoint" onfocus="layer.tips('vip会员可免积分查看', '#readpoint');"></span>  
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">缩 略 图：</label>
+			<div class="formControls col-xs-8 col-sm-9" style="height:31px;">
+				<div class="uploader-thum-container">
+				<?php echo form::image('thumb', $data['thumb'], 'width:370px', true);?><img src="<?php echo $data['thumb'] ? $data['thumb'] : STATIC_URL.'images/nopic.jpg';?>" class="thumb" id="thumb_src">
+				</div>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2">来　　源：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="<?php echo $data['copyfrom'];?>"  name="copyfrom" style="width:150px">
+				<span class="yzmcms_small">点击量：<input type="text" class="input-text" style="width:150px" value="<?php echo $data['click'];?>"  name="click"></span>  
+				<span class="yzmcms_small">作者昵称：<input type="text" class="input-text" style="width:150px" value="<?php echo $data['nickname']; ?>"  name="nickname"></span>  
+			</div>
+		</div>
+		<?php echo $string;?>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>内　　容：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+			<?php echo form::editor('content', $data['content'], 'width:100%;height:400px', false);?>
+			<label title="提取内容第一张图片为缩略图"><input name="auto_thum" type="checkbox" id="readpact" value="1" checked="checked" />提取内容第一张图片为缩略图</label>
+            <label title="远程图片本地化" class="yzmcms_small"><input name="grab_img" type="checkbox" value="1"/>远程图片本地化</label>	
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<input type="hidden" name="status" value="<?php echo $data['status'];?>">
+				<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(1)"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+				<button name="dosubmit" class="btn btn-secondary radius" type="submit" onclick="set_status(0)"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
+				<button onclick="myclose()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
+			</div>
+		</div>
+		<input type="hidden"  value="<?php echo $data['listorder'];?>"  name="listorder">
+	</form>
+</article>
+
+<?php include $this->admin_tpl('footer');?>
+<script type="text/javascript">
+	function set_top(){
+		if($('#settop').get(0).checked){
+			$("input[name='listorder']").val('1');
+		}else{
+			$("input[name='listorder']").val('10');
+		}	
+	}
+	
+	function set_status(s){
+		$("input[name='status']").val(s);	
+	}
+	
+	function toggle(){ 
+        $("#url").toggle();
+    }
+	
+	function get_seotitle(){
+		var title = $("input[name='title']").val();
+		if(title != ''){
+			$("input[name='seo_title']").val(title+'_<?php echo get_config('site_name');?>');
+		}else{
+			layer.msg('标题不能为空！', {icon:2,time: 2000});
+		}
+	}
+	
+	function myclose(){
+		if(UE.getEditor('content').getContent()!=''){
+			layer.confirm('内容未保存，确定要关闭吗？',function(index){
+				yzmcms_close();
+			});
+		}else{
+			yzmcms_close();
+		}
+	}
+	
+	function checkall(){
+		if($("input[name='title']").val()==''||$("input[name='seo_title']").val()==''){
+			layer.msg('标题或SEO标题不能为空！', {icon:2,time: 2000});
+			return false;
+		}
+		if($("select[name='catid']").val()=='0'){
+			layer.msg('请选择栏目！', {icon:2,time: 2000});
+			return false;
+		}
+		var check = true;
+		$(".required").each(function(){
+			if($(this).val() == ''){
+			  layer.msg($(this).attr('errortips'), {icon:2,time: 2000});
+			  $(this).focus();
+			  check = false;
+			  return false;
+			}
+		})
+		if(!check) return false;
+		if(UE.getEditor('content').getContent()==''){
+			layer.msg('内容不能为空！', {icon:2,time: 2000});
+			return false;
+		}
+		return true;
+	}
+	
+	function change_keyword() {
+		var v = $("#taglist").val();
+		if(v != '') v = v.substr(0,v.length-1);
+		$("[name=keywords]").val(v);
+	}
+</script>
+
+</body>
+</html>

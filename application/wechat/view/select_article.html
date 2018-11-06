@@ -1,0 +1,101 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>选择文章 - YzmCMS内容管理系统</title>
+</head>
+<body>
+<div class="page-container">
+  <div> 
+    <form action="" method="get" id="search">
+    内容标题：
+     <input type="text" name="searinfo" class="input-text" style="width:200px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button> 
+	 </form>	
+  </div>
+  <form method="post" action="" id="myform">
+  <table class="table table-border table-bordered table-bg table-hover mt-10">
+    <thead>
+      <tr class="text-c">
+        <th width="25"><input type="checkbox"></th>
+		<th width="40">ID</th>
+		<th>标题</th>
+		<th>内容分类</th>
+		<th>更新时间</th>
+      </tr>
+    </thead>
+    <tbody>
+		<?php 
+		foreach($data as $val){
+		?>
+		  <tr class="text-c">
+			<td><input type="checkbox" value="<?php echo $val['id']?>" name="ids[]"></td>
+			<td><?php echo $val['id']?></td>
+			<td class="text-l">
+			<a href="<?php echo $val['url'];?>" target="_blank" ><?php echo $val['title'];?></a>
+			<?php
+			if($val['thumb']){
+			 echo '<span style="color:#0a6999;margin:0 3px" title="图片"><i class="Hui-iconfont">&#xe646;</i></span>';
+			}
+			if(strpos($val['flag'], '1') !== false){
+			 echo '<span class="c-red">[置顶]</span>';
+			}
+            if(strpos($val['flag'], '2') !== false){
+			 echo '<span class="c-red">[头条]</span>';
+			}
+            if(strpos($val['flag'], '3') !== false){
+			 echo '<span class="c-red">[特荐]</span>';
+			}
+            if(strpos($val['flag'], '4') !== false){
+			 echo '<span class="c-red">[推荐]</span>';
+			}
+            if(strpos($val['flag'], '5') !== false){
+			 echo '<span class="c-red">[热点]</span>';
+			}
+            if(strpos($val['flag'], '6') !== false){
+			 echo '<span class="c-red">[幻灯]</span>';
+			}
+			if(strpos($val['flag'], '7') !== false){
+			 echo '<span class="c-red">[跳转]</span>';
+			}
+			if($val['readpoint']){
+			 echo '<span class="c-red">[付费]</span>';
+			}			
+			?>	
+			</td>
+			<td><?php echo get_catname($val['catid']);?></td>
+			<td><?php echo date('Y-m-d H:i:s', $val['updatetime'])?></td>
+		  </tr>		
+		<?php 
+		}
+		?>
+    </tbody>
+  </table>
+  <input class="dosubmit w_120 btn-primary radius mt-10" name="dosubmit" type="button" onclick="dosub()" value="确定">
+  </form>
+  <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
+  <span class="page_right"><?php echo $page->getfull();?></span></div>
+</div>
+<?php include $this->admin_tpl('footer', 'admin');?>
+
+<script type="text/javascript">
+
+	function dosub(){
+		var ids = $("input[name='ids[]']:checked");
+		if (ids.length<1){
+		   layer.alert('请选择文章！');
+		   return false;
+		}	
+		
+		var str = '';
+		$.each(ids,function(){
+			if(this.checked){
+				str += $(this).val() + ',';
+			}
+         });
+		str = str.substr(0,str.length-1);
+		
+		var index = parent.layer.getFrameIndex(window.name);
+		parent.$("#relation_id").val(str);
+		parent.layer.close(index);
+	}
+</script> 
+
+</body>
+</html>
