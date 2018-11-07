@@ -703,7 +703,7 @@ function watermark($source, $target = '') {
 		yzm_base::load_sys_class('image','','0');
 		$image_w = new image(1,1);
 	}
-		$image_w->watermark($source, $target);
+	$image_w->watermark($source, $target);
 	return $target;
 }
 
