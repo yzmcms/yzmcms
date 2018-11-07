@@ -859,7 +859,7 @@ function U($url='', $vars='', $domain=false) {
 		if($vars){
 			if(!is_array($vars)) parse_str($vars, $vars);			
             foreach ($vars as $var => $val){
-                if(trim($val) !== '') $string .= '/'.$var.'/'.urlencode($val);
+                if(trim($val) !== '') $string .= '/'.urlencode($var).'/'.urlencode($val);
             } 
 		}
         $string .= C('url_html_suffix');		
