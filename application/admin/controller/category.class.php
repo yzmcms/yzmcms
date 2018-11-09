@@ -132,7 +132,7 @@ class category extends common {
 					$arr['description'] = $_POST['seo_description'];										
 					$arr['template'] = $_POST['category_template'];										
 					$arr['updatetime'] = SYS_TIME;										
-					D('page')->insert($arr); 
+					D('page')->insert($arr, false, false); 
 				}
 			
 				//如果系统设置是伪静态模式

@@ -91,7 +91,7 @@ class role extends common {
 					$info = $menu_info[$menuid];
 					if($info['m'] == '') continue;
 					$info['roleid'] = $_POST['roleid'];
-					$admin_role_priv->insert($info);
+					$admin_role_priv->insert($info, false, false);
 				}
 			} else {
 				$admin_role_priv->delete(array('roleid'=>$_POST['roleid']));
