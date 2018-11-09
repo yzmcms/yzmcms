@@ -60,8 +60,10 @@ class index{
 	 */	
 	public function wx_notify(){
 		yzm_base::load_common('plugin/wxpay/notify.php');
-        $notify = new notify();
-        $notify->Handle();
+		if(class_exists('notify')){
+			$notify = new notify();
+			$notify->Handle();
+		}
 	}
 
 }
