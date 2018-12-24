@@ -106,12 +106,24 @@ function yzm_img_cropper(cid, url){
 //图片预览
 function yzm_img_preview(id, src){
 	if(src == '') return;
-	layer.tips('<img src="'+src+'" height="100">', '#'+id, {
+	layer.tips('<img src="'+htmlspecialchars(src)+'" height="100">', '#'+id, {
 	  tips: [1, '#fff']
 	});	
 }
 
+
 //删除多文件上传
 function remove_li(obj){
 	 $(obj).parent().remove();
+}
+
+
+//html实体转换
+function htmlspecialchars(str)  {  
+    str = str.replace(/&/g, '&amp;');
+    str = str.replace(/</g, '&lt;');
+    str = str.replace(/>/g, '&gt;');
+    str = str.replace(/"/g, '&quot;');
+    str = str.replace(/'/g, '&#039;');
+    return str;
 }
