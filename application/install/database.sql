@@ -1022,8 +1022,8 @@ CREATE TABLE `yzm_module` (
   `setting` text,
   `listorder` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `disabled` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `installdate` date NOT NULL DEFAULT '0000-00-00',
-  `updatedate` date NOT NULL DEFAULT '0000-00-00',
+  `installdate` date NOT NULL DEFAULT '2016-01-01',
+  `updatedate` date NOT NULL DEFAULT '2016-01-01',
   PRIMARY KEY (`module`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
