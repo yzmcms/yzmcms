@@ -703,7 +703,7 @@ function watermark($source, $target = '') {
 		yzm_base::load_sys_class('image','','0');
 		$image_w = new image(1,1);
 	}
-	$image_w->watermark($source, $target);
+		$image_w->watermark($source, $target);
 	return $target;
 }
 
@@ -1027,7 +1027,8 @@ function template($module = '', $template = 'index'){
 	}	
 	if(!is_dir(YZMPHP_PATH.'cache'.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR)){
 		@mkdir(YZMPHP_PATH.'cache'.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR, 0777, true);
-	}	
+	}
+	$template = md5($template_path.$template);	
 	$template_c = $template_c.$template.'.tpl.php'; 		
 	if(!is_file($template_c) || filemtime($template_c) < filemtime($tplfile)) {
 		$yzm_tpl = yzm_base::load_sys_class('yzm_tpl');

@@ -173,7 +173,7 @@ class form {
 			}
 		}					
 		$string .= 	'</ul></fieldset>
-				<a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name, 'n'=>$n)).'\')" class="btn btn-primary radius upload-btn mt-5"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>';
+				<a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name, 'n'=>$n)).'\')" class="btn btn-primary radius upload-btn mt-5"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a> <a href="javascript:;" onclick="yzm_add_attachment(\''.$name.'\')" class="btn btn-secondary radius upload-btn mt-5"><i class="Hui-iconfont">&#xe6ab;</i> 添加远程地址</a>';
 		
 		return $string;
 	}

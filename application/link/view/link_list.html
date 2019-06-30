@@ -7,7 +7,7 @@
   <div class="cl pd-5 bg-1 bk-gray"> 
 	  <span class="l">
 	  <a href="javascript:;" onclick="mydel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  
-	  <a class="btn btn-primary radius" onclick="yzm_open_full('<?php echo L('add_link');?>','<?php echo U('add');?>')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> <?php echo L('add_link');?></a>
+	  <a class="btn btn-primary radius" onclick="yzm_open('<?php echo L('add_link');?>','<?php echo U('add');?>','750','520')"  href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> <?php echo L('add_link');?></a>
 	  </span> 
 	  <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> 
   </div>
@@ -45,7 +45,7 @@
 			<td><?php echo $val['linktype'] ? '图片链接' : '文字链接';?></td>
 			<td><?php echo date('Y-m-d H:i:s', $val['addtime'])?></td>
 			<td><?php echo $val['status']==1 ? '正常' : '<a href="javascript:;" onclick="adopt(\''.U('adopt',array('id'=>$val['id'])).'\')" style="color:red">审核</a>';?></td>
-			<td><a title="编辑" href="javascript:;" onclick="yzm_open_full('<?php echo L('edit_link');?>','<?php echo U('edit',array('id'=>$val['id']));?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('del_one',array('id'=>$val['id']));?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+			<td><a title="编辑" href="javascript:;" onclick="yzm_open('<?php echo L('edit_link');?>','<?php echo U('edit',array('id'=>$val['id']));?>','750','520')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('del_one',array('id'=>$val['id']));?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
 		  </tr>		
 		<?php 
 		}

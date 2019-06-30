@@ -3,7 +3,7 @@
 </head>
 <body>
 <article class="page-container pad_bot_0">
-<div class="formdoby formdoby2"> 
+<div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
 			 <li><label><span class="c-red">*</span>网站名称：</label><input type="text" class="input" name="name" value="<?php echo $data['name'];?>"></li>
@@ -17,14 +17,12 @@
 			 </span>
 			 </li>
 			 <li><label>网站Logo：</label>
-				<span class="btn-upload form-group" style="width:60%;margin-left:5%;text-align:left">
-				<input class="input-text" type="text" name="logo" style="width:400px" id="uploadfile" value="<?php echo $data['logo'];?>" onmouseover="yzm_img_preview('uploadfile', this.value)"  onmouseout="layer.closeAll();">
-				<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M));?>')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
-				</span>
+				<input class="input-text" type="text" name="logo" style="width:300px" id="uploadfile" value="<?php echo $data['logo'];?>" onmouseover="yzm_img_preview('uploadfile', this.value)"  onmouseout="layer.closeAll();">
+				<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M));?>')" class="btn btn-primary radius upload-btn" style="height:30px;font-size: 14px"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
 			 </li>
 			 <li>
 			 <label>链接范围：</label>
-			 <select  name="typeid" size="1">
+			 <select  name="typeid" style="width:230px">
 			   <option value="0" <?php if($data['typeid'] == 0) echo 'selected';?>>默认</option>			
 			   <option value="1" <?php if($data['typeid'] == 1) echo 'selected';?>>首页</option>			
 			   <option value="2" <?php if($data['typeid'] == 2) echo 'selected';?>>列表页</option>			
@@ -32,7 +30,7 @@
 			 </select>
 
 			 </li>
-			 <li><label>网站介绍：</label><span class="span_input"><textarea name="msg" class="textarea"><?php echo $data['msg'];?></textarea></span></li>
+			 <li><label>网站介绍：</label><span class="span_input"><textarea name="msg" class="textarea w_420"><?php echo $data['msg'];?></textarea></span></li>
 			 <li><label>排序：</label><span class="span_input"><input type="text" class="input"  value="<?php echo $data['listorder'];?>" name="listorder" style="margin-left:0;width:120px"> <span style="color:#999">[由小到大排列]</span></span></li>
 			 <li><label>状态：</label>
 			 <span class="span_input">
@@ -40,8 +38,11 @@
 			 	<label class="label_radio"><input name="status" type="radio" value="0" <?php if($data['status'] == 0) echo 'checked';?>> 未通过</label>
 			 </span>
 			 </li>			
-			<li><input type="hidden" name="id" value="<?php echo $data['id'];?>"><input type="hidden" name="dosubmit" value="1">
-			<input class="dosubmit m_left_21 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;"></li>
+			<li>
+				<input type="hidden" name="id" value="<?php echo $data['id'];?>"><input type="hidden" name="dosubmit" value="1">
+			<input class="dosubmit w_120 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			</li>
 		</ul>
 	</form>
 </div>

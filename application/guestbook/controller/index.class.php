@@ -19,7 +19,7 @@ class index{
 			D('guestbook')->insert($_POST, true);
 			
 			//发送邮件通知
-			sendmail(get_config('mail_inbox'), '您的网站有新留言', '您的网站有新留言，<a href="'.get_config('site_url').'">请查看</a>！<br> <b>'.get_config('site_name').'</b>');
+			$this->_sendmail($_POST);
 			
 			showmsg('留言成功，请耐心等待管理员审核！');
 		}else{
@@ -29,6 +29,24 @@ class index{
 			$description = $site['site_description'];
 			include template('index','guestbook');			
 		}
+	}
+	
+	
+	/**
+	 *发送邮件通知
+	 */
+	private function _sendmail($data){
+		$title = strip_tags($data['title']);
+		$name = strip_tags($data['name']);
+		$content = strip_tags($data['bookmsg']);
+		$html = '';
+		$html .= '<p><b>留言标题：</b>'.$title.'</p>';
+		$html .= '<p style="margin-top:-10px"><b>联系人：</b>'.$name.'</p>';
+		$html .= '<p style="margin-top:-10px"><b>内容：</b></p>';
+		$html .= '<p style="margin-top:-10px">'.$content.'</p>';
+		$html .= '<p style="margin-top:-10px"><a href="'.get_config('site_url').'" target="_blank">点击查看详情</a></p>';
+		$html .= '<p style="margin-top:20px">'.get_config('site_name').'</p>';
+		sendmail(get_config('mail_inbox'), '您的网站有新留言', $html);
 	}
 
 }

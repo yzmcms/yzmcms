@@ -48,9 +48,9 @@ class page{
 			$pos = strpos($request_url, '/list');
 			if($pos) $request_url = substr($request_url, 0, $pos);
 			if(SITE_PATH == '/'){
-				return SITE_URL.$request_url.'/list_PAGE.html'; 
+				return SITE_URL.$request_url.'/list_PAGE'.C('url_html_suffix'); 
 			}
-			return SERVER_PORT.HTTP_HOST.'/'.$request_url.'/list_PAGE.html'; 
+			return SERVER_PORT.HTTP_HOST.'/'.$request_url.'/list_PAGE'.C('url_html_suffix'); 
 		}
 		return U(ROUTE_A, $this->parameter);
 	}

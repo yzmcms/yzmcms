@@ -376,19 +376,25 @@ class member extends common{
 	 * 会员统计
 	 */	
 	public function member_count(){ 
-		$member = D('member');
+		//统计开始时间
+		$starttime = strtotime(date('Y-m-d'))-10*24*3600;
 
-		$month_where = strtotime('-1 month').' AND '.SYS_TIME; //最近30天
-		$week_where = strtotime('-1 week').' AND '.SYS_TIME; //最近7天
+		//统计结束时间
+		$endtime = strtotime(date('Y-m-d'));
 
-		$yesterday_where = strtotime(date("Y-m-d",strtotime("-1 day"))).' AND '.strtotime(date("Y-m-d")); //昨天0点到昨天24点
-		$today_where = strtotime(date("Y-m-d")).' AND '.SYS_TIME; //今天0点到现在时间
+		$where = "regdate > $starttime";  //无需加结束条件，否则统计不到今日数据
+		$data = D('member')->field("COUNT(*) AS num,FROM_UNIXTIME(regdate, '%Y-%m-%d') AS gap")->where($where)->group('gap')->select();
+		$arr = array();
+		foreach ($data as $val){
+			$arr[$val['gap']] = intval($val['num']);
+		}
 
-		$total = $member->total();
-		$month_total = $member->where("regdate BETWEEN $month_where")->total();
-		$week_total = $member->where("regdate BETWEEN $week_where")->total();
-		$yesterday_total = $member->where("regdate BETWEEN $yesterday_where")->total();
-		$today_total = $member->where("regdate BETWEEN $today_where")->total();
+		for($i=$starttime; $i<=$endtime; $i = $i+24*3600){
+			$num = isset($arr[date('Y-m-d',$i)]) ? $arr[date('Y-m-d',$i)] : 0;				
+			$result['day'][] = date('Y-m-d',$i);
+			$result['num'][] = $num;
+		}
+		$result = json_encode($result);
 		include $this->admin_tpl('member_count');
 	}
 	

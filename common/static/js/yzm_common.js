@@ -3,7 +3,7 @@
  * 
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
- * @lastmodify       2016-09-30
+ * @lastmodify       2019-04-12
  */
 
  
@@ -109,6 +109,25 @@ function yzm_img_preview(id, src){
 	layer.tips('<img src="'+htmlspecialchars(src)+'" height="100">', '#'+id, {
 	  tips: [1, '#fff']
 	});	
+}
+
+
+//图片预览，可判断类型
+function yzm_img_browse(obj, src){
+	if(src == '') return false;
+	var ext = src.substring(src.length,src.lastIndexOf('.'));
+	if(ext!='.png' && ext!='.jpg' && ext!='.gif' && ext!='.jpeg') return false;
+	layer.tips('<img src="'+htmlspecialchars(src)+'" height="100">', obj, {
+	  tips: [1, '#fff']
+	});	
+}
+
+
+//添加远程地址
+function yzm_add_attachment(id){
+	var string = '<li>文件：<input type="text" name="'+id+'[url][]" value="" onmouseover="yzm_img_browse(this, this.value)" onmouseout="layer.closeAll();" class="input-text w_300"> 描述：<input type="text" name="'+id+'[alt][]" value="" class="input-text w_200"><a href="javascript:;" onclick="remove_li(this);">删除</a></li>';
+	
+	$("#"+id).append(string);	
 }
 
 

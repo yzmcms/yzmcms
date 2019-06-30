@@ -190,7 +190,7 @@ class api{
 	 */	
 	private function _get_upload_types(){
 		$arr = explode('|', get_config('upload_types'));
-		$allow = array('gif', 'jpg', 'png', 'jpeg','zip', 'rar', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf','mp4', 'avi', 'wmv', 'rmvb', 'flv','mp3', 'wma', 'wav', 'amr', 'ogg');
+		$allow = array('gif', 'jpg', 'png', 'jpeg', 'zip', 'rar', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'txt', 'csv', 'mp4', 'avi', 'wmv', 'rmvb', 'flv', 'mp3', 'wma', 'wav', 'amr', 'ogg');
 		foreach($arr as $key => $val){
 			if(!in_array($val, $allow)) unset($arr[$key]);
 		}

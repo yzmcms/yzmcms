@@ -105,6 +105,24 @@ function sendmail($email, $title = '', $content = '', $mailtype = 'HTML'){
 
 
 /**
+ * 格式化数组，根据传入的key/value，返回对应关系 
+ * @param  array 二维数组
+ * @param  数组中的值，如 name
+ * @param  数组中的主键，如 id
+ * @return array
+ */
+function format_keyval($arr, $value='', $key='id'){
+    if(!is_array($arr)) return array();
+    if(!$value) return $arr;
+    $data = array();
+    foreach ($arr as $val) {
+        $data[$val[$key]] = $val[$value];
+    }
+    return $data;
+}
+
+
+/**
  * 返回json数组，默认提示 “数据未修改！” 
  * @param $arr
  * @return string

@@ -60,6 +60,7 @@ class comment extends common {
 				$commentid = $comment_data['commentid'];
 				$comment->delete(array('id'=>$val));
 				$comment->query("UPDATE yzmcms_comment_data SET `total` = `total`-1 WHERE commentid='$commentid'");
+				$comment->delete(array('reply'=>$val));
 			}
 			showmsg(L('operation_success'));
 		}

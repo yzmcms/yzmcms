@@ -30,7 +30,7 @@ class index{
 		$db = D($modelarr[$modelid]);
 		$total = $db->where($where)->total();
 		$page = new page($total, 5);
-		$search_data = $db->field('title,description,inputtime,updatetime,click,thumb,nickname,url,catid')->where($where)->order('id DESC')->limit($page->limit())->select();
+		$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid')->where($where)->order('id DESC')->limit($page->limit())->select();
 		
 		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
 		include template('index','search');	
@@ -56,7 +56,7 @@ class index{
 		$modelid = 1;
 		$total = $tag_content->where(array('modelid'=>$modelid,'tagid'=>$id))->total();
 		$page = new page($total, 5);
-		$search_data = $tag_content->field('title,description,inputtime,updatetime,click,thumb,nickname,url,b.catid')->join('`yzmcms_article` b ON yzmcms_tag_content.aid=b.id')->where(array('modelid'=>$modelid,'tagid'=>$id))->order('updatetime DESC')->limit($page->limit())->select();
+		$search_data = $tag_content->field('b.id AS id,title,description,inputtime,updatetime,click,thumb,nickname,url,b.catid')->join('`yzmcms_article` b ON yzmcms_tag_content.aid=b.id')->where(array('modelid'=>$modelid,'tagid'=>$id))->order('updatetime DESC')->limit($page->limit())->select();
 		
 		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
 		include template('index','search');	
@@ -86,7 +86,7 @@ class index{
 		$where = 'inputtime BETWEEN '.$starttime.' AND '.$endtime.' AND `status` = 1';
 		$total = $db->where($where)->total();
 		$page = new page($total, 5);
-		$search_data = $db->field('title,description,inputtime,updatetime,click,thumb,nickname,url,catid')->where($where)->order('id DESC')->limit($page->limit())->select();
+		$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid')->where($where)->order('id DESC')->limit($page->limit())->select();
 		
 		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
 		include template('index','search');	

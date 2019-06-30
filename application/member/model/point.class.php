@@ -77,8 +77,20 @@ class point {
 	 * @param integer $userid         用户ID
 	 * @param string $username        用户名
 	 * @param string $remarks         说明
+	 * @return bool
 	 */
 	public function point_spend($type, $value, $pay_type, $userid = '', $username = '', $remarks = '') {
+		
+		if(!$userid || !$username || $value<=0) showmsg(L('illegal_parameters'), 'stop');
+		$data = D('member')->field('point,amount')->where(array('userid'=>$userid))->find();
+		if($type == '1'){
+			if(($data['point']-$value)<0) showmsg('积分不足本次交易！', 'stop');
+			$update = '`point`=`point`-'.$value;
+		}else{
+			if(($data['amount']-$value)<0) showmsg('金钱不足本次交易！', 'stop');
+			$update = '`amount`=`amount`-'.$value;
+		}
+		
 		$data = array();
 		$data['trade_sn'] = create_tradenum();
 		$data['money'] = $value;
@@ -90,10 +102,9 @@ class point {
 		$data['creat_time'] = SYS_TIME;
 		$data['ip'] = getip();
 		
-		$update = $type == '1' ? '`point`=`point`-'.$value : '`amount`=`amount`-'.$value;
-		
-		D('member')->update($update, array('userid'=>$userid));  //自减积分/金钱，不减经验
-		D('pay_spend')->insert($data);
+		$affected = D('member')->update($update, array('userid'=>$userid));  //自减积分/金钱，不减经验
+		if(!$affected) return false;
+		return D('pay_spend')->insert($data);
 	}
 	
 	

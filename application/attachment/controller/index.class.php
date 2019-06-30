@@ -35,9 +35,10 @@ class index extends common{
 			if(isset($_GET['fileext']) && $_GET['fileext']){
 				$where['fileext'] = $_GET['fileext'];
 			}
-			if(isset($_GET['start']) && isset($_GET['end']) && $_GET['start']) {
-				$where['uploadtime>='] = strtotime($_GET['start']);
-				$where['uploadtime<='] = strtotime($_GET['end']);
+			if(isset($_GET['range']) && isset($_GET['range'])) {
+				list($start, $end) = explode(' - ', $_GET['range']);
+				$where['uploadtime>='] = strtotime($start);
+				$where['uploadtime<='] = strtotime($end);
 			}			
 		}
 		$total = $attachment->where($where)->total();
@@ -56,7 +57,7 @@ class index extends common{
 		$info = D('attachment')->where(array('id'=>$id))->find();
 		if($info){
 			echo '<p style="text-align:center;">';
-			echo $info['isimage'] ? '<img src="'.$info['filepath'].$info['filename'].'">' : '<img src="'.(in_array($info['fileext'], array('zip', 'rar')) ? STATIC_URL.'images/ext/rar.png' : STATIC_URL.'images/ext/blank.png').'" title="'.$info['originname'].'"><a style="font-size:14px;display:block;margin-top:20px;" href="'.$info['filepath'].$info['filename'].'">点击下载</a>';
+			echo $info['isimage'] ? '<img src="'.$info['filepath'].$info['filename'].'" style="max-width:100%">' : '<img src="'.(in_array($info['fileext'], array('zip', 'rar')) ? STATIC_URL.'images/ext/rar.png' : STATIC_URL.'images/ext/blank.png').'" title="'.$info['originname'].'"><a style="font-size:14px;display:block;margin-top:20px;" href="'.$info['filepath'].$info['filename'].'">点击下载</a>';
 			echo '</p>';
 		}
 	}

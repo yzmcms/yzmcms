@@ -80,7 +80,7 @@ class content_model {
 	 */	
  	public function content_edit($data, $id, $isimport = 0) {
 		$content_tabname = D($this->tabname);
-		$r = $content_tabname->field('username,system')->where(array('id'=>$id))->find();
+		$r = $content_tabname->field('`username`,`system`')->where(array('id'=>$id))->find();
 		if($isimport){
 			$username = safe_replace(get_cookie('_username'));
 			if(!$r || $r['username']!=$username || $r['system']==1) return false;
@@ -148,7 +148,7 @@ class content_model {
 		$content_tabname = D($this->tabname);
 		if($isimport){
 			$username = safe_replace(get_cookie('_username'));
-			$r = $content_tabname->field('username,system')->where(array('id'=>$id))->find();
+			$r = $content_tabname->field('`username`,`system`')->where(array('id'=>$id))->find();
 			if(!$r || $r['username']!=$username || $r['system']==1) return false;
 		}
 		$affected = $content_tabname->delete(array('id'=>$id));

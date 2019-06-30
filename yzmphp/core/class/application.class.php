@@ -108,8 +108,10 @@ class application {
 	 */
 	public static function halt($msg) {
 		if(ob_get_length() !== false) @ob_end_clean();
-		header('HTTP/1.1 404 Not Found');
-        header('Status:404 Not Found');
+		if(!APP_DEBUG){
+			header('HTTP/1.1 404 Not Found');
+	        header('Status:404 Not Found');
+		} 
 		include(YP_PATH.'core'.DIRECTORY_SEPARATOR.'tpl'.DIRECTORY_SEPARATOR.'halt.tpl');
 		exit();
 	}
