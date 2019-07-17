@@ -188,6 +188,9 @@ class collection {
 	 * @return string
 	 */
 	protected static function url_check($url, $baseurl) {
+		
+		if(substr($url, 0, 4) != 'http') showmsg('链接地址仅允许HTTP和HTTPS协议！', 'stop');
+		
         $urlinfo = parse_url($baseurl);
 		$baseurl = $urlinfo['scheme'].'://'.$urlinfo['host'].(substr($urlinfo['path'], -1, 1) === '/' ? substr($urlinfo['path'], 0, -1) : str_replace('\\', '/', dirname($urlinfo['path']))).'/';
 		
@@ -200,7 +203,7 @@ class collection {
 		}
 		
 		return $url;
-	}	
+	}
  
 }
 ?>
