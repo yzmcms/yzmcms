@@ -35,10 +35,9 @@ class index extends common{
 			if(isset($_GET['fileext']) && $_GET['fileext']){
 				$where['fileext'] = $_GET['fileext'];
 			}
-			if(isset($_GET['range']) && isset($_GET['range'])) {
-				list($start, $end) = explode(' - ', $_GET['range']);
-				$where['uploadtime>='] = strtotime($start);
-				$where['uploadtime<='] = strtotime($end);
+			if(isset($_GET['start']) && isset($_GET['end']) && $_GET['start']) {
+				$where['uploadtime>='] = strtotime($_GET['start']);
+				$where['uploadtime<='] = strtotime($_GET['end']);
 			}			
 		}
 		$total = $attachment->where($where)->total();

@@ -11,7 +11,8 @@
 		 <input type="hidden" value="search_log" name="a">
 		 原名称：<input type="text" name="originname" placeholder="附件原名" style="width:135px" class="input-text" value="<?php if(isset($_GET['originname'])) echo $_GET['originname'];?>">
 		 上传者：<input type="text" name="username" placeholder="上传者" style="width:135px" class="input-text" value="<?php if(isset($_GET['username'])) echo $_GET['username'];?>">
-		 时间：<input type="text" class="input-text range" placeholder="时间范围" style="width:185px;" name="range" <?php if(isset($_GET['range']) && $_GET['range'] != '') echo 'value="'.$_GET['range'].'"'; ?>>
+		 时间：<input type="text" class="input-text laydate-icon" style="width:125px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
+		 至 <input type="text" class="input-text laydate-icon" style="width:125px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d'); ?>">
 		 类型：<input type="text" name="fileext" placeholder="如：jpg" style="width:135px" class="input-text" value="<?php if(isset($_GET['fileext'])) echo $_GET['fileext'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 		 </form>	
   </div>
@@ -63,11 +64,34 @@
   <span class="page_right"><?php echo $page->getfull();?></span></div>
 </div>
 <?php include $this->admin_tpl('footer', 'admin');?>
-<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/5.0.9/laydate.js"></script>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
 <script type="text/javascript">
-laydate.render({
-  elem: '.range',range: true
-});
+var start = {
+	elem: '#start',
+	format: 'YYYY-MM-DD',
+	min: '1999-01-01', //设定最小日期
+	max: '2099-01-01', //最大日期
+	istime: false,
+	istoday: false,
+	choose: function(datas){
+		 end.min = datas; //开始日选好后，重置结束日的最小日期
+		 end.start = datas //将结束日的初始值设定为开始日
+	}
+};
+
+var end = {
+	elem: '#end',
+	format: 'YYYY-MM-DD',
+	min: '1999-01-01',
+	max: '2099-01-01',
+	istime: false,
+	istoday: false,
+	choose: function(datas){
+		start.max = datas; //结束日选好后，充值开始日的最大日期
+	}
+};
+laydate(start);
+laydate(end);
 </script>
 </body>
 </html>
