@@ -14,16 +14,16 @@
 			<form method="post" action="">
 			    <ul>
 					<li class="login_item">
-						<input type="text" name="username" class="login_input" required="required" autofocus="autofocus">
+						<input type="text" name="username" class="login_input" required="required" autofocus="autofocus" placeholder="用户名">
 						<span>用户名：</span>
 					</li>
 					<li class="login_item">					
-						<input type="password" name="password" class="login_input" required="required">
+						<input type="password" name="password" class="login_input" required="required" placeholder="密码">
 						<span>密　码：</span>
 					</li>
 					<li class="login_item">
 						<img src="<?php echo U('api/index/code');?>" border="0" class="verifyimg" onclick="this.src=this.src+'?'"/>
-						<input type="text" name="code" class="login_input verify_input" required="required">
+						<input type="text" name="code" class="login_input verify_input" required="required" placeholder="验证码">
 						<span>验证码：</span>
 					</li>
 					<li class="login-sub">
@@ -33,6 +33,6 @@
            </form>
 		</div>
 	</div>
-	<div class="footer"><p>Powered By <a href="http://www.yzmcms.com" target="_blank" title="<?php echo YZMCMS_SOFTNAME;?>"><?php echo YZMCMS_SOFTNAME;?></a> © 2014-2019 袁志蒙工作室</p></div>
+	<div class="footer"><p>Powered By <a href="http://www.yzmcms.com" target="_blank" title="<?php echo YZMCMS_SOFTNAME;?>"><?php echo YZMCMS_SOFTNAME;?></a> © 2014-2020 袁志蒙工作室</p></div>
 </body>
 </html>

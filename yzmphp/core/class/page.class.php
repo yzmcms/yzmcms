@@ -43,15 +43,7 @@ class page{
         unset($this->parameter['m'],$this->parameter['c'],$this->parameter['a']);
 		$this->parameter['page'] = 'PAGE';
 		
-		if($this->url_rule){
-			$request_url = trim($_SERVER['REQUEST_URI'], '/');
-			$pos = strpos($request_url, '/list');
-			if($pos) $request_url = substr($request_url, 0, $pos);
-			if(SITE_PATH == '/'){
-				return SITE_URL.$request_url.'/list_PAGE'.C('url_html_suffix'); 
-			}
-			return SERVER_PORT.HTTP_HOST.'/'.$request_url.'/list_PAGE'.C('url_html_suffix'); 
-		}
+		if($this->url_rule) return $this->_list_url();
 		return U(ROUTE_A, $this->parameter);
 	}
 	
@@ -175,4 +167,27 @@ class page{
 		if($this->total_rows == 0) return '';
 	    return ($this->gethome()).($this->getpre()).($this->getlist()).($this->getnext()).($this->getend());
 	}
+
+
+	/**
+	 * 获取前端列表分页URL
+	 */
+	private function _list_url(){
+		$parameter = '';
+		$request_url = trim($_SERVER['REQUEST_URI'], '/');
+
+		// 支持传入自定义参数  ?aa=1&bb=2
+		$pos = strpos($request_url, '?');
+		if($pos){
+			$parameter = substr($request_url, $pos);
+			$request_url = trim(substr($request_url, 0, $pos), '/');
+		}
+		$pos = strpos($request_url, '/list');
+		if($pos) $request_url = substr($request_url, 0, $pos);
+		if(SITE_PATH == '/'){
+			return SITE_URL.$request_url.'/list_PAGE'.C('url_html_suffix').$parameter; 
+		}
+		return SERVER_PORT.HTTP_HOST.'/'.$request_url.'/list_PAGE'.C('url_html_suffix').$parameter; 
+	}
+
 }

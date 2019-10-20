@@ -148,7 +148,6 @@
                         },
                         success: function(msg){
                             if(msg==0){
-                                $('#dbpw').val("");
                                 $('#J_install_tip_dbpw').html('<span for="dbname" generated="true" class="tips_error" style="">数据库链接失败</span>');
                             }
                         },

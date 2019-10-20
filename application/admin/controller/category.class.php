@@ -68,6 +68,7 @@ class category extends common {
 			foreach($_POST['catid'] as $key=>$val){
 				$this->db->update(array('listorder'=>$_POST['listorder'][$key]),array('catid'=>intval($val)));
 			}
+			delcache('categoryinfo');
 			showmsg(L('operation_success'),'',1);
 		}
 	}
@@ -105,6 +106,8 @@ class category extends common {
 		$type = isset($_GET['type']) ? intval($_GET['type']) : intval($_POST['type']);
 
 		if(isset($_POST['dosubmit'])) { 
+
+			$_POST['catdir'] = trim($_POST['catdir']);
 
 			if($type != 2){   //非外部链接
 				$res = $this->db->where(array('catdir' => $_POST['catdir']))->find();
@@ -171,6 +174,7 @@ class category extends common {
 
 		if(isset($_POST['dosubmit'])) {
 			$catid = isset($_POST['catid']) ? strval(intval($_POST['catid'])) : 0;  
+			$_POST['catdir'] = trim($_POST['catdir']);
 			
 			if($_POST['parentid']=='0') {
 				$_POST['arrparentid'] = '0';

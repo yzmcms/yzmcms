@@ -387,7 +387,7 @@ class index extends common{
 		$member_content = D('member_content');
 		yzm_base::load_sys_class('page','',0);
 		$total = $member_content->join('yzmcms_member_follow ON yzmcms_member_follow.followid = yzmcms_member_content.userid', 'RIGHT')->where("yzmcms_member_follow.userid=$userid AND status=1")->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$res = $member_content->field('yzmcms_member_content.checkid,yzmcms_member_content.catid,yzmcms_member_content.username,yzmcms_member_content.title,yzmcms_member_content.inputtime')->join('yzmcms_member_follow ON yzmcms_member_follow.followid = yzmcms_member_content.userid', 'RIGHT')->where("yzmcms_member_follow.userid=$userid AND status=1")->order('inputtime DESC')->limit($page->limit())->select();	
 		$data = array();
 		foreach($res as $val) {

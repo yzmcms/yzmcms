@@ -15,15 +15,15 @@ class menu extends common {
 
 		$array = array();
 		foreach($data as $v) {
-			$v['string'] = '<a title="增加子类" href="javascript:;" onclick="yzm_open(\'增加菜单\',\''.U('add',array('parentid'=>$v['id'])).'\',800,500)" style="text-decoration:none"  class="btn-mini btn-success ml-5">增加子类</a> <a title="编辑菜单" href="javascript:;" onclick="yzm_open(\'编辑菜单\',\''.U('edit',array('id'=>$v['id'])).'\',800,500)" style="text-decoration:none"  class="btn-mini btn-secondary ml-5">编辑</a> <a title="删除" href="javascript:;" onclick="yzm_del(\''.U('delete',array('id'=>$v['id'])).'\')" style="text-decoration:none"  class="btn-mini btn-warning ml-5">删除</a>';
-			$v['display'] = $v['display'] ? '<span style="color:#0a6999">显示</span>' : '隐藏';
+			$v['string'] = '<a title="增加子类" href="javascript:;" onclick="yzm_open(\'增加菜单\',\''.U('add',array('parentid'=>$v['id'])).'\',600,400)" style="text-decoration:none"  class="btn-mini btn-success ml-5">增加子类</a> <a title="编辑菜单" href="javascript:;" onclick="yzm_open(\'编辑菜单\',\''.U('edit',array('id'=>$v['id'])).'\',600,400)" style="text-decoration:none"  class="btn-mini btn-secondary ml-5">编辑</a> <a title="删除" href="javascript:;" onclick="yzm_del(\''.U('delete',array('id'=>$v['id'])).'\')" style="text-decoration:none"  class="btn-mini btn-warning ml-5">删除</a>';
+			$v['display'] = $v['display'] ? '<span class="label label-primary radius">显示</span>' : '<span class="label radius">隐藏</span>';
 			$array[] = $v;
 		}	
 		$str  = "<tr>
 					<td><input name='listorders[\$id]' type='text' value='\$listorder' class='input-text listorder'></td>
 					<td>\$id</td>
 					<td>\$spacer\$name</td>
-					<td>\$display</td>
+					<td  class='text-c'>\$display</td>
 					<td>\$string</td>
 				</tr>";
 		$tree->init($array);

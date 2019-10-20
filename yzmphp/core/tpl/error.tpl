@@ -27,7 +27,7 @@
 		<code><?php echo $detailed ? $detailed : $msg;?> </code>
 	</div>
 
-	<p class="footer">Powered by <a href="http://www.yzmcms.com/" target="_blank">YZMPHP</a> Version <strong><?php echo YZMPHP_VERSION;?></strong></p>
+	<p class="footer">Powered by <a href="http://www.yzmphp.com/" target="_blank">YZMPHP</a> Version <strong><?php echo YZMPHP_VERSION;?></strong></p>
 </div>
 
 </body>

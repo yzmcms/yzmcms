@@ -11,7 +11,7 @@ class tag extends common {
 	public function init() {
 		$tag = D('tag');
 		$total = $tag->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $tag->order('id DESC')->limit($page->limit())->select();		
 		include $this->admin_tpl('tag_list');
 	}
@@ -26,6 +26,7 @@ class tag extends common {
 			$_POST['tags'] = str_replace('，', ',', strip_tags($_POST['tags']));
 			$arr = array_unique(explode(',', $_POST['tags']));
 			foreach($arr as $val){
+				$val = trim($val);
 				$tagid = $tag->where(array('tag' => $val))->find();
 				if(!$tagid){
 					$tag->insert(array('tag' => $val, 'total'=>0, 'inputtime'=>SYS_TIME), true);
@@ -45,8 +46,10 @@ class tag extends common {
 		$tag = D('tag');
 		if(isset($_POST['dosubmit'])) {
 			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-		
-			if($tag->update($_POST, array('id' => $id))){
+			$tagv = trim($_POST['tag']);
+			$data = $tag->where(array('tag' => $tagv))->find();
+			if($data) return_json(array('status'=>0,'message'=>'该TAG标签已存在！'));
+			if($tag->update(array('tag' => $tagv), array('id' => $id), true)){
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();

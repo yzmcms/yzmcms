@@ -26,7 +26,7 @@ class index{
 		yzm_base::load_sys_class('page','',0);
 		$model = D('model');
 		$total = $model->where(array('type'=>1, 'disabled'=>0))->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$formdata = $model->where(array('type'=>1, 'disabled'=>0))->order('modelid DESC')->limit($page->limit())->select();
 		
 		//SEO相关设置

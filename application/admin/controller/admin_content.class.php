@@ -11,7 +11,7 @@ class admin_content extends common {
 		yzm_base::load_sys_class('page','',0);
 		$member_content = D('member_content');
 		$total = $member_content->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $member_content->order('updatetime DESC')->limit($page->limit())->select();		
 		include $this->admin_tpl('member_publish_list');
 	}
@@ -80,7 +80,6 @@ class admin_content extends common {
 			$member = D('member');
 			$pay = D('pay');
 			$ip = getip();
-			$url_rule = get_config('url_rule') ? true : false;
 			$publish_point = get_config('publish_point');
 			
 			foreach($_POST['ids'] as $val){
@@ -91,7 +90,7 @@ class admin_content extends common {
 				
 				list($modelid, $id) = explode('_', $val);
 				$content_tabname = D(get_model($modelid));
-				$updatearr['url'] = $this->get_url($url_rule, $catid, $id);
+				$updatearr['url'] = get_content_url($catid, $id);
 				$content_tabname->update($updatearr, array('id' => $id));  //更新model内容表状态
 				
 				//投稿奖励积分和经验
@@ -142,19 +141,4 @@ class admin_content extends common {
 		}
 	}
 	
-	
-	/**
-	 * 获取内容页URL
-	 */
-	private function get_url($url_rule, $catid, $id){
-		
-		//如果系统设置是伪静态模式
-		if($url_rule){
-			$catinfo = get_category($catid);
-			$url = URL_MODEL == 1 ? SITE_URL.'index.php?s=/'.$catinfo['catdir'].'/'.$id.C('url_html_suffix') : SITE_URL.$catinfo['catdir'].'/'.$id.C('url_html_suffix');
-		}else{  
-			$url = U('index/index/show',array('catid'=>$catid,'id'=>$id));
-		}		
-		return $url;
-	}
 }

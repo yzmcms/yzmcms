@@ -19,7 +19,10 @@
 				  <input type="hidden" name="openid" value="<?php echo $data['openid']?>">
 				  <textarea class="textarea" name="content" id="content"></textarea>
 				 </li>
-				 <li><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"></li>
+				 <li>
+				 	<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
+				 	<input class="btn w_120 btn-default radius h35" type="button" value="后退" onclick="window.history.go(-1)">
+				 </li>
 			</ul>
 		</form>
 	</div>

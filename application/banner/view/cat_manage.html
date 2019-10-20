@@ -6,7 +6,10 @@
 <div class="formdoby_normal"> 
 	<form method="post" action="" id="myform" onsubmit="return checkall(this)">
 		<ul>
-		<li><button name="dosubmit" class="btn btn-danger radius" type="submit"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</button></li> 
+		<li>
+			<button name="dosubmit" class="btn btn-danger radius" type="submit"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</button>
+			<input class="btn w_120 btn-default radius" type="button" value="关闭" onclick="yzmcms_close()">
+		</li> 
 		<li>&nbsp;&nbsp;<span style="width:50px;display:inline-block">分类ID</span> <span style="width:100px;display:inline-block">分类名称</span></li> 
 		<?php 
 		foreach($data as $val){

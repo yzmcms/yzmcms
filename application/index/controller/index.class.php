@@ -73,7 +73,7 @@ class index{
 		if(!isset($modelarr[$modelid]))  showmsg(L('model_not_existent'),'stop');
 		$db = D($modelarr[$modelid]);
 		$data = $db->where(array('id'=>$id))->find();
-		if(!$data || $data['status'] != 1) showmsg(L('content_not_existent'),'stop');
+		if(!$data || $data['status'] != 1 || $data['catid'] != $catid) showmsg(L('content_not_existent'),'stop');
 		extract($data);
 		
 		//会员组权限检测

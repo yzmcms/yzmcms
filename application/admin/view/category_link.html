@@ -18,13 +18,13 @@
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>栏目名称：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" name="catname" value="" class="input-text">
+						<input type="text" name="catname" value="" class="input-text" placeholder="例如：YzmCMS官网">
 					</div>
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>链接地址：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" name="pclink" value="" class="input-text">
+						<input type="text" name="pclink" value="" class="input-text" placeholder="例如：http://www.yzmcms.com">
 					</div>
 				</div>
 				<div class="row cl">
@@ -73,8 +73,8 @@
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
 				<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="type" value="<?php echo $type;?>">
-				<input type="submit" class="btn btn-primary radius" name="dosubmit" value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
-				<input type="reset" class="btn btn-default radius" value="&nbsp;&nbsp;取消&nbsp;&nbsp;" onclick="yzmcms_close()">
+				<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
+			 	<input class="btn w_120 btn-default radius h35" type="button" value="取消" onclick="yzmcms_close()">
 			</div>
 		</div>
 	</form>

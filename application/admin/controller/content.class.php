@@ -21,7 +21,7 @@ class content extends common {
 		$modelid = 1; //默认加载文章模型
 		$catid = 0; //默认加载全部分类
 		$total = $content->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $content->order('id DESC')->limit($page->limit())->select();	
 		include $this->admin_tpl('content_list');
 	}
@@ -65,8 +65,9 @@ class content extends common {
 			}	
 			
 		}
+		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $content->where($where)->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $content->where($where)->order('id DESC')->limit($page->limit())->select();		
 		include $this->admin_tpl('content_list');
 	}
@@ -189,11 +190,17 @@ class content extends common {
 		if(isset($_POST['dosubmit'])) {
 			$ids = safe_replace($_POST['ids']);
 			$ids_arr = explode(',', $ids);
-			$ids_arr = array_map('intval', $ids_arr);
-			$ids = join(',', $ids_arr);
 			$catid = intval($_POST['catid']);
-			$content = D($this->content->tabname);
-			$affected = $content->update(array('catid' => $catid), 'id IN ('.$ids.')');
+			$db = D($this->content->tabname);
+			foreach ($ids_arr as $id) {
+				$id = intval($id);
+				$system = $db->field('`system`')->where(array('id'=>$id))->one();
+				$affected = $db->update(array('catid' => $catid), array('id'=>$id));
+				if($affected && !$system){
+					//更新会员稿件分类
+					D('member_content')->update(array('catid' => $catid), array('checkid'=>$this->content->modelid.'_'.$id));
+				}
+			}
 			return_json(array('status' => 1, 'message' => '操作成功'));
 		}else{
 			$modelid = $this->content->modelid;

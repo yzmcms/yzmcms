@@ -3,13 +3,18 @@
 </head>
 <body>
 <article class="page-container">
-<div class="formdoby formdoby2"> 
+<div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
 			 <li><label>添加TAG：</label><span class="span_input"><span class="c-red">*支持添加多个，每个tag之间请用逗号分隔</span></span></li>	
-			 <li><label>TAG名称：</label><span class="span_input"><textarea name="tags" class="textarea"></textarea></span></li>					 
-			<li><input type="hidden" name="dosubmit" value="1">
-			<input class="dosubmit m_left_21 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;"></li>
+			 <li><label>TAG名称：</label>
+			 	<span class="span_input"><textarea name="tags" class="textarea" style="width:75%"></textarea></span>
+			 </li>					 
+			<li>
+				<input type="hidden" name="dosubmit" value="1">
+				<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
+			 	<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			</li>
 		</ul>
 	</form>
 </div>

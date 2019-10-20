@@ -38,8 +38,8 @@
 			<td><?php echo $val['id']?></td>
 			<td><?php echo $val['title']?></td>
 			<td><?php echo $val['type']==1 ? '文字形式' : ($val['type']==2 ? 'HTML代码' : '图片形式');?></td>
-			<td><a href="<?php echo $val['url']?>" target="_blank"><?php echo $val['url']?></a></td>
-			<td><?php echo $val['describe']?></td>
+			<td><a href="<?php echo htmlspecialchars($val['url'])?>" target="_blank"><?php echo htmlspecialchars($val['url'])?></a></td>
+			<td><?php echo htmlspecialchars($val['describe'])?></td>
 			<td><?php echo $val['end_time']==0 || $val['end_time']>SYS_TIME ? '正常' : '<span style="color:red;">已过期</span>';?></td>
 			<td><?php echo date('Y-m-d H:i:s', $val['inputtime'])?></td>
 			<td><a title="编辑" href="javascript:;" onclick="yzm_open('编辑广告','<?php echo U('edit', array('id'=>$val['id']));?>','700','500')" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a></td>

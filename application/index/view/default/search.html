@@ -16,7 +16,7 @@
             <h3 class="ind_bt">点击排行</h3>
 			 <div class="l_list">
 				<ul>				  
-					{m:hits field="title,url" modelid="$modelid" limit="10"}
+					{m:hits field="title,url" modelid="1" limit="10"}
 					{loop $data $v}
 					   <li><a href="{$v[url]}" title="{$v[title]}" target="_blank">{str_cut($v['title'], 60)}</a></li>	
 					{/loop}					

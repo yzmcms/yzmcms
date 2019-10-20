@@ -21,7 +21,7 @@ class member extends common{
 		$member_group = get_groupinfo();
 		$member = D('member');
 		$total = $member->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $member->order('userid DESC')->limit($page->limit())->select();			
 		include $this->admin_tpl('member_list');
 	}
@@ -62,8 +62,9 @@ class member extends common{
 				$where .= ' AND groupid = '.$groupid;
 			}			
 		}
+		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $member->where($where)->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $member->where($where)->order('userid DESC')->limit($page->limit())->select();		
 		include $this->admin_tpl('member_list');
 	}	
@@ -202,7 +203,7 @@ class member extends common{
 	public function check(){ 
 		$member = D('member');
 		$total = $member->where(array('status'=>0))->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $member->where(array('status'=>0))->order('userid DESC')->limit($page->limit())->select();			
 		include $this->admin_tpl('member_check');
 	}
@@ -258,7 +259,7 @@ class member extends common{
 	public function pay(){ 
 		$pay = D('pay');
 		$total = $pay->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $pay->order('id DESC')->limit($page->limit())->select();			
 		include $this->admin_tpl('pay_list');
 	}
@@ -290,8 +291,9 @@ class member extends common{
 				$where .= " AND `creat_time` >= '".strtotime($_GET["start"])."' AND `creat_time` <= '".strtotime($_GET["end"])."' ";
 			}			
 		}
+		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $pay->where($where)->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $pay->where($where)->order('id DESC')->limit($page->limit())->select();					
 		include $this->admin_tpl('pay_list');
 	}
@@ -318,7 +320,7 @@ class member extends common{
 	public function pay_spend(){ 
 		$pay_spend = D('pay_spend');
 		$total = $pay_spend->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $pay_spend->order('id DESC')->limit($page->limit())->select();			
 		include $this->admin_tpl('pay_spend_list');
 	}
@@ -350,8 +352,9 @@ class member extends common{
 				$where .= " AND `creat_time` >= '".strtotime($_GET["start"])."' AND `creat_time` <= '".strtotime($_GET["end"])."' ";
 			}			
 		}
+		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $pay_spend->where($where)->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $pay_spend->where($where)->order('id DESC')->limit($page->limit())->select();					
 		include $this->admin_tpl('pay_spend_list');
 	}

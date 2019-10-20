@@ -88,7 +88,7 @@ class system_manage extends common {
 	public function user_config_list() {
 		$config = D('config');
 		$total = $config->where(array('type' => 99))->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $config->where(array('type' => 99))->order('id DESC')->limit($page->limit())->select();	
 		include $this->admin_tpl('user_config_list');
 	}

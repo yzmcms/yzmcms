@@ -14,7 +14,11 @@
 			 <li><label>旧密码：</label><input type="password" class="input" placeholder="旧密码" name="old_password" value=""></li>
 			 <li><label>新密码：</label><input type="password" class="input" placeholder="新密码" name="password" value=""> <span style="color:#888">[不修改请留空]</span></li>
 			 <li><label>确认密码：</label><input type="password" class="input" placeholder="确认密码" name="password2" value=""> <span style="color:#888">[不修改请留空]</span></li>
-			 <li><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"></li>
+			 <input type="hidden" name="dosubmit" value="1">
+			 <li>
+			 	<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
+			 	<input class="btn w_120 btn-default radius h35" type="button" value="取消" onclick="yzmcms_close()">
+			 </li>
 		</ul>
 	</form>
 </div>
@@ -22,23 +26,35 @@
 <?php include $this->admin_tpl('footer');?> 
 <script type="text/javascript">
 	function dosub(obj){
-		 if($("input[name='password']").val()!=''){
-			 if($("input[name='password']").val().length < 6){
-				 layer.msg('密码长度不能低于6位！');
-				 return false;
-			 }
-			 if($("input[name='password']").val()!==$("input[name='password2']").val()){
-				 layer.msg('两次密码值不相等！');
-				 return false;
-			 }
-			 if($("input[name='old_password']").val() == ''){
-				 layer.msg('旧密码不能为空！');
-				 return false;
-			 }
-			 return true;
-		 }else{
-			 return true;
-		 }			 
+		 if($("input[name='old_password']").val() == ''){
+			 layer.msg('旧密码不能为空！');
+			 return false;
+		 }
+		 if($("input[name='password']").val().length < 6){
+			 layer.msg('密码长度不能低于6位！');
+			 return false;
+		 }
+		 if($("input[name='password']").val()!==$("input[name='password2']").val()){
+			 layer.msg('两次密码值不相等！');
+			 return false;
+		 }
+
+		$.ajax({
+		 type: 'POST',
+		 url: '<?php echo U('public_edit_pwd');?>', 
+		 data: $(obj).serialize(),
+		 dataType: "json", 
+		 success: function (msg) {
+			if(msg.status == 1){
+				layer.msg('修改密码成功，请重新登录！');
+				setTimeout('parent.location.reload()', 2500);
+		    }else{
+				layer.msg(msg.message);
+			}
+		 }
+		})
+
+		 return false;			 
 	}
 </script> 
 </body>

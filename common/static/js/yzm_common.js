@@ -106,7 +106,7 @@ function yzm_img_cropper(cid, url){
 //图片预览
 function yzm_img_preview(id, src){
 	if(src == '') return;
-	layer.tips('<img src="'+htmlspecialchars(src)+'" height="100">', '#'+id, {
+	layer.tips('<img src="'+htmlspecialchars(src)+'" style="max-width:180px" >', '#'+id, {
 	  tips: [1, '#fff']
 	});	
 }

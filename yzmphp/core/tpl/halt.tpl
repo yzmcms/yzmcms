@@ -18,7 +18,7 @@
     <div id="msg">        	
      <div id="title"> (>﹏<) </div>
      <div id="body"><?php echo htmlspecialchars($msg);?></div>
-	 <div id="footer"><a href="http://www.yzmcms.com/" target="_blank" title="官方网站">YZMPHP</a><sup><?php echo YZMPHP_VERSION;?></sup></div>
+	 <div id="footer"><a href="http://www.yzmcms.com/" target="_blank" title="官方网站">YzmCMS</a><sup><?php echo YZMCMS_VERSION;?></sup></div>
     </div>
 </body>
 </html>

@@ -3,20 +3,23 @@
 </head>
 <body>
 <article class="page-container">
-<div class="formdoby formdoby2"> 
+<div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
 			 <li><label><span class="c-red">*</span>模型名称：</label><input type="text" class="input" name="name" value="<?php echo $data['name'];?>"></li>
 			 <li><label><span class="c-red">*</span>模型表名：</label><input type="text" class="input" value="<?php echo $data['tablename'];?>" name="tablename" disabled="disabled"></li>	
-			 <li><label>模型简介：</label><span class="span_input"><textarea name="description" class="textarea"><?php echo $data['description'];?></textarea></span></li>	
+			 <li><label>模型简介：</label><span class="span_input"><textarea name="description" class="textarea" style="width:70%"><?php echo $data['description'];?></textarea></span></li>	
 			 <li><label>禁用：</label>
 			 <span class="span_input">
 			 	<label class="label_radio"><input name="disabled" type="radio" value="1" <?php echo $data['disabled']==1 ? ' checked="checked" ' : '';?>> 是</label>
 			 	<label class="label_radio"><input name="disabled" type="radio" value="0" <?php echo $data['disabled']==0 ? ' checked="checked" ' : '';?>> 否</label>
 			 </span>
 			 </li>				 
-			<li><input type="hidden" name="dosubmit" value="1"><input type="hidden" name="modelid" value="<?php echo $data['modelid'];?>">
-			<input class="dosubmit m_left_21 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;"></li>
+			<li>
+				<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="modelid" value="<?php echo $data['modelid'];?>">
+				<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
+			 	<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			</li>
 		</ul>
 	</form>
 </div>

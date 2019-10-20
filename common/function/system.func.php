@@ -48,6 +48,24 @@ function get_config($key = ''){
 
 
 /**
+ * 获取内容页URL 
+ * @param $catid 
+ * @param $id 
+ */
+function get_content_url($catid, $id){
+	$url_rule = get_config('url_rule');
+	//如果系统设置是伪静态模式
+	if($url_rule){
+		$catinfo = get_category($catid);
+		$url = URL_MODEL == 1 ? SITE_URL.'index.php?s=/'.$catinfo['catdir'].'/'.$id.C('url_html_suffix') : SITE_URL.$catinfo['catdir'].'/'.$id.C('url_html_suffix');
+	}else{  
+		$url = U('index/index/show',array('catid'=>$catid,'id'=>$id));
+	}
+	return $url;
+}
+
+
+/**
  * 单页面标签，用于在首页或频道页调取单页的简介...
  * @param $catid
  * @param $limit
@@ -105,29 +123,12 @@ function sendmail($email, $title = '', $content = '', $mailtype = 'HTML'){
 
 
 /**
- * 格式化数组，根据传入的key/value，返回对应关系 
- * @param  array 二维数组
- * @param  数组中的值，如 name
- * @param  数组中的主键，如 id
- * @return array
- */
-function format_keyval($arr, $value='', $key='id'){
-    if(!is_array($arr)) return array();
-    if(!$value) return $arr;
-    $data = array();
-    foreach ($arr as $val) {
-        $data[$val[$key]] = $val[$value];
-    }
-    return $data;
-}
-
-
-/**
  * 返回json数组，默认提示 “数据未修改！” 
  * @param $arr
  * @return string
  */
 function return_json($arr = array()){
+    header('Content-Type:application/json; charset=utf-8');
 	if(!$arr) exit(json_encode(array('status'=>0,'message'=>L('data_not_modified'))));
 	exit(json_encode($arr));	
 }
@@ -279,18 +280,17 @@ function select_category($name="parentid", $value="0", $root="", $member_publish
  */
 function get_category($catid = '', $parameter = ''){
     if(!$categoryinfo = getcache('categoryinfo')){
-		$data = D('category')->order('listorder ASC, catid ASC')->select();
-		$categoryinfo = array();
-		foreach($data as $val){
-			$categoryinfo[$val['catid']] = $val;
-		}
+		$categoryinfo = D('category')->order('listorder ASC, catid ASC')->select();
 		setcache('categoryinfo', $categoryinfo);
 	}
 	if($catid){
-		if(empty($parameter))
-			return array_key_exists($catid,$categoryinfo) ? $categoryinfo[$catid] : array();
-		else
-			return array_key_exists($catid,$categoryinfo) ? $categoryinfo[$catid][$parameter] : '';
+		$catid_arr = yzm_array_column($categoryinfo, 'catid');
+        $catid = array_search($catid, $catid_arr);
+        if ($catid === false) {
+            return array();
+		}
+		return $parameter ? (isset($categoryinfo[$catid][$parameter]) ? $categoryinfo[$catid][$parameter] : '') : $categoryinfo[$catid];
+
 	}else{
 		return $categoryinfo;	
 	}
@@ -339,13 +339,12 @@ function get_childcat($catid){
  */
 function get_location($catid, $self=true, $symbol=' &gt; '){
 	$catid = intval($catid);
-    $catdata = get_category();
-	$data = explode(',', $catdata[$catid]['arrparentid']);
+	$data = explode(',', get_category($catid, 'arrparentid'));
 	$str = '<a href="'.SITE_URL.'">首页</a>';
 	foreach($data as $v){
-		if($v) $str .= $symbol.'<a href="'.$catdata[$v]['pclink'].'" title="'.$catdata[$v]['catname'].'">'.$catdata[$v]['catname'].'</a>';
+		if($v) $str .= $symbol.'<a href="'.get_category($v, 'pclink').'">'.get_category($v, 'catname').'</a>';
 	}
-	if($self) $str .= $symbol.'<a href="'.$catdata[$catid]['pclink'].'" title="'.$catdata[$catid]['catname'].'">'.$catdata[$catid]['catname'].'</a>';
+	if($self) $str .= $symbol.'<a href="'.get_category($catid, 'pclink').'">'.get_category($catid, 'catname').'</a>';
     return $str;	
 }
 
@@ -434,10 +433,10 @@ function set_mapping() {
 		$data = D('category')->field('type,catid,catdir')->where(array('type!=' => 2))->select();
 		$mapping = array();
 		foreach($data as $val){
-			$mapping['^'.$val['catdir'].'$'] = 'index/index/lists/catid/'.$val['catid'];
+			$mapping['^'.str_replace('/', '\/', $val['catdir']).'$'] = 'index/index/lists/catid/'.$val['catid'];
 			if(!$val['type']){
-			$mapping['^'.$val['catdir'].'\/list_(\d+)$'] = 'index/index/lists/catid/'.$val['catid'].'/page/$1';
-			$mapping['^'.$val['catdir'].'\/(\d+)$'] = 'index/index/show/catid/'.$val['catid'].'/id/$1';				
+			$mapping['^'.str_replace('/', '\/', $val['catdir']).'\/list_(\d+)$'] = 'index/index/lists/catid/'.$val['catid'].'/page/$1';
+			$mapping['^'.str_replace('/', '\/', $val['catdir']).'\/(\d+)$'] = 'index/index/show/catid/'.$val['catid'].'/id/$1';				
 			}
 		}
 		//结合自定义URL规则
@@ -445,7 +444,7 @@ function set_mapping() {
 		if(!empty($route_rules)) $mapping = array_merge($route_rules, $mapping); 
 		setcache('mapping', $mapping);
 	}
-	return $mapping;
+	return array_merge($mapping, C('route_rules'));
 }
 
 

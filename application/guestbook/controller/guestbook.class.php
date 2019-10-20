@@ -11,7 +11,7 @@ class guestbook extends common {
 	public function init() {
 		$guestbook = D('guestbook');
 		$total = $guestbook->where(array('replyid'=>'0'))->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $guestbook->where(array('replyid'=>'0'))->order('id DESC')->limit($page->limit())->select();		
 		include $this->admin_tpl('guestbook_list');
 	}

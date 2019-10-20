@@ -21,7 +21,7 @@ class order extends common{
 	public function init(){ 
 		$order = D('order');
 		$total = $order->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $order->order('id DESC')->limit($page->limit())->select();			
 		include $this->admin_tpl('order_list');
 	}
@@ -53,8 +53,9 @@ class order extends common{
 				$where .= " AND `addtime` >= '".strtotime($_GET["start"])."' AND `addtime` <= '".strtotime($_GET["end"])."' ";
 			}			
 		}
+		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $order->where($where)->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $order->where($where)->order('id DESC')->limit($page->limit())->select();					
 		include $this->admin_tpl('order_list');
 	}

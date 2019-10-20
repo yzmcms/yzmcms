@@ -15,7 +15,11 @@
 			<p class="exp">如：对应上面的例子：模块/控制器/方法/参数1/$1</p>
 			<p class="exp">URL规则：模块/控制器/方法/参数1/$1/参数2/$2...<span class="c-red">（$1,$2为规则中匹配到的动态值）</span></p></li>
 			<li></li>
-			<li><input type="hidden" name="id" value="<?php echo $data['urlruleid'];?>"><input type="hidden" name="dosubmit" value="1"><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"></li>
+			<li><?php echo creat_token();?>
+				<input type="hidden" name="id" value="<?php echo $data['urlruleid'];?>"><input type="hidden" name="dosubmit" value="1">
+				<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
+				<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			</li>
 		</ul>
 	</form>
 </div>

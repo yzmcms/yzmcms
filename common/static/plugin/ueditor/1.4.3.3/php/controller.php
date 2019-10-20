@@ -4,11 +4,13 @@
 date_default_timezone_set('PRC');  
 error_reporting(E_ERROR);
 header("Content-Type: text/html; charset=utf-8");
+session_start();
 
 $CONFIG = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents("config.json")), true);
 $action = $_GET['action'];
 
 //YzmCMS 新增 Start
+define('IN_YZMPHP', true); 
 define('IN_YZMCMS', true); 
 
 $document_root = rtrim(str_replace('\\','/', $_SERVER['DOCUMENT_ROOT']), '/');
@@ -29,37 +31,52 @@ if(strpos($web_path, $document_root) !== false){
 }
 define('YZMPHP_PATH', $document_root.$web_path);
 
-include YZMPHP_PATH.'yzmphp'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'class'.DIRECTORY_SEPARATOR.'image.class.php';
+class yzm_base {
+        
+    /**
+     * 加载系统类方法
+     * @param string $classname 类名
+     * @param string $path 扩展地址
+     * @param intger $initialize 是否初始化
+     * @return object or true
+     */
+    public static function load_sys_class($classname, $path = '', $initialize = 1) {
+        static $classes = array();
+        if (empty($path)) $path = YZMPHP_PATH.'yzmphp'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'class';
 
-/**
- * 获取配置参数
- * @param string $key  要获取的配置荐
- * @param string $default  默认配置。当获取配置项目失败时该值发生作用。
- * @return mixed
- */
-function C($key = '', $default = '') {
-    static $configs = array(); 
-	if (isset($configs['config'])) {
-		if (empty($key)) {
-			return $configs['config'];
-		} elseif (isset($configs['config'][$key])) {
-			return $configs['config'][$key];
-		} else {
-			return $default;
-		}
-	}
-	$path = YZMPHP_PATH.'common'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.'config.php';
-	if (is_file($path)) { 
-		$configs['config'] = include $path;
-	}
-	if (empty($key)) {
-		return $configs['config'];
-	} elseif (isset($configs['config'][$key])) {
-		return $configs['config'][$key];
-	} else {
-		return $default;
-	}
+        $key = md5($path.$classname);
+        if (isset($classes[$key])) {
+            return !empty($classes[$key]) ? $classes[$key] : true;
+        }
+        if (!is_file($path.DIRECTORY_SEPARATOR.$classname.'.class.php')) {
+            exit($path.DIRECTORY_SEPARATOR.$classname.'.class.php'.' FILE NOT Existent!');
+        }
+        
+        include $path.DIRECTORY_SEPARATOR.$classname.'.class.php'; 
+        if ($initialize) {
+            $classes[$key] = new $classname;
+        } else {
+            $classes[$key] = true;
+        }
+        return $classes[$key];
+    }
+
+
+    /**
+     * 加载系统的函数库
+     * @param string $func 函数库名
+     */
+    public static function load_sys_func($func) {
+        if (is_file(YZMPHP_PATH.'yzmphp'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'function'.DIRECTORY_SEPARATOR.$func.'.func.php')) {
+            include YZMPHP_PATH.'yzmphp'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'function'.DIRECTORY_SEPARATOR.$func.'.func.php';
+        }
+    }
+
 }
+
+yzm_base::load_sys_class('debug', '', 0);
+yzm_base::load_sys_class('image', '', 0);
+yzm_base::load_sys_func('global');
 
 $web_upload = $web_path.'uploads';
 $CONFIG['imagePathFormat'] = $web_upload.$CONFIG['imagePathFormat'];

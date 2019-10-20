@@ -3,7 +3,7 @@
 </head>
 <body>
 <article class="page-container">
-<div class="formdoby"> 
+<div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
 			 <li><label><span class="c-red">*</span>用户名：</label><input type="text" class="input" name="username" value="" onblur="get_nickname()"></li>
@@ -25,7 +25,9 @@
 			 过期时间 <input type="text" class="input-text laydate-icon" style="width:175px;height:30px;" name="overduedate" value="" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"></span>
 			 </li>
 			 <li><input type="hidden" name="dosubmit" value="1">
-			<input class="dosubmit m_left_21 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;"></li>
+			 <input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
+			 <input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			 </li>
 		</ul>
 	</form>
 </div>

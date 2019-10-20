@@ -19,7 +19,7 @@ class pay extends common {
 	public function init() {
 		$pay_mode = D('pay_mode');
 		$total = $pay_mode->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $pay_mode->order('id ASC')->limit($page->limit())->select();		
 		include $this->admin_tpl('pay_list');
 	}	

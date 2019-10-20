@@ -21,7 +21,7 @@ class diyform extends common{
 		yzm_base::load_sys_class('page','',0);
 		$model = D('model');
 		$total = $model->where(array('type'=>1))->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $model->where(array('type'=>1))->order('modelid DESC')->limit($page->limit())->select();
 		include $this->admin_tpl('diyform_list');
 	}

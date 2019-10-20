@@ -19,7 +19,7 @@
 	   <tr><td>缩略图：</td><td>{php echo form::image('thumb',$data['thumb'])}</tr>
 	   <tr><td>摘要：</td><td><textarea name="description" class="textarea" style="width:615px;">{$data['description']}</textarea></td></tr>
 	    {loop $fieldstr $val}		
-		 <tr>{$val}</tr>
+		 <tr><td>{$val[field]}：</td><td>{$val[form]}</td></tr>
 		{/loop}		   
 	   <tr style="height:20px;"><td></td><td></td></tr>
 	   <tr><td>内容：</td><td>{php echo form::editor_mini('content',$data['content'])}</td></tr>

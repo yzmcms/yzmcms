@@ -73,8 +73,6 @@ class update_urls extends common {
 		$modelid = isset($_POST['modelid']) ? intval($_POST['modelid']) : (isset($_GET['modelid']) ? intval($_GET['modelid']) : 0);
 		
 		$modelinfo = get_modelinfo();
-		//根据系统URL规则生成内容URL
-		$url_rule = get_config('url_rule');
 		
 		//当选择所有模型时，则更新所有内容
 		if(!$modelid){
@@ -85,9 +83,10 @@ class update_urls extends common {
 			if(!$tablename) showmsg('模型错误，请检查!', U('init'));
 			
 			$db = D($tablename);
-			$r = $db->field('catid,id')->limit('1000')->select();   //防止数据过多，暂且取前1000条
+			$r = $db->field('catid, id')->limit('3000')->select();   //防止数据过多，暂且取前3000条
+
 			foreach($r as $val){
-				$url = $this->get_url($url_rule, $val['catid'], $val['id']);	
+				$url = get_content_url($val['catid'], $val['id']);	
 				$db->update(array('url' => $url), array('id' => $val['id']));
 			}
 			
@@ -102,29 +101,12 @@ class update_urls extends common {
 			$db = D($modelarr[$modelid]['tablename']);
 			$r = $db->field('catid,id')->limit('1000')->select();  //防止数据过多，暂且取前1000条
 			foreach($r as $val){
-				$url = $this->get_url($url_rule, $val['catid'], $val['id']);	
+				$url = get_content_url($val['catid'], $val['id']);	
 				$db->update(array('url' => $url), array('id' => $val['id']));
 			}
 			showmsg($modelarr[$modelid]['name'].'更新完成！', U('init'), 1); 
 		}
 
-	}
-	
-	
-	/**
-	 * 获取内容页URL
-	 */
-	private function get_url($url_rule, $catid, $id){
-		
-		//如果系统设置是伪静态模式
-		if($url_rule){
-			$catinfo = get_category($catid);
-			$url = URL_MODEL == 1 ? SITE_URL.'index.php?s=/'.$catinfo['catdir'].'/'.$id.C('url_html_suffix') : SITE_URL.$catinfo['catdir'].'/'.$id.C('url_html_suffix');
-		}else{  
-			$url = U('index/index/show',array('catid'=>$catid,'id'=>$id));
-		}
-				
-		return $url;
 	}
 	
 }

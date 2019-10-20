@@ -11,11 +11,12 @@ class database extends common {
 		parent::__construct();
 		$this->config = array(
 			'path'     => YZMPHP_PATH.'cache'.DIRECTORY_SEPARATOR.'databack'.DIRECTORY_SEPARATOR, //备份文件目录
-			'part'     => 2097152, //2MB
+			'part'     => 3145728, //3MB
 			'compress' => 1,    //是否压缩
 			'level'    => 4,	//压缩水平
         );
 	}
+
 
 	/**
 	 * 数据库列表
@@ -58,7 +59,7 @@ class database extends common {
 		$tables = isset($_POST['tables']) ? $_POST['tables'] : trim($_GET['tables']);
 		if(!$tables) showmsg('请指定要优化的表!');
 		$tables = is_array($tables) ? implode(',',$tables) : $tables;
-		D('admin')->query("OPTIMIZE TABLE $tables");
+		D('admin')->query('OPTIMIZE TABLE '.$this->_safe_replace($tables));
 		showmsg(L('operation_success'));
 	}
 	
@@ -70,7 +71,7 @@ class database extends common {
 		$tables = isset($_POST['tables']) ? $_POST['tables'] : trim($_GET['tables']);
 		if(!$tables) showmsg('请指定要修复的表!');
 		$tables = is_array($tables) ? implode(',',$tables) : $tables;
-		D('admin')->query("REPAIR TABLE $tables");
+		D('admin')->query('REPAIR TABLE '.$this->_safe_replace($tables));
 		showmsg(L('operation_success'));
 	}
 	
@@ -83,7 +84,7 @@ class database extends common {
 		$table = isset($_GET['table']) ? trim($_GET['table']) : '';
 		if(!$table) showmsg('请选择表!');
 		$admin = D('admin');
-		$data = $admin->fetch_array($admin->query('SHOW CREATE TABLE '.$table));
+		$data = $admin->fetch_array($admin->query('SHOW CREATE TABLE '.$this->_safe_replace($table)));
 		include $this->admin_tpl('datatable_structure');
 	}
 
@@ -134,14 +135,16 @@ class database extends common {
 				@file_put_contents($this->config['path'].'index.html', '');
 			}
 
-            //检查是否有正在执行的任务
+            //检查是否有正在执行的任务，10分钟后自动解除
             $lock = $this->config['path'].'backup.lock';
             if(is_file($lock)){
-                showmsg('检测到有一个备份任务正在执行，请稍后再试！');
-            } else {
-                $len = @file_put_contents($lock, SYS_TIME); //创建锁文件
+            	if((SYS_TIME - filemtime($lock)) < 600){
+            		showmsg('检测到有一个备份任务正在执行，请稍后再试！', 'stop');
+            	}
+            	@unlink($lock);
             }
 
+            $len = @file_put_contents($lock, SYS_TIME); //创建锁文件
             if(!$len) showmsg($this->config['path'].'目录不存在或不可写，请检查！', 'stop');
 			
             $_SESSION['backup_config'] = $this->config;
@@ -154,7 +157,7 @@ class database extends common {
             $_SESSION['backup_file'] = $file;
 
             //缓存要备份的表
-            $_SESSION['backup_tables'] = $tables;
+            $_SESSION['backup_tables'] = array_map(array($this, '_safe_replace'), $tables);
 
             //创建备份文件
             $database = new databack($file, $this->config);
@@ -164,6 +167,7 @@ class database extends common {
             } else {
                 showmsg('初始化失败，备份文件创建失败！');
             }
+
         } elseif (isset($_GET['id']) && isset($_GET['start'])) {
 			
             $tables = $_SESSION['backup_tables'];
@@ -172,14 +176,14 @@ class database extends common {
             $database = new databack($_SESSION['backup_file'], $_SESSION['backup_config']);
             $start  = $database->backup($tables[$id], $start);
             if(false === $start){  //出错
-                showmsg('备份出错！');
+                showmsg('备份出错！', 'stop');
             } elseif (0 === $start) { //下一表
                 if(isset($tables[++$id])){
                     $tab = array('id' => $id, 'start' => 0);
                     showmsg('表'.$tables[$id].'备份完成！', U('export_list', $tab), 0.1);
                 } else {   //备份完成，清空缓存
                     @unlink($_SESSION['backup_config']['path'].'backup.lock');
-					unset($_SESSION['backup_tables'],$_SESSION['backup_file'],$_SESSION['backup_config']);
+					unset($_SESSION['backup_tables'], $_SESSION['backup_file'], $_SESSION['backup_config']);
                     showmsg('备份全部完成！', U('databack_list'), 2);
                 }
             } else {
@@ -189,7 +193,7 @@ class database extends common {
             }
 
         } else {
-            showmsg('参数错误！');
+            showmsg('参数错误！', 'stop');
         }
 	}
 	
@@ -219,20 +223,20 @@ class database extends common {
 				$_SESSION['backup_list'] = $list;
                 showmsg('初始化成功！', U('import', array('part' => 1, 'start' => 0)), 1);
             } else {
-                showmsg('备份文件可能已经损坏，请检查！');
+                showmsg('备份文件可能已经损坏，请检查！', 'stop');
             }
 		} elseif(isset($_GET['part']) && isset($_GET['start'])) {
 			$part = intval($_GET['part']);
 			$start = intval($_GET['start']);
             $list  = $_SESSION['backup_list'];
-			if(!isset($list) || !is_array($list)) showmsg('非法操作！');
+			if(!isset($list) || !is_array($list)) showmsg('非法操作！', 'stop');
 				
             $databack = new databack($list[$part], array('path' => $this->config['path'],'compress' => $list[$part][2]));
 
             $start = $databack->import($start);
 
             if(false === $start){
-                showmsg('还原数据出错！');
+                showmsg('还原数据出错！', 'stop');
             } elseif(0 === $start) { //下一卷
                 if(isset($list[++$part])){
                     $data = array('part' => $part, 'start' => 0);
@@ -253,7 +257,12 @@ class database extends common {
             }
 
         } else {
-            showmsg('参数错误！');
+            showmsg('参数错误！', 'stop');
         }
+	}
+
+
+	private function _safe_replace($string) {
+		return str_replace(array('`',"\\",'&',' ',"'",'"','/','*','<','>',"\r","\t","\n","#"), '', $string);
 	}
 }

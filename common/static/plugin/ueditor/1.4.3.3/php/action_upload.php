@@ -51,13 +51,29 @@ switch (htmlspecialchars($_GET['action'])) {
 /* 生成上传实例对象并完成上传 */
 $up = new Uploader($fieldName, $config, $base64);
 
-//YzmCMS 新增 加水印
+//YzmCMS 新增 文件入库及加水印
 $info = $up->getFileInfo();
 if($info['state'] == 'SUCCESS'){
-	$img = new image(1,1);
-	$img->watermark($document_root.$info['url']);
+    $pathinfo = pathinfo($info['url']);
+    $param = yzm_base::load_sys_class('param');
+    $arr = array();
+    $arr['originname'] = strlen($info['original'])<50 ? $info['original'] : $info['filename'];
+    $arr['filename'] = $info['title'];
+    $arr['filepath'] = $pathinfo['dirname'].'/';
+    $arr['filesize'] = $info['size'];
+    $arr['fileext'] = ltrim($info['type'], '.');
+    $arr['module'] = $param->route_m();
+    $arr['isimage'] = in_array($arr['fileext'], array('gif', 'jpg', 'png', 'jpeg')) ? 1 : 0;
+    $arr['downloads'] = 0;
+    $arr['userid'] = isset($_SESSION['adminid']) ? $_SESSION['adminid'] : (isset($_SESSION['_userid']) ? $_SESSION['_userid'] : 0);
+    $arr['username'] = isset($_SESSION['adminname']) ? $_SESSION['adminname'] : (isset($_SESSION['_username']) ? $_SESSION['_username'] : '');
+    $arr['uploadtime'] = time();
+    $arr['uploadip'] = getip();
+    D('attachment')->insert($arr);
+    $img = new image(1,1);
+    $img->watermark($document_root.$info['url']);
 }
-//YzmCMS 新增 加水印
+//YzmCMS 新增 文件入库及加水印
 
 /**
  * 得到上传文件所对应的各个参数,数组结构

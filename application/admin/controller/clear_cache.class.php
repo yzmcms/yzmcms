@@ -21,7 +21,6 @@ class clear_cache extends common {
 		//清除文件缓存
 		delcache('',true);
 		
-		echo '<script type="text/javascript">function myclose(){var index = parent.layer.getFrameIndex(window.name); parent.layer.close(index);} setTimeout("myclose()",2500);</script>';
-		showmsg('操作成功，3秒自动关闭');
+		return_json(array('status'=>1,'message'=>'系统缓存已清理完成.'));
 	}
 }

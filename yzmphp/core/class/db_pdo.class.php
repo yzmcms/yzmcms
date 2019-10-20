@@ -48,7 +48,7 @@ class db_pdo{
 			return self::$link;
 		}catch(PDOException $e) {
 			self::$link = null;
-			application::halt("Can not connect to MySQL server!");
+			application::halt("Can not connect to MySQL server!", 550);
 		}		
 	}
 	
@@ -420,7 +420,7 @@ class db_pdo{
 			application::fatalerror($msg, $sql, 2);	
 		}else{
 			error_log('<?php exit;?> MySQL Error: '.date('Y-m-d H:i:s').' | Error: '.$msg.' | SQL: '.$sql."\r\n", 3, YZMPHP_PATH.'cache/error_log.php');
-			application::halt('MySQL Error!');
+			application::halt('MySQL Error!', 500);
 			exit;
 		}
 	}

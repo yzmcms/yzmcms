@@ -34,7 +34,7 @@ class form {
 	 * @param $width  宽度 如：100
 	 */
 	public static function textarea($name = '', $value = '', $required=false, $width = 0) {
-		$string = '<textarea name="'.$name.'" id="'.$name.'" ';
+		$string = '<textarea class="textarea" name="'.$name.'" id="'.$name.'" ';
 		if($width) $string .= ' width="'.$width.'px" ';
 		if($required) $string .= ' required="required" ';
 		$string .= '>'.$value.'</textarea>';
@@ -80,7 +80,7 @@ class form {
 			$value = trim($value);
 			$checked = ($val && in_array($value, $val)) ? 'checked' : '';
 			$string .= '<label class="option_label option_box" >';
-			$string .= '<input type="checkbox" name="'.$name.'[]" id="'.$name.'_'.$i.'" '.$checked.' value="'.$value.'">'.$value;
+			$string .= '<input type="checkbox" class="checkbox" name="'.$name.'[]" id="'.$name.'_'.$i.'" '.$checked.' value="'.$value.'">'.$value;
 			$string .= '</label>';
 			$i++;
 		}
@@ -100,7 +100,7 @@ class form {
 		foreach($array as $value) {
 			$checked = trim($val)==trim($value) ? 'checked' : '';
 			$string .= '<label class="option_label option_radio" >';
-			$string .= '<input type="radio" name="'.$name.'" id="'.$name.'_'.$value.'" '.$checked.' value="'.$value.'">'.$value;
+			$string .= '<input type="radio" class="radio" name="'.$name.'" id="'.$name.'_'.$value.'" '.$checked.' value="'.$value.'">'.$value;
 			$string .= '</label>';
 		}
 		return $string;

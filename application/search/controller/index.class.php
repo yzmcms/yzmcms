@@ -4,6 +4,9 @@ yzm_base::load_sys_class('page','',0);
 
 class index{
 
+	//搜索分页条数设置
+	private $offset = 5;
+
 	/**
 	 * 普通搜索
 	 */
@@ -29,7 +32,7 @@ class index{
 		$where = "`title` LIKE '%$q%' AND `status` = 1";
 		$db = D($modelarr[$modelid]);
 		$total = $db->where($where)->total();
-		$page = new page($total, 5);
+		$page = new page($total, $this->offset);
 		$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid')->where($where)->order('id DESC')->limit($page->limit())->select();
 		
 		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
@@ -52,11 +55,13 @@ class index{
 		$keywords = $q.','.$site['site_keyword'];
 		$description = $site['site_description'];		
 	
-		//为了提高搜索性能，这里只调用文章模型的tag
-		$modelid = 1;
-		$total = $tag_content->where(array('modelid'=>$modelid,'tagid'=>$id))->total();
-		$page = new page($total, 5);
-		$search_data = $tag_content->field('b.id AS id,title,description,inputtime,updatetime,click,thumb,nickname,url,b.catid')->join('`yzmcms_article` b ON yzmcms_tag_content.aid=b.id')->where(array('modelid'=>$modelid,'tagid'=>$id))->order('updatetime DESC')->limit($page->limit())->select();
+		$total = $tag_content->where(array('tagid'=>$id))->total();
+		$page = new page($total, $this->offset);
+		$data = $tag_content->field('modelid,aid')->where(array('tagid'=>$id))->order('modelid ASC')->limit($page->limit())->select();
+		$search_data = array();
+		foreach ($data as $value) {
+			$search_data[] = D(get_model($value['modelid']))->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid')->where(array('id'=>$value['aid']))->find();
+		}
 		
 		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
 		include template('index','search');	
@@ -81,11 +86,10 @@ class index{
 		$description = $site['site_description'];
 		
 		//文章归档暂时只调用文章模型的
-		$modelid = 1;
 		$db = D('article');
 		$where = 'inputtime BETWEEN '.$starttime.' AND '.$endtime.' AND `status` = 1';
 		$total = $db->where($where)->total();
-		$page = new page($total, 5);
+		$page = new page($total, $this->offset);
 		$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid')->where($where)->order('id DESC')->limit($page->limit())->select();
 		
 		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();

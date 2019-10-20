@@ -33,14 +33,13 @@
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>栏目名称：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" name="catname" value="" class="input-text"  onblur="yzmcms_pinyin()">
+						<input type="text" name="catname" value="" class="input-text"  onblur="yzmcms_pinyin()" placeholder="例如：新闻中心">
 					</div>
 				</div>
-				<input type="hidden" name="catdir" value="" class="input-text">
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>英文目录：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" name="catdir" value="" class="input-text">
+						<input type="text" name="catdir" value="" class="input-text" placeholder="支持多级目录，如： xinwen/guonei">
 					</div>
 				</div>
 				<div class="row cl">
@@ -160,8 +159,8 @@
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
 				<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="type" value="<?php echo $type;?>">
-				<input type="submit" class="btn btn-primary radius" name="dosubmit" value="&nbsp;&nbsp;保存&nbsp;&nbsp;">
-				<input type="reset" class="btn btn-default radius" value="&nbsp;&nbsp;取消&nbsp;&nbsp;" onclick="yzmcms_close()">
+				<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
+			 	<input class="btn w_120 btn-default radius h35" type="button" value="取消" onclick="yzmcms_close()">
 			</div>
 		</div>
 	</form>
@@ -172,8 +171,12 @@
 
 <script type="text/javascript">
 function yzmcms_pinyin(){
-	var pinyin = codefans_net_CC2PY($("input[name='catname']").val());
-	$("input[name='catdir']").val(pinyin.toLowerCase());
+	var catdir = $("input[name='catdir']").val();
+	if(catdir == ''){
+		var pinyin = codefans_net_CC2PY($("input[name='catname']").val());
+		$("input[name='catdir']").val(pinyin.toLowerCase());
+	}
+	$("input[name='mobname']").val($("input[name='catname']").val());
 }
 
 function yzmcms_msg(modelid){
@@ -183,7 +186,7 @@ function yzmcms_msg(modelid){
 }
 
 function dosub(obj){
-	var reg = /^[a-zA-Z0-9-]+$/
+	var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[-/]){0,29}$/;
 	if($("input[name='catname']").val()==''){
 		layer.msg('栏目名称不能为空！');
 		return false;
@@ -193,7 +196,7 @@ function dosub(obj){
 		return false;
 	}
 	if(!reg.test($("input[name='catdir']").val())){
-		layer.msg('栏目目录只能是拼音或英文字符！');
+		layer.msg('栏目目录只能以英文字符开始，且不能包含特殊字符！');
 		return false;
 	}
 	if($("select[name='category_template']").val()=='0'){

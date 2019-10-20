@@ -21,8 +21,10 @@ class common{
 			return true;
 		} else {
 			$adminid = intval(get_cookie('adminid'));
-			if(!isset($_SESSION['adminid']) || !isset($_SESSION['roleid']) || !$_SESSION['adminid'] || !$_SESSION['roleid'] || $adminid != $_SESSION['adminid']) 	
-			showmsg(L('login_website'),U('admin/index/login'),1);
+			if(!isset($_SESSION['adminid']) || !isset($_SESSION['roleid']) || !$_SESSION['adminid'] || !$_SESSION['roleid'] || $adminid != $_SESSION['adminid']) {
+				echo '<script type="text/javascript"> var url="'.U('admin/index/login').'"; if(top.location !== self.location){ top.location=url; }else{ window.location.href=url; } </script>';
+				exit();
+			}	
 			self::check_referer();
 		}
 	}

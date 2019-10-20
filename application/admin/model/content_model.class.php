@@ -54,7 +54,7 @@ class content_model {
 		
 		//如果不是跳转URL，则更新URL
 		if(empty($data['url'])){
-			$url = $this->get_url($data['catid'], $id);
+			$url = get_content_url($data['catid'], $id);
 			$content_tabname->update(array('url' => $url), array('id' => $id));			
 		}
 		
@@ -112,7 +112,7 @@ class content_model {
 		//自动提取缩略图
 		if(isset($data['auto_thum']) && $data['thumb'] == '') {
 			$img = match_img($data['content']);
-			$data['thumb'] = $img ? thumb($img) : '';
+			$data['thumb'] = $img ? thumb($img, get_config('thumb_width'), get_config('thumb_height')) : '';
 		}
 		
 		//TAG标签处理
@@ -124,7 +124,7 @@ class content_model {
 		
 		//如果不是跳转URL，则更新URL
 		if(strpos($data['flag'], '7') === false){
-			$data['url'] = $this->get_url($data['catid'], $id);
+			$data['url'] = get_content_url($data['catid'], $id);
 		}
 		
 		//如果是会员发布的内容，则修改会员内容表的title
@@ -215,25 +215,6 @@ class content_model {
 			
 			$tag_content->insert(array('modelid' => $this->modelid, 'catid' => $catid, 'tagid' => $tagid, 'aid' => $aid), false, false);
 		}
-	}   
-
-	
-	/**
-	 * 获取内容页URL 
-	 * @param $catid 
-	 * @param $id 
-	 */
-	private function get_url($catid, $id){
-		$url_rule = get_config('url_rule');
-		
-		//如果系统设置是伪静态模式
-		if($url_rule){
-			$catinfo = get_category($catid);
-			$url = URL_MODEL == 1 ? SITE_URL.'index.php?s=/'.$catinfo['catdir'].'/'.$id.C('url_html_suffix') : SITE_URL.$catinfo['catdir'].'/'.$id.C('url_html_suffix');
-		}else{  
-			$url = U('index/index/show',array('catid'=>$catid,'id'=>$id));
-		}
-		return $url;
-	}	
+	}   	
 
 }

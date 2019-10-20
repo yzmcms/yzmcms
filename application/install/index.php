@@ -16,7 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 define('APPDIR', _dir_path(substr(dirname(__FILE__), 0, -8)));
 define('SITEDIR', dirname(APPDIR).DIRECTORY_SEPARATOR);
-define("VERSION", 'YzmCMS 5.3');
+define("VERSION", 'YzmCMS 5.4');
 
 if(is_file(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock')){
     exit("YzmCMS程序已运行安装，如果你确定要重新安装，请先从FTP中删除 cache/install.lock！");
@@ -239,7 +239,8 @@ switch ($step) {
     case '5':
         include ("./templates/s5.php");
         @touch(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock');
-        @unlink(SITEDIR.'install.php');
+        if(is_file(SITEDIR.'install.php')) @unlink(SITEDIR.'install.php');
+		if(is_file(SITEDIR.'index.html')) @unlink(SITEDIR.'index.html');
         exit;
 }
 

@@ -11,13 +11,13 @@
     <style type="text/css">
 	  *{padding:0;margin:0;}
 	  body{background:#fff;color:#000;font-family:"Microsoft Yahei","Hiragino Sans GB","Helvetica Neue",Helvetica,tahoma,arial,"WenQuanYi Micro Hei",Verdana,sans-serif;}
-	  #msg{border:1px solid #5eb95e;width:500px;position:absolute;top:44%;left:50%;margin:-87px 0 0 -250px;padding:1px;line-height:30px;text-align:center;font-size:16px;background:#fff;}
-	  #msgtit{height:35px;line-height:35px;color:#fff;background:#5eb95e;}
+	  #msg{width:500px;position:absolute;top:44%;left:50%;margin:-87px 0 0 -250px;line-height:30px;text-align:center;font-size:14px;background:#fff;box-shadow: 0px 0px 25px #999;border-radius: 3px;}
+	  #msgtit{height:35px;line-height:35px;color:#fff;background:#333;}
 	  #msgbody{margin:20px 0;text-align:center}
 	  #info{margin-bottom:10px;}
-	  #msgbody p{font-size:14px;}
-	  #msgbody p a{font-size:14px;color:#333;text-decoration:none;}
-	  #msgbody p a:hover{color:#5a98de;}
+	  #msgbody p{font-size:12px;}
+	  #msgbody p a{font-size:12px;color:#333;text-decoration:none;}
+	  #msgbody p a:hover{color:#337ab7;}
 	</style>
 </head>
 <body>

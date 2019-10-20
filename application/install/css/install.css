@@ -89,7 +89,7 @@ a:visited{color:#762e9c;}
 ===================
 包裹
 ===================*/
-.wrap{margin:50px auto 0;box-shadow:0 0 10px #ccc;width:750px;background:#fff;}
+.wrap{margin:60px auto 20px;box-shadow:0 0 10px #ccc;width:850px;background:#fff;}
 /*
 ===================
 头部
@@ -112,18 +112,18 @@ a:visited{color:#762e9c;}
 ===================
 协议
 ===================*/
-.pact{box-shadow:5px 5px 5px #f7f7f7 inset;border:1px solid #bdbcbc;width:670px;height:350px;padding:10px;overflow:hidden;display:block;overflow-y:scroll;margin:0 auto;font-size:12px;line-height:1.5;margin-bottom:22px;outline:none;}
+.pact{box-shadow:5px 5px 5px #f7f7f7 inset;border:1px solid #bdbcbc;width:750px;height:350px;padding:10px;overflow:hidden;display:block;overflow-y:scroll;margin:0 auto;font-size:12px;line-height:1.5;margin-bottom:22px;outline:none;}
 pre{white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;word-break : normal;}
 /*
 ===================
 版本号
 ===================*/
-.version{float:right;margin:50px 25px 0 0;}
+.version{float:right;margin:50px 45px 0 0;}
 /*
 ===================
 LOGO
 ===================*/
-.logo{float:left;width:400px;height:80px;line-height: 80px;font-family: '微软雅黑';padding-left: 10px;/*background:url(../images/logo.png) no-repeat;overflow:hidden;text-indent:-2000em;*/}
+.logo{float:left;width:400px;height:80px;line-height: 80px;font-family: '微软雅黑';padding-left: 40px;/*background:url(../images/logo.png) no-repeat;overflow:hidden;text-indent:-2000em;*/}
 /*
 ===================
 安装类型文案
@@ -137,7 +137,7 @@ LOGO
 按钮
 ===================*/
 .btn,
-.btn_old{display:inline-block;width:100px;height:30px;background:url(../images/btn.png) no-repeat;font:bold 14px/30px Arial,"Microsoft Yahei",Simsun;text-decoration:none;color:#fff !important;margin:0 5px;border:0 none;cursor:pointer;vertical-align:top;}
+.btn_old{display:inline-block;width:100px;height:30px;background:url(../images/btn.png) no-repeat;font:bold 14px/30px Arial,"Microsoft Yahei",Simsun;text-decoration:none;color:#fff !important;margin:0 50px;border:0 none;cursor:pointer;vertical-align:top;}
 .btn:hover{background-position:0 -30px;text-decoration:none;}
 a.btn:visited{color:#ffffff;}
 .btn_old,
@@ -159,7 +159,7 @@ a.btn_old:visited{color:#999 !important;}
 ===================
 服务器检测/信息输入
 ===================*/
-.server{padding:20px 20px 10px 65px;}
+.server{padding:20px 20px 10px 155px;}
 .server table{margin-bottom:20px;}
 .server td{padding:3px 5px;}
 .server .td1{color:#417b9d;font-weight:700;}
@@ -185,7 +185,7 @@ a.btn_old:visited{color:#999 !important;}
 ===================
 成功提示
 ===================*/
-.success_tip{/*border:1px solid #e0e9f0;*/background:#fff url(../images/complete.png) 210px center no-repeat;padding:50px 80px 50px 300px;line-height:2;}
+.success_tip{/*border:1px solid #e0e9f0;*/background:#fff url(../images/complete.png) 280px center no-repeat;padding:50px 80px 50px 380px;line-height:2;}
 .success_tip a,.s4{color:#0166a5;text-decoration:none;}
 .success_tip a:hover{text-decoration:underline;}
 .error_tip{background:url(../images/ignore.png) 130px 45px no-repeat;padding:50px 80px 60px 230px;}

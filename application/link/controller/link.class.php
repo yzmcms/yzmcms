@@ -11,7 +11,7 @@ class link extends common{
 		yzm_base::load_sys_class('page','',0);
 		$link = D('link');
 		$total = $link->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $link->order('listorder ASC, id DESC')->limit($page->limit())->select();		
 		include $this->admin_tpl('link_list');
 	}

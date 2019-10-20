@@ -12,7 +12,7 @@ class scan extends wechat_common{
 	public function init(){
 		$wechat_scan = D('wechat_scan');
         $total = $wechat_scan->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $wechat_scan->order('id DESC')->limit($page->limit())->select();
 		include $this->admin_tpl('scan_list');
     }

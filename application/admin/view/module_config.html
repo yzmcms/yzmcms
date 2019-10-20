@@ -4,25 +4,48 @@
 <body>
 <article class="page-container pad_bot_0">
 <div class="formdoby_normal"> 
-	<form method="post">
+	<form method="post" onsubmit="return dosub(this)">
 		<ul>
 			 <li><label>模块名称：</label><?php echo $name?></li>
 			 <li><label>模块简介：</label><?php echo $description?></li>
 			 <li><label>作者：</label><?php echo $author?></li>
 			 <li><label>作者邮箱：</label><?php echo $authoremail?></li>
-			 <li><label>作者主页：</label><?php echo $authorsite?></li>
+			 <li><label>作者主页：</label><a href="<?php echo $authorsite?>" target="_blank"><?php echo $authorsite?></a></li>
 			 <li style="margin-top:30px;margin-bottom:0px;padding:0;text-align:right;">
-			 <input class="btn btn-primary radius" type="submit" name="dosubmit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">&nbsp;&nbsp;<input class="btn btn-default radius" onclick="myclose()" value="&nbsp;&nbsp;取消&nbsp;&nbsp;" type="button"></li>
+			     <input type="hidden" name="module" value="<?php echo $module?>">
+			     <input type="hidden" name="dosubmit" value="1">
+				 <input class="btn btn-primary radius" type="submit" name="dosubmit" value="&nbsp;&nbsp;确定&nbsp;&nbsp;">&nbsp;&nbsp;
+				 <input class="btn btn-default radius" onclick="yzmcms_close()" value="&nbsp;&nbsp;取消&nbsp;&nbsp;" type="button">
+			 </li>
 		</ul>
 	</form>
 </div>
 </article>
 <?php include $this->admin_tpl('footer');?>
 <script type="text/javascript">
-function myclose(){
-	var index = parent.layer.getFrameIndex(window.name); 
-	parent.layer.close(index); 
-}
-</script>
+	function dosub(obj){
+		layer.msg('正在操作中……', { icon: 16, shade: 0.21,shadeClose:true,time:100000 });
+		$.ajax({
+		 type: 'POST',
+		 url: '<?php echo U(ROUTE_A);?>', 
+		 data: $(obj).serialize(),
+		 dataType: "json", 
+		 success: function (msg) {
+			if(msg.status == 1){
+				layer.msg(msg.message, {
+					icon: 1,
+					time: 2000
+				}, function(){
+				  	parent.location.reload();
+				}); 
+		    }else{
+				layer.msg(msg.message, {icon: 2});
+			}
+		 }
+		})
+
+		return false;			 
+	}
+</script> 
 </body>
 </html>

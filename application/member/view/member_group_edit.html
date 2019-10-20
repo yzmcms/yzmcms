@@ -3,7 +3,7 @@
 </head>
 <body>
 <article class="page-container">
-<div class="formdoby"> 
+<div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
 			 <li><label><span class="c-red">*</span>组别名称：</label><input type="text" class="input" name="name" value="<?php echo $data['name']; ?>"></li>
@@ -17,9 +17,11 @@
 				<label class="label_box"><input type="checkbox" <?php if(strpos($data['authority'], '4') !== false) echo 'checked="checked"'?> name="authority[]" value="4"> 投稿免审核</label>
 			 </span>
 			 </li>
-			 <li><label>简洁描述：</label><input type="text" class="input"  value="<?php echo $data['description']; ?>"  name="description"></li>
+			 <li><label>简洁描述：</label><input type="text" class="input" style="width:450px" value="<?php echo $data['description']; ?>"  name="description"></li>
 			<li><input type="hidden" name="dosubmit" value="1"><input type="hidden" name="groupid" value="<?php echo $data['groupid'];?>">
-			<input class="dosubmit m_left_21 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;"></li>
+			 <input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
+			 <input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			 </li>
 		</ul>
 	</form>
 </div>

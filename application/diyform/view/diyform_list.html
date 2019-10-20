@@ -29,7 +29,7 @@
 		  <tr class="text-c">
 			<td><?php echo $val['name'].' ('.$val['items'].'条数据)';?></td>
 			<td><?php echo $val['tablename'];?></td>
-			<td><?php echo str_cut($val['description'],30); ?></td>
+			<td><?php echo htmlspecialchars(str_cut($val['description'],30)); ?></td>
 			<td><?php echo date('Y-m-d H:i:s',$val['inputtime'])?></td>
 			<td><?php echo $val['disabled'] ? '<span class="c-red">禁用</span>' : '启用';?></td>
 			<td>

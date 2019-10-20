@@ -31,12 +31,27 @@
 <?php include $this->admin_tpl('footer');?>
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/jquery.contextmenu/jquery.contextmenu.r2.js"></script>
 <script type="text/javascript">
-$(function(){
-	$('.menu_dropdown a').bind('click', function(){
-		$('.menu_dropdown a').removeClass('curmenu');
-		$(this).addClass('curmenu');
-	});
-})
+	$(function(){
+		$('.menu_dropdown a').bind('click', function(){
+			$('.menu_dropdown a').removeClass('curmenu');
+			$(this).addClass('curmenu');
+		});
+	})
+
+	function yzm_clear() {
+		$.ajax({
+			type: 'GET',
+			url: '<?php echo U('clear_cache/public_clear');?>',
+			dataType: "json",
+			success: function(msg) {
+				if (msg.status == 1) {
+					layer.msg(msg.message, {icon:1, time: 1500, shade:0.1});
+				} else {
+					layer.msg(msg.message);
+				}
+			}
+		})
+	}
 </script>
 </body>
 </html>

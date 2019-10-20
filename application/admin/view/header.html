@@ -1,6 +1,6 @@
 <header class="navbar-wrapper">
 	<div class="navbar navbar-fixed-top">
-		<div class="container-fluid cl"> <a class="logo navbar-logo f-l mr-10 hidden-xs" href="http://www.yzmcms.com/" target="_blank" title="<?php echo YZMCMS_SOFTNAME;?>"><?php echo YZMCMS_SOFTNAME;?></a> <a class="logo navbar-logo-m f-l mr-10 visible-xs" href="http://www.yzmcms.com/" target="_blank"><?php echo YZMCMS_SOFTNAME;?> <?php echo YZMCMS_VERSION;?></a> <span class="logo navbar-slogan f-l mr-10 hidden-xs"><?php echo YZMCMS_VERSION;?></span> <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:;">&#xe667;</a>
+		<div class="container-fluid cl"> <a class="logo navbar-logo f-l mr-10 hidden-xs" href="<?php echo U('init');?>" title="<?php echo YZMCMS_SOFTNAME;?>"><?php echo YZMCMS_SOFTNAME;?></a> <a class="logo navbar-logo-m f-l mr-10 visible-xs" href="<?php echo U('init');?>" ><?php echo YZMCMS_SOFTNAME;?> <?php echo YZMCMS_VERSION;?></a> <span class="logo navbar-slogan f-l mr-10 hidden-xs"><?php echo YZMCMS_VERSION;?></span> <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:;">&#xe667;</a>
 			<nav class="nav navbar-nav">
 				<ul class="cl">
 					<li class="dropDown dropDown_hover"><a href="javascript:;" class="dropDown_A"><i class="Hui-iconfont">&#xe600;</i> 新增 <i class="Hui-iconfont">&#xe6d5;</i></a>
@@ -8,7 +8,7 @@
 							<li><a href="javascript:;" onclick="yzm_open_full('添加文章','<?php echo U('content/add/', array('modelid'=>1,'top'=>1));?>')"><i class="Hui-iconfont">&#xe616;</i> 文章</a></li>
 							<li><a href="javascript:;" onclick="yzm_open_full('添加产品','<?php echo U('content/add/', array('modelid'=>2,'top'=>1));?>')"><i class="Hui-iconfont">&#xe620;</i> 产品</a></li>
 							<li><a href="javascript:;" onclick="yzm_open_full('添加下载','<?php echo U('content/add/', array('modelid'=>3,'top'=>1));?>')"><i class="Hui-iconfont">&#xe640;</i> 下载</a></li>
-							<li><a href="javascript:;" onclick="yzm_open('添加用户','<?php echo U('member/member/add');?>','800','500')"><i class="Hui-iconfont">&#xe60d;</i> 会员</a></li>
+							<li><a href="javascript:;" onclick="yzm_open('添加用户','<?php echo U('member/member/add');?>','700','450')"><i class="Hui-iconfont">&#xe60d;</i> 会员</a></li>
 						</ul>
 					</li>
 					<li><a href="<?php echo SITE_URL;?>" target="_blank" title="站点首页">站点首页</a></li>
@@ -18,12 +18,12 @@
 			<nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
 				<ul class="cl">
 					<li><a href="http://bbs.yzmcms.com" target="_blank" title="YzmCMS官方论坛">论坛支持</a></li>
-					<li><a href="javascript:;" onclick="yzm_open('清除缓存','<?php echo U('clear_cache/public_clear');?>','800','500')" title="清除缓存">清除缓存</a></li>
+					<li><a href="javascript:;" onclick="yzm_clear()" title="清除缓存">清除缓存</a></li>
 					<li><?php echo $_SESSION['admininfo']['rolename'];?></li>
 					<li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A"><?php echo $_SESSION['adminname'];?> <i class="Hui-iconfont">&#xe6d5;</i></a>
 						<ul class="dropDown-menu menu radius box-shadow">
-							<li><a href="javascript:;" onclick="yzm_open('修改个人信息','<?php echo U('admin_manage/public_edit_info');?>','800','500')" title="修改个人信息">个人信息</a></li>
-							<li><a href="javascript:;" onclick="yzm_open('修改密码','<?php echo U('admin_manage/public_edit_pwd');?>','800','500')" title="修改密码">修改密码</a></li>
+							<li><a href="javascript:;" onclick="yzm_open('修改个人信息','<?php echo U('admin_manage/public_edit_info');?>','700','450')" title="修改个人信息">个人信息</a></li>
+							<li><a href="javascript:;" onclick="yzm_open('修改密码','<?php echo U('admin_manage/public_edit_pwd');?>','700','450')" title="修改密码">修改密码</a></li>
 							<li><a href="<?php echo U('public_logout');?>" title="退出">退出</a></li>
 						</ul>
 					</li>

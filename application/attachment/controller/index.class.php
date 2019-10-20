@@ -11,7 +11,7 @@ class index extends common{
 		yzm_base::load_sys_class('page','',0);
 		$attachment = D('attachment');
 		$total = $attachment->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $attachment->order('id DESC')->limit($page->limit())->select();		
 
 		include $this->admin_tpl('attachment_list');
@@ -40,8 +40,9 @@ class index extends common{
 				$where['uploadtime<='] = strtotime($_GET['end']);
 			}			
 		}
+		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $attachment->where($where)->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $attachment->where($where)->order('id DESC')->limit($page->limit())->select();			
 
 		include $this->admin_tpl('attachment_list');

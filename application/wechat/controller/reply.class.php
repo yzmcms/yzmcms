@@ -13,7 +13,7 @@ class reply extends common{
 		
 		$wechat_auto_reply = D('wechat_auto_reply');
         $total = $wechat_auto_reply->where(array('type' => 1))->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $wechat_auto_reply->where(array('type' => 1))->order('id DESC')->limit($page->limit())->select();
 		include $this->admin_tpl('keyword_reply_list');
     }

@@ -13,7 +13,7 @@ class mass extends wechat_common{
 		$types = array('image'=>'图片','voice'=>'语音','video'=>'视频','thumb'=>'缩略图','news'=>'图文','text'=>'文本');
 		$wechat_mass = D('wechat_mass');
         $total = $wechat_mass->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $wechat_mass->order('id DESC')->limit($page->limit())->select();
 		include $this->admin_tpl('mass_list');
     }

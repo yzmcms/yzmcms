@@ -79,7 +79,7 @@ class application {
 	 * @return    void
 	 */
 	public static function showmsg($msg, $gourl, $limittime) {
-		$gourl = empty($gourl) ? HTTP_REFERER : $gourl;
+		$gourl = empty($gourl) ? (strpos(HTTP_REFERER, SITE_URL)!==0 ? SITE_URL : htmlspecialchars(HTTP_REFERER)) : $gourl;
 		$stop = $gourl!='stop' ? false : true;
 		include(YP_PATH.'core'.DIRECTORY_SEPARATOR.'tpl'.DIRECTORY_SEPARATOR.'message.tpl');
 	}
@@ -104,14 +104,12 @@ class application {
 	 *  输出错误提示
 	 *
 	 * @param     string  $msg      提示信息
+	 * @param     int     $code     状态码
 	 * @return    void
 	 */
-	public static function halt($msg) {
+	public static function halt($msg, $code = 404) {
 		if(ob_get_length() !== false) @ob_end_clean();
-		if(!APP_DEBUG){
-			header('HTTP/1.1 404 Not Found');
-	        header('Status:404 Not Found');
-		} 
+		if(!APP_DEBUG) send_http_status($code);
 		include(YP_PATH.'core'.DIRECTORY_SEPARATOR.'tpl'.DIRECTORY_SEPARATOR.'halt.tpl');
 		exit();
 	}

@@ -25,7 +25,7 @@ class member_pay extends common{
 		extract($memberinfo);
 		$pay = D('pay');
 		$total = $pay->where(array('userid'=>$userid))->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $pay->where(array('userid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
 		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
 		include template('member', 'pay');
@@ -88,7 +88,7 @@ class member_pay extends common{
 		extract($memberinfo);
 		$order = D('order');
 		$total = $order->where(array('userid'=>$userid))->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $order->where(array('userid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
 		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
 		include template('member', 'order_list');
@@ -116,7 +116,7 @@ class member_pay extends common{
 		extract($memberinfo);
 		$pay_spend = D('pay_spend');
 		$total = $pay_spend->where(array('userid'=>$userid))->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $pay_spend->where(array('userid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
 		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
 		include template('member', 'spend_record');

@@ -11,7 +11,7 @@ class admin_log extends common {
 	public function init() {
 		$admin_log = D('admin_log');
 		$total = $admin_log->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $admin_log->order('id DESC')->limit($page->limit())->select();		
 		include $this->admin_tpl('admin_log_list');
 	}
@@ -49,8 +49,9 @@ class admin_log extends common {
 				$where['logtime<='] = strtotime($_GET['end']);
 			}			
 		}
+		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $admin_log->where($where)->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $admin_log->where($where)->order('id DESC')->limit($page->limit())->select();		
 		include $this->admin_tpl('admin_log_list');
 	}
@@ -61,7 +62,7 @@ class admin_log extends common {
 	public function admin_login_log_list() {
 		$admin_login_log = D('admin_login_log');
 		$total = $admin_login_log->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $admin_login_log->order('id DESC')->limit($page->limit())->select();	
 		include $this->admin_tpl('admin_login_log_list');
 	}

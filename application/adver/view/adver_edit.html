@@ -21,7 +21,9 @@
 			 <li><label>结束时间</label><input type="text" class="input-text laydate-icon" id="end" style="width:230px;height:30px;" name="end_time" value="<?php echo $data['end_time'] ? date('Y-m-d', $data['end_time']) : '';?>"> <span style="color:#898989">[留空为不限制]</span></li>
 			 <li><label>简洁描述</label><span class="span_input"><input type="text" class="input" name="describe" value="<?php echo $data['describe'];?>" style="width:500px"></span></li>			 
 			 <li><input type="hidden" name="dosubmit" value="1"><input type="hidden" name="id" value="<?php echo $data['id'];?>">
-			<input class="dosubmit w_200 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;"></li>
+			 <input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
+			 <input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			</li>
 		</ul>
 	</form>
 </div>

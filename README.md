@@ -1,4 +1,4 @@
-YzmCMS V5.3 正式版
+YzmCMS V5.4 正式版
 ===============
 YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一款高效开源的内容管理系统，可运行在Linux、Windows、MacOSX、Solaris等各种平台上。
 
@@ -6,6 +6,10 @@ YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象�
 
 ## 官网网站
 www.yzmcms.com
+
+## 系统截图
+<img src="http://www.yzmcms.com/doc/images/1.png">
+<img src="http://www.yzmcms.com/doc/images/2.png">
 
 ## 系统特点
 
@@ -23,6 +27,6 @@ YzmCMS系统在保持强大的功能前提下，整体压缩包仅不到5MB，�
 
 ## 版权信息
 
-版权所有Copyright © 2014-2018 by 袁志蒙工作室 (http://www.yzmcms.com)
+版权所有Copyright © 2014-2020 by 袁志蒙工作室 (http://www.yzmcms.com)
 
 All rights reserved。

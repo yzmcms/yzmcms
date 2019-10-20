@@ -4,7 +4,7 @@
 <body>
 <article class="page-container">
 <div class="formdoby_normal"> 
-	<form method="post">
+	<form method="post" onsubmit="return dosub(this)">
 		<ul>
 			 <li><label>用户名：</label><?php echo $data['adminname'];?></li>
 			 <li><label>所属角色：</label><?php echo $data['rolename'];?></li>
@@ -13,12 +13,39 @@
 			 <li><label>昵称：</label><input type="text" class="input" placeholder="昵称" name="nickname" value="<?php echo $data['nickname'];?>"> <span style="color:#888">[用于在发布文章时，显示昵称]</span></li>
 			 <li><label>邮箱：</label><input type="text" class="input" placeholder="邮箱" name="email" value="<?php echo $data['email'];?>"></li>
 			 <li><label>真实姓名：</label><input type="text" class="input" placeholder="真实姓名" name="realname" value="<?php echo $data['realname'];?>"></li>
-			 <li><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"></li>
+			 <input type="hidden" name="dosubmit" value="1">
+			 <li>
+			 	<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
+			 	<input class="btn w_120 btn-default radius h35" type="button" value="取消" onclick="yzmcms_close()">
+			 </li>
 		</ul>
 	</form>
 </div>
 </article>
 <?php include $this->admin_tpl('footer');?> 
+<script type="text/javascript">
+	function dosub(obj){
+		 if($("input[name='nickname']").val() == ''){
+			 layer.msg('用户昵称不能为空！');
+			 return false;
+		 }
 
+		$.ajax({
+		 type: 'POST',
+		 url: '<?php echo U('public_edit_info');?>', 
+		 data: $(obj).serialize(),
+		 dataType: "json", 
+		 success: function (msg) {
+			if(msg.status == 1){
+				layer.msg(msg.message, {time:2000});
+		    }else{
+				layer.msg(msg.message);
+			}
+		 }
+		})
+
+		 return false;			 
+	}
+</script> 
 </body>
 </html>

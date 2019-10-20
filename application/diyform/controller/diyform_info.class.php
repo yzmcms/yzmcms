@@ -28,7 +28,7 @@ class diyform_info extends common{
 		yzm_base::load_sys_class('page','',0);
 		$db = D($this->modeltable);
 		$total = $db->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $db->order('id DESC')->limit($page->limit())->select();
 		include $this->admin_tpl('diyform_info_list');
 	}

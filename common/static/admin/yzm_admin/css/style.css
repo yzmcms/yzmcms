@@ -5,7 +5,10 @@
  * @license          http://www.yzmcms.com
  */
 
-.curmenu{background:#fafafa;color:#148cf1 !important;}
+.yzm-menubox{width:200px;overflow:hidden;position:absolute;top:44px;bottom:0;left:0;}
+.Hui-aside{position:relative;top:0px;overflow-y:auto;overflow-x:hidden;width:218px;height:100%;}
+.big-page .Hui-aside{left:-219px;}
+.btn-primary{background:#08c}
 .col-sm-2{width:16.6667%;}
 .yzmcms_a{color:#06c;}
 .formdoby{width:80%;margin:0 auto;text-align:center}
@@ -18,17 +21,20 @@
 .formdoby ul li .span_input{display:inline-block;width:60%;margin-left:5%;padding:0px 3px;text-align:left;}
 .formdoby ul li select{height:28px;line-height:28px;width:61%;margin-left:5%;padding:0px 3px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}
 .formdoby ul li .input:focus{border-color:#75a1f0;box-shadow: 0 0 12px #75a1f0;outline:medium none;transition:all 0.218s ease 0s;}
-.dosubmit{border:0px;outline:none;height:35px;line-height:35px;width:60%;cursor:pointer;transition:background 0.3s}
+.dosubmit{border:0px;outline:none;height:35px;line-height:35px;width:60%;cursor:pointer;font-size:14px;transition:background 0.3s}
 .m_left_21{margin-left:21%;}
+.h35{height:35px;}
 .w_120{width:120px;}
 .w_200{width:200px;}
 .w_300{width:300px;}
 .w_420{width:420px;}
+.yzm-box-img{padding:4px 9px;border-radius:2px;transition:0.2s}
+.yzm-box-img:hover{text-decoration:none;}
 .label_radio{margin-right:10px}
 .pad_bot_0{padding-bottom:0px;}
-a.btn-mini{text-decoration:none}
-.btn-mini{display:inline-block;box-sizing:border-box;height:22px;line-height:22px;padding:0 5px;font-size:12px;border-radius:2px;}
-.btn-disabled{border:1px solid #ddd;color:#999}
+.btn-mini{padding:3px 9px;font-size:12px;border-radius:2px;display:inline-block}
+.btn-mini:hover{text-decoration:none}
+.btn-disabled{border:1px solid #d3d1d1;color:#bdbcbc;cursor:not-allowed;}
 .select optgroup {background:#f0f0f0}
 
 .formdoby_normal{width:100%;text-align:left;}
@@ -56,12 +62,13 @@ a.btn-mini{text-decoration:none}
 .file_ul li a{color:#06c}
 
 #page{margin-top:10px;font-size:14px;height:30px;line-height:30px;}
-#page .page_left{width:33%;}
-#page .page_right{width:65%;float:right;text-align:right;}
-#page .page_right a{border:1px solid #ccc;background:#fff;color:#666;padding:3px 10px;margin-left:5px;transition:all 0.2s}
-#page .page_right a:hover,#page .page_right  .curpage{background:#5a98de;color:#fff;text-decoration:none}
-#page .page_right .nopage{cursor:not-allowed;}
-#page .page_right .nopage:hover{background:#fff;color:#666;}
+#page .page_right{float:right;text-align:right;}
+#page .page_right a{border: 1px solid #e2e2e2;background:#fff;color:#666;padding:5px 13px;margin-left:-1px;transition:all 0.2s}
+#page .page_right a:hover,#page .page_right  .curpage{background:#009688;color:#fff;text-decoration:none;border:1px solid #009688}
+#page .page_right .nopage{cursor:not-allowed;color:#d0c4c4;}
+#page .page_right .nopage:hover{background:#fff;border: 1px solid #e2e2e2;color:#d0c4c4;}
+#page .page_right .homepage{border-radius: 2px 0 0 2px}
+#page .page_right .endpage{border-radius: 0 2px 2px 0}
 
 .yzmcms_small{margin-left:10px}
 .thumb{height:120px;width:180px;float:right;position:relative;right:0px;top:-80px;}

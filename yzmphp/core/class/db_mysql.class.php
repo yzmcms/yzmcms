@@ -35,9 +35,9 @@ class db_mysql{
 	 */	
 	public function connect(){ 
 		self::$link = @mysql_connect($this->config['db_host'] .($this->config['db_port'] ? ':'.intval($this->config['db_port']) : ''), $this->config['db_user'], $this->config['db_pwd']);  	
-		if(self::$link == false) application::halt("Can not connect to MySQL server!");        
+		if(self::$link == false) application::halt("Can not connect to MySQL server!", 550);        
 		$db = mysql_select_db($this->config['db_name'], self::$link);            	         	
-		if($db == false)  application::halt("Database selection failed!");                                          
+		if($db == false)  application::halt("Database selection failed!", 550);                                          
 		mysql_query("SET names utf8, sql_mode=''"); 	
 		return self::$link;				
 	}	
@@ -399,7 +399,7 @@ class db_mysql{
 			application::fatalerror($msg, mysql_error(), 2);	
 		}else{
 			error_log('<?php exit;?> MySQL Error: '.date('Y-m-d H:i:s').' | Errno: '.mysql_errno().' | Error: '.mysql_error().' | SQL: '.$msg."\r\n", 3, YZMPHP_PATH.'cache/error_log.php');
-			application::halt('MySQL Error!');
+			application::halt('MySQL Error!', 500);
 			exit;
 		}
 	}

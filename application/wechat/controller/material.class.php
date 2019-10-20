@@ -13,7 +13,7 @@ class material extends wechat_common{
 		$types = array('image'=>'图片','voice'=>'语音','video'=>'视频','thumb'=>'缩略图','news'=>'图文');
 		$wechat_media = D('wechat_media');
         $total = $wechat_media->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $wechat_media->order('id DESC')->limit($page->limit())->select();
 		include $this->admin_tpl('media_list');
     }
@@ -43,9 +43,9 @@ class material extends wechat_common{
 				$where .= ' AND media_id = "'.$media_id.'"';
 			}			
 		}
-		
+		$_GET = array_map('htmlspecialchars', $_GET);
         $total = $wechat_media->where($where)->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $wechat_media->where($where)->order('id DESC')->limit($page->limit())->select();
 		include $this->admin_tpl('media_list');
 	}

@@ -18,9 +18,9 @@ class role extends common {
 	 */
 	public function delete() {
 		$roleid = intval($_GET['roleid']);
-		if(in_array($roleid, array(1, 2, 3))) showmsg('不能删除系统角色！');
+		if(in_array($roleid, array(1, 2, 3))) showmsg('不能删除系统角色！', 'stop');
 		if(D('admin')->where(array('roleid' => $roleid))->total() > 0){
-			showmsg('请先删除该角色下的管理员！');
+			showmsg('请先删除该角色下的管理员！', 'stop');
 		}else{
 			D('admin_role')->delete(array('roleid'=>$roleid));
 		}	
@@ -58,7 +58,7 @@ class role extends common {
 			$roleid = isset($_POST['roleid']) ? intval($_POST['roleid']) : 0;
 			unset($_POST["system"]);
 		
-			if($admin_role->update($_POST, array('roleid' => $roleid))){
+			if($admin_role->update($_POST, array('roleid' => $roleid), true)){
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();
@@ -66,7 +66,7 @@ class role extends common {
 			
 		}else{
 			$roleid = isset($_GET['roleid']) ? intval($_GET['roleid']) : 0;
-			if($roleid == 1) showmsg('超级管理员信息不允许修改！');
+			if($roleid == 1) showmsg('超级管理员信息不允许修改！', 'stop');
 			$data = $admin_role->where(array('roleid' => $roleid))->find();
 			include $this->admin_tpl('role_edit');
 		}
@@ -102,7 +102,7 @@ class role extends common {
 			
 		}else{
 			$roleid = isset($_GET['roleid']) ? intval($_GET['roleid']) : 0;
-			if($roleid == 1) showmsg('超级管理员权限不允许修改！');
+			if($roleid == 1) showmsg('超级管理员权限不允许修改！', 'stop');
 		
 			$tree = yzm_base::load_sys_class('tree');
 			$tree->icon = array('│ ','├─ ','└─ ');

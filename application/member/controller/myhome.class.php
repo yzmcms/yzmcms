@@ -32,7 +32,7 @@ class myhome{
 		
 		$member_content = D('member_content');
 		$total = $member_content->where(array('userid' =>$userid,'status' =>1))->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$res = $member_content->field('checkid,title,catid,inputtime')->where(array('userid' =>$userid,'status' =>1))->order('id DESC')->limit($page->limit())->select();
 		$data = array();
 		foreach($res as $val) {

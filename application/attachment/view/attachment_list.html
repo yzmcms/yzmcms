@@ -1,14 +1,14 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
-<title>附件管理 - 后台管理中心</title>
+<title>附件管理 - YzmCMS内容管理系统</title>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 附件管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
   <div> 
 		<form action="<?php echo U('search_list');?>" method="get">
-		 <input type="hidden" value="admin" name="m">
-		 <input type="hidden" value="admin_log" name="c">
-		 <input type="hidden" value="search_log" name="a">
+		 <input type="hidden" value="<?php echo ROUTE_M;?>" name="m">
+		 <input type="hidden" value="<?php echo ROUTE_C;?>" name="c">
+		 <input type="hidden" value="search_list" name="a">
 		 原名称：<input type="text" name="originname" placeholder="附件原名" style="width:135px" class="input-text" value="<?php if(isset($_GET['originname'])) echo $_GET['originname'];?>">
 		 上传者：<input type="text" name="username" placeholder="上传者" style="width:135px" class="input-text" value="<?php if(isset($_GET['username'])) echo $_GET['username'];?>">
 		 时间：<input type="text" class="input-text laydate-icon" style="width:125px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
@@ -46,13 +46,16 @@
 			<td><input type="checkbox" value="<?php echo $val['id']?>" name="id[]"></td>
 			<td><?php echo $val['id']?></td>
 			<td><?php echo $val['module']?></td>
-			<td><?php $src = $val['isimage'] ? $val['filepath'].$val['filename'] : (in_array($val['fileext'], array('zip', 'rar')) ? STATIC_URL.'images/ext/rar.png' : STATIC_URL.'images/ext/blank.png'); echo '<a title="'.$val['originname'].'" href="javascript:;" onclick="yzm_open(\'附件预览\',\''.U('public_att_view',array('id'=>$val['id'])).'\',800,500)" style="text-decoration:none"><img src="'.$src.'" height="30" style="max-width: 300px"></a>';?></td>
+			<td><?php $src = $val['isimage'] ? $val['filepath'].$val['filename'] : (in_array($val['fileext'], array('zip', 'rar')) ? STATIC_URL.'images/ext/rar.png' : STATIC_URL.'images/ext/blank.png'); echo '<a title="'.$val['originname'].'" href="javascript:;" onclick="yzm_open(\'附件预览\',\''.U('public_att_view',array('id'=>$val['id'])).'\',800,500)" style="text-decoration:none"><img src="'.$src.'" height="30" style="max-width:150px"></a>';?></td>
 			<td><?php echo !empty($val['originname']) ? $val['originname'] : $val['filename']?></td>
 			<td><?php echo sizecount($val['filesize'])?></td>
 			<td><?php echo date('Y-m-d H:i:s', $val['uploadtime'])?></td>
 			<td><?php echo $val['username']?></td>
 			<td><?php echo $val['uploadip']?></td>
-			<td><a title="预览大图" href="javascript:;" onclick="yzm_open('附件预览','<?php echo U('public_att_view',array('id'=>$val['id']));?>',800,500)" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe695;</i></a> <a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('del_one',array('id'=>$val['id']));?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6e2;</i></a></td>
+			<td>
+				<a title="预览大图" href="javascript:;" onclick="yzm_open('附件预览','<?php echo U('public_att_view',array('id'=>$val['id']));?>',800,500)" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe695;</i> 预览</a> 
+				<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('del_one',array('id'=>$val['id']));?>')" class="yzm-box-img btn-warning ml-5"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a>
+			</td>
 		  </tr>		
 		<?php 
 		}

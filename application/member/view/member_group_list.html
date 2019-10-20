@@ -4,7 +4,7 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 用户组管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  <a href="javascript:;" onclick="yzm_open('添加组别','<?php echo U('add');?>','700','450')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加组别</a></span></div>
+	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  <a href="javascript:;" onclick="yzm_open('添加组别','<?php echo U('add');?>','700','400')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加组别</a></span></div>
 	<form method="post" action="<?php echo U('del');?>" id="myform">
 	<table class="table table-border table-bordered table-bg table-hover">
 		<thead>
@@ -29,7 +29,7 @@
 				<td><?php echo $val['experience']?></td>
 				<td><?php echo $val['icon'] ? '<img src="'.STATIC_URL.'images/icon/'.$val['icon'].'" height="18">' : '';?></td>
 				<td><?php if(strpos($val['authority'] ,'1') !== false) echo '发信息,';if(strpos($val['authority'] ,'2') !== false) echo '发评论,';if(strpos($val['authority'] ,'3') !== false) echo '发内容,';if(strpos($val['authority'] ,'4') !== false) echo '投稿免审核';?></td>
-				<td class="td-manage"><a title="编辑" href="javascript:;" onclick="yzm_open('编辑组别','<?php echo U('edit',array('groupid'=>$val['groupid']));?>','700','450')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a></td>
+				<td class="td-manage"><a title="编辑" href="javascript:;" onclick="yzm_open('编辑组别','<?php echo U('edit',array('groupid'=>$val['groupid']));?>','700','400')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a></td>
 			</tr>
 			<?php 
 			   }		 

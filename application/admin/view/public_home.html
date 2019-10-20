@@ -1,119 +1,209 @@
-<?php include $this->admin_tpl('meta');?>
+<?php include $this->admin_tpl('meta', 'admin');?>
+<link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL;?>plugin/swiper/css/swiper.min.css" />
+<link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL;?>admin/yzm_admin/css/yzm_home.css" />
 <title>我的桌面 - YzmCMS内容管理系统</title>
 </head>
 <body>
 <div class="page-container">
-	<p class="f-20 text-success">欢迎使用<?php echo YZMCMS_SOFTNAME;?> <span class="f-14"><?php echo YZMCMS_VERSION;?></span>！</p>
-	<p>上次登录IP：<?php echo $_SESSION['admininfo']['loginip'];?>  上次登录时间：<?php echo $_SESSION['admininfo']['logintime'] ? date('Y-m-d H:i:s', $_SESSION['admininfo']['logintime']) : '首次登陆';?> &nbsp;&nbsp;[ <a data-title="登录日志"  _href="<?php echo U('admin_log/admin_login_log_list');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">登录日志</a> ]</p>
-	<table class="table table-border table-bordered table-bg mt-20">
-		<thead>
-			<tr>
-				<th colspan="2" scope="col">软件信息</th>
-			</tr>
-		</thead>
-		<tbody>
-			<!-- 请不要擅自更改程序版权信息，尊重作者，也是尊重自己，谢谢！ -->
-			<tr>
-				<td width="30%">YzmCMS程序版本</td>
-				<td><?php echo YZMCMS_SOFTNAME.YZMCMS_VERSION;?> &nbsp;<?php echo YZMCMS_UPDATE;?> &nbsp;[<a href="http://www.yzmcms.com/xiazai/" target="_blank">查看最新版本</a>]</td>
-			</tr>
-			<tr>
-				<td>授权类型</td>
-				<td><span id="yzmcms_license">未授权（<a href="http://www.yzmcms.com/goumai/" target="_blank" style="color:red">点击购买</a>）</span></td>
-			</tr>
-			<!-- 请不要擅自更改程序版权信息，尊重作者，也是尊重自己，谢谢！ -->
-			<?php if(is_file(YZMPHP_PATH.'cache/error_log.php')){?>
-			<tr>
-				<td>安全提示</td>
-				<td>错误日志（/cache/error_log.php），文件大小 <span class="c-red"><?php echo sizecount(filesize(YZMPHP_PATH.'cache/error_log.php'));?></span></td>
-			</tr>
-			<?php } ?>
-			<?php if(!is_file(YZMPHP_PATH.'cache/install.lock')){?>
-			<tr>
-				<td>安全提示</td>
-				<td>程序安装锁（/cache/install.lock）未存在！ <span class="c-red">可能会导致程序重装，请检查！</span></td>
-			</tr>
-			<?php } ?>
-		</tbody>
-	</table>
-	<table class="table table-border table-bordered table-bg mt-20">
-		<thead>
-			<tr>
-				<th colspan="2" scope="col">系统信息</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td width="30%">WEB服务器</td>
-				<td><span id="lbServerName"><?php echo $_SERVER['SERVER_SOFTWARE'];?></span></td>
-			</tr>
-			<tr>
-				<td>PHP版本</td>
-				<td><?php echo PHP_VERSION;?></td>
-			</tr>
-			<tr>
-				<td>MySQL版本</td>
-				<td><?php echo D('admin')->version();?></td>
-			</tr>
-			<tr>
-				<td>服务器操作系统 </td>
-				<td><?php echo php_uname('s');?></td>
-			</tr>
-			<tr>
-				<td>REGISTER_GLOBALS</td>
-				<td><?php echo ini_get('register_globals') ? '<span style="color:red;">ON</span>' : 'OFF';?></td>
-			</tr>
-			<tr>
-				<td>MAGIC_QUOTES_GPC</td>
-				<td><?php echo MAGIC_QUOTES_GPC ? '<span style="color:red;">ON</span>' : 'OFF';?></td>
-			</tr>
-			<tr>
-				<td>最大上传限制（UPLOAD_MAX_FILESIZE） </td>
-				<td><?php echo ini_get('file_uploads') ? ini_get('upload_max_filesize') : 'Disabled';?></td>
-			</tr>
-			<tr>
-				<td>最大执行时间（MAX_EXECUTION_TIME）</td>
-				<td><?php echo ini_get('max_execution_time').'秒';?></td>
-			</tr>
-			<tr>
-				<td>服务器时间 </td>
-				<td><span id="show_date"></span></td>
-			</tr>
-			<tr>
-				<td>服务器域名 </td>
-				<td><?php echo $_SERVER['HTTP_HOST'];?></td>
-			</tr>
-			<tr>
-				<td>服务器端口 </td>
-				<td><?php echo $_SERVER['SERVER_PORT'];?></td>
-			</tr>
-			<tr>
-				<td>脚本运行占用最大内存 </td>
-				<td><?php echo get_cfg_var('memory_limit') ? get_cfg_var('memory_limit') : '---';?></td>
-			</tr>
-		</tbody>
-	</table>
-</div>
-<footer class="footer mt-20">
-	<div class="container">
-		<p>Powered By <a href="http://www.yzmcms.com" title="YzmCMS内容管理系统" target="_blank"><?php echo YZMCMS_SOFTNAME;?></a> © 2014-2019 袁志蒙工作室</p>
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-header">快捷方式</div>
+			<div class="panel-body yzm-box-container">
+				<ul class="yzm-box yzm-quick">
+					<li class="col-xs-3"><a data-title="内容管理"  _href="<?php echo U('admin/content/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" class="yzm-console"><i class="Hui-iconfont">&#xe60c;</i><cite>内容管理</cite></a></li>
+					<li class="col-xs-3"><a data-title="会员管理"  _href="<?php echo U('member/member/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" class="yzm-console"><i class="Hui-iconfont">&#xe62c;</i><cite>会员管理</cite></a></li>
+					<li class="col-xs-3"><a data-title="登录日志"  _href="<?php echo U('admin_log/admin_login_log_list');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" class="yzm-console"><i class="Hui-iconfont">&#xe623;</i><cite>登录日志</cite></a></li>
+					<li class="col-xs-3"><a data-title="系统设置"  _href="<?php echo U('admin/system_manage/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" class="yzm-console"><i class="Hui-iconfont">&#xe61d;</i><cite>系统设置</cite></a></li>
+					<li class="col-xs-3"><a data-title="评论管理"  _href="<?php echo U('comment/comment/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" class="yzm-console"><i class="Hui-iconfont">&#xe622;</i><cite>评论管理</cite></a></li>
+					<li class="col-xs-3"><a data-title="友情链接"  _href="<?php echo U('link/link/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" class="yzm-console"><i class="Hui-iconfont">&#xe6f1;</i><cite>友情链接</cite></a></li>
+					<li class="col-xs-3"><a onclick="yzm_open('修改密码','<?php echo U('admin_manage/public_edit_pwd');?>','700','450')" href="javascript:void(0)" class="yzm-console"><i class="Hui-iconfont">&#xe63f;</i><cite>修改密码</cite></a></li>
+					<li class="col-xs-3"><a data-title="数据备份"  _href="<?php echo U('admin/database/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" class="yzm-console"><i class="Hui-iconfont">&#xe6b5;</i><cite>数据备份</cite></a></li>
+				</ul>
+			</div>
+		</div>
 	</div>
-</footer>
-<script type="text/javascript">    
-	var ts = <?php echo round(microtime(true)*1000);?>;  
-	function getTime(){  
-		var t = new Date(ts);  
-		with(t){  
-			var _time = ""+getFullYear() + "年" + (getMonth()+1)+"月"+getDate()+"日 " + (getHours()<10 ? "0" :"") + getHours() + ":" + (getMinutes()<10 ? "0" :"") + getMinutes() + ":" + (getSeconds()<10 ? "0" :"") + getSeconds();  
-		}  
-		document.getElementById("show_date").innerHTML = _time;  
-		setTimeout("getTime()", 1000);  
-		ts += 1000;  
-	}  
-	getTime();  
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-header">信息统计</div>
+			<div class="panel-body yzm-box-container">
+				<ul class="yzm-box">
+					<li class="col-xs-6">
+						<a data-title="全部文章"  _href="<?php echo U('admin/content/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" class="yzm-backlog-body">
+							<h3>全部文章</h3>
+							<p><cite><?php echo $count[0];?></cite></p>
+						</a>
+					</li>
+					<li class="col-xs-6">
+						<a data-title="模块插件"  _href="<?php echo U('admin/module/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" class="yzm-backlog-body">
+							<h3>模块插件</h3>
+							<p><cite><?php echo $count[1];?></cite></p>
+						</a>
+					</li>
+					<li class="col-xs-6">
+						<a data-title="会员统计"  _href="<?php echo U('member/member/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" class="yzm-backlog-body">
+							<h3>会员统计</h3>
+							<p><cite><?php echo $count[2];?></cite></p>
+						</a>
+					</li>
+					<li class="col-xs-6">
+						<a data-title="管理员"  _href="<?php echo U('admin/admin_manage/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" class="yzm-backlog-body">
+							<h3>管理员</h3>
+							<p><cite><?php echo $count[3];?></cite></p>
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-4">
+		<div class="panel panel-default">
+			<div class="panel-header">个人信息</div>
+			<div class="panel-body">
+				<table class="table table-border table-bordered table-hover">
+				  <tr>
+					<td>用户名</td>
+					<td><?php echo $_SESSION['admininfo']['adminname'];?></td>
+				  </tr>
+				  <tr>
+					<td>所属角色</td>
+					<td><?php echo $_SESSION['admininfo']['rolename'];?></td>
+				  </tr>
+				  <tr>
+					<td>上次登录时间</td>
+					<td><?php echo $_SESSION['admininfo']['logintime'] ? date('Y-m-d H:i:s', $_SESSION['admininfo']['logintime']) : '首次登陆';?></td>
+				  </tr>
+				  <tr>
+					<td>上次登录IP</td>
+					<td><?php echo $_SESSION['admininfo']['loginip'];?></td>
+				  </tr>
+				  <tr>
+					<td>登录日志</td>
+					<td><a data-title="登录日志"  _href="<?php echo U('admin_log/admin_login_log_list');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">点击查看</a></td>
+				  </tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-8 mt-20">
+		<div class="panel panel-default">
+			<div class="panel-header">系统信息</div>
+			<div class="panel-body">
+				<table class="table table-border table-bordered table-hover">
+				  <tr>
+					<td>WEB服务器</td>
+					<td><?php echo $_SERVER['SERVER_SOFTWARE'];?></td>
+				  </tr>
+				  <tr>
+					<td>PHP版本</td>
+					<td><?php echo PHP_VERSION;?></td>
+				  </tr>
+				  <tr>
+					<td>MySQL版本</td>
+					<td><?php echo D('admin')->version();?></td>
+				  </tr>
+				  <tr>
+					<td>服务器操作系统 </td>
+					<td><?php echo php_uname('s');?></td>
+				  </tr>
+				  <tr>
+				  	<td>REGISTER_GLOBALS</td>
+				  	<td><?php echo ini_get('register_globals') ? '<span style="color:red;">ON</span>' : 'OFF';?></td>
+				  </tr>
+				  <tr>
+				  	<td>MAGIC_QUOTES_GPC</td>
+				  	<td><?php echo MAGIC_QUOTES_GPC ? '<span style="color:red;">ON</span>' : 'OFF';?></td>
+				  </tr>
+				  <tr>
+				  	<td>最大上传限制（UPLOAD_MAX_FILESIZE） </td>
+				  	<td><?php echo ini_get('file_uploads') ? ini_get('upload_max_filesize') : 'Disabled';?></td>
+				  </tr>
+				  <tr>
+				  	<td>最大执行时间（MAX_EXECUTION_TIME）</td>
+				  	<td><?php echo ini_get('max_execution_time').'秒';?></td>
+				  </tr>
+				  <tr>
+				  	<td>服务器域名 </td>
+				  	<td><?php echo $_SERVER['HTTP_HOST'];?></td>
+				  </tr>
+				  <tr>
+				  	<td>服务器端口 </td>
+				  	<td><?php echo $_SERVER['SERVER_PORT'];?></td>
+				  </tr>
+				  <tr>
+				  	<td>脚本运行占用最大内存 </td>
+				  	<td><?php echo get_cfg_var('memory_limit') ? get_cfg_var('memory_limit') : '---';?></td>
+				  </tr>
+				</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-4 mt-20">
+		<div class="panel panel-default">
+			<div class="panel-header">系统信息</div>
+			<div class="panel-body">
+				<table class="table table-border table-bordered table-hover">
+				  <tr>
+				  	<td width="70">系统版本</td>
+				  	<td><a href="http://www.yzmcms.com" target="_blank"><?php echo YZMCMS_SOFTNAME;?></a> <?php echo YZMCMS_VERSION;?>(<?php echo YZMCMS_UPDATE;?>)</td>
+				  </tr>
+				  <tr>
+				  	<td>基于框架</td>
+				  	<td><a href="http://www.yzmphp.com" target="_blank">YZMPHP V2.0</a> </td>
+				  </tr>
+				  <tr>
+				  	<td>系统特色</td>
+				  	<td>开源免费、速度快、轻量级、源码简洁、全能系统... </td>
+				  </tr>
+				  <tr>
+					<td>授权类型</td>
+					<td><span id="yzmcms_license">未授权（<a href="http://www.yzmcms.com/goumai/" target="_blank" style="color:red">点击购买</a>）</span></td>
+				  </tr>
+				  <?php if(is_file(YZMPHP_PATH.'cache/error_log.php')){?>
+				  <tr>
+				  	<td>安全提示</td>
+				  	<td>错误日志（/cache/error_log.php），文件大小 <span class="c-red"><?php echo sizecount(filesize(YZMPHP_PATH.'cache/error_log.php'));?></span></td>
+				  </tr>
+				  <?php } ?>
+				  <?php if(!is_file(YZMPHP_PATH.'cache/install.lock')){?>
+				  <tr>
+				  	<td>安全提示</td>
+				  	<td>程序安装锁（/cache/install.lock）未存在！ <span class="c-red">可能会导致程序重装，请检查！</span></td>
+				  </tr>
+				  <?php } ?>
+				</table>
+			</div>
+		</div>
+		<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/swiper/js/swiper.min.js"></script>
+		<div class="panel panel-default mt-20">
+			<div class="panel-header">产品动态 <div class="yzm-pagination"></div></div>
+			<div class="panel-body">
+					<div class="swiper-container">
+						 <div class="swiper-wrapper">
+						      <div class="swiper-slide yzm-bg-blue"><a href="http://www.yzmcms.com" target="_blank">YzmCMS官网网站</a></div>
+						      <div class="swiper-slide yzm-bg-green"><a href="http://bbs.yzmcms.com" target="_blank">YzmCMS论坛社区</a></div>
+						      <div class="swiper-slide yzm-bg-red"><a href="http://blog.yzmcms.com" target="_blank">YzmCMS官网博客</a></div>	
+						 </div>
+					 </div>		 
+
+			</div>
+		</div>
+	</div>
+
+</div>
+<?php include $this->admin_tpl('footer', 'admin');?>
+<script type="text/javascript">
+	var swiper = new Swiper('.swiper-container', {
+		autoplay: {
+			delay: 3500,
+			disableOnInteraction: false
+		},
+		pagination: {
+			el: '.yzm-pagination',
+			clickable: true
+		}
+	});
 </script>
-<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/jquery/1.8.2/jquery.min.js"></script>
-<script type="text/javascript" src="<?php echo STATIC_URL;?>admin/yzm_base/js/H-ui.js"></script>
-<script type="text/javascript" src="<?php echo STATIC_URL;?>admin/yzm_admin/js/H-ui.admin.js"></script>  
 </body>
 </html>

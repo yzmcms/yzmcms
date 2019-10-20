@@ -14,6 +14,8 @@ class sql extends common {
 
 	/**
 	 * 执行SQL命令
+	 * 说明：此功能主要为开发人员预留功能，
+	 * 		需单独修改配置文件才可使用本功能，请各位帽子不要再此功能下挖洞了！！！
 	 */
 	public function do_sql() {
 		if(isset($_POST['sqlstr'])){
@@ -29,6 +31,10 @@ class sql extends common {
 
 				if(stristr($sql, 'outfile')){
 					$str = '<span class="c-red">ERROR : 检测到非法字符 “outfile”！</span>';
+					break;
+				}
+				if(stristr($sql, 'dumpfile')){
+					$str = '<span class="c-red">ERROR : 检测到非法字符 “dumpfile”！</span>';
 					break;
 				}
 				if(stristr($sql, '.php')){

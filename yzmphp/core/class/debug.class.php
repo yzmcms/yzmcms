@@ -80,7 +80,7 @@ class debug {
                 	application::fatalerror($e['message'], $e['file'].' on line '.$e['line'], 1);	
            		}else{
            			error_log('<?php exit;?> FatalError : '.date('Y-m-d H:i:s').' message:'.$e['message'].', file:'.$e['file'].', line:'.$e['line']."\r\n", 3, YZMPHP_PATH.'cache/error_log.php');
-           			application::halt('error message has been saved.');
+           			application::halt('error message has been saved.', 500);
            		}
                 break;
             }
@@ -117,7 +117,7 @@ class debug {
 				self::$info[] = $msg;
 				break;
 			case 1:
-				self::$sqls[] = $msg.';';
+				self::$sqls[] = htmlspecialchars($msg).';';
 				break;
 			case 2:
 				self::$includefile[] = '<b>'.$msg.'.class.php</b> ';

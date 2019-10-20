@@ -13,7 +13,7 @@ class collection_content extends common {
 		yzm_base::load_sys_class('page','',0);
 		$collection_node = D('collection_node');
 		$total = $collection_node->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $collection_node->order('nodeid DESC')->limit($page->limit())->select();		
 		include $this->admin_tpl('collection_node_list');
 	}
@@ -291,7 +291,7 @@ class collection_content extends common {
 			$data['seo_title'] = $data['title'].'_'.$site_name;
 			$id = $content_tabname->insert($data);
 		
-			$url = $this->get_url($data['catid'], $id);
+			$url = get_content_url($data['catid'], $id);
 			$content_tabname->update(array('url' => $url), array('id'=>$id));
 			$collection_content->update(array('status' => 2), array('id'=>$v['cid']));
 			$i++;
@@ -331,7 +331,7 @@ class collection_content extends common {
 		
 		$collection_content = D('collection_content');
 		$total = $collection_content->where($where)->total();
-		$page = new page($total, 10);
+		$page = new page($total, 15);
 		$data = $collection_content->where($where)->order('id DESC')->limit($page->limit())->select();		
 		include $this->admin_tpl('collection_list');
 	}
@@ -375,25 +375,6 @@ class collection_content extends common {
 		$arr = explode('://', $str);
 		$arr2 = explode('/', $arr[1]);
 		return $arr[0].'://'.$arr2[0].'/';
-	}
-	
-	
-	/**
-	 * 获取内容页URL 
-	 * @param $catid 
-	 * @param $id 
-	 */
-	private function get_url($catid, $id){
-		$url_rule = get_config('url_rule');
-		
-		//如果系统设置是伪静态模式
-		if($url_rule){
-			$catinfo = get_category($catid);
-			$url = URL_MODEL == 1 ? SITE_URL.'index.php?s=/'.$catinfo['catdir'].'/'.$id.C('url_html_suffix') : SITE_URL.$catinfo['catdir'].'/'.$id.C('url_html_suffix');
-		}else{  
-			$url = U('index/index/show',array('catid'=>$catid,'id'=>$id));
-		}
-		return $url;
 	}
 	
 }

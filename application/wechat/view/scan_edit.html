@@ -22,7 +22,7 @@
 				<option value="86400" <?php if($data['expire_time'] == 86400) echo 'selected';?>>24小时</option></select></li>
 			<li><label>备注：</label><textarea class="textarea" name="remarks" style="width:450px"><?php echo $data['remarks']?></textarea></li>
 			<li></li>
-			<li><input type="hidden" name="id" value="<?php echo $data['id']?>"><input type="hidden" name="dosubmit" value="1"><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"></li>
+			<li><input type="hidden" name="id" value="<?php echo $data['id']?>"><input type="hidden" name="dosubmit" value="1"><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"> <input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()"></li>
 		</ul>
 	</form>
 </div>
