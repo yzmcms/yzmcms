@@ -57,8 +57,8 @@ if($info['state'] == 'SUCCESS'){
     $pathinfo = pathinfo($info['url']);
     $param = yzm_base::load_sys_class('param');
     $arr = array();
-    $arr['originname'] = strlen($info['original'])<50 ? $info['original'] : $info['filename'];
-    $arr['filename'] = $info['title'];
+    $arr['originname'] = strlen($info['original'])<50 ? htmlspecialchars($info['original']) : htmlspecialchars(str_cut($info['original'], 45));
+    $arr['filename'] = htmlspecialchars($info['title']);
     $arr['filepath'] = $pathinfo['dirname'].'/';
     $arr['filesize'] = $info['size'];
     $arr['fileext'] = ltrim($info['type'], '.');
