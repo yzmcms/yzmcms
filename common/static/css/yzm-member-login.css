@@ -41,5 +41,27 @@ a:hover{text-decoration:underline;}
 .yzmcms_other_login a img{width:40px;height: 40px;transition:0.8s}
 .yzmcms_other_login a img:hover{transform:rotate(360deg);}
 
+
+/*账号绑定 */
+.bind_header{width:100%;border-bottom:3px solid #09c;background:#f8f8f8;}
+.bind_content{color: #333;font-size: 16px;line-height: 21px;background:url(../images/bind.jpg) no-repeat  center 300px;overflow:auto;margin:50px auto;width:880px;}
+.bind_content p{margin:20px 0 40px 0;}
+.bind_left{border:1px solid #ccc;width:380px;float:left;height:300px;background:#fff;}
+.bind_title{border-bottom: 1px dashed #e8e8e8;height:40px;line-height:40px;padding:0px 20px}
+.bind_body{width:310px;margin:45px auto 0;text-align:center;font-size:14px;color:#666;}
+.bind_body img{width:85px;height:85px;}
+.input_mini{width:200px}
+.bind_right{border:1px solid #ccc;width:380px;float:right;height:300px;background:#fff;}
+.bind_form {margin-top:35px;}
+.bind_form ul li{margin-bottom:15px;}
+.bind_form label{display:inline-block;width:85px;}
+.bind_form .input{height:28px;line-height:28px;width:200px;padding:2px 5px;border-radius:2px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}
+.bind_form .input:focus{border-color:#75a1f0;box-shadow: 0 0 12px #75a1f0;outline:medium none;transition:all 0.218s ease 0s;}
+.bind_form .code{width:100px;margin-right:20px;}
+.bind_form .codeimg{cursor:pointer;}
+.bind_form .submit{height:32px;line-height:32px;background:#2196f3;width:125px;border:0px;outline:none;color:#fff;border-radius:2px;cursor:pointer;transition:all 0.318s ease 0s;}
+.bind_form .submit:hover{opacity: 0.8;color:#fff;text-decoration: none}
+
+
 /*网站底部*/
 .yzm_footer{min-height:60px;line-height:60px;width: 100%;position: fixed;left: 0px;bottom: 0px;text-align: center;background: #fbfbfb;border-top: 1px solid #e8e8e8;color:#959595;}
