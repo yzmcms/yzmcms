@@ -107,6 +107,11 @@ class member_content extends common{
 			//发布到用户内容列表中
 			$_POST['checkid'] = $modelid.'_'.$id;
 			D('member_content')->insert($_POST);
+
+			//如果设置了扣除积分
+			if(get_config('publish_point') < 0){
+				$this->_point_spend($catid, $id);
+			}
 			
 			if(!$is_adopt){
 				showmsg('发布成功，等待管理员审核！', U('not_pass'));
@@ -126,7 +131,7 @@ class member_content extends common{
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
 		
-		$groupinfo = $this->_check_group_auth($groupid);	
+		$groupinfo = $this->_check_group_auth($groupid, false);	
 		yzm_base::load_sys_class('form','',0);
 		
 		//会员中心可发布的字段
@@ -308,10 +313,26 @@ class member_content extends common{
 
 	
 	//检查会员组权限
-	private function _check_group_auth($groupid){
+	private function _check_group_auth($groupid, $is_add = true){
+		$memberinfo = $this->memberinfo;
 		$groupinfo = get_groupinfo($groupid);
 		if(strpos($groupinfo['authority'], '3') === false) 
 		showmsg('你没有权限投稿，请升级会员组！', 'stop'); 
+
+		if($is_add){
+			//检查用户每日最大投稿量，且VIP用户不受“每日最大投稿量”限制
+			if(!$memberinfo['vip'] || $memberinfo['overduedate']<SYS_TIME){
+				$total = D('member_content')->where(array('userid'=>$this->userid, 'inputtime>'=> strtotime(date('Y-m-d'))))->total();
+				if($total >= $groupinfo['max_amount']) showmsg('当前会员每日最大投稿数为 '.$groupinfo['max_amount'].' 条，如需发布更多请升级会员组', 'stop'); 
+			}			
+		}
+
+		//如果是投稿收费则检测积分是否够用
+		$publish_point = get_config('publish_point');
+		if(($publish_point < 0) && ($memberinfo['point'] < abs($publish_point))){
+			showmsg('本次交易将扣除点 '.abs($publish_point).' 积分，您的余额不足！', 'stop');
+		}
+
 		return $groupinfo;
 	}
 	
@@ -401,5 +422,17 @@ class member_content extends common{
 		if($publish_point > 0){
 			M('point')->point_add(1, $publish_point, 2, $this->memberinfo['userid'], $this->memberinfo['username'], $this->memberinfo['experience'], $catid.'_'.$id);
 		}
+	}
+
+
+	/**
+	 * 扣除积分
+	 * @param $catid 
+	 * @param $id 
+	 */	
+	private function _point_spend($catid, $id){
+		$publish_point = get_config('publish_point');
+		M('point')->point_spend(1, abs($publish_point), 11, $this->memberinfo['userid'], $this->memberinfo['username'], $catid.'_'.$id);
+		return true;
 	}
 }

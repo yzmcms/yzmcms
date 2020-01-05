@@ -45,7 +45,7 @@ function yzm_open(title,url,w,h){
 		type: 2,
 		area: [w+'px', h +'px'],
 		fix: false, 
-		maxmin: true,
+		// maxmin: true,
 		shade:0.4,
 		title: title,
 		content: url
@@ -97,7 +97,7 @@ function yzm_img_cropper(cid, url){
 	layer.open({
       type: 2,
       title: '图像裁剪',
-      area: ['750px', '510px'],
+      area: ['770px', '510px'],
       content: url
     });
 }

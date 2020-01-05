@@ -4,18 +4,19 @@
  *
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
- * @lastmodify       2016-09-25
+ * @lastmodify       2019-11-15
  */
 
 class page{
 	
-	private $url;         //当前URL
-	private $total_rows;  //一共多少条数据
-	private $list_rows;   //每页显示记录数
-	private $total_page;  //总的分页数
-	private $now_page; 	  //当前页
-	private $parameter;   //分页跳转的参数
-	private $url_rule;    //URL规则
+	private $url;         		//当前URL
+	private $total_rows;  		//一共多少条数据
+	private $list_rows;   		//每页显示记录数
+	private $total_page;  		//总的分页数
+	private $now_page; 	  		//当前页
+	private $parameter;   		//分页跳转的参数
+	private $url_rule;    		//URL规则
+	private $page_prefix; 		//URL分页前缀,默认为list
 
 	
     /**
@@ -31,7 +32,8 @@ class page{
 		$this->now_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$this->now_page = $this->now_page>0 ? $this->now_page : 1;
         $this->parameter  = empty($parameter) ? $_GET : $parameter;	
-        $this->url_rule = defined('LIST_URL') && LIST_URL ? true : false;		
+        $this->url_rule = defined('LIST_URL') && LIST_URL ? true : false;
+        $this->page_prefix = defined('PAGE_PREFIX') ? PAGE_PREFIX : 'list';
         $this->url = $this->geturl();		
 	}
 
@@ -173,6 +175,14 @@ class page{
 	 * 获取前端列表分页URL
 	 */
 	private function _list_url(){
+		
+		// 如果为后台批量生成栏目
+		if(defined('ADMIN_CREATE_HTML')){
+			if(!defined('TOTAL_PAGE')) define('TOTAL_PAGE', $this->total_page);
+			$catdir = getcache('update_html_catdir_'.$_SESSION['adminid']);
+			return SITE_URL.$catdir.'/'.$this->page_prefix.'_PAGE.html'; 
+		}		
+		
 		$parameter = '';
 		$request_url = trim($_SERVER['REQUEST_URI'], '/');
 
@@ -182,12 +192,12 @@ class page{
 			$parameter = substr($request_url, $pos);
 			$request_url = trim(substr($request_url, 0, $pos), '/');
 		}
-		$pos = strpos($request_url, '/list');
+		$pos = strpos($request_url, '/'.$this->page_prefix);
 		if($pos) $request_url = substr($request_url, 0, $pos);
 		if(SITE_PATH == '/'){
-			return SITE_URL.$request_url.'/list_PAGE'.C('url_html_suffix').$parameter; 
+			return SITE_URL.$request_url.'/'.$this->page_prefix.'_PAGE'.C('url_html_suffix').$parameter; 
 		}
-		return SERVER_PORT.HTTP_HOST.'/'.$request_url.'/list_PAGE'.C('url_html_suffix').$parameter; 
+		return SERVER_PORT.HTTP_HOST.'/'.$request_url.'/'.$this->page_prefix.'_PAGE'.C('url_html_suffix').$parameter; 
 	}
 
 }

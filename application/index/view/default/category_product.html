@@ -3,37 +3,38 @@
   <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	  <title>{$seo_title}</title>
-	  <link href="{STATIC_URL}css/default_common.css" rel="stylesheet" type="text/css" />
-	  <link href="{STATIC_URL}css/default_style.css" rel="stylesheet" type="text/css" />
+	  <link href="{STATIC_URL}css/yzm-common.css" rel="stylesheet" type="text/css" />
+	  <link href="{STATIC_URL}css/yzm-style.css" rel="stylesheet" type="text/css" />
 	  <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
-	  <script type="text/javascript" src="{STATIC_URL}js/js.js"></script>
+	  <script type="text/javascript" src="{STATIC_URL}js/yzm-front.js"></script>
 	  <meta name="keywords" content="{$keywords}" />
 	  <meta name="description" content="{$description}" />
   </head>
   <body>
 {m:include "index","header"} 
-	<div class="cat_product">
-	商品类别：<a class="cat_product_name cur" href="{$pclink}">全部</a>
-	{php $data = get_childcat($catid);}
-	{loop $data $v}
-	<a class="cat_product_name" href="{$v[pclink]}">{$v[catname]}</a>
-	{/loop}	
-	</div>
-	
-	{m:lists field="title,url,thumb,brand,price,stock" catid="$catid" limit="10" page="page"}
-	{loop $data $v}	
-	<div class="main_product">
-		<div class="product_list">
-			<img src="{if !empty($v['thumb'])}{$v[thumb]}{else}{STATIC_URL}images/nopic.jpg{/if}" title="{$v['title']}" alt="{$v['title']}">
-			<div class="pro_list_right">
-				<a class="pro_name" href="{$v[url]}">{str_cut($v['title'], 69)}</a>
-				<span class="block pro_rmb">￥{$v[price]}元</span>
-				<span class="block pro_kc">库存：{$v[stock]}个</span>
-				<a class="block pro_gm" href="{$v[url]}" target="_blank">查看详情</a>
+
+	<div class="yzm-content-box yzm-product">
+		<div class="yzm-title">
+			<h2>{get_catname($catid)}</h2>
+			<span class="yzm-title-right">
+				当前位置：{get_location($catid)}
+			</span>
+		</div>
+		{m:lists field="title,url,color,thumb,brand,price,stock" catid="$catid" limit="10" page="page"}
+		{loop $data $v}	
+		<div class="yzm-product-list-box">
+			<div class="yzm-product-list">
+				<a href="{$v[url]}" class="yzm-product-img"><img src="{get_thumb($v['thumb'])}" title="{$v['title']}" alt="{$v['title']}"></a>
+				<div class="yzm-product-right">
+					<a class="yzm-product-title" href="{$v[url]}">{title_color($v['title'], $v['color'])}</a>
+					<p class="yzm-product-price">￥{$v[price]}元</p>
+					<p class="yzm-product-stock">库存：{$v[stock]}个</p>
+					<a class="yzm-product-details" href="{$v[url]}" target="_blank">查看详情</a>
+				</div>
 			</div>
 		</div>		
+		{/loop}
+		<div class="clearfix"></div>
+		<div id="page">{$pages}</div>	
 	</div>
-	{/loop}
-	<div class="clearfix"></div>
-	<div id="page">{$pages}</div>	
 {m:include "index","footer"} 

@@ -8,7 +8,8 @@
 		<ul>
 			 <li><label><span class="c-red">*</span>组别名称：</label><input type="text" class="input" name="name" value=""></li>
 			 <li><label><span class="c-red">*</span>经验小于：</label><input type="text" class="input" name="experience" value=""></li>
-			 <li><label>会员组图标：</label><input type="text" class="input" placeholder="图标放置在/common/static/images/icon/" name="icon"></li>
+			 <li><label><span class="c-red">*</span>每日最大投稿量：</label><input type="text" class="input" name="max_amount" value="3"> <span class="c-red">* VIP用户不受限</span></li>
+			 <li><label>会员组图标：</label><input type="text" class="input" placeholder="图标放置在/common/static/images/icon/" name="icon" style="width:450px"></li>
 			 <li><label>组别权限：</label>
 			 <span class="span_input">
 					<label  class="label_box"><input type="checkbox" name="authority[]" value="1"> 发送消息</label>
@@ -38,6 +39,10 @@
 			 layer.msg('经验点数只能为数字类型！');
 			 return false;
 		 }
+		if(obj.max_amount.value=='' || isNaN(obj.max_amount.value)){
+			layer.msg('每日最大投稿量只能为数字类型！');
+			return false;
+		}	
         $.ajax({
             type: 'POST',
             url: '<?php echo U('add');?>', 

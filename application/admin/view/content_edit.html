@@ -4,7 +4,10 @@
 <script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/1.4.3.3/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/1.4.3.3/ueditor.all.min.js"> </script>
 <script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/1.4.3.3/lang/zh-cn/zh-cn.js"></script>
-<style>.date{height:30px;padding:4px;width:265px;font-size:14px}.Hui-tags-token{color:#353535;}</style>
+<style>
+	.date{height:30px;padding:4px;width:265px;font-size:14px}.Hui-tags-token{color:#353535;}
+	#colors{position:absolute;top:9px;right:23px;cursor:pointer;}
+</style>
 </head>
 <body>
 <article class="page-container">
@@ -12,7 +15,9 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>标　　题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="<?php echo $data['title'];?>"  name="title" onblur="get_seotitle()">
+				<input type="text" class="input-text" value="<?php echo $data['title'];?>"  name="title" onblur="get_seotitle()" <?php if($data['color']) echo 'style="color:'.$data['color'].'"';?>>
+				<input type="hidden" name="color" id="color" value="<?php echo $data['color'];?>">
+				<img src="<?php echo STATIC_URL;?>images/colors.png" title="设置颜色" id="colors">
 			</div>
 		</div>
 		<div class="row cl">
@@ -65,7 +70,7 @@
 				</div>
 				<input type="hidden" class="Hui-tags-val" name="tag" value="<?php echo $taglist;?>" id="taglist">
 			</div>
-			 <a href="javascript:;" onclick="yzm_open('TAG标签选择','<?php echo U('tag/select');?>','650','400')" class="btn btn-primary radius">选择</a>
+			 <a href="javascript:;" onclick="yzm_open('TAG标签选择','<?php echo U('tag/public_select');?>','650','400')" class="btn btn-primary radius">选择</a>
 			</div>
 		</div>
 		<div class="row cl">
@@ -125,15 +130,19 @@
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>内　　容：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 			<?php echo form::editor('content', $data['content'], 'width:100%;height:400px', false);?>
-			<label title="提取内容第一张图片为缩略图"><input name="auto_thum" type="checkbox" id="readpact" value="1" checked="checked" />提取内容第一张图片为缩略图</label>
+			<label title="提取内容第一张图片为缩略图"><input name="auto_thum" type="checkbox" id="readpact" value="1" />提取内容第一张图片为缩略图</label>
             <label title="远程图片本地化" class="yzmcms_small"><input name="grab_img" type="checkbox" value="1"/>远程图片本地化</label>	
 			</div>
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
 				<input type="hidden" name="status" value="<?php echo $data['status'];?>">
+				<?php if(!isset($_GET['is_draft'])){ ?>
 				<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(1)"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
 				<button name="dosubmit" class="btn btn-secondary radius" type="submit" onclick="set_status(0)"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
+				<?php }else{ ?>
+				<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(0)"><i class="Hui-iconfont">&#xe632;</i> 修改稿件</button>
+				<?php } ?>
 				<button onclick="myclose()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
 			</div>
 		</div>
@@ -142,6 +151,7 @@
 </article>
 
 <?php include $this->admin_tpl('footer');?>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>js/jquery.colorpicker.js"></script>
 <script type="text/javascript">
 	function set_top(){
 		if($('#settop').get(0).checked){
@@ -209,6 +219,18 @@
 		if(v != '') v = v.substr(0,v.length-1);
 		$("[name=keywords]").val(v);
 	}
+
+	$("#colors").colorpicker({
+	    fillcolor:true,
+	    success:function(o,color){
+	        $("input[name='title']").css("color",color);
+	        $("#color").val(color);
+	    },
+		reset:function(o){
+			$("input[name='title']").css("color","");
+			$("#color").val('');
+		}
+	});
 </script>
 
 </body>

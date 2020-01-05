@@ -27,6 +27,13 @@ $(function(){
 		$("#searchtab").hide();
 		$("#searchselected").removeClass("searchopen");
 	});
+
+
+	$(".yzm-nav>li").hover(function(){
+		$(this).children('ul').stop(true,true).slideDown(200);
+	},function(){
+		$(this).children('ul').stop(true,true).slideUp(200);
+	})
 	
 });
 

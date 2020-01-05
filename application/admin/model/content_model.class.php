@@ -129,7 +129,9 @@ class content_model {
 		
 		//如果是会员发布的内容，则修改会员内容表的title
 		if(!$r['system']){
-			D('member_content')->update(array('title' => $data['title']), array('checkid' => $this->modelid.'_'.$id));
+			$where = array('title' => $data['title']);
+			$where['status'] = $data['status'] ? 1 : 0;
+			D('member_content')->update($where, array('checkid' => $this->modelid.'_'.$id));
 		}
 		
 		$affected = $content_tabname->update($data, array('id' => $id));

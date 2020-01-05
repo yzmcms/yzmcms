@@ -45,6 +45,7 @@ class cache_memcache {
 	 * @return  void
 	 */
 	public function set($name, $value, $expire = null) {
+		$name = $this->config['prefix'].$name;
 		$expire = $expire ? $expire : $this->config['expire'];
 		if(is_array($value)){
             $value = json_encode($value);
@@ -59,6 +60,7 @@ class cache_memcache {
 	 * @return  string
 	 */
 	public function get($name) {
+		$name = $this->config['prefix'].$name;
 		$value = $this->link->get($name);
 		$value_serl = json_decode($value, true);
         if(is_array($value_serl)){
@@ -74,6 +76,7 @@ class cache_memcache {
 	 * @return  void
 	 */
 	public function delete($name) {
+		$name = $this->config['prefix'].$name;
 		return $this->link->delete($name);
 	}
 

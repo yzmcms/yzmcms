@@ -4,8 +4,12 @@ yzm_base::load_sys_class('page','',0);
 
 class index{
 
-	//搜索分页条数设置
-	private $offset = 5;
+	private $offset;
+
+	function __construct() {
+		//搜索分页条数设置
+		$this->offset = get_config('search_page') ? intval(get_config('search_page')) : 10;
+	}
 
 	/**
 	 * 普通搜索
@@ -15,7 +19,7 @@ class index{
 	
 		$q = str_replace('%', '', new_html_special_chars(strip_tags(trim($_GET['q']))));
 		if(strlen($q) <= 2 || strlen($q) >= 30){
-			showmsg('你输入的字符过长或过短！', 'stop');
+			showmsg('你输入的字符长度需要是 2 到 30 个字符！', 'stop');
 		}
 		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
 		$modelinfo = get_modelinfo();
@@ -33,7 +37,7 @@ class index{
 		$db = D($modelarr[$modelid]);
 		$total = $db->where($where)->total();
 		$page = new page($total, $this->offset);
-		$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid')->where($where)->order('id DESC')->limit($page->limit())->select();
+		$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid,flag,color')->where($where)->order('id DESC')->limit($page->limit())->select();
 		
 		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
 		include template('index','search');	
@@ -60,7 +64,7 @@ class index{
 		$data = $tag_content->field('modelid,aid')->where(array('tagid'=>$id))->order('modelid ASC')->limit($page->limit())->select();
 		$search_data = array();
 		foreach ($data as $value) {
-			$search_data[] = D(get_model($value['modelid']))->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid')->where(array('id'=>$value['aid']))->find();
+			$search_data[] = D(get_model($value['modelid']))->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid,flag,color')->where(array('id'=>$value['aid']))->find();
 		}
 		
 		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
@@ -90,7 +94,7 @@ class index{
 		$where = 'inputtime BETWEEN '.$starttime.' AND '.$endtime.' AND `status` = 1';
 		$total = $db->where($where)->total();
 		$page = new page($total, $this->offset);
-		$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid')->where($where)->order('id DESC')->limit($page->limit())->select();
+		$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid,flag,color')->where($where)->order('id DESC')->limit($page->limit())->select();
 		
 		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
 		include template('index','search');	

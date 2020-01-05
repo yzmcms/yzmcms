@@ -21,7 +21,8 @@ class point {
 		8 => '下载收费',
 		9 => '发表帖子',
 		10 => '每日签到',
-		11 => '其他'
+		11 => '投稿收费',
+		12 => '其他'
 	);
 	
 	
@@ -38,6 +39,9 @@ class point {
 	 * @param string $mod_experience  是否修改经验【后台操作无需修改经验】
 	 */
 	public function point_add($type, $value, $pay_type, $userid, $username, $experience = 0, $remarks = '', $adminnote = '', $mod_experience = true) {
+
+		if($value == 0) return true;
+		
 		$data = array();
 		$data['trade_sn'] = create_tradenum();
 		$data['money'] = $value;
@@ -45,7 +49,7 @@ class point {
 		$data['username'] = $username;
 		$data['type'] = $type;
 		$data['msg'] =  $this->pay_type[$pay_type];
-		$data['remarks'] = $remarks;
+		$data['remarks'] = htmlspecialchars($remarks);
 		$data['creat_time'] = SYS_TIME;
 		$data['ip'] = getip();
 		$data['adminnote'] = $adminnote;
@@ -80,8 +84,10 @@ class point {
 	 * @return bool
 	 */
 	public function point_spend($type, $value, $pay_type, $userid = '', $username = '', $remarks = '') {
+
+		if($value == 0) return true;
 		
-		if(!$userid || !$username || $value<=0) showmsg(L('illegal_parameters'), 'stop');
+		if(!$userid || !$username || $value<0) showmsg(L('illegal_parameters'), 'stop');
 		$data = D('member')->field('point,amount')->where(array('userid'=>$userid))->find();
 		if($type == '1'){
 			if(($data['point']-$value)<0) showmsg('积分不足本次交易！', 'stop');
@@ -98,7 +104,7 @@ class point {
 		$data['username'] = $username;
 		$data['type'] = $type;
 		$data['msg'] =  $this->pay_type[$pay_type];
-		$data['remarks'] = $remarks;
+		$data['remarks'] = htmlspecialchars($remarks);
 		$data['creat_time'] = SYS_TIME;
 		$data['ip'] = getip();
 		

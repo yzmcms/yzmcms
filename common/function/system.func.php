@@ -113,7 +113,7 @@ function get_modelinfo($typeall = 0){
  */
 function sendmail($email, $title = '', $content = '', $mailtype = 'HTML'){
 	$mail_pass = get_config('mail_pass');
-	if(!is_email($email) || empty($mail_pass)) return false;
+	if(!is_email($email)) return false;
 	yzm_base::load_sys_class('smtp', '', 0);
 	$smtp = new smtp(get_config('mail_server'),get_config('mail_port'),get_config('mail_auth'),get_config('mail_user'),get_config('mail_pass'));
 	$state = $smtp->sendmail($email, get_config('mail_from'), $title.' - '.get_config('site_name'), $content, $mailtype);
@@ -212,6 +212,51 @@ function adver($id){
 		return '广告已过期！';
 	}
 	return $data['code'];
+}
+
+
+/**
+ * 生成Tag URL
+ * @param $tid
+ * @return string
+ */
+function tag_url($tid){
+	return U('search/index/tag',array('id'=>$tid));
+}
+
+
+/**
+ * 生成手机版内容URL
+ * @param $catid
+ * @param $id
+ * @return string
+ */
+function mobile_url($catid, $id){
+	return U('mobile/index/show', array('catid'=>$catid,'id'=>$id));
+}
+
+
+/**
+ * 渲染title颜色
+ * @param $title
+ * @param $color
+ * @return string
+ */
+function title_color($title, $color = ''){
+	if(!$color) return '<span class="title_color">'.$title.'</span>';
+	return '<span class="title_color" style="color:'.$color.'">'.$title.'</span>';
+}
+
+
+/**
+ * 获取内容缩略图
+ * @param $thumb
+ * @param $default
+ * @return string
+ */
+function get_thumb($thumb, $default = ''){
+	if($thumb) return $thumb;
+	return $default ? $default : STATIC_URL.'images/nopic.jpg';
 }
 
 
@@ -365,6 +410,22 @@ function get_model($modelid, $parameter = 'tablename'){
 	}
 	if(!isset($modelarr[$modelid])) return false;
 	return $modelarr[$modelid][$parameter];
+}
+
+
+/**
+ * 获取内容评论数
+ *
+ * @param  int $id
+ * @param  int $catid
+ * @param  int $modelid
+ * @return string
+ */
+function get_comment_total($id, $catid = 0, $modelid = 1){
+	if(!$catid) return 0;
+	$commentid = $modelid.'_'.$catid.'_'.$id;
+	$total = D('comment_data')->field('total')->where(array('commentid'=>$commentid))->one();
+	return $total ? $total : 0;
 }
 
 

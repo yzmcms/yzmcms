@@ -27,7 +27,10 @@
 				<td><?php echo $val['tag'];?></td>
 				<td><?php echo $val['total'];?></td>
 				<td><?php echo date('Y-m-d H:i:s',$val['inputtime']);?></td>
-				<td class="td-manage"><a title="编辑" href="javascript:;" onclick="yzm_open('编辑TAG','<?php echo U('edit',array('id'=>$val['id']));?>','600','300')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a></td>
+				<td class="td-manage">
+					<a title="编辑" href="javascript:;" onclick="yzm_open('编辑TAG','<?php echo U('edit',array('id'=>$val['id']));?>','600','300')" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
+
+				</td>
 			</tr>
 			<?php 
 			   }		 

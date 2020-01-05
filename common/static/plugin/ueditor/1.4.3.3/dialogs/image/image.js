@@ -721,7 +721,9 @@
                     var responseText = (ret._raw || ret),
                         json = utils.str2json(responseText);
                     if (json.state == 'SUCCESS') {
-                        _this.imageList.push(json);
+						// _this.imageList.push(json);
+						// YzmCMS修改：按选择好的文件列表顺序存储
+						_this.imageList[$file.index()] = json;
                         $file.append('<span class="success"></span>');
                     } else {
                         $file.find('.error').text(json.state).show();
@@ -775,6 +777,10 @@
                 prefix = editor.getOpt('imageUrlPrefix');
             for (i = 0; i < this.imageList.length; i++) {
                 data = this.imageList[i];
+				// YzmCMS修改：源自于对line:(724行左右)的修改，避免部分图片上传失败，或者选择的图片不符合规范不能参与上传而造成imageList数组中出现的undefined项
+				if(data == undefined){
+				  continue;
+				}
                 list.push({
                     src: prefix + data.url,
                     _src: prefix + data.url,

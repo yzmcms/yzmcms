@@ -10,7 +10,7 @@ class update_urls extends common {
 	public function init() {
 		$modelid = 0;
 		$modelinfo = get_modelinfo();
-		$select = select_category('catids[]', '0', '≡ 所有栏目 ≡', 0, 'multiple="multiple" style="height:200px;width:140px;"', false, false);
+		$select = select_category('catids[]', '0', '≡ 所有栏目 ≡', 0, 'multiple="multiple" style="height:250px;width:140px;"', false, false);
 		include $this->admin_tpl('update_urls_list');
 	}
 
@@ -21,7 +21,7 @@ class update_urls extends common {
 	public function change_model() {
 		$modelid = isset($_POST['modelid']) ? intval($_POST['modelid']) : 0;
 		$modelinfo = get_modelinfo();
-		$select = select_category('catids[]', '0', '≡ 所有栏目 ≡', 0, 'multiple="multiple" style="height:200px;width:140px;"', false, false, $modelid);
+		$select = select_category('catids[]', '0', '≡ 所有栏目 ≡', 0, 'multiple="multiple" style="height:250px;width:140px;"', false, false, $modelid);
 		
 		include $this->admin_tpl('update_urls_list');
 	}
@@ -60,7 +60,7 @@ class update_urls extends common {
 			}
 			
 			delcache('categoryinfo');
-			showmsg(L('operation_success'),'',1);
+			showmsg('更新完成！', '', 2);
 		}
 	}
 	
@@ -71,41 +71,48 @@ class update_urls extends common {
  	public function update_content_url() {
 
 		$modelid = isset($_POST['modelid']) ? intval($_POST['modelid']) : (isset($_GET['modelid']) ? intval($_GET['modelid']) : 0);
-		
-		$modelinfo = get_modelinfo();
-		
-		//当选择所有模型时，则更新所有内容
-		if(!$modelid){
-			$i = isset($_GET['i']) ? intval($_GET['i']) : 0;
-			$num = count($modelinfo);
-			if($i >= $num) showmsg('更新完成！', U('init'), 1); 
-			$tablename = $modelinfo[$i]['tablename'];
-			if(!$tablename) showmsg('模型错误，请检查!', U('init'));
-			
-			$db = D($tablename);
-			$r = $db->field('catid, id')->limit('3000')->select();   //防止数据过多，暂且取前3000条
+		$autoid = isset($_GET['autoid']) ? intval($_GET['autoid']) : 0;
+		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+		$total = isset($_GET['total']) ? intval($_GET['total']) : 0;
+		$pagesize = 200;
 
-			foreach($r as $val){
-				$url = get_content_url($val['catid'], $val['id']);	
-				$db->update(array('url' => $url), array('id' => $val['id']));
+		$modelid_arr = getcache('update_content_url_'.$_SESSION['adminid']);
+		if(!$modelid_arr){
+			if($modelid){
+				$modelid_arr[] = $modelid;
+			}else{
+				$modelinfos = get_modelinfo();
+				foreach($modelinfos as $val) {
+					$modelid_arr[] = $val['modelid'];
+				}				
 			}
-			
-			showmsg($modelinfo[$i]['name'].'更新完成...', U('update_content_url', array('i'=>++$i, 'modelid'=>0)), 1);
-			
-		}else{
-			$modelarr = array();
-			foreach($modelinfo as $val){
-				$modelarr[$val['modelid']] = $val;
-			}
-			if(!isset($modelarr[$modelid])) showmsg('模型不存在！');
-			$db = D($modelarr[$modelid]['tablename']);
-			$r = $db->field('catid,id')->limit('1000')->select();  //防止数据过多，暂且取前1000条
-			foreach($r as $val){
-				$url = get_content_url($val['catid'], $val['id']);	
-				$db->update(array('url' => $url), array('id' => $val['id']));
-			}
-			showmsg($modelarr[$modelid]['name'].'更新完成！', U('init'), 1); 
+			setcache('update_content_url_'.$_SESSION['adminid'], $modelid_arr);
 		}
+		if(!isset($modelid_arr[$autoid])) {
+			delcache('update_content_url_'.$_SESSION['adminid']);
+			showmsg('更新完成！', U('init'), 2);
+		}
+		$modelid = $modelid_arr[$autoid];
+		$tablename = get_model($modelid);
+		$db = D($tablename);
+		$offset = $pagesize*($page-1);
+		$order = 'id ASC';
+		
+		if(!$total)  $total = $db->total();
+		$num = ceil($total/$pagesize);
+		$limit = $offset.','.$pagesize;
+		$data = $db->field('catid, id')->order($order)->limit($limit)->select();
+		foreach($data as $val) {
+			$url = get_content_url($val['catid'], $val['id']);	
+			$db->update(array('url' => $url), array('id' => $val['id']));
+		}
+		$rate = $num ? floor(100 * ($page / $num)) : 100;
+		$message = '【'.get_model($modelid, 'name').'】 正在更新，进度： '.$rate.'%';
+		if($num > $page) {
+			showmsg($message, U(ROUTE_A, array('autoid'=>$autoid, 'total'=>$total, 'page'=>++$page)), 0.1);
+		} else {
+			showmsg($message, U(ROUTE_A, array('autoid'=>++$autoid)), 0.1);
+		}		
 
 	}
 	

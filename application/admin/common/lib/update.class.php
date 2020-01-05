@@ -17,7 +17,7 @@ class update{
     public static function check(){
     	$curl = curl_init(update::notice_url());
 		curl_setopt($curl, CURLOPT_NOSIGNAL, 1);
-		curl_setopt($curl, CURLOPT_TIMEOUT_MS, 800);		
+		curl_setopt($curl, CURLOPT_TIMEOUT_MS, 1200);		
 		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
 		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);

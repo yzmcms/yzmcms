@@ -9,7 +9,7 @@ class admin {
 		$res = $admin->where(array('adminname' => $adminname))->find();
 		if(!$res){
 			$admin_login_log->insert(array('adminname'=>$adminname,'logintime'=>SYS_TIME,'loginip'=>$loginip,'password'=>$_POST['password'],'loginresult'=>'0','cause'=>L('user_does_not_exist')));
-			showmsg(L('user_does_not_exist'));
+			showmsg(L('user_or_password_error'), '', 2);
 		} 
 		if($password == $res['password']){					
 			$admin->update(array('loginip'=>$loginip,'logintime'=>SYS_TIME), array('adminid'=>$res['adminid']));
@@ -23,7 +23,7 @@ class admin {
 			showmsg(L('login_success'), U('init'), 1);
 		}else{
 			$admin_login_log->insert(array('adminname'=>$adminname,'logintime'=>SYS_TIME,'loginip'=>$loginip,'password'=>$_POST['password'],'loginresult'=>'0','cause'=>L('password_error')));
-			showmsg(L('password_error'));
+			showmsg(L('user_or_password_error'), '', 2);
 		}
 	}      
 

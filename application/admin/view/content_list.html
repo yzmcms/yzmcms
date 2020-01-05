@@ -84,7 +84,7 @@
 			<td><input type="checkbox" value="<?php echo $val['id']?>" name="ids[]"></td>
 			<td><?php echo $val['id']?></td>
 			<td class="text-l">
-			<a href="<?php echo $val['url'];?>" target="_blank" ><?php echo $val['title'];?></a>
+			<a href="<?php echo $val['url'];?>" target="_blank" ><?php echo title_color($val['title'], $val['color']);?></a>
 			<?php
 			if($val['thumb']){
 			 echo '<span style="color:#0a6999;margin:0 3px" title="图片"><i class="Hui-iconfont">&#xe646;</i></span>';
@@ -121,7 +121,10 @@
 			<td><?php echo date('Y-m-d H:i:s', $val['updatetime'])?></td>
 			<td><?php echo $val['status'] ? '<span class="label label-success radius">正常</span>' : '<span class="label radius">草稿</span>';?></td>
 			<td><?php echo $val['is_push'] ? '已推送' : '<span class="c-red">未推送</span>';?></td>
-			<td><a title="编辑" href="javascript:;" onclick="yzm_open_full('编辑内容','<?php echo U('edit',array('modelid'=>$modelid,'id'=>$val['id']));?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> <a title="预览" href="<?php echo $val['url'];?>" class="ml-5" target="_blank" style="text-decoration:none"><i class="Hui-iconfont">&#xe695;</i></a></td>
+			<td>
+				<a title="编辑" href="javascript:;" onclick="yzm_open_full('编辑内容','<?php echo U('edit',array('modelid'=>$modelid,'id'=>$val['id']));?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
+				<a title="预览" href="<?php echo $val['url'];?>" class="ml-5" target="_blank" style="text-decoration:none"><i class="Hui-iconfont">&#xe695;</i></a>
+			</td>
 		  </tr>		
 		<?php 
 		}

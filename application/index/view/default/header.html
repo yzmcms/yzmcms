@@ -1,77 +1,72 @@
-<!--mini登陆条-->
-<div id="head_login">
-<div class="w1000">
-<div id="mini">
-{if intval(get_cookie('_userid'))==0}
-<a href="{U('member/index/register')}" target="_blank">注册</a> <a href="{U('member/index/login')}"  target="_blank">登录</a>
-{else}
-你好：{safe_replace(get_cookie('_username'))}，<a href="{U('member/index/init')}">会员中心</a> <a href="{U('member/index/logout')}">退出</a>
-{/if}
-</div>
-欢迎光临本站！
-</div>
-</div>
-<!--网站容器-->
-<div id="container">
-<div id="header">
-	<div id="logo">
-	 <a href="{$site[site_url]}"><img src="{STATIC_URL}images/logo.png" title="{$site[site_name]}" alt="{$site[site_name]}"></a>
+<!--网站头部-->
+<div class="yzm-header-box">
+	<div class="yzm-header-top">
+		<div class="yzm-member-status">
+		{if intval(get_cookie('_userid'))==0}
+		<a href="{U('member/index/register')}" target="_blank">注册</a> 
+		<a href="{url_referer(get_url())}"  target="_blank" class="login">登录</a>
+		{else}
+		你好：{safe_replace(get_cookie('_username'))}，<a href="{U('member/index/init')}">会员中心</a> <a href="{U('member/index/logout')}">退出</a>
+		{/if}
+		</div>
+		<div class="topleft">
+			轻量级开源内容管理系统：<a href="http://www.yzmcms.com" target="_blank">YzmCMS官方网站</a>
+		</div>
 	</div>
-	<div id="search">
-	<form method="get" action="{SITE_URL}index.php" target="_blank">
-		<div id="searchtxt" class="searchtxt">
-			<div class="searchmenu">	
-				<div class="searchselected" id="searchselected">文章</div>	
-				<div class="searchtab" id="searchtab">
-					<ul>
-						<li data="1">文章</li>
-						<li data="2">产品</li>
-						<li data="3">下载</li>
-					</ul>
+</div>
+<div class="yzm-container-box">
+	<div class="yzm-header">
+		<div class="yzm-logo">
+		 <a href="{SITE_URL}">YzmCMS内容管理系统</a>
+		 <!-- <a href="{SITE_URL}"><img src="{STATIC_URL}images/logo.png" title="{$site[site_name]}" alt="{$site[site_name]}"></a> -->
+		</div>
+		<div class="yzm-search">
+		<form method="get" action="{U('search/index/init')}" target="_blank">
+			<div id="searchtxt" class="searchtxt">
+				<div class="searchmenu">	
+					<div class="searchselected" id="searchselected">文章</div>	
+					<div class="searchtab" id="searchtab">
+						<ul>
+							<li data="1">文章</li>
+							<li data="2">产品</li>
+							<li data="3">下载</li>
+						</ul>
+					</div>
 				</div>
+				<input type="hidden" name="modelid" value="1" id="modelid" />
+				<input name="q" type="text" placeholder="输入关键字"/>
 			</div>
-			<input type="hidden" name="m" value="search" />
-			<input type="hidden" name="c" value="index" />
-			<input type="hidden" name="a" value="init" />
-			<input type="hidden" name="modelid" value="1" id="modelid" />
-			<input name="q" type="text" placeholder="输入关键字"/>
-		</div>
-		<div class="searchbtn">
-			<button id="searchbtn" type="submit">搜索</button>
-		</div>
-	</form>
-    </div>
-	<div id="hea_bot"><a href="{U('member/member_content/init')}" target="_blank">免费发布信息</a></div>
+			<div class="searchbtn">
+				<button id="searchbtn" type="submit">搜索</button>
+			</div>
+		</form>
+	    </div>
+		<div class="yzm-add-content"><a href="{U('member/member_content/init')}" target="_blank">发布内容</a></div>
+	</div>
+
+	<!--网站导航-->
+	<div class="yzm-menu">
+	  <ul class="yzm-nav">
+		 <li><a {if !isset($catid)} class="current" {/if} href="{SITE_URL}">首页</a></li>
+		{m:nav field="catid,catname,arrchildid,pclink,type" where="parentid=0" limit="20"}
+		{loop $data $v}
+		    <li>
+				<a {if isset($catid) && $v['catid']==$catid} class="current" {/if} href="{$v[pclink]}" {if $v['type']==2} target="_blank" {/if}>{$v[catname]}</a>
+				<!-- 这里是二级栏目的循环，不需要的可以删除，代码开始 -->
+				{if $v['arrchildid']!=$v['catid']} 
+				{php $r = get_childcat($v['catid']);}
+				<ul class="sub_nav">
+					{loop $r $v}
+					<li><a href="{$v[pclink]}">{$v[catname]}</a></li>
+					{/loop}	
+				</ul>
+				{/if}
+				<!-- 这里是二级栏目的循环，不需要的可以删除，代码结束 -->
+			</li>		
+		{/loop}	
+	  </ul>
+	</div>
 </div>
-<!--导航条-->
-<div class="menu">
-  <ul class="nav">
-	 <li><a {if !isset($catid)} class="current" {/if} href="{$site[site_url]}">首页</a></li>
-	{m:nav field="catid,catname,arrchildid,pclink,type" where="parentid=0" limit="20"}
-	{loop $data $v}
-	    <li>
-			<a{if isset($catid) && $v['catid']==$catid} class="current" {/if} href="{$v[pclink]}" {if $v['type']==2} target="_blank" {/if}>{$v[catname]}</a>
-			<!-- 这里是二级栏目的循环，不需要的可以删除，代码开始 -->
-			{if $v['arrchildid']!=$v['catid']} 
-			{php $r = get_childcat($v['catid']);}
-			<ul class="sub_nav">
-				{loop $r $v}
-				<li><a href="{$v[pclink]}">{$v[catname]}</a></li>
-				{/loop}	
-			</ul>
-			{/if}
-			<!-- 这里是二级栏目的循环，不需要的可以删除，代码结束 -->
-		</li>		
-	{/loop}	
-  </ul>
-</div>
-<div class="clearfix"></div>	
-<script>
-	$(function(){
-		$(".nav>li").hover(function(){
-			$(this).children('ul').stop(true,true).show(200);
-		},function(){
-			$(this).children('ul').stop(true,true).hide(200);
-		})
-	})
-</script>
+
+<!--网站容器-->
+<div class="yzm-container">

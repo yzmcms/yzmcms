@@ -9,17 +9,16 @@
  
 class yzm_tag{
 	
-	public $tablename,$page,$total;
-	public $db;
+	public $tablename,$page,$total,$db;
 	
 	/**
 	 * 内容列表标签
 	 * @param $data
 	 */
 	public function lists($data) {
+		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 0;
 		$catid = isset($data['catid']) ? trim($data['catid']) : '';
 		
-		//如果设置了catid，则根据catid判断modelid,传入的modelid失效
 		if($catid){
 			if(!strpos($catid, ',')){
 				$category = get_category($catid);
@@ -33,12 +32,10 @@ class yzm_tag{
 				if(!$category) return false;
 				$catid = ' AND catid IN ('.join(',', $catarr).')';
 			}
-			$modelid = $category['modelid'];
-		}else{
-			if(!isset($data['modelid'])) return false;
-			$modelid = intval($data['modelid']);
-			$catid = '';
 		}
+
+		// 优先采用传入的modelid
+		$modelid = $modelid ? $modelid : (isset($category['modelid']) ? $category['modelid'] : 0);
 		
 		if(!$this->_set_model($modelid)) return false;
 		$field = isset($data['field']) ? $data['field'] : '*';
@@ -81,20 +78,19 @@ class yzm_tag{
 	 * @param $data
 	 */
 	public function hits($data) {
+		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 0;
 		$catid = isset($data['catid']) ? intval($data['catid']) : 0;
 		
-		//如果设置了catid，则根据catid判断modelid,传入的modelid失效
 		if($catid){
 			$category = get_category($catid);
 			if(!$category) return false;
 			$arrchildid = $category['arrchildid'];
-			$catid = strpos($arrchildid, ',') ? ' AND catid IN ('.$arrchildid.')' : ' AND catid='.$arrchildid;
-			$modelid = $category['modelid'];			
-		}else{
-			if(!isset($data['modelid'])) return false;
-			$modelid = intval($data['modelid']);
-			$catid = '';
-		}		
+			$catid = strpos($arrchildid, ',') ? ' AND catid IN ('.$arrchildid.')' : ' AND catid='.$arrchildid;		
+		}	
+
+		// 优先采用传入的modelid
+		$modelid = $modelid ? $modelid : (isset($category['modelid']) ? $category['modelid'] : 0);
+
 		if(!$this->_set_model($modelid)) return false;
 		$field = isset($data['field']) ? $data['field'] : '*';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
@@ -125,6 +121,7 @@ class yzm_tag{
 	}	
 	
 	
+
 	/**
 	 * 友情链接标签
 	 * @param $data
@@ -239,8 +236,7 @@ class yzm_tag{
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
 		$typeid = isset($data['typeid']) ? intval($data['typeid']) : 0;
 		$where = $typeid ? '`status` = 1 AND typeid='.$typeid : '`status` = 1';
-		$banner = D('banner');
-		return $banner->field($field)->where($where)->order($order)->limit($limit)->select();
+		return D('banner')->field($field)->where($where)->order($order)->limit($limit)->select();
 	}
 	
 	
@@ -332,18 +328,11 @@ class yzm_tag{
 	 * @param $modelid
 	 */
 	private function _set_model($modelid) {
-		$modelinfo = get_modelinfo();
-        $modelarr = array();
-		foreach($modelinfo as $val){
-			$modelarr[$val['modelid']] = $val['tablename'];
-		}
-		if(isset($modelarr[$modelid])) { 
-			$this->tablename = $modelarr[$modelid];
-			$this->db = D($modelarr[$modelid]);
-			return true;
-		} else {
-			return false;
-		}
+		$model = get_model($modelid);
+		if(!$model)  return false;
+		$this->tablename = $model;
+		$this->db = D($model);
+		return true;
 	}
 	
 }

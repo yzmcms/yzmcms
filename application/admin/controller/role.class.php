@@ -78,7 +78,6 @@ class role extends common {
 	 * 权限管理
 	 */
 	public function role_priv() {				
-		$admin_role = D('admin_role');
 		if(isset($_POST['dosubmit'])) {
 			$admin_role_priv = D('admin_role_priv');
 			if (is_array($_POST['menuid']) && count($_POST['menuid']) > 0) {
@@ -107,8 +106,8 @@ class role extends common {
 			$tree = yzm_base::load_sys_class('tree');
 			$tree->icon = array('│ ','├─ ','└─ ');
 			$tree->nbsp = '&nbsp;&nbsp;&nbsp;';
-			$data = D('menu')->order('listorder ASC,id DESC')->select();
-			$priv_data = D('admin_role_priv')->where(array('roleid'=>$roleid))->select();
+			$data = D('menu')->field('id,name,parentid,m,c,a')->order('listorder ASC,id DESC')->select();
+			$priv_data = D('admin_role_priv')->field('roleid,m,c,a')->where(array('roleid'=>$roleid))->select();
 			foreach($data as $k=>$v) {
 				$data[$k]['level'] = $this->get_level($v['id'],$data);
 				$data[$k]['checked'] = ($this->is_checked($v,$roleid,$priv_data))? ' checked' : '';

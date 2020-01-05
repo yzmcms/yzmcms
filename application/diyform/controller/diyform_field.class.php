@@ -96,7 +96,7 @@ class diyform_field extends common{
 		   	
 			unset($_POST['issystem'], $_POST['modelid'], $_POST['fieldtype']);	
 			
-		    if($_POST['minlength']) $_POST['isrequired'] = 1;
+		    $_POST['isrequired'] = $_POST['minlength'] ? 1 :0;
 			if(D('model_field')->update($_POST, array('fieldid' => $fieldid))){
 				delcache($this->modelid.'_model');
 				showmsg(L('operation_success'), U('init',array('modelid'=>$this->modelid)), 1);

@@ -1,0 +1,81 @@
+@charset "utf-8";
+/**
+ * YZMCMS 内容管理系统
+ * @author           袁志蒙  
+ * @license          http://www.yzmcms.com
+ */
+/* CSS Document */
+
+*{margin:0;padding:0;}
+body{font-size:13px;font-family:"Microsoft Yahei","Hiragino Sans GB","Helvetica Neue",Helvetica,tahoma,arial,"WenQuanYi Micro Hei",Verdana,sans-serif,"\5B8B\4F53"; color: #232323; background: #f1f1f1;line-height: 25px}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0px;padding:0px;}
+table{border-collapse:collapse;}
+a,img{border:0;}
+ol,ul{list-style:none}
+a{color:#454545;text-decoration:none;}
+a:hover{color:#1eaff1;}
+.clearfix{clear:both;width:0px;height:0px;overflow:hidden;}
+/*.title_color{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}*/
+
+.yzm-container-box{width:100%;background: #fff}
+.yzm-header-box{height: 35px; line-height: 35px; background: #fbfbfb; border-bottom: 1px solid #e8e8e8; } 
+.yzm-header-top{width:1170px;margin:0 auto;color:#747d87;}
+.yzm-header-top a{color:#747d87;margin-left:10px;}
+.yzm-header-top a:hover{color:#ff0000;}
+.yzm-member-status{float:right;}
+.yzm-member-status .login{color: #ff0000;border:1px solid #ff0000;padding: 3px 7px}
+
+/* 网站容器 */
+.yzm-container{margin:auto;width:1170px;}
+.yzm-content-box{padding:5px 20px 10px 20px;background: #fff;border: 1px solid #eee;}
+.yzm-title{border-bottom: #e4e3e3 1px solid;margin-bottom: 10px}
+.yzm-title h2{font-size: 14px;line-height: 40px;font-weight: normal;border-bottom: 3px solid #2196f3;display: inline-block;padding-right:2px;color: #2196f3}
+.yzm-title-right{float: right;}
+.yzm-title-right a{line-height: 40px}
+
+.yzm-line{height:20px;clear:both;}
+
+/*网站头部 */
+.yzm-header{height:100px;padding:10px 0;width:1170px;margin:0 auto;}
+.yzm-logo{float:left;margin-top:35px;width:370px;}
+.yzm-logo a{color: #2196f3;font-size: 30px;overflow: hidden;display: block;height:35px;text-overflow: ellipsis;white-space: nowrap;}
+.yzm-logo img{width:165px;height:55px}
+.yzm-search{float:left;margin-left:130px;margin-top:30px;}
+.searchtxt .searchmenu .searchselected{background-image:url(../images/icon2.png);background-repeat:no-repeat;}
+.searchtxt{float:left;width:450px;height:36px;border:2px solid #2196f3;border-right:0;position:relative;z-index:100;background:#fff;}
+.searchtxt .searchmenu{float:left;border-right:1px solid #eee;}
+.searchtxt .searchmenu .searchselected{color:#666;cursor:pointer;font-size:14px;height:36px;line-height:36px;padding-left:15px;width:60px;background-position: 55px -85px;}
+.searchtxt .searchmenu .searchopen{background-position:55px -113px}
+.searchtxt .searchmenu .searchtab{display:none; position:absolute;top:36px;left:-2px;width:75px;border:2px solid #2196f3;border-top:0;background:#fff;z-index:100;}
+.searchtxt .searchmenu .searchtab li{height:28px;line-height:28px;color:#666;font-size:14px;cursor:pointer;padding-left:15px}
+.searchtxt .searchmenu .searchtab li.selected{background:#edf3fc;color:#018dbc;}
+.searchtxt input{float:left;border:0;background:#fff;color:#666;padding:7px 8px;width:350px;height:22px;line-height:22px;margin:0;outline:medium none;}
+.searchbtn{float:left;}
+.searchbtn button{background:#2196f3;border:0;color:#fff;outline:none;cursor:pointer;float:left;height:39px;line-height:39px;width:86px;font-size:16px;transition:all 0.3s}
+.searchbtn button:hover{background:#1784db;}
+.yzm-add-content{width:110px;float:right;margin-top:30px;}
+.yzm-add-content a{border-radius: 1px;height: 38px;color: #2196f3;font-size: 14px;display:block;line-height: 38px;transition:0.3s all;border:1px solid #2196f3;text-align: center;}
+.yzm-add-content a:hover{text-decoration:none;background:#2196f3;color:#fff; }
+
+/*导航条*/
+.yzm-menu{height:43px;line-height:43px;background-color:#2196f3;}
+.yzm-nav{width:1170px;margin:0 auto;}
+.yzm-nav li{float:left;position:relative;z-index:98;background-color:#2196f3;}
+.yzm-nav li a{float:left;width:110px;display:block;line-height:43px;text-align:center;font-weight:normal;font-size:14px;color:#fff;transition:all 0.3s}
+.yzm-nav li a:focus{-moz-outline-style: none;}
+.yzm-nav li a:hover{text-decoration:none;color:#fff;background:#1784db;}
+.yzm-nav li .current{text-decoration:none;color:#fff;background:#1784db;}
+.yzm-nav li .sub_nav{position:absolute;top:43px;left:0px;background:#2196f3;display:none;z-index:99;border:1px solid #1784db;border-top:none;}
+.yzm-nav li .sub_nav li{text-align:center;width:108px;height:35px;line-height:35px;position:relative;z-index:99;padding:0px;background:#2196f3;clear:left;}
+.yzm-nav li .sub_nav li a{height:34px;line-height:34px;width:108px;display:inline-block;}
+
+/* 前端分页 */
+#page{margin:30px 0;font-size:14px;height:30px;line-height:30px;text-align:center}
+#page .pageinfo{display: none;}
+#page  a{border:1px solid #ddd;background:#fff;color:#808080;padding:4px 10px;margin-left:5px;transition:all 0.2s}
+#page  a:hover,#page .curpage{background:#2196f3;color:#fff;text-decoration:none;border:1px solid #2196f3;}
+#page .nopage{cursor:not-allowed;}
+#page .nopage:hover{background:#fff;color:#808080;border:1px solid #ddd;}
+
+/* 网站底部 */
+.yzm-footer{text-align: center;border-top: 1px solid #e8e8e8;padding:20px 0;}

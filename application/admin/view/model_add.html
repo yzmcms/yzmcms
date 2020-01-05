@@ -28,7 +28,7 @@
 
 <script type="text/javascript">
 	function dosub(obj){
-		 var reg = /^[A-Za-z]+$/;	
+		 var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/;	
 		 if(obj.name.value==''){
 			 layer.msg('模型名称不能为空！');
 			 return false;

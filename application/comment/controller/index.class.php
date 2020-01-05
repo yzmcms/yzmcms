@@ -30,6 +30,7 @@ class index{
 			$_POST['catid'] = isset($_POST['catid']) ? intval($_POST['catid']) : 0; 
 			$_POST['id'] = isset($_POST['id']) ? intval($_POST['id']) : 0; 
 			$_POST['commentid'] = $_POST['modelid'].'_'.$_POST['catid'].'_'.$_POST['id']; 
+			$_POST['url'] = SITE_PATH.str_replace(SITE_URL, '', $_POST['url']);
 			$_POST['status'] = !$site['comment_check']; 
 			$_POST['total'] = 1;
 			

@@ -3,44 +3,39 @@
   <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	  <title>会员登录</title>
-	  <link href="{STATIC_URL}css/member_login.css" rel="stylesheet" type="text/css" />
+	  <link href="{STATIC_URL}css/yzm-member-login.css" rel="stylesheet" type="text/css" />
 	  <meta name="description" content="yzmcms会员登录" />
   </head>
   <body>
-		<!--主要内容-->
-		<div class="w880 main">
-		  <div class="main_left">
-		    <p class="logo" style="margin-bottom:90px"><a href="{SITE_URL}"><img src="{STATIC_URL}images/logo.png"></a></p>
-			<p>没有帐号？<a href="{U('register')}">免费注册</a></p>
-			<p>使用合作网站登录</p>
-			<p><a href="{U('member/other/qq_login')}" target="_blank" class="qq_login">腾讯QQ登陆</a></p>
-			<p><a href="{U('member/other/weibo_login')}" target="_blank" class="weibo_login">微博登陆</a></p>
-		  </div>		  
-		  <div class="main_right">
-		    <div class="login">会员登录</div>
-			
-			<div class="form">
-			 <form action="" method="post">
-				<input type="hidden" name="referer" value="<?php echo $referer;?>">
-				<ul>
-				 <li><label>用户名/邮箱</label><input type="text" class="input" required name="username" placeholder="用户名或电子邮箱" value=""></li>
-				 <li><label>密码</label><input type="password" class="input" required name="password" placeholder="请输入密码" value=""></li>
-				 {if get_config('member_yzm')}
-				 <li><label>验证码</label><input type="text" class="input code" required name="code" placeholder="请输入验证码"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="codeimg" title="看不清，换一张"></li>	
-                 {/if}		 
-				 <li><input type="submit" class="submit" name="dosubmit" value="登 录"></li>
-				 <li><a href="{U('member/reset/init')}" target="_blank">忘记密码？</a></li>
-				</ul>
-			 </form>
-			</div>
-			
-		  </div>
-		</div>
-		<div class='clearfix'></div>
 
-		<!--网站底部-->
-		<div class="footer">
-		  <p>Powered by <a href="http://www.yzmcms.com" target="_blank">{YZMCMS_SOFTNAME}</a> © 2014-2020  版权所有</p>
+	    <div class="yzm-member-container yzm-login">
+		    <div class="yzm-title">会员登录</div>
+			<div class="yzm-form">
+				<form action="" method="post">
+					<input type="hidden" name="referer" value="<?php echo $referer;?>">
+					<ul>
+					 <li><input type="text" class="input" name="username" id="username" placeholder="用户名或邮箱" required value=""></li>				 
+					 <li><input type="password" class="input"  name="password" id="password" placeholder="请输入密码" required  value=""></li>
+	 				 {if get_config('member_yzm')}
+	 				 <li><input type="text" class="input code" required name="code" placeholder="请输入验证码"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="codeimg" title="看不清，换一张"></li>	
+	                 {/if}
+					 <li class="last_li"><input type="submit" class="submit" name="dosubmit" value="登 录"></li>
+					</ul>
+					<div class="yzmcms_other_login">
+						<a href="{U('member/other/qq_login')}" target="_blank" class="qq" title="QQ登录"><img src="{STATIC_URL}images/yzm_qq_login.png" ></a>
+						<a href="{U('member/other/weibo_login')}" target="_blank" class="weibo" title="微博登录"><img src="{STATIC_URL}images/yzm_weibo_login.png" ></a>
+					</div>
+					<div class="yzmcms_bottom">没有账号？<a href="{U('register')}">立即注册</a>&nbsp;&nbsp;&nbsp; <a href="{U('member/reset/init')}" target="_blank" style="color:#959595;float: right">忘记密码？</a></div>
+				 </form>
+			</div>
+
+		</div>
+
+		<div class="clearfix"></div>
+		<div class="yzm_footer">
+			<div class="container">
+				<p>Powered by <a href="http://www.yzmcms.com" target="_blank">{YZMCMS_SOFTNAME}</a> © 2014-2020  版权所有</p>
+			</div>
 		</div>
   </body>
 </html>

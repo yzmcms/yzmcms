@@ -3,99 +3,127 @@
   <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	  <title>{$seo_title}</title>	  
-	  <link href="{STATIC_URL}css/default_common.css" rel="stylesheet" type="text/css" />
-	  <link href="{STATIC_URL}css/default_style.css" rel="stylesheet" type="text/css" />
+	  <link href="{STATIC_URL}css/yzm-common.css" rel="stylesheet" type="text/css" />
+	  <link href="{STATIC_URL}css/yzm-style.css" rel="stylesheet" type="text/css" />
+	  <link href="{STATIC_URL}css/yzm-form.css" rel="stylesheet" type="text/css" />
 	  <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
-	  <script type="text/javascript" src="{STATIC_URL}js/js.js"></script>
+	  <script type="text/javascript" src="{STATIC_URL}js/yzm-front.js"></script>
+	  <script type="text/javascript" src="{STATIC_URL}plugin/layer/layer.js"></script>
 	  <meta name="keywords" content="{$keywords}" />
 	  <meta name="description" content="{$description}" />
   </head>
 <body>
 {m:include "index","header"}
-<div id="main_book">
-   <p class="book_title">请您留言</p>
-   <p>感谢您对本站的支持！</p>
-   <p>您反馈的问题有结果后我们会第一时间给您回复。</p>
-    <form action="{U('guestbook/index/init')}" method="post" name="guest" onsubmit="return check()">
-		<table class='message_table'>
-		<tr>
-		<td>留言主题</td>
-		<td><input name="title" type="text" class="input_text" /><span class="xing">*</span></td>
-		</tr>
-		<tr>
-		<td>联系人</td>
-		<td><input name="name" type="text" class="input_text" /><span class="xing">*</span></td>
-		</tr>
-		<tr>
-		<td>电话</td>
-		<td><input name="phone" type="text" class="input_text" /></td>
-		</tr>
-		<tr>
-		<td>Email</td>
-		<td><input name="email" type='email' class="input_text" /></td>
-		</tr>
-		<tr>
-		<td>QQ</td>
-		<td><input name="qq" type="text" class="input_text" /></td>
-		</tr>		
-		<tr>
-		<td>地址</td>
-		<td><input name="address" type="text" class="input_text" /></td>
-		</tr>
-		<tr>
-		<td>留言内容</td>
-		<td><textarea name="bookmsg" cols="50" rows="6" class="textarea_text"></textarea><span class="xing">*</span></td>
-		</tr>
-		<tr>
-		<td>验证码</td>
-		<td><input name="code" type="text" class="input_text" style="width:100px;margin:5px 10px 10px 0;"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" style="cursor:pointer;" title="看不清？点击更换"><span class="xing">*</span></td>
-		</tr>		
-		<tr><td></td>
-		<td><input type="submit" name="dosubmit" value="提交留言" class="submit"></td>
-		</tr>
-		</table>
-    </form> 
- </div>
+	 <div class="yzm-content-box yzm-form-box">
+ 		<div class="yzm-title">
+ 			<h2>在线留言</h2>
+ 			<span class="yzm-title-right">
+ 				当前位置：<a href="{SITE_URL}">首页</a>&gt; 在线留言
+ 			</span>
+ 		</div>
+	  <form action="{U('guestbook/index/init')}" method="post" onsubmit="return checkall(this)">
+	    <table class='yzm-table'>
+	        <tr>
+	            <td class="yzm-table-title">留言主题<span class="red">*</span></td>
+	            <td>
+	                <input type="text" value="" name="title" class="yzm-input-text">
+	            </td>
+	        </tr>
+	        <tr>
+	            <td class="yzm-table-title">联系人<span class="red">*</span></td>
+	            <td>
+	                <input type="url" value="" name="name" class="yzm-input-text">
+	            </td>
+	        </tr>
+	        <tr>
+	            <td class="yzm-table-title">电话<span class="red">*</span></td>
+	            <td>
+	                <input type="text" value="" name="phone" class="yzm-input-text">
+	            </td>
+	        </tr>
+	        <tr>
+	            <td class="yzm-table-title">Email<span class="red">*</span></td>
+	            <td>
+	                <input type="email" value="" name="email" class="yzm-input-text">
+	            </td>
+	        </tr>
+	        <tr>
+	            <td class="yzm-table-title">QQ</td>
+	            <td>
+	                <input type="text" value="" name="qq" class="yzm-input-text">
+	            </td>
+	        </tr>
+	        <tr>
+	            <td class="yzm-table-title">地址</td>
+	            <td>
+	                <input type="text" value="" name="address" class="yzm-input-text">
+	            </td>
+	        </tr>
+	        <tr>
+	            <td class="yzm-table-title">留言内容</td>
+	            <td><textarea name="bookmsg" class="yzm-textarea"></textarea></td>
+	        </tr>
+	        <tr>
+	            <td class="yzm-table-title">验证码<span class="red">*</span></td>
+	            <td>
+	            	<input name="code" type="text" class="yzm-input-text" style="width:100px;">
+	            	<img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="yzm-code" title="看不清？点击更换">
+	            </td>
+	        </tr>
+	        <tr>
+	            <td></td>
+	            <td><input type="submit" name="dosubmit" value="确认提交" class="yzm-submit"></td>
+	        </tr>
+	    </table>
+		</form> 
+	 </div>
  
- <!--留言列表 开始-->
- <div id="guestbook_show">
-   <h5 class="book_title">留言列表</h5>
-		{m:guestbook page="page" limit="5"}
-		{loop $data $v}
-		   <div class="guestbook_list">
-			  <p class="book_head"><strong>作者</strong>：{$v[name]}，<strong>留言主题</strong>：{$v[title]}<span>[{date('Y-m-d H:i:s',$v['booktime'])}]</span></p>
-			  <p class="book_content"><strong>内容</strong>：{$v[bookmsg]}</p>
-			  <!-- 管理员回复 start -->
-			  {loop $v['admin_reply'] $v}
-					<p class="book_content"><strong style="color:#de4c1c">管理员回复</strong>：{$v[bookmsg]}</p>
-			  {/loop}
-			  <!-- 管理员回复 end -->
-		   </div>
-		{/loop} 	
-		{if empty($data)}<div class="guestbook_list"><p>暂无留言!</p></div>{/if}
-	<div id="page">{$pages}</div>	  
- </div>
-  <!--留言列表 结束-->
- <script type="text/javascript">
-	function check(){
-		if(document.guest.title.value==""){
-			alert("留言主题不能为空！");
-			return false;
+	 <!--留言列表 开始-->
+	 <div class="yzm-content-box yzm-book">
+	 		<div class="yzm-title">
+				<h2>留言列表</h2>
+			</div>
+			{m:guestbook page="page" limit="5"}
+			{loop $data $v}
+			   <div class="yzm-book-list">
+				  <p class="yzm-book-head">
+				  	<strong>作者</strong>：{$v[name]}，
+				  	<strong>留言主题</strong>：{$v[title]}
+				  	<span>[{date('Y-m-d H:i:s',$v['booktime'])}]</span>
+				  </p>
+				  <p class="yzm-book-content">
+				  	<strong>内容</strong>：{$v[bookmsg]}</p>
+					<!-- 管理员回复 start -->
+					{loop $v['admin_reply'] $v}
+						<p class="yzm-book-content"><strong style="color:#de4c1c">管理员回复</strong>：{$v[bookmsg]}</p>
+					{/loop}
+					<!-- 管理员回复 end -->
+			   </div>
+			{/loop} 	
+			{if empty($data)}<div class="yzm-book-list"><p>暂无留言!</p></div>{/if}
+			<div id="page">{$pages}</div>	  
+	 </div>
+	  <!--留言列表 结束-->
+	  
+	 <script type="text/javascript">
+		function checkall(obj){
+			if(obj.title.value==""){
+				layer.msg("留言主题不能为空！", {icon:2});
+				return false;
+			}
+			if(obj.name.value==""){
+				layer.msg("联系人不能为空！", {icon:2});
+				return false;
+			}
+			if(obj.bookmsg.value==""){
+				layer.msg("留言内容不能为空！", {icon:2});
+				return false;
+			}
+			if(obj.code.value==""){
+				layer.msg("验证码不能为空！", {icon:2});
+				return false;
+			}		
+			return true;
 		}
-		if(document.guest.name.value==""){
-			alert("联系人不能为空！");
-			return false;
-		}
-		if(document.guest.bookmsg.value==""){
-			alert("留言内容不能为空！");
-			return false;
-		}
-		if(document.guest.code.value==""){
-			alert("验证码不能为空！");
-			return false;
-		}		
-		return true;
-	}
-</script>
-<!--留言列表 结束-->
+	</script>
 {m:include "index","footer"}

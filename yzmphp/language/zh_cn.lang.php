@@ -23,6 +23,7 @@ return array(
     'data_not_modified' => '数据未修改！',
     'user_name_format_error' => '用户名格式错误！',
     'password_format_error' => '密码格式错误！',
+	'user_or_password_error' => '用户名或密码错误！',
     'mail_format_error' => '邮箱格式错误！',
     'user_already_exists' => '该用户已存在！',
     'user_does_not_exist' => '该用户不存在！',

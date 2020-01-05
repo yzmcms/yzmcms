@@ -1,6 +1,6 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
 <title>图像裁剪 - YzmCMS内容管理系统</title>
-<link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL;?>plugin/cropper/3.1.6/cropper.css">
+<link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL;?>plugin/cropper/3.1.6/cropper.css?v=20191120">
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/jquery/1.8.2/jquery.min.js"></script> 
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/cropper/3.1.6/cropper.js"></script>
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/layer/layer.js"></script>
@@ -11,11 +11,28 @@
         <img id="image" src="<?php echo $filepath;?>">
     </div>
 
-    <!-- 图片预览 -->
-    <div class="preview">
-        <div class="preview_img small_lg"></div>
-        <div class="preview_img small_md"></div>
-        <div class="preview_img small_sm"></div>
+    <div class="con_right">
+        <div class="preview">
+            <div class="preview_img small_lg"></div>
+            <div class="preview_img small_md"></div>
+            <div class="preview_img small_sm"></div>
+        </div>
+
+        <div class="toggles">
+            <span title="4:3比例" onclick="yzm_toggle(this, 4/3)">4:3</span>
+            <span title="3:2比例" class="on" onclick="yzm_toggle(this, 3/2)">3:2</span>
+            <span title="1:1比例" onclick="yzm_toggle(this, 1/1)">1:1</span>
+            <span title="2:3比例" onclick="yzm_toggle(this, 2/3)">2:3</span>
+            <span title="自由裁剪" onclick="yzm_toggle(this, NaN)">自由</span>
+        </div>
+
+<!--         <div class="toggles">
+            <span title="逆时针旋转45度" class="rotate1"><i class="Hui-iconfont">&#xe66b;</i></span>
+            <span title="顺时针旋转45度" class="rotate2"><i class="Hui-iconfont">&#xe66c;</i></span>
+            <span title="左右旋转" class="about"><i class="Hui-iconfont">&#xe6fd;</i></span>
+            <span title="上下旋转" class="updown"><i class="Hui-iconfont">&#xe6fc;</i></span>
+            <span title="重置" class="reset"><i class="Hui-iconfont">&#xe68f;</i></span>
+        </div> -->
     </div>
 
     <div class="clearfix"></div>
@@ -50,6 +67,7 @@
     }
 
     function dosbumit(){
+		layer.msg('正在处理中……', {icon:16,shade:0.21,shadeClose:true,time:999999});
         $.ajax({
             type: 'POST',
             url: '<?php echo U('img_cropper');?>', 
@@ -80,6 +98,27 @@
         parent.$("#<?php echo $cid;?>_src").attr("src", new_filename);
         parent.layer.close(index);
     }
+
+    function yzm_toggle(obj, n) {
+        $(obj).addClass('on').siblings().removeClass('on');
+        $('#image').cropper('setAspectRatio', n);
+    }
+
+    $('.rotate1').on('click', function(){
+        $('#image').cropper('rotate', -45);
+    });
+    $('.rotate2').on('click', function(){
+        $('#image').cropper('rotate', 45);
+    });
+    $('.about').on('click', function(){
+        $('#image').cropper("scaleX", -1);
+    });
+    $('.updown').on('click', function(){
+        $('#image').cropper("scaleY", -1);
+    });
+    $('.reset').on('click', function(){
+        $('#image').cropper('reset');
+    });
 </script>
 </body>
 </html>

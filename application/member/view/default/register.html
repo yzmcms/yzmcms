@@ -3,44 +3,37 @@
   <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	  <title>会员注册</title>
-	  <link href="{STATIC_URL}css/member_login.css" rel="stylesheet" type="text/css" />
+	  <link href="{STATIC_URL}css/yzm-member-login.css" rel="stylesheet" type="text/css" />
 	  <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
 	  <script type="text/javascript" src="{STATIC_URL}plugin/layer/layer.js"></script>
 	  <script type="text/javascript" src="{STATIC_URL}js/register.js"></script>
 	  <meta name="description" content="yzmcms会员注册" />
   </head>
   <body>
-		<div class="w880 main">
-		  <div class="main_left">
-		    <p class="logo"><a href="{SITE_URL}"><img src="{STATIC_URL}images/logo.png"></a></p>
-			<p>已经有帐号？<a href="{U('login')}">点击登录</a></p>
-			<p>使用合作网站登录</p>
-			<p><a href="{U('member/other/qq_login')}" target="_blank" class="qq_login">腾讯QQ登陆</a></p>
-			<p><a href="{U('member/other/weibo_login')}" target="_blank" class="weibo_login">微博登陆</a></p>
-		  </div>		  
-		  <div class="main_right">
-		   <div class="login">会员注册</div>
-			
-			<div class="form2">
-			 <form action="" method="post" onsubmit="return checkall()">
-				<ul>
-				 <li><label>用户名</label><input type="text" class="input" name="username" id="username" placeholder="请输入用户名" value=""></li>
-				 <li><label>电子邮箱</label><input type="text" class="input"  name="email" id="email" placeholder="请输入电子邮箱" value=""></li>				 
-				 <li><label>密码</label><input type="password" class="input"  name="password" id="password" placeholder="请输入密码" value=""></li>
-				 <li><label>确认密码</label><input type="password" class="input"  name="password2" id="password2" placeholder="请输入确认密码" value=""></li>
-				 <li><label>验证码</label><input type="text" class="input code"  name="code" id="code" placeholder="请输入验证码"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="codeimg" title="看不清，换一张"></li>			
-				 <li><input type="submit" class="submit" name="dosubmit" value="同意以下协议并注册"></li>
-				 <li><input type="checkbox" checked="checked" value="1" id="agree" name="agree"/> <a onclick="show_protocol()" href="javascript:void(0);">点击阅读注册协议</a></li>
-				</ul>
-			 </form>
-			</div>
-			
-		  </div>
-		</div>
-		<div class='clearfix'></div>
 
-		<div class="footer">
-		 <p>Powered by <a href="http://www.yzmcms.com" target="_blank">{YZMCMS_SOFTNAME}</a> © 2014-2020  版权所有</p>
+	    <div class="yzm-member-container yzm-register">
+		    <div class="yzm-title">会员注册</div>
+			<div class="yzm-form">
+				<form action="" method="post" onsubmit="return checkall()">
+					<ul>
+						<li><input type="text" class="input" name="username" id="username" placeholder="请输入用户名" value=""></li>				 
+						<li><input type="text" class="input"  name="email" id="email" placeholder="请输入电子邮箱" value=""></li>				 
+						<li><input type="password" class="input"  name="password" id="password" placeholder="请输入密码" value=""></li>
+						<li><input type="password" class="input"  name="password2" id="password2" placeholder="请输入确认密码" value=""></li>
+						<li><input type="text" class="input code" name="code" placeholder="请输入验证码"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="codeimg" title="看不清，换一张"></li>	
+						<li><input type="submit" class="submit" name="dosubmit" value="同意以下协议并注册"></li>
+						<li class="last_li"><input type="checkbox" checked="checked" value="1" id="agree" name="agree"/> <a onclick="show_protocol()" href="javascript:void(0);">点击阅读注册协议</a></li>
+					</ul>
+					<div class="yzmcms_bottom">已有账号？<a href="{U('login')}">点击登录</a>&nbsp;&nbsp;&nbsp; <a href="{U('member/reset/init')}" target="_blank" style="color:#959595;float: right">忘记密码？</a></div>
+				</form>
+			</div>
+		</div>
+
+		<div class="clearfix"></div>
+		<div class="yzm_footer">
+			<div class="container">
+				<p>Powered by <a href="http://www.yzmcms.com" target="_blank">{YZMCMS_SOFTNAME}</a> © 2014-2020  版权所有</p>
+			</div>
 		</div>
 		
 		<script type="text/javascript">

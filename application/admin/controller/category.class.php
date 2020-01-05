@@ -107,7 +107,7 @@ class category extends common {
 
 		if(isset($_POST['dosubmit'])) { 
 
-			$_POST['catdir'] = trim($_POST['catdir']);
+			$_POST['catdir'] = trim($_POST['catdir'], ' /');
 
 			if($type != 2){   //非外部链接
 				$res = $this->db->where(array('catdir' => $_POST['catdir']))->find();
@@ -156,6 +156,7 @@ class category extends common {
 			$category_temp = $this->select_template('category_temp', 'category_');
 			$list_temp = $this->select_template('list_temp', 'list_');
 			$show_temp = $this->select_template('show_temp', 'show_');
+			$parent_temp = $this->db->field('category_template,list_template,show_template')->where(array('catid'=>$catid))->find();
 			if($type == 0){
 				include $this->admin_tpl('category_add');
 			}else if($type == 1){
@@ -174,7 +175,7 @@ class category extends common {
 
 		if(isset($_POST['dosubmit'])) {
 			$catid = isset($_POST['catid']) ? strval(intval($_POST['catid'])) : 0;  
-			$_POST['catdir'] = trim($_POST['catdir']);
+			$_POST['catdir'] = trim($_POST['catdir'], ' /');
 			
 			if($_POST['parentid']=='0') {
 				$_POST['arrparentid'] = '0';

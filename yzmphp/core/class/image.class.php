@@ -26,7 +26,7 @@ class image {
 	 */	
     public function __construct($thumb_enable = 0 , $watermark_enable = 0) {
     	$this->thumb_enable = $thumb_enable;
-		$this->watermark_enable = C('watermark_enable');
+		$this->watermark_enable = $watermark_enable;
 		$this->w_pos = C('watermark_position');
 		$this->w_img = YZMPHP_PATH.'common/data/water/'.C('watermark_name');
     }

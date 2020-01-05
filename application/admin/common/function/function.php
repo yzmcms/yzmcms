@@ -9,6 +9,7 @@ function set_config($config) {
 	if(!is_writable($configfile)) showmsg('Please chmod '.$configfile.' to 0777 !', 'stop');
 	$pattern = $replacement = array();
 	foreach($config as $k=>$v) {
+		$v = str_replace(array(',','$'), '', $v);
 		$pattern[$k] = "/'".$k."'\s*=>\s*([']?)[^']*([']?)(\s*),/is";
 		$replacement[$k] = "'".$k."' => \${1}".$v."\${2}\${3},";					
 	}

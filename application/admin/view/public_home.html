@@ -163,7 +163,11 @@
 				  <?php if(is_file(YZMPHP_PATH.'cache/error_log.php')){?>
 				  <tr>
 				  	<td>安全提示</td>
-				  	<td>错误日志（/cache/error_log.php），文件大小 <span class="c-red"><?php echo sizecount(filesize(YZMPHP_PATH.'cache/error_log.php'));?></span></td>
+				  	<td>
+				  		<span class="c-red">错误日志（/cache/error_log.php）</span>
+			  			<?php echo sizecount(filesize(YZMPHP_PATH.'cache/error_log.php'));?> 
+			  			<a href="javascript:yzm_clear_log()" title="清除日志" style="border:1px solid #1e9fff;padding:1px 8px;margin:2px 0px 0px 5px;color:#1e9fff;white-space:nowrap;display:inline-block;">清除</a>
+				  	</td>
 				  </tr>
 				  <?php } ?>
 				  <?php if(!is_file(YZMPHP_PATH.'cache/install.lock')){?>
@@ -204,6 +208,26 @@
 			clickable: true
 		}
 	});
+	
+	function yzm_clear_log(){
+		layer.confirm('确认要清除错误日志吗？',function(index){
+	        $.ajax({
+	            type: 'GET',
+	            url: '<?php echo U('public_clear_log');?>', 
+			    dataType: "json", 
+	            success: function (msg) {
+					if(msg.status == 1){
+						layer.msg(msg.message, {icon:1,time: 1500}, function(){
+						  window.location.reload();     
+						});
+				    }else{
+						layer.msg(msg.message, {icon:2,time: 2500});
+					}
+	            }
+	        })	
+		});
+		
+	}
 </script>
 </body>
 </html>

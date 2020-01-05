@@ -3,7 +3,7 @@
   <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	  <title>{$username}_个人主页</title>
-	  <link href="{STATIC_URL}css/member_myhome.css" rel="stylesheet" type="text/css" />
+	  <link href="{STATIC_URL}css/yzm-member-myhome.css" rel="stylesheet" type="text/css" />
 	  <meta name="keywords" content="{$username},{$username}个人主页,YzmCMS会员个人主页" />
 	  <meta name="description" content="{get_config('site_description')}" />
 	  <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
@@ -69,18 +69,18 @@
 			success: function (msg) {
 				if(msg == 1){
 					$("#follow").html('已关注');
-					layer.alert("关注成功！\n以后对方发布新文章时，会在您的会员中心显示哦！");
+					layer.msg("关注成功！\n以后对方发布新文章时，会在您的会员中心显示哦！", {icon:1});
 				}else if(msg == 2){
 					$("#follow").html('加关注');
-					layer.msg("已取消关注");
+					layer.msg("已取消关注", {icon:1});
 				}else if(msg == 0){
-					layer.alert('请先登录！');
+					layer.msg('请先登录！', {icon:2});
 				}else if(msg == -3){
-					layer.alert('不能关注自己哦~');
+					layer.msg('不能关注自己哦~', {icon:2});
 				}else if(msg == -1){
-					layer.alert('该用户不存在！');
+					layer.msg('该用户不存在！', {icon:2});
 				}else{
-					layer.alert('非法操作！');
+					layer.msg('非法操作！', {icon:2});
 				}
 			}
 		});

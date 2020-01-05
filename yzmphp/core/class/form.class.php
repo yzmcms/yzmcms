@@ -17,7 +17,7 @@ class form {
 	 * @param $width  宽度 如：100
 	 */
 	public static function input($name = '', $value = '', $required=false, $width = 0) {
-		$string = '<input class="input_text" ';
+		$string = '<input class="yzm-input-text" ';
 		if($width) $string .= ' style="width:'.$width.'px" ';
 		if($required) $string .= ' required="required" ';
 		$string .= ' name="'.$name.'" id="'.$name.'" ';
@@ -34,7 +34,7 @@ class form {
 	 * @param $width  宽度 如：100
 	 */
 	public static function textarea($name = '', $value = '', $required=false, $width = 0) {
-		$string = '<textarea class="textarea" name="'.$name.'" id="'.$name.'" ';
+		$string = '<textarea class="textarea yzm-textarea" name="'.$name.'" id="'.$name.'" ';
 		if($width) $string .= ' width="'.$width.'px" ';
 		if($required) $string .= ' required="required" ';
 		$string .= '>'.$value.'</textarea>';
@@ -50,7 +50,7 @@ class form {
 	 * @param $default_option 提示词 如：请选择交易 
 	 */
 	public static function select($name, $val = 0, $array = array(), $default_option = '') {
-		$string = '<select name="'.$name.'" id="'.$name.'" class="select">';
+		$string = '<select name="'.$name.'" id="'.$name.'" class="select yzm-select">';
 		if($default_option) $string .= "<option value=''>$default_option</option>";
 		if(!is_array($array) || count($array)== 0) return false;
 		$ids = array();
@@ -80,7 +80,7 @@ class form {
 			$value = trim($value);
 			$checked = ($val && in_array($value, $val)) ? 'checked' : '';
 			$string .= '<label class="option_label option_box" >';
-			$string .= '<input type="checkbox" class="checkbox" name="'.$name.'[]" id="'.$name.'_'.$i.'" '.$checked.' value="'.$value.'">'.$value;
+			$string .= '<input type="checkbox" class="yzm-checkbox" name="'.$name.'[]" id="'.$name.'_'.$i.'" '.$checked.' value="'.$value.'">'.$value;
 			$string .= '</label>';
 			$i++;
 		}
@@ -100,7 +100,7 @@ class form {
 		foreach($array as $value) {
 			$checked = trim($val)==trim($value) ? 'checked' : '';
 			$string .= '<label class="option_label option_radio" >';
-			$string .= '<input type="radio" class="radio" name="'.$name.'" id="'.$name.'_'.$value.'" '.$checked.' value="'.$value.'">'.$value;
+			$string .= '<input type="radio" class="yzm-radio" name="'.$name.'" id="'.$name.'_'.$value.'" '.$checked.' value="'.$value.'">'.$value;
 			$string .= '</label>';
 		}
 		return $string;
@@ -183,9 +183,9 @@ class form {
 	 * 图像裁剪
 	 * 
 	 * @param $cid 		原图所在input的id
-	 * @param $spec  	裁剪规则，1：3*2, 2:4*3, 3:1*1	
+	 * @param $spec  	裁剪规则，1：4*3, 2:3*2, 3:1*1, 4:2*3
 	 */
-	public static function cropper($cid, $spec=1) {		
+	public static function cropper($cid, $spec=2) {		
 		$string = '<a href="javascript:;" onclick="yzm_img_cropper(\''.$cid.'\', \''.U('attachment/api/img_cropper', array('spec'=>$spec)).'\')" class="btn btn-secondary radius upload-btn"><i class="Hui-iconfont">&#xe6bc;</i> 裁剪图片</a>';
 		
 		return $string;

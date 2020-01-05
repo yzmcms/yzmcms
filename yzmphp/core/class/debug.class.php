@@ -43,7 +43,7 @@ class debug {
 	 * 错误 handler
 	 */
 	static function catcher($errno, $errstr, $errfile, $errline){
-		if(APP_DEBUG){
+		if(APP_DEBUG && !defined('DEBUG_HIDDEN')){
 			if(!isset(self::$msg[$errno])) 
 				$errno='Unkown';
 
@@ -76,7 +76,7 @@ class debug {
               case E_COMPILE_ERROR:
               case E_USER_ERROR:  
                 ob_end_clean();
-                if(APP_DEBUG){
+                if(APP_DEBUG && !defined('DEBUG_HIDDEN')){
                 	application::fatalerror($e['message'], $e['file'].' on line '.$e['line'], 1);	
            		}else{
            			error_log('<?php exit;?> FatalError : '.date('Y-m-d H:i:s').' message:'.$e['message'].', file:'.$e['file'].', line:'.$e['line']."\r\n", 3, YZMPHP_PATH.'cache/error_log.php');
@@ -93,7 +93,7 @@ class debug {
 	 * @param	object	$exception
 	 */ 
 	static function exception($exception){
-		if(APP_DEBUG){
+		if(APP_DEBUG && !defined('DEBUG_HIDDEN')){
 			$mess = '<span style="color:red">';
 			$mess .= '<b>系统异常</b> [文件 '.$exception->getFile().' 中,第 '.$exception->getLine().' 行] ：';
 			$mess .= $exception->getMessage();

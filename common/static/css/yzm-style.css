@@ -1,0 +1,211 @@
+@charset "utf-8";
+/**
+ * YZMCMS 内容管理系统
+ * @author           袁志蒙  
+ * @license          http://www.yzmcms.com
+ */
+/* CSS Document */
+
+/*首页*/
+.box{margin: 20px 0;}
+.left{width: 330px; float: left;}
+.yzm-banner{width: 760px; height: 395px; float: left; overflow: hidden;}
+.yzm-banner img{width: 100%; height: 395px;}
+.swiper-pagination{width: 100%; height: 15px; position: absolute; bottom: 10px;}
+.swiper-pagination-bullet{width: 30px; height: 10px; border-radius: 0; background: #2196f3; margin: 0 5px;}
+.yzm-button-prev,
+.yzm-button-next{height: 40px; width: 22px; position: absolute; z-index: 999; padding: 10px 5px; margin-top: -20px; top: 50%; cursor: pointer;}
+.yzm-button-prev{background: url(../images/bannerL.png) no-repeat center; left: 0px; background-color: rgba(0, 0, 0, .3);}
+.yzm-button-next{background: url(../images/bannerR.png) no-repeat center; right: 0px; background-color: rgba(0, 0, 0, .3);}
+.yzm-top-right{float: right; width: 350px; height: 380px;overflow:hidden;}
+.yzm-ranking{margin-top: 10px; margin-bottom: 5px}
+.yzm-ranking li{white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
+.yzm-ranking li .title_color{display: inline;}
+.yzm-ranking li{padding: 6px 0; height: 20px; line-height: 20px;}
+.yzm-ranking li em{display: inline-block; width: 18px; line-height: 18px; height: 18px; background: #626262; color: #fff; text-align: center; float: left; margin-right: 5px; font-style: normal;}
+.yzm-ranking li .date{float: right;}
+.yzm-ranking li:nth-child(-n+3)>em{background: #E12726;}
+.yzm-ranking li:nth-child(-n+3)>.date{color: #E12726;}
+.yzm-text-thumbs{min-height: 400px;overflow:hidden}
+.yzm-text-thumb{width: 50%; float: left; margin: 10px 0;height: 150px;}
+.yzm-text-thumbl{width: 250px; height: 150px; float: left; margin-right: 10px;overflow: hidden;}
+.yzm-text-thumb img{width: 250px; height: 150px;transition:.5s}
+.yzm-text-thumb img:hover{width: 250px; height: 150px;transform: scale(1.1);}
+.yzm-text-thumbr{padding-right: 10px;}
+.yzm-text-thumbr a{font-size: 16px;}
+.yzm-text-thumbr p{font-size: 12px; color: #666; margin-top: 5px}
+.yzm-index-50{width: 50%; float: left; box-sizing: border-box; min-height: 370px;overflow:hidden}
+.yzm-text-list ul li{width: 100%; margin-bottom: 5px; text-overflow: ellipsis; white-space: nowrap; overflow: hidden; position: relative;}
+.yzm-text-list ul li a{margin-left: 15px;}
+.yzm-date{float: right; font-size: 12px; color: #888;}
+.yzm-text-list ul li::before{position: absolute; content: ""; width: 3px; height: 3px; background: #666; border-radius: 100%; left: 0; top: 10px;}
+.yzm-img-list{min-height: 465px;overflow:hidden}
+.yzm-img-list ul li{width: 25%; float: left; overflow: hidden; margin: 10px 0;}
+.yzm-img-list ul li a{overflow: hidden; display: block; margin: 0 7px; border: #f1f1f1 1px solid;}
+.yzm-img-list ul li p{color: #333; padding: 5px 10px; text-align: center; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
+.yzm-img-list ul li a i{height: 150px; display: block; overflow: hidden;}
+.yzm-img-list ul li a img{width: 100%; height: 150px; display: inline-block; vertical-align: middle; transition: .5s;}
+.yzm-img-list ul li a:hover img{transform: scale(1.1);}
+.yzm-tag{min-height: 100px;overflow:hidden}
+.yzm-tag ul li a{display: block; color: #666; width: 100px; text-align: center; float: left; margin: 5px 6px; padding: 4px 6px; background: #f1f1f1; line-height: 26px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
+.yzm-tag ul li a:hover{background: #2196f3; color: #fff;}
+.yzm-advertise{height: 100px; line-height: 100px; text-align: center; background:#078af2; color: #fff;}
+.yzm-link{min-height: 100px;overflow:hidden;}
+.yzm-link ul li{float: left; white-space: nowrap; padding: 5px 10px;}
+/*首页*/
+
+/*频道内容页*/
+.yzm-main-left{float: left; width: 760px; margin: 20px 0;}
+.yzm-box-left{width: 800px;}
+.yzm-main-right{float: right; width: 350px; margin: 20px 0;}
+.yzm-tag-list{padding-bottom: 10px; overflow: hidden;}
+.yzm-tag-list a{font-size: 14px; line-height: 24px; height: 24px; display: block; background: #f1f1f1; float: left; padding: 3px 10px; margin: 10px 5px 0 0; border-radius: 3px; transition: all .2s; color: #525252;}
+.yzm-tag-list a:hover{background: #2196f3; color: #fff;}
+.yzm-flag{font-style: normal;font-size: 12px;background:#f60;color:#fff;padding: 1px 3px;font-weight:normal;margin-right:3px;}
+.yzm-news{margin: 20px 0; height: 170px; border-bottom: 1px dashed #d3d3d3; overflow: hidden;}
+.yzm-news .yzm-news-img{width: 230px; height: 150px; float: left; margin-right: 10px; overflow: hidden;}
+.yzm-news .yzm-news-img img{width: 100%; height: 150px; transition: .5s;}
+.yzm-news .yzm-news-img img:hover{transform: scale(1.1);}
+.yzm-news-right{padding-right: 10px; padding-top: 10px;}
+.yzm-news-right em{font-style: normal; font-size: 12px; background: #f60; color: #fff; padding: 1px 3px; font-weight: normal; margin-right: 5px;}
+.yzm-news-right a{font-size: 16px;}
+.yzm-news-right p{font-size: 12px; color: #666; margin-top: 5px; margin-bottom: 10px}
+.yzm-news-tags a{color: #666; padding: 4px 8px; border-radius: 3px; margin-right: 10px; font-size: 12px; margin-top: 5px; background: #e5e5e5}
+.yzm-news-tags a:hover{background: #2196f3; color: #fff;}
+.yzm-like-list li{white-space: nowrap; text-overflow: ellipsis; overflow: hidden;}
+.yzm-like-list li .title_color{display: inline;}
+.yzm-like-list li{padding: 6px 0; height: 20px; line-height: 20px;}
+.yzm-like-list .date{float: right;}
+.yzm-comment-list li{margin-bottom: 10px; border-bottom: 1px dashed #ddd; padding-bottom: 5px}
+.yzm-comment-list a{font-size: 14px;}
+.yzm-comment-list p em{color: #3366cc; font-style: normal;}
+.yzm-list-advertise{background: #206fff; color: #fff; font-size: 20px; text-align: center; padding: 20px 0; transition: .3s; background: linear-gradient(45deg, rgba(39, 102, 255, 0.6), rgba(39, 102, 255, 0.9));}
+.yzm-list-advertise a{color: #fff;}
+.yzm-list-advertise .yzm-ad{font-size: 14px; line-height: 50px}
+.yzm-list-advertise:hover{opacity: 0.9; color: #fff;}
+.yzm-content-container{margin: 20px 0;}
+.yzm-content-container h1{font-size: 22px; margin-bottom: 20px;}
+.yzm-content-info{margin-bottom: 20px}
+.yzm-content-info span{margin-right: 20px; color: #888;}
+.yzm-content h2{font-size: 16px; margin: 20px 0; padding-left: 10px; border-left: 3px solid #2196f3;}
+.yzm-content img{max-width: 100%;}
+.yzm-content p{margin-bottom: 10px}
+.yzm-content a{color: #4394ff;}
+.yzm-content pre{color: #444;font-family: Monaco,Menlo,Consolas,"Courier New",monospace;display: block;margin:10px 0; padding: 9px;border: 1px solid #ccc;border: 1px solid rgba(0,0,0,.15); border-radius: 3px;background-color: #f5f5f5;white-space: pre-wrap;word-wrap: break-word;font-size: 11px;line-height: 20px;word-break: break-all;}
+.yzm-content-tag a{color: #666; padding: 4px 8px; border-radius: 3px; margin-right: 10px; font-size: 12px; margin-top: 5px; background: #e5e5e5;}
+.yzm-content-tag a:hover{background: #2196f3; color: #fff;}
+.yzm-operate{margin: 10px 0;}
+.yzm-operate a{margin-right: 10px; background: #2196f3; height:25px;width:70px;display: inline-block;text-align: center; color: #fff; font-size: 12px}
+.yzm-operate a:hover{opacity: 0.8;color:#fff;}
+/*频道内容页*/
+
+
+/*单页面*/
+.yzm-page{margin: 20px 0; overflow: hidden;}
+.yzm-page-left{width: 250px; float: left; padding: 20px 20px;}
+.yzm-page-right{width: 820px; float: right}
+.yzm-page-left ul li{margin: 10px 0;}
+.yzm-page-left ul li a{display: block; border: 1px solid #ddd; text-align: center; padding: 8px 0; border-radius: 3px; font-size: 16px}
+.yzm-page-left ul li a:hover,
+.yzm-page-current{background: #1487f4; color: #fff; border: #1487f4 1px solid;}
+.yzm-page-content{padding: 20px 0;}
+.yzm-page-content h1{font-size: 18px; margin-bottom: 20px}
+/*单页面*/
+
+
+/*评论区*/
+.yzm-comment-box{position: relative; margin: 20px 0}
+.yzm-comment-box h3{height: 28px; line-height: 28px}
+.yzm-comment-form{width: 100%; position: relative}
+.textarea{width: 98%; height: 78px; border: 1px solid #ccc; padding: 5px 5px; outline: none; color: #333; line-height: 20px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 13px;}
+.textarea2{width: 98%}
+.yzm-comment-form p{height: 28px; line-height: 28px; position: relative}
+.yzm-comment-form .emotion{width: 42px; height: 20px; background: url(../images/icon.gif) no-repeat 2px 2px; padding-left: 20px; cursor: pointer; color: #999}
+.yzm-comment-form .emotion:hover{background-position: 2px -28px; color: #666}
+.qqFace{margin-top: 4px; background: #fff; padding: 2px; border: 1px #dfe6f6 solid;}
+.qqFace table td{padding: 0px;}
+.qqFace table td img{cursor: pointer; border: 1px #fff solid;}
+.qqFace table td img:hover{border: 1px #0066cc solid;}
+.yzm-comment-submit{background-color: #e6e6e6; background-image: linear-gradient(#fcfcfc, #fcfcfc 25%, #e6e6e6); background-repeat: no-repeat; border-bottom-right-radius: 3px; border-color: #ddd #ddd #aaa; border-style: solid; border-width: 1px; box-shadow: 0 0 1px #fff inset; color: #555; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px; height: 32px; position: absolute; right: 0; text-align: center; text-shadow: 0 1px 0 #fff; top: 0; transition: all 0.15s linear 0s; width: 100px; cursor: pointer; border-radius: 2px; margin-top: 5px; outline: none;}
+.yzm-comment-submit:hover{background-position: 0 -15px; color: #121212}
+.static{position: static; float: right;}
+.yzm-comment-list-box{border: 1px solid #ddd; margin: 25px 0 15px; overflow: hidden;}
+.yzm-comment-list-top{background: #fbfbfb; color: #555; font-size: 14px; padding: 0 12px; height: 30px; line-height: 30px; border-bottom: 1px dotted #ddd;}
+.yzm-comment-list-body ul{padding: 0 12px;}
+.yzm-comment-list-body ul li{padding: 10px 0; border-bottom: 1px dotted #ddd; overflow: hidden;}
+.yzm-comment-list-body ul li:last-child{border-bottom: none;}
+.yzm-comm-right{margin-left: 50px;}
+.yzm-comm-right .user_name{color: #017cb9}
+.yzm-comm-right .user_name:hover{color: #2a6496; text-decoration: underline; transition: all 0.15s linear 0s;}
+.yzm-comment-list-body .user_pic{float: left;}
+.yzm-comment-list-body p{font-size: 14px; line-height: 1.5em; color: #666; margin: 5px 0;}
+.yzm-comment-list-body .original_comment{display: block; margin: 5px 0;}
+.yzm-comment-list-body .comm_time{font-size: 12px; color: #999;}
+.yzm-comment-list-body .comm_a{font-size: 12px; color: #999; margin: 0 5px; transition: all 0.15s linear 0s;}
+.yzm-comment-list-body .comm_a:hover{color: #555}
+.none{display: none;}
+.original_comment{display: block; margin: 5px 0;}
+/*评论区*/
+
+
+/* 留言板 */
+.yzm-book{margin-bottom: 20px}
+.yzm-book-list{padding: 10px; background: #fafafa; border: 1px solid #dadada; line-height: 25px; margin-bottom: 10px; color: #666}
+.yzm-book-head{font-size: 12px; border-bottom: 1px dashed #8e8e8e; padding: 5px 0;}
+.yzm-book-head span{color: #9a9a9a; margin-left: 5px; font-size: 12px}
+.yzm-book-content{margin: 10px 0;}
+.yzm-book-content .admin_repay strong{color: #DE4C1C;}
+/* 留言板 */
+
+
+/* 下载模型 */
+.yzm-down-list{padding: 20px 0; height: 110px; border-bottom: 1px dashed #bbbbbb}
+.yzm-down-list-left{height: 100px; width: 150px; float: left; margin-right: 15px; overflow: hidden;}
+.yzm-down-list-left img{height: 110px; width: 150px; transition: .5s;}
+.yzm-down-list-left img:hover{transform: scale(1.1);}
+.yzm-down-title{margin-top: 5px}
+.yzm-down-title a{font-size: 16px; color: #232323;}
+.yzm-down-date{float: right; font-size: 12px; color: #999}
+.yzm-down-info{color: #666}
+.yzm-down-info em{color: #c00; font-style: normal}
+.yzm-down-desc{line-height: 20px; color: #888}
+.yzm-down-msg{margin: 20px 0; overflow: hidden;}
+.yzm-down-msg .yzm-desc{background: #f9f8f8; padding: 10px; width: 417px; float: right; margin-bottom: 10px}
+.yzm-down-msg .yzm-desc span{color: #2196f3;}
+.yzm-down-msg img{width: 300px; height: 200px; float: left; margin-right: 20px}
+.yzm-down-msg ul{float: left;}
+.yzm-down-msg ul strong{margin-right: 10px;}
+.yzm-down-url ul{margin: 20px 0 10px 0;}
+.yzm-down-url ul li{background: #fafafa; line-height: 35px}
+.yzm-down-url ul li a{padding-left: 20px; font-size: 14px; background: url(../images/icon.png) no-repeat 0px -121px; margin: 0 5px;}
+/* 下载模型 */
+
+
+/*产品模型*/
+.yzm-product{margin: 20px 0;}
+.yzm-product-list-box{width: 50%; float: left; color: #333; font-size: 14px; box-sizing: border-box; margin: 10px 0;}
+.yzm-product-list{border: 1px #e8e8e8 solid; margin: 5px; padding: 20px; overflow: hidden; height: 160px;}
+.yzm-product-list:hover{border: 1px #2196f3 solid;}
+.yzm-product-img{width: 216px; height: 150px; float: left; overflow: hidden;}
+.yzm-product-list img{width: 216px; height: 150px; float: left; transition: .5s;}
+.yzm-product-list img:hover{transform: scale(1.1);}
+.yzm-product-right{float: right; width: 270px;}
+.yzm-product-title{font-size: 16px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 35px}
+.yzm-product-price{color: #ff5522; line-height: 35px}
+.yzm-product-stock{line-height: 35px}
+.yzm-product-details{background: #ff5522; border-radius: 3px; display: block; width: 130px; height: 35px; line-height: 35px; text-align: center; color: #fff; transition: 0.3s; font-size: 16px;}
+.yzm-product-details:hover{color: #fff; opacity: 0.8}
+.yzm-image{width: 100%; height: 450px; line-height: 450px; text-align: center; border: 1px solid #ddd; background: #f9f8f8}
+.yzm-image img{width: 600px; height: 450px; overflow: hidden;}
+.yzm-switch{width: 100%; height: 87px; border: 1px solid #ddd; margin: 5px auto;}
+.yzm-icon1{display: inline; width: 30px; float: left; padding-top: 28px; text-indent: -9999px; margin-left: 10px;}
+.yzm-icon1 a{display: block; width: 32px; height: 32px; background: url(../images/left.png) no-repeat;}
+.yzm-icon2{float: right; width: 38px; padding-top: 28px; text-indent: -9999px;}
+.yzm-icon2 a{display: block; width: 32px; height: 32px; background: url(../images/right.png) no-repeat;}
+.yzm-switch-center{float: left; width: 665px; height: 83px; margin-left: 10px; overflow: hidden; padding-top: 3px;}
+.yzm-switch-center li{display: inline; float: left; width: 100px; height: 66px; margin: 0 5px; padding-top: 10px;}
+.yzm-switch-center li a{display: block; width: 88px; height: 60px; border: 1px solid #ddd;}
+.yzm-switch-center li a img{width: 88px; height: 60px;}
+.yzm-switch-center li a.on{border: 1px solid #ff9900;}
+.yzm-switch-center li a:hover{border: 1px solid #ff9900;}
+/*产品模型*/

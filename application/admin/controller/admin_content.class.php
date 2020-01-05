@@ -83,7 +83,9 @@ class admin_content extends common {
 			$publish_point = get_config('publish_point');
 			
 			foreach($_POST['ids'] as $val){
-				$data = $member_content->field('catid,userid,username')->where(array('checkid' => $val))->find();
+				$data = $member_content->field('catid,userid,username,status')->where(array('checkid' => $val))->find();
+				if($data['status']) continue;
+				
 				$updatearr['status'] = '1';
 				$member_content->update($updatearr, array('checkid' => $val));  //更新会员内容表状态
 				$catid = $data['catid'];

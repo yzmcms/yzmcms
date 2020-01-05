@@ -42,6 +42,8 @@ class admin_manage extends common {
 				return_json(array('status'=>0,'message'=>L('lose_parameters')));
 			}
 			
+			if($_POST['roleid'] < $_SESSION['roleid']) return_json(array('status'=>0,'message'=>'您无权添加该角色管理员，请更换角色'));
+			
 			if(!is_username($_POST["adminname"]))  return_json(array('status'=>0,'message'=>L('user_name_format_error')));
 			if(!is_password($_POST["password"])) return_json(array('status'=>0,'message'=>L('password_format_error')));
 			if($_POST["email"]!=''){
@@ -75,6 +77,8 @@ class admin_manage extends common {
 			if(!check_token($_POST['token'])){
 				return_json(array('status'=>0,'message'=>L('lose_parameters')));
 			}
+			
+			if($_POST['roleid'] < $_SESSION['roleid']) return_json(array('status'=>0,'message'=>'您无权添加该角色管理员，请更换角色'));
 			
 			$adminid = isset($_POST['adminid']) ? intval($_POST['adminid']) : 0;
 			unset($_POST["adminname"]);

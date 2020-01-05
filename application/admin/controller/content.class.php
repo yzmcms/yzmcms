@@ -230,8 +230,11 @@ class content extends common {
 					$new_flag = $data_flag ? array_diff(explode(',', $data_flag), $flag) : array();
 				}
 				sort($new_flag);
-				$new_flag = join(',', $new_flag);
-				$db->update(array('flag' => $new_flag), array('id' => $id));
+
+				$where['listorder'] = array_search(1, $new_flag)!==false ? 1 : 10;
+				$where['flag'] = join(',', $new_flag);
+
+				$db->update($where, array('id' => $id));
 			}
 			return_json(array('status' => 1, 'message' => '操作成功'));
 			

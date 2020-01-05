@@ -68,7 +68,7 @@ class api{
 			$this->_att_write($fileinfo);
 			$arr = array(
 				'status' => 1,
-				'msg' => $fileinfo['fileurl'].$fileinfo['filename'],
+				'msg' => $fileinfo['filepath'].$fileinfo['filename'],
 				'title' => $fileinfo['originname'],
 				'size' => $fileinfo['filesize'],
 				'filetype' => $fileinfo['filetype']
@@ -143,19 +143,23 @@ class api{
 		}
 
 		$filepath = isset($_GET['f']) ? base64_decode($_GET['f']) : showmsg(L('lose_parameters'), 'stop');
-		if(strpos($filepath, 'ttp:') || !is_file($yzmcms_path.$filepath)) showmsg('请选择本地已存在的图像！', 'stop');
+		if(strpos($filepath, '://')) $filepath = strstr($filepath, SITE_PATH.'uploads');
+		if(!is_file($yzmcms_path.$filepath)) showmsg('请选择本地已存在的图像！', 'stop');
 		$spec = isset($_GET['spec']) ? intval($_GET['spec']) : 1; 
 		$cid = isset($_GET['cid']) ? $_GET['cid'] : 'thumb';
 		switch ($spec){
 			case 1:
-			  $spec = '3 / 2';
+			  $spec = '4 / 3';
 			  break;  
 			case 2:
-			  $spec = '4 / 3';
+			  $spec = '3 / 2';
 			  break;
 			case 3:
 			  $spec = '1 / 1';
 			  break;
+			case 4:
+			  $spec = '2 / 3';
+			  break;  
 			default:
 			  $spec = '3 / 2';
 		}

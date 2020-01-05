@@ -72,7 +72,8 @@
 						<select name="category_template" class="select">
 						  <?php 
 						      foreach($category_temp as $key => $val){
-									 echo '<option value="'.$key.'">'.$val.'('.$key.')</option>';
+									$str = $parent_temp&&$key==$parent_temp['category_template'] ? ' selected="selected" ' : '';
+									echo '<option value="'.$key.'"'.$str.'>'.$val.'('.$key.')</option>';
 							  }
 						  ?>
 						</select>
@@ -86,7 +87,8 @@
 						<select name="list_template" class="select">
 						  <?php 
 						      foreach($list_temp as $key => $val){
-									 echo '<option value="'.$key.'">'.$val.'('.$key.')</option>';
+									$str = $parent_temp&&$key==$parent_temp['list_template'] ? ' selected="selected" ' : '';
+									echo '<option value="'.$key.'"'.$str.'>'.$val.'('.$key.')</option>';
 							  }
 						  ?>
 						</select>
@@ -100,7 +102,8 @@
 						<select name="show_template" class="select">
 						  <?php 
 						      foreach($show_temp as $key => $val){
-									 echo '<option value="'.$key.'">'.$val.'('.$key.')</option>';
+									$str = $parent_temp&&$key==$parent_temp['show_template'] ? ' selected="selected" ' : '';
+									echo '<option value="'.$key.'"'.$str.'>'.$val.'('.$key.')</option>';
 							  }
 						  ?>
 						</select>

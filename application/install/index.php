@@ -16,7 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 define('APPDIR', _dir_path(substr(dirname(__FILE__), 0, -8)));
 define('SITEDIR', dirname(APPDIR).DIRECTORY_SEPARATOR);
-define("VERSION", 'YzmCMS 5.4');
+define("VERSION", 'YzmCMS 5.5');
 
 if(is_file(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock')){
     exit("YzmCMS程序已运行安装，如果你确定要重新安装，请先从FTP中删除 cache/install.lock！");
@@ -183,6 +183,7 @@ switch ($step) {
 
             for ($i = $n; $i < $counts; $i++) {
                 $sql = trim($sqlFormat[$i]);
+                if(empty($sql)) continue;
 
                 if (strstr($sql, 'CREATE TABLE')) {
                     preg_match('/CREATE TABLE `([^ ]*)`/', $sql, $matches);

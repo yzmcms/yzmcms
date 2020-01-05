@@ -221,7 +221,7 @@ class upload {
 			'filesize' => $this->filesize,
 			'filetype' => $this->filetype,
 			'filepath' => SITE_PATH.C('upload_file').'/'.date('Ym/d/'),
-			'fileurl' => SITE_PATH.C('upload_file').'/'.date('Ym/d/'),
+			'fileurl' => SITE_URL.C('upload_file').'/'.date('Ym/d/'),
 			'filename' => $this->newfilename,
 			'originname' => $this->originname,
 		);

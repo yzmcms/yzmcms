@@ -50,7 +50,8 @@
 						<select name="category_template" class="select">
 						  <?php 
 						      foreach($category_temp as $key => $val){
-									 echo '<option value="'.$key.'">'.$val.'('.$key.')</option>';
+									$str = $parent_temp&&$key==$parent_temp['category_template'] ? ' selected="selected" ' : '';
+									echo '<option value="'.$key.'"'.$str.'>'.$val.'('.$key.')</option>';
 							  }
 						  ?>
 						</select>
@@ -131,7 +132,7 @@ function yzmcms_pinyin(){
 }
 
 function dosub(obj){
-	var reg = /^[a-zA-Z0-9-]+$/
+	var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[-/]){0,29}$/;
 	if($("input[name='catname']").val()==''){
 		layer.msg('栏目名称不能为空！');
 		return false;

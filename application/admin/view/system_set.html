@@ -71,7 +71,6 @@
 					<div class="formControls col-xs-8 col-sm-9">
 						<input class="input-text uploadfile" type="text" name="site_logo"  value="<?php echo $data["site_logo"];?>"  onmouseover="yzm_img_preview('site_logo', this.value)" onmouseout="layer.closeAll();" id="site_logo" style="width:370px" >
 						<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>'site_logo'));?>')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
-						<span style="color:#888">前端调用方式： {$site[site_logo]}</span>
 					</div>
 				</div>	
 				<div class="row cl">
@@ -91,8 +90,14 @@
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">百度推送token：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" name="baidu_push_token" value="<?php echo $data["baidu_push_token"];?>"  class="input-text w_420">
+						<input type="text" name="baidu_push_token" placeholder="例如：66XJXYDfMKfeeIRM" value="<?php echo $data["baidu_push_token"];?>"  class="input-text w_420">
 						<span style="color:#888">[百度主动推送token，请到百度申请]</span>
+					</div>
+				</div>	
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>前端搜索每页展示条数：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="search_page" value="<?php echo $data["search_page"];?>"  class="input-text w_120">
 					</div>
 				</div>					
 				<div class="row cl">
@@ -270,6 +275,10 @@ function check_all(){
 	// }
 	if(isNaN($("input[name='thumb_width']").val()) || isNaN($("input[name='thumb_height']").val())){
 		layer.alert('缩略图默认设置只能为数字！');
+		return false;
+	}
+	if(isNaN($("input[name='search_page']").val()) || $("input[name='search_page']").val()<1){
+		layer.alert('前端搜索每页展示条数只能为数字且不能小于1！');
 		return false;
 	}
 	if($("input[name='upload_maxsize']").val()=='' || isNaN($("input[name='upload_maxsize']").val())){

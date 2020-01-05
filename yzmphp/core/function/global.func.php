@@ -129,7 +129,7 @@ function safe_replace($string) {
  * 获取当前页面完整URL地址
  */
 function get_url() {
-	$sys_protocal = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://';
+	$sys_protocal = is_ssl() ? 'https://' : 'http://';
 	$php_self = $_SERVER['PHP_SELF'] ? safe_replace($_SERVER['PHP_SELF']) : safe_replace($_SERVER['SCRIPT_NAME']);
 	$path_info = isset($_SERVER['PATH_INFO']) ? safe_replace($_SERVER['PATH_INFO']) : '';
 	$relate_url = isset($_SERVER['REQUEST_URI']) ? safe_replace($_SERVER['REQUEST_URI']) : $php_self.(isset($_SERVER['QUERY_STRING']) ? '?'.safe_replace($_SERVER['QUERY_STRING']) : $path_info);
@@ -1234,6 +1234,20 @@ function input($key = '', $default = '', $function = ''){
 	} else {
 		return false;
 	}
+}
+
+
+/**
+ * 判断是否SSL协议
+ * @return boolean
+ */
+function is_ssl() {
+    if(isset($_SERVER['HTTPS']) && ('1' == $_SERVER['HTTPS'] || 'on' == strtolower($_SERVER['HTTPS']))){
+        return true;
+    }elseif(isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'] )) {
+        return true;
+    }
+    return false;
 }
 
 

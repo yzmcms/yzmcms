@@ -70,8 +70,11 @@ if($info['state'] == 'SUCCESS'){
     $arr['uploadtime'] = time();
     $arr['uploadip'] = getip();
     D('attachment')->insert($arr);
-    $img = new image(1,1);
-    $img->watermark($document_root.$info['url']);
+	
+	if(C('watermark_enable')){
+		$img = new image(1,1);
+		$img->watermark($document_root.$info['url']);		
+	}
 }
 //YzmCMS 新增 文件入库及加水印
 

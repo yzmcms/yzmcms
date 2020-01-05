@@ -7,7 +7,7 @@
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
 			<li><label><span class="c-red">*</span>TAG：</label><input type="text" class="input" value="<?php echo $data['tag']?>" name="tag"></li>						 
-			<li><label><span class="c-red">*</span>文档数：</label><input type="text" class="input" value="<?php echo $data['total']?>" name="total" disabled></li>						 
+			<li><label><span class="c-red">*</span>文档数：</label><input type="text" class="input" value="<?php echo $data['total']?>" name="total"></li>						 
 			<li>
 				<input type="hidden" name="id" value="<?php echo $data['id']?>">
 				<input type="hidden" name="dosubmit" value="1">
@@ -22,10 +22,14 @@
 
 <script type="text/javascript">
 	function dosub(obj){	
-		 if(obj.tag.value==''){
-			 layer.msg('请输入TAG名称！');
+		if(obj.tag.value==''){
+		 layer.msg('TAG名称不能为空！', {icon:2});
+		 return false;
+		}
+		if(isNaN(obj.total.value) || obj.total.value<0){
+			 layer.msg('文档数只能为数字且大于0的值！', {icon:2});
 			 return false;
-		 }
+		}
         $.ajax({
             type: 'POST',
             url: '<?php echo U('edit');?>', 
@@ -35,7 +39,7 @@
 				if(msg.status == 1){
 					parent.location.reload();       
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

@@ -1,8 +1,8 @@
 <?php return array (
-  'name' => '默认模板',
+  'name' => 'YzmCMS默认模板',
   'author' => '袁志蒙',
   'dirname' => 'default',
-  'version' => '1.0',
+  'version' => '2.0',
   
   //频道页模板
   'category_temp' =>  

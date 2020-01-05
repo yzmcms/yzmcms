@@ -14,6 +14,7 @@
 				<th>用户组名</th>
 				<th>经验小于</th>
 				<th>会员组图标</th>
+				<th>每日最大投稿量</th>		
 				<th>权限</th>		
 				<th>管理操作</th>
 			</tr>
@@ -28,8 +29,11 @@
 				<td><?php echo $val['name']?></td>
 				<td><?php echo $val['experience']?></td>
 				<td><?php echo $val['icon'] ? '<img src="'.STATIC_URL.'images/icon/'.$val['icon'].'" height="18">' : '';?></td>
+				<td><?php echo $val['max_amount']?></td>
 				<td><?php if(strpos($val['authority'] ,'1') !== false) echo '发信息,';if(strpos($val['authority'] ,'2') !== false) echo '发评论,';if(strpos($val['authority'] ,'3') !== false) echo '发内容,';if(strpos($val['authority'] ,'4') !== false) echo '投稿免审核';?></td>
-				<td class="td-manage"><a title="编辑" href="javascript:;" onclick="yzm_open('编辑组别','<?php echo U('edit',array('groupid'=>$val['groupid']));?>','700','400')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a></td>
+				<td class="td-manage">
+					<a title="编辑" href="javascript:;" onclick="yzm_open('编辑组别','<?php echo U('edit',array('groupid'=>$val['groupid']));?>','700','400')" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
+				</td>
 			</tr>
 			<?php 
 			   }		 

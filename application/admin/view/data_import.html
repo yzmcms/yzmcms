@@ -1,5 +1,5 @@
 <?php include $this->admin_tpl('meta');?>
-<title>数据配置 - YzmCMS内容管理系统</title>
+<title>数据导入 - YzmCMS内容管理系统</title>
 </head>
 <body>
 <article class="page-container">
@@ -8,8 +8,8 @@
 		<ul>
 			 <li style="height: 35px"><label><span class="c-red">*</span><?php echo $title;?>：</label>
 				<span class="btn-upload form-group">
-				  <input class="input-text upload-url radius" type="text" name="data_import" id="data_import" readonly style="display:inline;width:230px"><a href="javascript:void();" class="btn btn-primary radius" style="height: 30px;font-size: 14px;"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
-				  <input type="file" multiple name="data_import" class="input-file">
+				  <input class="input-text upload-url radius" type="text" readonly style="display:inline;width:230px"><a href="javascript:void();" class="btn btn-primary radius" style="height: 30px;font-size: 14px;"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+				  <input type="file" name="data_import" class="input-file">
 				</span>
 			 </li>
 			 <li><span class="c-red">注意： 如现有的数据与导入的数据冲突，导入数据会覆盖现有数据！</span></li>				 

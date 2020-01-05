@@ -23,6 +23,7 @@ return array(
 	'data_not_modified' => 'Data not modified',
 	'user_name_format_error' => 'User name format error',
 	'password_format_error' => 'Password format error',
+	'user_or_password_error' => 'Wrong user name or password',
 	'mail_format_error' => 'Mail format error',
 	'user_already_exists' => 'User already exists',
 	'user_does_not_exist' => 'User does not exist',

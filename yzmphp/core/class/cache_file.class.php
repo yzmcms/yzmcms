@@ -126,6 +126,7 @@ class cache_file{
         return true;
     }
      
+
     /**
      * 通过缓存id得到缓存信息路径
      * @param string $id
@@ -137,6 +138,7 @@ class cache_file{
         return $this->config['cache_dir'] . $filenmae;
     }   
      
+
     /**
      * 通过id得到缓存信息存储文件名
      * 
@@ -170,7 +172,7 @@ class cache_file{
      */
     protected function _fileputcontents($file, $contents){
         if($this->config['mode'] == 1){
-            $contents = serialize($contents);
+            $contents = "<?php exit('NO.'); ?>\n".serialize($contents);
         }else{
             $contents = "<?php\nreturn ".var_export($contents, true).";\n?>";
         }
@@ -179,6 +181,7 @@ class cache_file{
         return $filesize ? $filesize : false;
     }
      
+
     /**
      * 从文件得到数据
      * 
@@ -191,7 +194,9 @@ class cache_file{
         }
          
         if($this->config['mode'] == 1){
-            return unserialize(file_get_contents($file));
+            $handle = @fopen($file, 'r');
+            fgets($handle);
+            return unserialize(fgets($handle));
         }else{
             return @require $file;
         }

@@ -3,102 +3,96 @@
   <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	  <title>{$seo_title}</title>
+	  <link href="{STATIC_URL}css/yzm-common.css" rel="stylesheet" type="text/css" />
+	  <link href="{STATIC_URL}css/yzm-form.css" rel="stylesheet" type="text/css" />
+	  <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
+	  <script type="text/javascript" src="{STATIC_URL}js/yzm-front.js"></script>
+	  <script type="text/javascript" src="{STATIC_URL}plugin/layer/layer.js"></script>
 	  <meta name="keywords" content="{$keywords}" />
 	  <meta name="description" content="{$description}" />
-	  <link href="{STATIC_URL}css/default_common.css" rel="stylesheet" type="text/css" />
-	  <link href="{STATIC_URL}css/default_style.css" rel="stylesheet" type="text/css" />
-	  <link href="{STATIC_URL}css/default_other.css" rel="stylesheet" type="text/css" />
-	  <link href="{STATIC_URL}plugin/Hui-iconfont/iconfont.min.css" rel="stylesheet" type="text/css" />
-	  <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
-	  <script type="text/javascript" src="{STATIC_URL}js/js.js"></script>
-	  <script type="text/javascript" src="{STATIC_URL}plugin/layer/layer.js"></script>	  
-	  <script type="text/javascript" src="{STATIC_URL}js/yzm_common.js"></script>
   </head>
   <body>
-	{m:include "index","header"} 
-		<div class="main_left">
-            <div class="ind_bt col46">{$location}</div>
-            <div class="content">
-			  <h1>申请友情链接</h1>
-			  <p class="diyform_explain">注意：加星号（*）项为必填项！</p>
-			  <form action="{U('index/post')}" method="post" onsubmit="return checkall()">
-					<table class='diyform_table'>
-					    <tr>
-						<td>网站名称<span class="red">*</span></td>
-						<td>
-						<input type="text" value="" name="name" class="input_text">
-						</td>
-						</tr>
-					    <tr>
-						<td>网站地址<span class="red">*</span></td>
-						<td>
-						<input type="url" value="" name="url" class="input_text" style="width:380px">
-						</td>
-						</tr>
-					    <tr>
-						<td>站长姓名<span class="red">*</span></td>
-						<td>
-						<input type="text" value="" name="username" class="input_text">
-						</td>
-						</tr>
-					    <tr>
-						<td>站长邮箱<span class="red">*</span></td>
-						<td>
-						<input type="email" value="" name="email" class="input_text">
-						</td>
-						</tr>
-					    <tr id="link_logo">
-						<td>Logo地址</td>
-						<td>
-						<input type="text" value="" name="logo" class="input_text" style="width:380px">
-						</td>
-						</tr>
-						<tr>
-						<td>网站简介</td><td><textarea name="msg"></textarea></td>
-						</tr>
-						<tr>
-						<td>验证码<span class="red">*</span></td>
-						<td><input name="code" type="text" class="input_text" style="width:100px;margin:5px 10px 10px 0;"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" style="cursor:pointer;" title="看不清？点击更换"></td>
-						</tr>		
-						<tr><td></td>
-						<td><input type="submit" name="dosubmit" value="确认提交" class="submit"></td>
-						</tr>
-					</table>
-				</form> 
-			</div>
-		</div>
-		<div class="main_right">		 
-			<h2 class="ind_bt">点击排行</h2>
-			{m:hits field="title,url,thumb" modelid="1" limit="5"}
-			{loop $data $v}	
-				<div class="img_text">
-				<a href="{$v[url]}"><img src="{if !empty($v['thumb'])}{$v[thumb]}{else}{STATIC_URL}images/nopic.jpg{/if}" alt="{$v[title]}"></a><a href="{$v[url]}">{str_cut($v['title'], 81)}</a>
-				</div>
-			{/loop}					  
-		</div>	
-	<script type="text/javascript">
-		function checkall(){
-			if($("input[name='name']").val()==''){
-				layer.alert("网站名称不能为空!");
-				return false;
-			}
-			if($("input[name='url']").val()==''){
-				layer.alert("网站地址不能为空!");
-				return false;
-			}
-			if($("input[name='username']").val()==''){
-				layer.alert("站长姓名不能为空!");
-				return false;
-			}
-			if($("input[name='email']").val()==''){
-				layer.alert("站长邮箱不能为空!");
-				return false;
-			}
-			if($("input[name='code']").val()==''){
-				layer.alert("验证码不能为空!");
-				return false;
-			}
-			return true;
-		}
-	</script>		 
-{m:include "index","footer"} 
+	     {m:include "index","header"} 
+		 <div class="yzm-content-box yzm-form-box">
+	 		<div class="yzm-title">
+	 			<h2>申请友情链接</h2>
+	 			<span class="yzm-title-right">
+	 				当前位置：<a href="{SITE_URL}">首页</a>&gt; 申请友情链接
+	 			</span>
+	 		</div>
+		  <form action="{U('link/index/post')}" method="post" onsubmit="return checkall()">
+		    <table class='yzm-table'>
+		        <tr>
+		            <td class="yzm-table-title">网站名称<span class="red">*</span></td>
+		            <td>
+		                <input type="text" value="" name="name" class="yzm-input-text">
+		            </td>
+		        </tr>
+		        <tr>
+		            <td class="yzm-table-title">网站地址<span class="red">*</span></td>
+		            <td>
+		                <input type="url" value="" name="url" class="yzm-input-text">
+		            </td>
+		        </tr>
+		        <tr>
+		            <td class="yzm-table-title">站长姓名<span class="red">*</span></td>
+		            <td>
+		                <input type="text" value="" name="username" class="yzm-input-text">
+		            </td>
+		        </tr>
+		        <tr>
+		            <td class="yzm-table-title">站长邮箱<span class="red">*</span></td>
+		            <td>
+		                <input type="email" value="" name="email" class="yzm-input-text">
+		            </td>
+		        </tr>
+		        <tr>
+		            <td class="yzm-table-title">Logo地址</td>
+		            <td>
+		                <input type="text" value="" name="logo" class="yzm-input-text">
+		            </td>
+		        </tr>
+		        <tr>
+		            <td class="yzm-table-title">网站简介</td>
+		            <td><textarea name="msg" class="yzm-textarea"></textarea></td>
+		        </tr>
+		        <tr>
+		            <td class="yzm-table-title">验证码<span class="red">*</span></td>
+		            <td>
+		            	<input name="code" type="text" class="yzm-input-text" style="width:100px;">
+		            	<img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="yzm-code" title="看不清？点击更换">
+		            </td>
+		        </tr>
+		        <tr>
+		            <td></td>
+		            <td><input type="submit" name="dosubmit" value="确认提交" class="yzm-submit"></td>
+		        </tr>
+		    </table>
+			</form> 
+		 </div>
+		 <script type="text/javascript">
+		 	function checkall(){
+		 		if($("input[name='name']").val()==''){
+		 			layer.msg("网站名称不能为空!", {icon:2});
+		 			return false;
+		 		}
+		 		if($("input[name='url']").val()==''){
+		 			layer.msg("网站地址不能为空!", {icon:2});
+		 			return false;
+		 		}
+		 		if($("input[name='username']").val()==''){
+		 			layer.msg("站长姓名不能为空!", {icon:2});
+		 			return false;
+		 		}
+		 		if($("input[name='email']").val()==''){
+		 			layer.msg("站长邮箱不能为空!", {icon:2});
+		 			return false;
+		 		}
+		 		if($("input[name='code']").val()==''){
+		 			layer.msg("验证码不能为空!", {icon:2});
+		 			return false;
+		 		}
+		 		return true;
+		 	}
+		 </script>		  	
+ 		{m:include "index","footer"} 

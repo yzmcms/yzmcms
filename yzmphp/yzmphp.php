@@ -29,8 +29,11 @@ define('SYS_START_TIME', microtime(true));
 //系统时间
 define('SYS_TIME', time());
 
+//加载全局函数库
+yzm_base::load_sys_func('global');
+
 //主机协议
-define('SERVER_PORT', isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://');
+define('SERVER_PORT', is_ssl() ? 'https://' : 'http://');
 //当前访问的主机名
 define('HTTP_HOST', (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ''));
 //来源
@@ -63,8 +66,7 @@ if(version_compare(PHP_VERSION,'5.4.0','<')) {
     define('MAGIC_QUOTES_GPC', false);
 }
 
-//加载公用函数库
-yzm_base::load_sys_func('global');
+//加载公用文件
 yzm_base::load_common('function/system.func.php');
 yzm_base::load_common('function/extention.func.php');
 yzm_base::load_common('data/version.php'); 

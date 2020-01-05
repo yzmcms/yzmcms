@@ -54,9 +54,14 @@
 /* ------------- YzmCMS 新增 www.yzmcms.com ------------- */
 .container_box{padding-top:8px;}
 .container{width:450px;height:450px;float:left;}
-.preview{float:left;margin-left:30px;}
-.preview_img{overflow:hidden;margin-bottom:15px}
-.small_lg{width:200px;height:200px;}
-.small_md{width:100px;height:100px;}
+.con_right{float:left;margin-left:8px;width:260px;}
+.preview{margin-bottom:10px;max-height:370px;min-height:200px;overflow:hidden;}
+.preview_img{overflow:hidden;margin-bottom:15px;float:left;margin-right:10px;}
+.small_lg{width:260px;height:260px;}
+.small_md{width:130px;height:130px;}
 .small_sm{width:50px;height:50px;}
-.bottom_button{position:fixed;bottom:20px;right:10px;z-index:99999;}
+.toggles{margin-top:5px;background:#3bb4f2;height:35px;line-height:35px;color:#fff;border-radius:3px;overflow:hidden;}
+.toggles span{width:20%;display:block;float:left;text-align:center;cursor:pointer;}
+.toggles span:hover{background:#22a3e4}
+.toggles span.on{background:#0f9ae0}
+.bottom_button{position:fixed;bottom:10px;right:20px;z-index:99999;}

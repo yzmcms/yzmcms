@@ -46,10 +46,11 @@ class tag extends common {
 		$tag = D('tag');
 		if(isset($_POST['dosubmit'])) {
 			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$total = isset($_POST['total']) ? intval($_POST['total']) : 0;
 			$tagv = trim($_POST['tag']);
-			$data = $tag->where(array('tag' => $tagv))->find();
-			if($data) return_json(array('status'=>0,'message'=>'该TAG标签已存在！'));
-			if($tag->update(array('tag' => $tagv), array('id' => $id), true)){
+			$data = $tag->where(array('id!=' => $id, 'tag' => $tagv))->find();
+			if($data) return_json(array('status'=>0,'message'=>'TAG标签重复，请修改名称！'));
+			if($tag->update(array('tag' => $tagv, 'total' => $total), array('id' => $id), true)){
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();
@@ -82,7 +83,7 @@ class tag extends common {
 	/**
 	 * TAG标签选择
 	 */
-	public function select() {
+	public function public_select() {
 		$where = array();
 		if(isset($_GET['dosubmit'])){
 			$where['tag'] = '%'.$_GET['searinfo'].'%';

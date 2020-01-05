@@ -22,6 +22,7 @@ class sql{
 		  `nickname` varchar(30) NOT NULL DEFAULT '',
 		  `title` varchar(180) NOT NULL DEFAULT '',
 		  `seo_title` varchar(200) NOT NULL DEFAULT '',
+		  `color` char(9) NOT NULL DEFAULT '',
 		  `inputtime` int(10) unsigned NOT NULL DEFAULT '0',
 		  `updatetime` int(10) unsigned NOT NULL DEFAULT '0',
 		  `keywords` varchar(100) NOT NULL DEFAULT '',

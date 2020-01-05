@@ -34,6 +34,8 @@ class collection {
         } else {
             $content = @file_get_contents($url);
         }
+		
+		// 忽略SSRF攻击，采集时需支持302，详情联系QQ: 214243830
         return trim($content);
     }
 

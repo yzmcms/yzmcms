@@ -75,14 +75,9 @@ class index{
 		if(!$category) showmsg(L('category_not_existent'),'stop');
 		$modelid = $category['modelid'];
 		
-		$modelinfo = get_modelinfo();
-        $modelarr = array();
-		foreach($modelinfo as $val){
-			$modelarr[$val['modelid']] = $val['tablename'];
-		}
-		
-		if(!isset($modelarr[$modelid]))  showmsg(L('model_not_existent'),'stop');
-		$db = D($modelarr[$modelid]);
+		$tablename = get_model($modelid);
+		if(!$tablename)  showmsg(L('model_not_existent'),'stop');
+		$db = D($tablename);
 		$data = $db->where(array('id'=>$id))->find();
 		if(!$data || $data['status'] != 1) showmsg(L('content_not_existent'),'stop');
 		extract($data);
