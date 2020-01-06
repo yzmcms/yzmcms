@@ -79,7 +79,7 @@ class yzm_tag{
 	 */
 	public function hits($data) {
 		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 0;
-		$catid = isset($data['catid']) ? intval($data['catid']) : 0;
+		$catid = isset($data['catid']) ? intval($data['catid']) : '';
 		
 		if($catid){
 			$category = get_category($catid);
