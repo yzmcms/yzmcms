@@ -25,6 +25,8 @@ class admin_manage extends common {
 	public function delete() {
 		$adminid = intval($_GET['adminid']);
 		if($adminid == '1' || $adminid == $_SESSION['adminid']) showmsg('不能删除ID为1的管理员，或不能删除自己！', 'stop');
+		$roleid = D('admin')->field('roleid')->where(array('adminid'=>$adminid))->one();
+		if($roleid < $_SESSION['roleid']) showmsg('无权删除该管理员！', 'stop');
 		D('admin')->delete(array('adminid'=>$adminid));
 		showmsg(L('operation_success'));
 	}
@@ -39,9 +41,9 @@ class admin_manage extends common {
 		$roles = $admin_role->where(array('disabled'=>'0'))->select();
 		if(isset($_POST['dosubmit'])) { 
 			if(!check_token($_POST['token'])){
-				return_json(array('status'=>0,'message'=>L('lose_parameters')));
+				return_json(array('status'=>0,'message'=>'TOKEN'.L('error')));
 			}
-			
+
 			if($_POST['roleid'] < $_SESSION['roleid']) return_json(array('status'=>0,'message'=>'您无权添加该角色管理员，请更换角色'));
 			
 			if(!is_username($_POST["adminname"]))  return_json(array('status'=>0,'message'=>L('user_name_format_error')));
@@ -75,12 +77,15 @@ class admin_manage extends common {
 		$roles = $admin_role->where(array('disabled'=>'0'))->select();
 		if(isset($_POST['dosubmit'])) {
 			if(!check_token($_POST['token'])){
-				return_json(array('status'=>0,'message'=>L('lose_parameters')));
+				return_json(array('status'=>0,'message'=>'TOKEN'.L('error')));
 			}
-			
-			if($_POST['roleid'] < $_SESSION['roleid']) return_json(array('status'=>0,'message'=>'您无权添加该角色管理员，请更换角色'));
-			
+
 			$adminid = isset($_POST['adminid']) ? intval($_POST['adminid']) : 0;
+			$roleid = $admin->field('roleid')->where(array('adminid'=>$adminid))->one();
+			if($roleid < $_SESSION['roleid']) return_json(array('status'=>0,'message'=>'您无权编辑该管理员.'));
+			if($_POST['roleid'] < $_SESSION['roleid']) return_json(array('status'=>0,'message'=>'您无权修改为更高的管理员角色.'));
+			if($adminid==1 && $_POST['roleid']>1) return_json(array('status'=>0,'message'=>'ID为1的管理员角色无法修改.'));
+
 			unset($_POST["adminname"]);
 			if($_POST['password']){
 				if(!is_password($_POST["password"])) return_json(array('status'=>0,'message'=>L('password_format_error')));
