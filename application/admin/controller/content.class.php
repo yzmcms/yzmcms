@@ -89,7 +89,7 @@ class content extends common {
 		if(isset($_POST['dosubmit'])) {
 			$r = $this->content->content_add($_POST);
 			if($r){
-				echo '<script type="text/javascript">window.close();</script>';
+				echo '<script type="text/javascript">parent.location.reload();</script>';
 			}else{
 				showmsg(L('data_not_modified'));
 			}
@@ -112,7 +112,7 @@ class content extends common {
 		if(isset($_POST['dosubmit'])) {
 			$r = $this->content->content_edit($_POST, $id);
 			if($r){
-				echo '<script type="text/javascript">window.close();</script>';
+				echo '<script type="text/javascript">parent.location.reload();</script>';
 			}else{
 				showmsg(L('data_not_modified'));
 			}

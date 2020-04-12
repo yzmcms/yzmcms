@@ -52,7 +52,7 @@
   </div>
   <div class="cl pd-5 bg-1 bk-gray mt-20"> 
   <span class="l">
-  <a href="javascript:;" onclick="yzm_win_open('<?php echo U('add', array('modelid'=>$modelid));?>', '')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加内容</a>
+  <a href="javascript:;" onclick="yzm_open_full('添加内容','<?php echo U('add', array('modelid'=>$modelid));?>')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加内容</a>
   <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
   <a href="javascript:;" onclick="baidu_push()" class="btn btn-secondary radius">推送至百度</a> 
   <a href="javascript:;" onclick="attribute_operation('移动分类', '<?php echo U('remove', array('modelid' => $modelid))?>')" class="btn btn-primary radius">移动分类</a> 
@@ -122,7 +122,7 @@
 			<td><?php echo $val['status'] ? '<span class="label label-success radius">正常</span>' : '<span class="label radius">草稿</span>';?></td>
 			<td><?php echo $val['is_push'] ? '已推送' : '<span class="c-red">未推送</span>';?></td>
 			<td>
-				<a title="编辑" href="javascript:;" onclick="yzm_win_open('<?php echo U('edit',array('modelid'=>$modelid,'id'=>$val['id']));?>', '')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
+				<a title="编辑" href="javascript:;" onclick="yzm_open_full('编辑内容','<?php echo U('edit',array('modelid'=>$modelid,'id'=>$val['id']));?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
 				<a title="预览" href="<?php echo $val['url'];?>" class="ml-5" target="_blank" style="text-decoration:none"><i class="Hui-iconfont">&#xe695;</i></a>
 			</td>
 		  </tr>		

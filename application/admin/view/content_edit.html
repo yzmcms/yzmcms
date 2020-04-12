@@ -147,7 +147,7 @@
 				<?php }else{ ?>
 				<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(0)"><i class="Hui-iconfont">&#xe632;</i> 修改稿件</button>
 				<?php } ?>
-				<button onclick="yzm_win_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
+				<button onclick="yzm_content_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
 			</div>
 		</div>
 		<input type="hidden"  value="<?php echo $data['listorder'];?>"  name="listorder">
@@ -182,13 +182,13 @@
 		}
 	}
 	
-	function yzm_win_close(){
+	function yzm_content_close(){
 		if(UE.getEditor('content').getContent()!=''){
 			layer.confirm('内容未保存，确定要关闭吗？',function(index){
-				window.close();
+				yzmcms_close();
 			});
 		}else{
-			window.close();
+			yzmcms_close();
 		}
 	}
 	
