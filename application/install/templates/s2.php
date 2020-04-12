@@ -33,7 +33,7 @@
         </tr>
         <tr>
           <td>PHP版本</td>
-          <td>>5.3.x</td>
+          <td>>=5.6.x</td>
           <td><span class="correct_span">&radic;</span> <?php echo $phpv; ?></td>
           <td>5.2.0</td>
         </tr>
@@ -50,13 +50,19 @@
           <td>不限制</td>
         </tr>
         <tr>
-          <td>session</td>
+          <td>SESSION</td>
           <td>开启</td>
           <td><?php echo $session; ?></td>
           <td>开启</td>
         </tr>
         <tr>
-          <td>curl扩展库</td>
+          <td>GD扩展库</td>
+          <td>开启</td>
+          <td><?php echo $gd; ?></td>
+          <td>开启</td>
+        </tr>
+        <tr>
+          <td>CURL扩展库</td>
           <td>开启</td>
           <td><?php echo $curl; ?></td>
           <td>开启</td>

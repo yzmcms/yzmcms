@@ -9,19 +9,19 @@
   <a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6a7;</i> 通过审核</a>
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
   <form method="post" action="<?php echo U('del');?>" id="myform">
-  <table class="table table-border table-bordered table-bg table-hover">
+  <table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
     <thead>
       <tr class="text-c">
         <th width="25"><input type="checkbox"></th>
-		<th width='60'>用户ID</th>
-		<th>用户名</th>
-		<th>邮箱</th>
-		<th>用户组</th>
-		<th>注册IP</th>
-		<th>注册时间</th>
-		<th width='70'>登录次数</th>
-		<th width='55'>经验</th>
-		<th width='55'>积分</th>
+		<th>用户ID<?php echo field_order('userid');?></th>
+		<th>用户名<?php echo field_order('username');?></th>
+		<th>邮箱<?php echo field_order('email');?></th>
+		<th>用户组<?php echo field_order('groupid');?></th>
+		<th>注册IP<?php echo field_order('regip');?></th>
+		<th>注册时间<?php echo field_order('regdate');?></th>
+		<th>登录次数<?php echo field_order('loginnum');?></th>
+		<th>经验<?php echo field_order('experience');?></th>
+		<th>积分<?php echo field_order('point');?></th>
       </tr>
     </thead>
     <tbody>

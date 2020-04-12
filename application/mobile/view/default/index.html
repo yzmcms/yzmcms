@@ -5,8 +5,9 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
     <title>{$seo_title}</title>
-    <link href="{STATIC_URL}css/yzm-mobile-index.css" rel="stylesheet" type="text/css" />
+    <link href="{STATIC_URL}css/yzm-mobile-index.css?v=yzmcms" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="{STATIC_URL}js/mobile_simpler-sidebar.min.js"></script>
     <script type="text/javascript" src="{STATIC_URL}js/mobile_scroll.js"></script>
     <script type="text/javascript" src="{STATIC_URL}js/mobile_scrollload.js"></script>
     <meta name="keywords" content="{$keywords}" />
@@ -15,26 +16,15 @@
 
 <body>
     <!--网站容器-->
-    <div id="container">
-        <div id="header" name="top">{$site[site_name]}</div>
-        <nav id="nav">
-            <ul>
-                <li><a href="{U('mobile/index/init')}" class="nav_current">网站首页</a></li>
-                {m:nav field="mobname,catid,type,pclink" where="parentid=0" limit="20" return="nav_data"}
-                {loop $nav_data $v}
-                <li>
-                	<a href="{if $v['type']!=2}{U('mobile/index/lists', array('catid'=>$v['catid']))}{else}{$v[pclink]}{/if}">{$v[mobname]}</a>
-                </li>
-                {/loop}
-            </ul>
-        </nav>
+    <div class="yzm-container">
+        {m:include "mobile","header"}
         <div class="clearfix"></div>
         <!--焦点图-->
-        <div class="topPic">
-            <div class="imgSlideMain">
-                <div id="imgSlide" class="imgSlide">
+        <div class="yzm-toppic">
+            <div class="yzm-imgslidemain">
+                <div id="imgSlide" class="yzm-imgslide">
                     <ul>
-                    	<!-- 此处为功能演示，调取模型ID为1的且有缩略图的内容 -->
+                    	<!-- 此处为功能演示，调取模型id为1的且有缩略图的内容 -->
                         {m:lists field="id,catid,title,thumb" modelid="1" thumb="1" limit="3"}
                         {loop $data $v}
                         <li>
@@ -44,16 +34,16 @@
                         {/loop}
                     </ul>
                 </div>
-                <ul class="navSlide">
-                    <li class="i_point">
-                    <li class="i_point">
+                <ul class="yzm-navslide">
                     <li class="i_point active">
+                    <li class="i_point">
+                    <li class="i_point">
                 </ul>
             </div>
         </div>
         <!--主要内容-->
         <div id="main">
-            <div class="list_news">
+            <div class="yzm-news-list">
                 <h3 class="yzm-title">【最近更新】</h3>
                 <ul>
                     <!-- 此处仅为功能演示，不分栏目，调取模型ID(modelid)为1的所有内容 -->
@@ -63,7 +53,7 @@
                     {/loop}
                 </ul>
             </div>
-            <div class="list_news">
+            <div class="yzm-news-list">
                 <h3 class="yzm-title">【小编推荐】</h3>
                 <ul>
                     <!-- 此处为功能演示，调取内容属性为“推荐”的内容 -->
@@ -73,7 +63,7 @@
                     {/loop}
                 </ul>
             </div>
-            <div class="img_news">
+            <div class="yzm-news-img">
                 <h3 class="yzm-title">【图文资讯】</h3>
                 <ul>
                     <!-- 此处仅为功能演示，调用模型ID为1且有缩略图的内容 -->

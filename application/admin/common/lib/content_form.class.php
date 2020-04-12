@@ -80,7 +80,7 @@ class content_form {
 		$modelinfo = getcache($this->modelid.'_model');
 		if($modelinfo === false){
 			if(!D('model')->where(array('modelid' => $this->modelid))->find()) showmsg('模型不存在！');
-			$modelinfo = D('model_field')->where(array('modelid' => $this->modelid, 'disabled' => 0))->order('listorder ASC')->select();
+			$modelinfo = D('model_field')->where(array('modelid' => $this->modelid, 'disabled' => 0))->order('listorder ASC,fieldid ASC')->select();
 			setcache($this->modelid.'_model', $modelinfo);
 			delcache($this->modelid.'_model_string');
 		}

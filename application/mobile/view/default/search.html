@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
+    <title>{$seo_title}</title>
+    <link href="{STATIC_URL}css/yzm-mobile-category.css?v=yzmcms" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="{STATIC_URL}js/mobile_simpler-sidebar.min.js"></script>
+    <meta name="keywords" content="{$keywords}" />
+    <meta name="description" content="{$description}" />
+</head>
+
+<body>
+    <!--网站容器-->
+    <div class="yzm-container">
+        {m:include "mobile","header"}
+        <!--主要内容-->
+        <div class="yzm-main-article">
+            <div class="yzm-search-title">
+                <h2>共<span>{$total}</span>条搜索结果</h2>
+            </div>
+            <div class="yzm-news-list">
+                <ul>
+                    {loop $search_data $v}
+                    {php $v['title'] = preg_replace("/$q/i", "<span style='color:red;'>$q</span>", $v['title']);}
+                    <li>
+                    	<span class="date">[{date('m-d',$v['inputtime'])}]</span>
+                    	<a href="{mobile_url($v['catid'], $v['id'])}">
+                            {if strstr($v['flag'],'1')}<em class="yzm-flag">顶</em>{/if}
+                            {title_color($v['title'], $v['color'])}
+                        </a>
+                    </li>
+                    {/loop}
+                </ul>
+            </div>
+            <div id="page">{$pages}</div>
+        </div>
+        {m:include "mobile","footer"}

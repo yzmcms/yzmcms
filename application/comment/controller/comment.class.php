@@ -9,12 +9,16 @@ class comment extends common {
 	 * 评论列表
 	 */
 	public function init() {
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','username','title','inputtime','ip','status')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$modelid = 0;
 		$modelinfo = get_modelinfo();
 		$comment = D('comment');
 		$total = $comment->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->total();
 		$page = new page($total, 15);
-		$data = $comment->field('yzmcms_comment.*,b.title,b.url')->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->order('id DESC')->limit($page->limit())->select();		
+		$data = $comment->field('yzmcms_comment.*,b.title,b.url')->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('comment_list');
 	}
 
@@ -23,6 +27,10 @@ class comment extends common {
 	 * 评论搜索
 	 */
 	public function search() {
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','username','title','inputtime','ip','status')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){
 			$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 0;
@@ -43,7 +51,7 @@ class comment extends common {
 		$comment = D('comment');
 		$total = $comment->where($where)->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->total();
 		$page = new page($total, 15);
-		$data = $comment->field('yzmcms_comment.*,b.title,b.url')->where($where)->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->order('id DESC')->limit($page->limit())->select();		
+		$data = $comment->field('yzmcms_comment.*,b.title,b.url')->where($where)->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('comment_list');
 	}
 

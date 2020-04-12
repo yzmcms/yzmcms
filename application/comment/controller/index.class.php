@@ -1,15 +1,19 @@
 <?php
+
+session_start();
 class index{
 	
+	/**
+	 * 发布评论
+	 */
 	public function init(){	
-		session_start();
  		if(isset($_POST['dosubmit'])) {
-			if(trim($_POST['content']) == '') showmsg('你不打算说点什么吗？');
+			if(trim($_POST['content']) == '') showmsg('你不打算说点什么吗？', 'stop');
 			
 			$site = get_config();
 			
 			$userid = $_POST['userid'] = isset($_SESSION['_userid']) ? $_SESSION['_userid']  : 0;
-			$username = $_POST['username'] = isset($_SESSION['_username']) ? $_SESSION['_username'] : $site['site_name'].'网友';
+			$username = $_POST['username'] = isset($_SESSION['_username']) ? $_SESSION['_username'] : '网友';
 			
 			if(!$userid && !$site['comment_tourist']){
 				 showmsg('登录后方可发布评论！', url_referer($_SERVER['HTTP_REFERER']), 1);
@@ -29,17 +33,18 @@ class index{
 			$_POST['modelid'] = isset($_POST['modelid']) ? intval($_POST['modelid']) : 1; 
 			$_POST['catid'] = isset($_POST['catid']) ? intval($_POST['catid']) : 0; 
 			$_POST['id'] = isset($_POST['id']) ? intval($_POST['id']) : 0; 
-			$_POST['commentid'] = $_POST['modelid'].'_'.$_POST['catid'].'_'.$_POST['id']; 
+			$_POST['commentid'] = $this->_get_commentid($_POST['modelid'], $_POST['catid'], $_POST['id']);
 			$_POST['url'] = SITE_PATH.str_replace(SITE_URL, '', $_POST['url']);
 			$_POST['status'] = !$site['comment_check']; 
 			$_POST['total'] = 1;
 			
-			//如果是回复
+			//评论回复
 			if($_POST['reply']){
 				$uname = $_POST['username'];
 				if(isset($_SESSION['roleid'])){
 					$uname = '<strong style="color:#de4c1c">管理员</strong>';
 					$_POST['username'] = '管理员';
+					$_POST['status'] = 1;  //管理员回复，评论状态则是通过审核的
 				} 
 				
 				//查询之前的评论内容,并整理楼层样式
@@ -52,7 +57,6 @@ class index{
 				
 				//这里的格式不可以修改，会影响到后台的评论展示列表
 				$_POST['content'] = $str.'<a href="javascript:void(0);" class="user_name" rel="nofollow">'.$uname.'</a>：'.$_POST['content'];
-				$_POST['status'] = 1;  //如果是管理员回复，评论状态肯定是通过审核的
 			}
 			
 			D('comment')->insert($_POST); //评论表
@@ -63,17 +67,57 @@ class index{
 				$comment_data->insert($_POST, false, false);
 			}
 			
-			if(!$site['comment_check']){
-				showmsg('评论成功！');
+			if($_POST['status']){
+				showmsg('评论成功！', '', 2);
 			}else{
-				showmsg('评论成功，待管理员审核后显示！');
+				showmsg('评论成功，待管理员审核后显示！', '', 2);
 			}
 				
 		}
 	}
 	
+
+	/**
+	 * 更多评论
+	 */
+	public function more(){
+		$sign = isset($_GET['sign']) ? trim($_GET['sign']) : showmsg(L('lose_parameters'), 'stop');
+		list($modelid, $id) = explode('_', $sign);
+		$tabname = get_model($modelid);
+		if(!$tabname) showmsg(L('illegal_parameters'), 'stop');
+		$id = intval($id);
+		$content_data = D($tabname)->field('catid,status,title,url,inputtime,updatetime,keywords,description')->where(array('id'=>$id))->find();
+		if(!$content_data || $content_data['status'] != 1) showmsg(L('illegal_parameters'), 'stop');
+		$commentid = $this->_get_commentid($modelid, $content_data['catid'], $id);
+
+		yzm_base::load_sys_class('page','',0);
+		$total = D('comment')->where(array('commentid'=>$commentid,'status'=>1))->total();
+		$page = new page($total, 20);
+		$comment_data = D('comment')->where(array('commentid'=>$commentid,'status'=>1))->order('id DESC')->limit($page->limit())->select();	
+
+		$site = get_config();
+		$seo_title = $content_data['title'].'_内容评论';
+		$keywords = $content_data['keywords'];
+		$description = $site['site_description'];
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+
+		include template('index', 'comment_more');
+	}
+
+
+	/**
+	 * 获取评论唯一ID
+	 */
+	protected function _get_commentid($modelid, $catid, $id){
+
+		return $modelid.'_'.$catid.'_'.$id;
+		
+	}
 	
-	//处理内容
+	
+	/**
+	 * 处理内容
+	 */
 	protected function _recontent($content){
 		$content = preg_replace('[\[em_([0-9]*)\]]', '<img src="'.STATIC_URL.'images/face/$1.gif"/>', $content);
 		$arr = explode('|', get_config('prohibit_words'));
@@ -83,8 +127,9 @@ class index{
 	
 	
 	
-	
-	//判断会员权限及会员积分奖励
+	/**
+	 * 判断会员权限及会员积分奖励
+	 */
 	protected function _check_auth($userid, $username, $ip){
 		$groupid = intval(get_cookie('_groupid'));
 		$groupinfo = get_groupinfo($groupid);

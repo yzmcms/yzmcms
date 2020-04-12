@@ -1,6 +1,7 @@
 <?php
 defined('IN_YZMPHP') or exit('Access Denied'); 
 yzm_base::load_controller('common', 'admin', 0);
+yzm_base::load_sys_class('page','',0);
 
 class link extends common{
 
@@ -8,11 +9,14 @@ class link extends common{
 	 * 友情链接列表
 	 */	
 	public function init(){	
-		yzm_base::load_sys_class('page','',0);
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','listorder','typeid','linktype','addtime','status')) ? $of : 'listorder ASC, id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$link = D('link');
 		$total = $link->total();
 		$page = new page($total, 15);
-		$data = $link->order('listorder ASC, id DESC')->limit($page->limit())->select();		
+		$data = $link->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('link_list');
 	}
 	

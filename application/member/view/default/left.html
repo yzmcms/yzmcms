@@ -1,33 +1,33 @@
 <div class="main_left">
 	<dl>
-		<dt> - 内容管理</dt>
+		<dt> <span class="yzm-iconfont">&#xe603;</span> 内容管理</dt>
 		<dd><a href="{U('member/member_content/init')}"{if ROUTE_C=='member_content' && ROUTE_A=='init'} class="left_cur" {/if}>在线投稿</a></dd>
 		<dd><a href="{U('member/member_content/pass')}"{if ROUTE_A=='pass'} class="left_cur" {/if}>已通过的稿件</a></dd>
 		<dd><a href="{U('member/member_content/not_pass')}"{if ROUTE_A=='not_pass'} class="left_cur" {/if}>未通过的稿件</a></dd>
 		<dd><a href="{U('member/member_content/favorite')}"{if ROUTE_A=='favorite'} class="left_cur" {/if}>收藏夹</a></dd>
 	</dl>
 	<dl>
-		<dt> - 账号设置</dt>
+		<dt> <span class="yzm-iconfont">&#xe63d;</span> 账号设置</dt>
 		<dd><a href="{U('member/index/account')}"{if ROUTE_A=='account'} class="left_cur" {/if}>修改资料</a></dd>
 		<dd><a href="{U('member/index/user_pic')}"{if ROUTE_A=='user_pic'} class="left_cur" {/if}>修改头像</a></dd>
 		<dd><a href="{U('member/index/password')}"{if ROUTE_A=='password'} class="left_cur" {/if}>修改密码</a></dd>
 		<dd><a href="{U('member/index/email')}"{if ROUTE_A=='email'} class="left_cur" {/if}>邮箱/安全问题</a></dd>
 	</dl>
 	<dl>
-		<dt> - 财务中心</dt>
-		<dd><a href="{U('member/member_pay/pay')}"{if ROUTE_C=='member_pay' && ROUTE_A=='pay'} class="left_cur" {/if}>积分充值</a></dd>
+		<dt> <span class="yzm-iconfont">&#xe61c;</span> 财务中心</dt>
+		<dd><a href="{U('member/member_pay/pay')}"{if ROUTE_C=='member_pay' && ROUTE_A=='pay'} class="left_cur" {/if}>在线充值</a></dd>
 		<dd><a href="{U('member/member_pay/order_list')}"{if ROUTE_C=='member_pay' && ROUTE_A=='order_list'} class="left_cur" {/if}>订单管理</a></dd>
 		<dd><a href="{U('member/member_pay/init')}"{if ROUTE_C=='member_pay' && ROUTE_A=='init'} class="left_cur" {/if}>入账记录</a></dd>
 		<dd><a href="{U('member/member_pay/spend_record')}"{if ROUTE_A=='spend_record'} class="left_cur" {/if}>消费记录</a></dd>
 	</dl>
 	<dl>
-		<dt> - 我的关注</dt>
+		<dt> <span class="yzm-iconfont">&#xe604;</span> 我的关注</dt>
 		<dd><a href="{U('member/index/follow')}" {if ROUTE_A=='follow'} class="left_cur" {/if}>我的关注</a></dd>
 		<dd><a href="{U('member/index/fans')}" {if ROUTE_A=='fans'} class="left_cur" {/if}>我的粉丝</a></dd>
 		<dd><a href="{U('member/index/follow_dynamic')}" {if ROUTE_A=='follow_dynamic'} class="left_cur" {/if}>TA的动态</a></dd>
 	</dl> 
 	<dl>
-		<dt> - 消息中心</dt>
+		<dt> <span class="yzm-iconfont">&#xe617;</span> 消息中心</dt>
 		<dd><a href="{U('member/messages/new_messages')}"{if ROUTE_A=='new_messages'} class="left_cur" {/if}>发信息</a></dd>  
 		<dd><a href="{U('member/messages/outbox')}"{if ROUTE_A=='outbox'} class="left_cur" {/if}>发件箱</a></dd>
 		<dd><a href="{U('member/messages/inbox')}"{if ROUTE_A=='inbox'} class="left_cur" {/if}>收件箱<span>({$inbox_msg})</span></a></dd>

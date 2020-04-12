@@ -9,10 +9,47 @@ class guestbook extends common {
 	 * 留言板列表
 	 */
 	public function init() {
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','ip','booktime','isread','ischeck')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$guestbook = D('guestbook');
 		$total = $guestbook->where(array('replyid'=>'0'))->total();
 		$page = new page($total, 15);
-		$data = $guestbook->where(array('replyid'=>'0'))->order('id DESC')->limit($page->limit())->select();		
+		$data = $guestbook->where(array('replyid'=>'0'))->order("$of $or")->limit($page->limit())->select();		
+		include $this->admin_tpl('guestbook_list');
+	}
+
+
+	/**
+	 * 留言搜索
+	 */
+	public function search() {
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','ip','booktime','isread','ischeck')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
+		$where = 'replyid=0';
+		if(isset($_GET['dosubmit'])){
+			$ischeck = isset($_GET['ischeck']) ? intval($_GET['ischeck']) : 99;
+			$isread = isset($_GET['isread']) ? intval($_GET['isread']) : 99;
+			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
+			$searinfo = isset($_GET["searinfo"]) ? trim(safe_replace($_GET["searinfo"])) : '';
+
+			if($ischeck != 99) $where .= ' AND ischeck = '.$ischeck;
+			if($isread != 99) $where .= ' AND isread = '.$isread;
+			if($searinfo != ''){
+				if($type == '1')
+					$where .= ' AND title LIKE \'%'.$searinfo.'%\'';
+				else
+					$where .= ' AND name LIKE \'%'.$searinfo.'%\'';
+			}			
+		}		
+		$_GET = array_map('htmlspecialchars', $_GET);
+		$guestbook = D('guestbook');
+		$total = $guestbook->where($where)->total();
+		$page = new page($total, 15);
+		$data = $guestbook->where($where)->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('guestbook_list');
 	}
 

@@ -7,7 +7,33 @@
  * @lastmodify       2017-05-25
  */
  
- 
+
+/**
+ * http/https请求，支持get与post
+ * @param  string  $url   请求url
+ * @param  string  $data  POST请求，数组不为空
+ * @param  boolean $array 是否返回数组形式
+ * @param  int     $timeout 设置超时时间（毫秒）
+ * @return array|string
+ */
+function https_request($url, $data = '', $array = true, $timeout = 2000){
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+    curl_setopt($curl, CURLOPT_NOSIGNAL, true); 
+    curl_setopt($curl, CURLOPT_TIMEOUT_MS, $timeout); 
+
+    if($data){
+        curl_setopt($curl, CURLOPT_POST, 1);
+        curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+    }
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    $output = curl_exec($curl);
+    curl_close($curl);
+    return $array ? json_decode($output, true) : $output;
+}
+
+
 /**
  * 字符截取
  * @param $string 要截取的字符串
@@ -78,9 +104,9 @@ function str_cut($string, $length, $dot = '...', $code = 'utf-8') {
 function remove_xss($string) { 
     $string = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]+/S', '', $string);
 
-    $parm1 = Array('javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'script', 'embed', 'object', 'iframe', 'frame', 'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base');
+    $parm1 = array('javascript', 'vbscript', 'expression', 'applet', 'meta', 'xml', 'blink', 'link', 'script', 'embed', 'object', 'iframe', 'frame', 'frameset', 'ilayer', 'layer', 'bgsound', 'title', 'base');
 
-    $parm2 = Array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavailable', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterchange', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload');
+    $parm2 = array('onabort', 'onactivate', 'onafterprint', 'onafterupdate', 'onbeforeactivate', 'onbeforecopy', 'onbeforecut', 'onbeforedeactivate', 'onbeforeeditfocus', 'onbeforepaste', 'onbeforeprint', 'onbeforeunload', 'onbeforeupdate', 'onblur', 'onbounce', 'oncellchange', 'onchange', 'onclick', 'oncontextmenu', 'oncontrolselect', 'oncopy', 'oncut', 'ondataavailable', 'ondatasetchanged', 'ondatasetcomplete', 'ondblclick', 'ondeactivate', 'ondrag', 'ondragend', 'ondragenter', 'ondragleave', 'ondragover', 'ondragstart', 'ondrop', 'onerror', 'onerrorupdate', 'onfilterchange', 'onfinish', 'onfocus', 'onfocusin', 'onfocusout', 'onhelp', 'onkeydown', 'onkeypress', 'onkeyup', 'onlayoutcomplete', 'onload', 'onlosecapture', 'onmousedown', 'onmouseenter', 'onmouseleave', 'onmousemove', 'onmouseout', 'onmouseover', 'onmouseup', 'onmousewheel', 'onmove', 'onmoveend', 'onmovestart', 'onpaste', 'onpropertychange', 'onreadystatechange', 'onreset', 'onresize', 'onresizeend', 'onresizestart', 'onrowenter', 'onrowexit', 'onrowsdelete', 'onrowsinserted', 'onscroll', 'onselect', 'onselectionchange', 'onselectstart', 'onstart', 'onstop', 'onsubmit', 'onunload', 'onpointerout');
 
     $parm = array_merge($parm1, $parm2); 
 
@@ -157,17 +183,18 @@ function getip(){
 
 /**
  * 获取请求地区
- * @param $ip
- * @return 所在位置
+ * @param $ip	IP地址
+ * @param $is_array 是否返回数组形式
+ * @return string|array
  */
-function get_address($ip){
+function get_address($ip, $is_array = false){
 	if($ip == '127.0.0.1') return '本地地址';
-	$content = @file_get_contents('http://ip.taobao.com/service/getIpInfo.php?ip='.$ip);
+	$content = @file_get_contents('https://www.yzmcms.com/api/ip/?ip='.$ip);
 	$arr = json_decode($content, true);
-	if(is_array($arr) && $arr['code']==0){
-		return $arr['data']['country'].'-'.$arr['data']['region'].'-'.$arr['data']['city'];
+	if(is_array($arr) && !isset($arr['error'])){
+		return $is_array ? $arr : $arr['country'].'-'.$arr['province'].'-'.$arr['city'];
 	}else{
-		return '未知';
+		return $is_array&&is_array($arr) ? $arr : '未知';
 	}
 }
 
@@ -588,7 +615,7 @@ function array_iconv($data, $input = 'gbk', $output = 'utf-8') {
 */
 function string_auth($string, $operation = 'ENCODE', $key = '', $expiry = 0) {
 	$ckey_length = 4;
-	$key = md5($key != '' ? $key : C( 'auth_key'));
+	$key = md5($key != '' ? $key : C('auth_key'));
 	$keya = md5(substr($key, 0, 16));
 	$keyb = md5(substr($key, 16, 16));
 	$keyc = $ckey_length ? ($operation == 'DECODE' ? substr($string, 0, $ckey_length): substr(md5(microtime()), -$ckey_length)) : '';
@@ -668,10 +695,14 @@ function grab_image($content, $targeturl = ''){
 		if(strpos($value, 'http') === false){
 			if(!$targeturl) return $content;
 			$value = $targeturl.$value;
-		}		
-		$ext = strrchr($value, '.');
-		if($ext!='.png' && $ext!='.jpg' && $ext!='.gif' && $ext!='.jpeg') return false;
-		$imgname = date("YmdHis").rand(1,9999).$ext;
+		}	
+		if(strpos($value, '?')){ 
+			$value = explode('?', $value);
+			$value = $value[0];
+		}	
+		$ext = fileext($value);
+		if(!in_array($ext, array('jpg', 'png', 'gif', 'jpeg'))) continue;
+		$imgname = date("YmdHis").rand(1,9999).'.'.$ext;
 		$filename = $imgpath.'/'.$imgname;
 		$urlname = $urlpath.'/'.$imgname;
 		
@@ -761,7 +792,7 @@ function to_sqls($data, $front = ' AND ', $in_column = false) {
 		if ($front == '') {
 			$front = ' AND ';
 		}
-		if(is_array($data) && count($data) > 0) {
+		if(is_array($data)) {
 			$sql = '';
 			foreach ($data as $key => $val) {
 				$sql .= $sql ? " $front `$key` = '$val' " : " `$key` = '$val' ";
@@ -1159,6 +1190,15 @@ function send_http_status($code){
 
 
 /**
+ * 生成验证key
+ * @param $prefix   前缀
+ */
+function make_auth_key($prefix) {
+	return md5($prefix.YZMPHP_PATH.C('auth_key'));
+}
+
+
+/**
  * 记录日志
  * @param $message 日志信息
  * @param $filename 文件名称
@@ -1166,6 +1206,7 @@ function send_http_status($code){
  * @return bool
  */
 function write_log($message, $filename = '', $path = '') {
+	$message = is_array($message) ? json_encode($message) : $message;
 	$message = date('H:i:s').' '.$message."\r\n";
 	if(!$path) $path = YZMPHP_PATH.'cache';
 	
@@ -1225,6 +1266,7 @@ function input($key = '', $default = '', $function = ''){
 	if ($method == 'get') {
 		return empty($key) ? $_GET : (isset($_GET[$key]) ? ($function ? $function($_GET[$key]) : $_GET[$key]) : $default);
 	} elseif ($method == 'post') {
+		$_POST = $_POST ? $_POST : json_decode(file_get_contents('php://input'), true);
 		return empty($key) ? $_POST : (isset($_POST[$key]) ? ($function ? $function($_POST[$key]) : $_POST[$key]) : $default);
 	} elseif ($method == 'request') {
 		return empty($key) ? $_REQUEST : (isset($_REQUEST[$key]) ? ($function ? $function($_REQUEST[$key]) : $_REQUEST[$key]) : $default);

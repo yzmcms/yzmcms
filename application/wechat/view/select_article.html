@@ -4,7 +4,7 @@
 <body>
 <div class="page-container">
   <div> 
-    <form action="" method="get" id="search">
+    <form action="<?php echo U(ROUTE_A);?>" method="get" id="search">
     内容标题：
      <input type="text" name="searinfo" class="input-text" style="width:200px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button> 
 	 </form>	

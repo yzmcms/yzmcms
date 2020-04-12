@@ -2,21 +2,21 @@
 <title>在线充值 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 积分记录 <span class="c-gray en">&gt;</span> 在线充值 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 账单管理 <span class="c-gray en">&gt;</span> 在线充值 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
   <div class="sub_menu"><a href="<?php echo U('pay');?>">入账记录</a> <a href="<?php echo U('pay_spend');?>">消费记录</a> <a href="<?php echo U('recharge');?>"  class="on">在线充值</a></div>
  <div class="formdoby_normal"> 
 	<form method="post" action="" onsubmit="return checkall()">
 		<ul>
 			 <li><label>充值类型：</label>
-			 	<label class="label_radio"><input name="type" type="radio" value="1" checked> 积分</label>
-			 	<label class="label_radio"><input name="type" type="radio" value="2" > 金钱</label>
+			 	<label class="label_radio"><input name="type" type="radio" value="2" checked> 金钱</label>
+			 	<label class="label_radio"><input name="type" type="radio" value="1" > 积分</label>
 			 </li>
 			 <li><label>用户名：</label><input type="text" class="input" name="username" id="username" value=""></li> 
 			 <li><label>充值额度：</label>
 			 <label class="label_radio"><input name="unit" type="radio" value="1" checked> 增加</label>
 			 <label class="label_radio"><input name="unit" type="radio" value="0" > 减少</label>
-			 <input type="text" class="input" name="money" id="money" value="" style="width:70px"> <span style="color:#888">输入修改数量（积分或金钱）</span>
+			 <input type="text" class="input" name="money" id="money" value="" style="width:70px"> <span style="color:#888">输入修改数量（金钱或积分）</span>
 			 </li> 
 			 <li><label>备注说明：</label><textarea class="textarea" name="remarks" style="width:600px"></textarea></li>
 			 <li><label>提醒操作：</label><input name="sendemail" value="1" type="checkbox"> 发送e-mail通知会员 <span style="color:#888">（需填写邮箱配置）</span></li>					 
@@ -54,17 +54,17 @@ function checkname(){
 			if(msg == '-1'){
 				res = true;				  
 			}else if(msg == '1'){
-				layer.msg('该用户不存在');		  
+				layer.msg('该用户不存在！', {icon:2});		  
 			}else if(msg == '0'){
-				layer.msg('用户名格式不正确');		  
+				layer.msg('用户名格式不正确！', {icon:2});		  
 			}else{
-				layer.msg('未知错误');			  
+				layer.msg('未知错误！', {icon:2});			  
 			}				 
 			} 
 		});
 		return res;
 	}else{
-		layer.msg('用户名不能为空');
+		layer.msg('用户名不能为空！', {icon:2});
 		return res;
 	}		   
 }
@@ -74,21 +74,25 @@ function checkmoney(){
 		if(!isNaN($("#money").val())){
 			return true;				  
 		}else{
-			layer.msg('充值额度只能为数字');	
+			layer.msg('充值额度只能为数字！', {icon:2});	
 			return false;
 		}
 	}else{
-		layer.msg('充值额度不能为空');
+		layer.msg('充值额度不能为空！', {icon:2});
 		return false;
 	}		   
 }
 
 function checkall(){
-    if(checkname() && checkmoney()){
-		return true;
-	}else{
+    if(!checkname() || !checkmoney()){
+		return false;
+	}
+
+	if($("textarea[name='remarks']").val() == ''){
+		layer.msg('备注说明不能为空！', {icon:2});
 		return false;
 	}	
+	return true;
 }
 </script>
 

@@ -7,7 +7,8 @@
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
 			<li><label><span class="c-red">*</span>TAG：</label><input type="text" class="input" value="<?php echo $data['tag']?>" name="tag"></li>						 
-			<li><label><span class="c-red">*</span>文档数：</label><input type="text" class="input" value="<?php echo $data['total']?>" name="total"></li>						 
+			<li><label><span class="c-red">*</span>文档数：</label><input type="text" class="input" value="<?php echo $data['total']?>" name="total" readonly="readonly"></li>	
+			<li><label>描述：</label><textarea name="remarks" class="textarea" style="width:388px"><?php echo $data['remarks']?></textarea></li>			
 			<li>
 				<input type="hidden" name="id" value="<?php echo $data['id']?>">
 				<input type="hidden" name="dosubmit" value="1">

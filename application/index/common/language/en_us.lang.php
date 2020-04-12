@@ -10,7 +10,7 @@ return array(
 	'category_not_existent' => 'Category does not exist!',
 	'content_not_existent' => 'Content does not exist!',
 	'is_jump' => 'Is jump',
-	'need_login' => 'Need to log in to view the Reading Rights!',
+	'need_login' => 'Please log in first!',
 	'insufficient_authority' => 'You do not have permission to read this, please upgrade your membership!',
 	'read_spend' => 'Read this content,Need to be deducted',
 	'money' => 'Money',

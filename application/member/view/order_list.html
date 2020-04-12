@@ -18,6 +18,13 @@
 		<option <?php if(isset($_GET['status']) && $_GET['status']=='1'){?> selected <?php }?> value="1">已付款</option>	
 		</select>
 	  </span>
+       <span class="select-box inline">
+  		<select name="t_type" class="select">
+  		<option value="0">充值类型</option>
+  		<option <?php if(isset($_GET['t_type']) && $_GET['t_type']=='1'){?> selected <?php }?> value="1">积分</option>
+  		<option <?php if(isset($_GET['t_type']) && $_GET['t_type']=='2'){?> selected <?php }?> value="2">金钱</option>	
+  		</select>
+  	  </span>
      <span class="select-box inline">
 		<select name="type" class="select">
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='1'){?> selected <?php }?> value="1">用户名</option>
@@ -28,17 +35,18 @@
 	 </form>	
   </div>
   <form method="post" action="<?php echo U('pay_del');?>" id="myform">
-  <table class="table table-border table-bordered table-bg table-hover mt-20">
+  <table class="table table-border table-bordered table-bg table-hover mt-20 yzm-table-sort">
     <thead>
       <tr class="text-c">
-		<th>订单ID</th>
-		<th>用户名</th>
+		<th>订单ID<?php echo field_order('id');?></th>
+		<th>用户名<?php echo field_order('username');?></th>
 		<th>订单号</th>
-		<th>支付金额</th>
-		<th>下单时间</th>
-		<th>支付时间</th>
-		<th>订单状态</th>
-		<th>支付方式</th>
+		<th>支付金额<?php echo field_order('money');?></th>
+		<th>下单时间<?php echo field_order('addtime');?></th>
+		<th>支付时间<?php echo field_order('paytime');?></th>
+		<th>订单状态<?php echo field_order('status');?></th>
+		<th>支付方式<?php echo field_order('paytype');?></th>
+		<th>充值类型</th>
 		<th>操作</th>
       </tr>
     </thead>
@@ -55,6 +63,7 @@
 			<td><?php echo $val['paytime'] ? date("Y-m-d H:i:s",$val['paytime']) : '<span class="c-red">未支付</span>' ?></td>
 			<td><?php echo $this->order_status[$val['status']]?></td>
 			<td><?php echo $this->paytype[$val['paytype']]?></td>
+			<td><?php echo $val['type']==1 ? '积分' : '<span class="c-red">金钱</span>';?></td>
 			<td><?php if($val['status'] == 0) { ?>
 			<a href="javascript:;" onclick="yzm_open('订单改价', '<?php echo U('change_price', array('id'=>$val['id']));?>', 550, 350)">改价</a> 
 			<?php }else{ ?>

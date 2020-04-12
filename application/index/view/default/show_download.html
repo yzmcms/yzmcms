@@ -104,7 +104,7 @@
 				</div>
 				<div class="yzm-comment-list-box">
 					{m:comment_list modelid="$modelid" catid="$catid" id="$id" limit="20"}
-					<div class="yzm-comment-list-top">共 {count($data)} 条评论</div>
+					<div class="yzm-comment-list-top">共 {get_comment_total($id, $catid, $modelid)} 条评论，<a href="{U('comment/index/more', array('sign'=>$modelid.'_'.$id))}" target="_blank">查看全部</a></div>
 					<div class="yzm-comment-list-body">
 					<ul>
 						{loop $data $v}
@@ -190,7 +190,7 @@
 	 	 			<h2>热门标签</h2>
 	 	 		</div>
 			    <ul class="yzm-tag-list">
-				{m:tag field="id,tag,total" limit="30"}
+				{m:tag field="id,tag,total,remarks" limit="30"}
 				{loop $data $v}
 				   <li><a href="{tag_url($v['id'])}" target="_blank">{$v[tag]}({$v[total]})</a></li>	
 				{/loop}						

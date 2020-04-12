@@ -42,8 +42,8 @@ class yzm_tag{
 		$order = isset($data['order']) ? $data['order'] : 'listorder ASC,id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
 		
-		if(isset($data['where'])){
-			$where = $data['where'];
+		if(isset($data['where']) && $data['where']){
+			$where = 'status=1'.$catid.' AND '.$data['where'];
 		}else{
 			$thumb = isset($data['thumb']) ? " AND thumb != ''" : '';
 			$flag = isset($data['flag']) ? " AND FIND_IN_SET('".intval($data['flag'])."',flag)" : '';
@@ -95,8 +95,8 @@ class yzm_tag{
 		$field = isset($data['field']) ? $data['field'] : '*';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
 		
-		if(isset($data['where'])){
-			$where = $data['where'];
+		if(isset($data['where']) && $data['where']){
+			$where = 'status=1'.$catid.' AND '.$data['where'];
 		}else{
 			$thumb = isset($data['thumb']) ? " AND thumb != ''" : '';
 			$where = 'status=1'.$catid.$thumb;
@@ -149,7 +149,8 @@ class yzm_tag{
 		$order = isset($data['order']) ? $data['order'] : 'id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
 		$where = isset($data['where']) ? $data['where'] : '';
-		return D('tag')->field('id,tag,total')->where($where)->order($order)->limit($limit)->select();
+		$field = isset($data['field']) ? $data['field'] : 'id,tag,total,remarks';
+		return D('tag')->field($field)->where($where)->order($order)->limit($limit)->select();
 	}	
 	
 	

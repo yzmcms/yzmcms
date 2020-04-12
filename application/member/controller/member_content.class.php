@@ -79,7 +79,7 @@ class member_content extends common{
 					continue;
 				} 
 				if(in_array($_k, $notfilter_field)) {
-					$_POST[$_k] = remove_xss(strip_tags($_v, '<p><a><br><img><ul><li><div><strong>'));
+					$_POST[$_k] = remove_xss(strip_tags($_v, '<p><a><br><img><ul><li><div><strong><table><th><tr><td>'));
 				}else{
 					$_POST[$_k] = !is_array($_POST[$_k]) ? new_html_special_chars(trim_script($_v)) : $this->_content_dispose($_v);
 				}
@@ -178,7 +178,7 @@ class member_content extends common{
 					continue;
 				}
 				if(in_array($_k, $notfilter_field)) {
-					$_POST[$_k] = remove_xss(strip_tags($_v, '<p><a><br><img><ul><li><div>'));
+					$_POST[$_k] = remove_xss(strip_tags($_v, '<p><a><br><img><ul><li><div><strong><table><th><tr><td>'));
 				}else{
 					$_POST[$_k] = !is_array($_POST[$_k]) ? new_html_special_chars(trim_script($_v)) : $this->_content_dispose($_v);
 				}
@@ -228,7 +228,7 @@ class member_content extends common{
 		$data = array();
 		foreach($res as $val) {
 			list($val['modelid'], $val['id']) = explode('_', $val['checkid']);
-			$val['url'] = SITE_URL.'index.php?m=index&c=index&a=show&catid='.$val['catid'].'&id='.$val['id'];
+			$val['url'] = U('index/index/show', array('catid'=>$val['catid'],'id'=>$val['id']));
 			$data[] = $val;
 		}
 		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
@@ -341,7 +341,7 @@ class member_content extends common{
 	private function _get_model_str($modelid, $field = false, $data = array()) {
 		$modelinfo = getcache($modelid.'_model');
 		if($modelinfo === false){
-			$modelinfo = D('model_field')->where(array('modelid' => $modelid, 'disabled' => 0))->order('listorder ASC')->select();
+			$modelinfo = D('model_field')->where(array('modelid' => $modelid, 'disabled' => 0))->order('listorder ASC,fieldid ASC')->select();
 			setcache($modelid.'_model', $modelinfo);
 		}
 		
@@ -408,13 +408,7 @@ class member_content extends common{
 	 * @param $id 
 	 */		
 	private function _adopt($content_tabname, $catid, $id){
-		if(get_config('url_rule')){
-			$catinfo = get_category($catid);
-			$url = URL_MODEL == 1 ? SITE_URL.'index.php?s=/'.$catinfo['catdir'].'/'.$id.C('url_html_suffix') : SITE_URL.$catinfo['catdir'].'/'.$id.C('url_html_suffix');
-		}else{  
-			$url = U('index/index/show',array('catid'=>$catid,'id'=>$id));
-		}
-		
+		$url = get_content_url($catid, $id);
 		$content_tabname->update(array('url' => $url), array('id' => $id));  
 		
 		//投稿奖励积分和经验

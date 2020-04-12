@@ -27,7 +27,7 @@ class diyform_field extends common{
 	 */
 	public function init() {
 		$modelid = $this->modelid;
-		$data = D('model_field')->where(array('modelid' => $modelid))->order('listorder ASC,field ASC')->select();
+		$data = D('model_field')->where(array('modelid' => $modelid))->order('listorder ASC,fieldid ASC')->select();
 		include $this->admin_tpl('diyform_field_list');
 	}
 

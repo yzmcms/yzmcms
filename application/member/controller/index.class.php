@@ -131,15 +131,16 @@ class index extends common{
 			
 			D('member_detail')->insert($data, true, false); //插入附表
 			
-			if($config['member_email']){  //是否需要邮件验证
-				$mail_code = $_SESSION['mail_code'] = md5(microtime(true).$data['userid']);
-				$_SESSION['userid'] = $data['userid'];
-				$url = SITE_URL."index.php?m=member&c=index&a=register&mail_code=$mail_code&userid={$data['userid']}&verify=1";
-				$message = '请点击邮箱验证地址：<a href="'. $url .'">'. $url .'</a>';
-				$res = sendmail($data['email'], '会员邮箱验证', $message);
+			if($config['member_email']){
+				//需要邮件验证
+				$mail_code = string_auth($data['userid'].'|'.SYS_TIME, 'ENCODE', make_auth_key('email'));
+				$url = U('member/index/register', array('mail_code'=>$mail_code, 'verify'=>1));
+				$message = '<p>您正在注册'.get_config('site_name').'网站会员：</p><p>请点击如下链接进行邮箱验证：<a href="'. $url .'" target="_blank">'. $url .'</a></p><p>验证有效期为30分钟！</p>';
+				$res = sendmail($data['email'], '会员注册邮箱验证', $message);
 				if(!$res) showmsg('邮件发送失败，请联系网站管理员！', 'stop');
 				showmsg('我们已将邮件发送到您的邮箱，请尽快完成验证！');
-			}elseif($config['member_check']){  //是否需要管理员审核
+			}elseif($config['member_check']){  
+				//需要管理员审核
 				showmsg('注册成功，由于管理员开启审核机制，请耐心等待！');
 			}
 			
@@ -153,14 +154,16 @@ class index extends common{
 			
 		}else{
 			if(!empty($_GET['verify'])) {
-				$mail_code = isset($_GET['mail_code']) ? trim($_GET['mail_code']) : showmsg(L('illegal_operation'));
-				$userid = isset($_GET['userid']) ? intval($_GET['userid']) : showmsg(L('illegal_operation'));
-				if(isset($_SESSION['mail_code']) && $mail_code==$_SESSION['mail_code'] && $userid==$_SESSION['userid']){
-					unset($_SESSION['mail_code'], $_SESSION['userid']);
+				$mail_code = isset($_GET['mail_code']) ? trim($_GET['mail_code']) : showmsg(L('illegal_operation'), 'stop');
+				$code_res = string_auth($mail_code, 'DECODE', make_auth_key('email'));
+				$code_arr = explode('|', $code_res);
+				$userid = isset($code_arr[0]) ? intval($code_arr[0]) : showmsg(L('illegal_operation'), 'stop');
+				$time = isset($code_arr[1]) ? $code_arr[1] : showmsg(L('illegal_operation'), 'stop');
+				if($time+1800 > SYS_TIME){
 					D('member')->update(array('status' => 1, 'email_status' => 1),array('userid'=>$userid));
 					showmsg('邮箱验证成功！', U('member/index/login'), 2);
 				}else{
-					showmsg('验证失败，可能是验证时间已过期！', U('member/index/register'));
+					showmsg('邮箱验证失败，验证时间已失效！', U('member/index/register'));
 				}
 			}
 			include template('member', 'register');

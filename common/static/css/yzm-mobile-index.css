@@ -18,49 +18,54 @@ a:hover{color:#2196f3;}
 .pic{line-height:0px;}
 
 /* 网站容器 */
-#container{margin:auto;width:100%;max-width:640px;background:#fff;}
+.yzm-container{margin:auto;width:100%;max-width:640px;background:#fff;padding-top: 50px;}
 
 /*网站头部 */
-#header{height:40px;background:#2196f3;padding:0 5%;font-size:20px;line-height:40px;color:#fff;text-align:center;box-shadow: 0px 2px 3px #a6a6a6;margin-bottom:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.yzm-header{height:40px;background:#2196f3;box-shadow: 0px 2px 3px #a6a6a6;margin-bottom:10px;position:fixed;top: 0;left: 0;right:0;z-index: 1;width: 100%;max-width:640px;margin:0 auto;}
+.yzm-header img{height:20px;margin-top:10px;cursor:pointer}
+.yzm-header h1,.yzm-header h2{width:70%;height:40px;line-height:40px;font-size:18px;color:#fff;text-align:center;margin:0 auto;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
+.yzm-menu{float:left;margin-left:2%;}
+.yzm-search{float:right;margin-right:3%}
 
-/*导航条*/
-#nav{background-color:#eee;overflow:hidden;padding:5px 0;}
-#nav ul li {float:left;width:30%;text-align:center;background:url(../images/mxian.png) no-repeat right;height:30px;}
-#nav ul li a{line-height:25px;height:25px;font-weight:normal;font-size:14px;color:#666;display:block;}
-#nav ul li a:hover{text-decoration:none;color:#123261;}
-#nav ul li .nav_current{text-decoration:none;color:#123261;}
+.yzm-nav {position:relative;height:100%;overflow: auto;z-index: 2; background-color: #2196f3;}
+.yzm-nav ul{margin-top: 10px; line-height: 40px;}
+.yzm-nav ul li{}
+.yzm-nav ul li a { display: block; padding: 0 20px; color: #fff; text-decoration: none;transition:all 0.5s}
+.yzm-nav ul li a:hover,.yzm-nav ul li .current { background-color:#1784db}
+.yzm-search-form{padding:10px 0;text-align:center;background:rgba(0,0,0,.3);display:none}
+.yzm-input{height:30px;line-height: 30px;border-radius: 3px;border:1px solid #bbb;outline: none;width:60%;padding:5px 10px;font-size: 12px;background:#fff}
+.yzm-submit{border:none;background:#2196f3;color:#fff;height:30px;line-height:30px;width:80px;text-align:center;cursor:pointer;border-radius: 3px}
 
 /* 焦点图*/
-.topPic{background:#000;height:250px;overflow:hidden;}
-.imgSlideMain{clear:both;height:250px;position:relative;overflow:hidden;}
-.imgSlideMain img{width:100%;height:250px;}
-.imgSlide{clear:both;}
-.imgSlide li{overflow:hidden;width:100%;position:relative}
-.imgSlide li p {background:rgba(0,0,0,0.65);position:absolute;bottom:3px;height:35px;line-height:35px;display:block;color:#fff;width:100%;overflow:hidden;text-align:left;text-indent:1em;}
-.navSlide{display:block;bottom:0;right:10px;z-index:999;position: absolute;height:30px;}
-.navSlide .i_point{width:8px;height:8px;display:block;float:left;background:#2196f3;border-radius:100%;margin-top:10px;margin-right:10px;}
-.navSlide .active{background:#fff;}  
+.yzm-toppic{background:#000;height:250px;overflow:hidden;}
+.yzm-imgslidemain{clear:both;height:250px;position:relative;overflow:hidden;}
+.yzm-imgslidemain img{width:100%;height:250px;}
+.yzm-imgslide{clear:both;}
+.yzm-imgslide li{overflow:hidden;width:100%;position:relative}
+.yzm-imgslide li p {background:rgba(0,0,0,0.65);position:absolute;bottom:3px;height:35px;line-height:35px;display:block;color:#fff;width:100%;overflow:hidden;text-align:left;text-indent:1em;}
+.yzm-navslide{display:block;bottom:0;right:10px;z-index:999;position: absolute;height:30px;}
+.yzm-navslide .i_point{width:8px;height:8px;display:block;float:left;background:#2196f3;border-radius:100%;margin-top:10px;margin-right:10px;}
+.yzm-navslide .active{background:#fff;}  
 
 /*主要内容*/
-.list_news ul li{border-bottom: 1px solid #eeeeee;padding:8px 0;margin:0 5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.list_news ul li:last-child:{border-bottom:0;}
+.yzm-news-list ul li{border-bottom: 1px solid #eeeeee;padding:8px 0;margin:0 5px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.yzm-news-list ul li:last-child:{border-bottom:0;}
 .yzm-title{background:#eee;font-weight:normal;height:40px;line-height:40px;border-top:#2196f3 2px solid;font-size:16px}
 .yzm-title a{color:#123261;}
-.img_news{overflow:hidden;margin-bottom:10px;}
-.img_news ul li{width:50%;float:left;height:135px;padding:10px 10px;text-align:center;}
-.img_news ul li img{width:100%;height:90px;}
-.img_news ul li p{color:#444;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.yzm-news-img{overflow:hidden;margin-bottom:10px;}
+.yzm-news-img ul li{width:50%;float:left;height:135px;padding:10px 10px;text-align:center;}
+.yzm-news-img ul li img{width:100%;height:90px;}
+.yzm-news-img ul li p{color:#444;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
-#yzm-back{overflow:hidden;margin:20px 0;}
-#yzm-back a{display:block;border: 1px solid #ddd;margin:0 auto;text-align:center;width:130px;height:30px;line-height:30px;background:url(../images/fan.png) no-repeat 5px 5px;background-size:20%;background-color:#efefef;color:#333;transition:all 0.3s}
-#yzm-back a:hover{text-decoration:none;background-color:#fff;color:#666}
+.yzm-back{height:35px;width:35px;position:fixed;bottom:50px;right:10px;z-index:999}
+.yzm-back a{display: table-cell;vertical-align:middle;text-align: center;height:35px;width:35px;background:#2196f3;}
+.yzm-back img{height:25px;width:25px;vertical-align:middle;}
 
 /* 底部导航 */
-#footer_nav{line-height:35px;border-top:1px solid #2196f3;background:url(../images/fx.png) 0 28px repeat-x;overflow:hidden;background-color:#efefef;}
-#footer_nav ul li {float:left;width:25%;text-align:center;background:url(../images/mxian.png) no-repeat right;height:35px;}
-#footer_nav ul li a{line-height:35px;height:35px;font-weight:normal;font-size:16px;color:#666;display:block;}
+.yzm-footer-nav{line-height:35px;border-top:3px solid #2196f3;background:url(../images/fx.png) 0 28px repeat-x;overflow:hidden;background-color:#efefef;margin-top:10px;}
+.yzm-footer-nav ul li {float:left;width:25%;text-align:center;background:url(../images/mxian.png) no-repeat right;height:35px;}
+.yzm-footer-nav ul li a{line-height:35px;height:35px;font-weight:normal;font-size:16px;color:#666;display:block;}
 
 /* 网站底部 */
-#footer{background:#efefef;text-align:center;color:#333;line-height:30px;}
-#footer p{font-size:14px;color:#666}
-   
+.yzm-footer{background:#efefef;text-align:center;color:#333;line-height:30px;}
+.yzm-footer p{font-size:14px;color:#666}

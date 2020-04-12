@@ -4,11 +4,12 @@ yzm_base::load_sys_class('page','',0);
 
 class index{
 
-	private $offset;
+	private $offset,$module;
 
 	function __construct() {
 		//搜索分页条数设置
 		$this->offset = get_config('search_page') ? intval(get_config('search_page')) : 10;
+		$this->module = ismobile() ? 'mobile' : 'index';
 	}
 
 	/**
@@ -18,7 +19,7 @@ class index{
 		$site = get_config();
 	
 		$q = str_replace('%', '', new_html_special_chars(strip_tags(trim($_GET['q']))));
-		if(strlen($q) <= 2 || strlen($q) >= 30){
+		if(strlen($q) < 2 || strlen($q) > 30){
 			showmsg('你输入的字符长度需要是 2 到 30 个字符！', 'stop');
 		}
 		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
@@ -40,7 +41,7 @@ class index{
 		$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid,flag,color')->where($where)->order('id DESC')->limit($page->limit())->select();
 		
 		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
-		include template('index','search');	
+		include template($this->module, 'search');	
 	}
 	
 	
@@ -64,11 +65,13 @@ class index{
 		$data = $tag_content->field('modelid,aid')->where(array('tagid'=>$id))->order('modelid ASC')->limit($page->limit())->select();
 		$search_data = array();
 		foreach ($data as $value) {
-			$search_data[] = D(get_model($value['modelid']))->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid,flag,color')->where(array('id'=>$value['aid']))->find();
+			$res = D(get_model($value['modelid']))->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid,flag,color')->where(array('id'=>$value['aid'],'status'=>1))->find();
+			if(!$res) continue;
+			$search_data[] = $res;
 		}
 		
 		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
-		include template('index','search');	
+		include template($this->module, 'search');	
 	}
 	
 	
@@ -97,7 +100,7 @@ class index{
 		$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid,flag,color')->where($where)->order('id DESC')->limit($page->limit())->select();
 		
 		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
-		include template('index','search');	
+		include template($this->module, 'search');	
 	}
 
 }

@@ -71,8 +71,8 @@ class image {
 					$w = $dstw;
 					$h = round($dstw / $srcwidth * $srcheight );
 			} else {
-				$h = $dstw;
-				$w = $dsth;
+				$h = $dsth;
+				$w = $dstw;
 			}
 		}
 		$array['w']  = $w;

@@ -4,35 +4,35 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>后台管理登录 - YzmCMS内容管理系统</title>
-	<link rel="stylesheet" href="<?php echo STATIC_URL;?>admin/yzm_admin/css/login.css" />
+	<link rel="stylesheet" href="<?php echo STATIC_URL;?>admin/yzm_admin/css/yzm.admin.login.css" />
 	<link rel="Shortcut Icon" href="<?php echo STATIC_URL;?>admin/yzm_admin/images/favicon.ico" />
 </head>
 <body>
-	<div class="loginwarrp">
-		<div class="logo">管理员登录</div>
-        <div class="login_form">
+	<div class="yzm-loginwarrp">
+		<div class="yzm-logo">管理员登录</div>
+        <div class="yzm-login-form">
 			<form method="post" action="">
 			    <ul>
-					<li class="login_item">
-						<input type="text" name="username" class="login_input" required="required" autofocus="autofocus" placeholder="用户名">
+					<li class="yzm-login-item">
+						<input type="text" name="username" class="yzm-login-input" required="required" autofocus="autofocus" placeholder="请输入用户名">
 						<span>用户名：</span>
 					</li>
-					<li class="login_item">					
-						<input type="password" name="password" class="login_input" required="required" placeholder="密码">
+					<li class="yzm-login-item">					
+						<input type="password" name="password" class="yzm-login-input" required="required" placeholder="请输入密码">
 						<span>密　码：</span>
 					</li>
-					<li class="login_item">
-						<img src="<?php echo U('api/index/code');?>" border="0" class="verifyimg" onclick="this.src=this.src+'?'"/>
-						<input type="text" name="code" class="login_input verify_input" required="required" placeholder="验证码">
+					<li class="yzm-login-item">
+						<img src="<?php echo U('api/index/code');?>" border="0" class="yzm-verifyimg" onclick="this.src=this.src+'?'"/>
+						<input type="text" name="code" class="yzm-login-input yzm-verify-input" required="required" placeholder="请输入验证码">
 						<span>验证码：</span>
 					</li>
-					<li class="login-sub">
+					<li class="yzm-login-sub">
 						<input type="submit" name="dosubmit" value="登　录" />
 					</li> 
 			    </ul>	
            </form>
 		</div>
 	</div>
-	<div class="footer"><p>Powered By <a href="http://www.yzmcms.com" target="_blank" title="<?php echo YZMCMS_SOFTNAME;?>"><?php echo YZMCMS_SOFTNAME;?></a> © 2014-2020 袁志蒙工作室</p></div>
+	<div class="yzm-footer"><p>Powered By <a href="http://www.yzmcms.com" target="_blank" title="<?php echo YZMCMS_SOFTNAME;?>"><?php echo YZMCMS_SOFTNAME;?></a> © 2014-2020 袁志蒙工作室</p></div>
 </body>
 </html>

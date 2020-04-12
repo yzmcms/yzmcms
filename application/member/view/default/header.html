@@ -3,6 +3,7 @@
   <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	  <title>会员中心</title>
+	  <meta name="author" content="Powered By YzmCMS内容管理系统/YuanZhiMeng">
 	  <link href="{STATIC_URL}css/yzm-member-index.css" rel="stylesheet" type="text/css" />
 	  <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
 	  <script type="text/javascript" src="{STATIC_URL}plugin/layer/layer.js"></script>	  
@@ -10,12 +11,12 @@
   <body>
 		<div class="container_box">
 			<div class="yzm_member_container head">
-			  <div class="right"><a href="{SITE_URL}">回到首页</a></div>
-			  <a href="{U('member/index/init')}" class="current">会员中心</a> 欢迎你： {$username}  <a href="{U('member/index/logout')}">退出</a>
+			  <div class="right"><a href="{SITE_URL}"><span class="yzm-iconfont">&#xe60d;</span> 返回首页</a></div>
+			  欢迎你： {$username}  ，<a href="{U('member/index/logout')}">退出登录</a>
 			</div>
 		</div>
 		<div class="nav">
 		   <div class="yzm_member_container">
-		     <a href="{U('member/index/init')}" class="current ucenter">会员中心</a><a href="{U('member/myhome/init', array('userid'=>$userid))}" class="set" target="_blank">个人主页</a><a href="{U('member/messages/outbox')}" class="msg">消息中心</a>
+		     <a href="{U('member/index/init')}" class="current ucenter">会员中心</a><a href="{U('member/myhome/init', array('userid'=>$userid))}" class="set" target="_blank">个人主页</a><a href="{U('member/messages/system_msg')}" class="msg">消息中心</a>
 		   </div>
 		</div>

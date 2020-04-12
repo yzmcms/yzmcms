@@ -2,7 +2,7 @@
 <title>入账记录 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 积分记录 <span class="c-gray en">&gt;</span> 入账记录管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 账单管理 <span class="c-gray en">&gt;</span> 入账记录管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
   <div class="sub_menu"><a href="<?php echo U('pay');?>" class="on">入账记录</a> <a href="<?php echo U('pay_spend');?>">消费记录</a> <a href="<?php echo U('recharge');?>">在线充值</a></div>
   <div> 
@@ -14,8 +14,8 @@
      至 <input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d'); ?>">
      <span class="select-box inline">
 		<select name="capital_type" class="select">
-		<option <?php if(isset($_GET['capital_type']) && $_GET['capital_type']=='1'){?> selected <?php }?> value="1">积分</option>
 		<option <?php if(isset($_GET['capital_type']) && $_GET['capital_type']=='2'){?> selected <?php }?> value="2">金钱</option>	
+		<option <?php if(isset($_GET['capital_type']) && $_GET['capital_type']=='1'){?> selected <?php }?> value="1">积分</option>
 		</select>
 	  </span>
      <span class="select-box inline">
@@ -31,16 +31,16 @@
   <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
   <form method="post" action="<?php echo U('pay_del');?>" id="myform">
-  <table class="table table-border table-bordered table-bg table-hover">
+  <table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
     <thead>
       <tr class="text-c">
         <th width="25"><input type="checkbox"></th>
-		<th width='60'>用户ID</th>
-		<th width='110'>用户名</th>
+		<th width='60'>用户ID<?php echo field_order('userid');?></th>
+		<th width='110'>用户名<?php echo field_order('username');?></th>
 		<th width='155'>订单号</th>
-		<th width='60'>增加量</th>
-		<th width='120'>操作IP</th>
-		<th width='155'>获取时间</th>
+		<th width='60'>增加量<?php echo field_order('money');?></th>
+		<th width='120'>操作IP<?php echo field_order('ip');?></th>
+		<th width='155'>获取时间<?php echo field_order('creat_time');?></th>
 		<th width='100'>类型说明</th>
 		<th>备注说明</th>
 		<th width='55'>类型</th>
@@ -55,7 +55,7 @@
 			<td><?php echo $val['userid']?></td>
 			<td><?php echo $val['username'];?></td>
 			<td><?php echo $val['trade_sn']?></td>
-			<td><?php echo $val['money']?></td>
+			<td><?php echo $val['money']?><?php echo $val['type']==1 ? '积分' : '元';?></td>
 			<td><?php echo $val['ip']?></td>
 			<td><?php echo date("Y-m-d H:i:s",$val['creat_time']) ?></td>
 			<td><?php echo $val['msg']?></td>

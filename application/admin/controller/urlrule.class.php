@@ -42,7 +42,7 @@ class urlrule extends common {
 			if(!check_token($_POST['token'])){
 				return_json(array('status'=>0,'message'=>L('lose_parameters')));
 			}
-			if(!preg_match('/^([a-zA-Z0-9]|[\/\(\)\\\+\-~!@_]){0,30}$/', $_POST['urlrule'])) return_json(array('status'=>0,'message'=>'URL规则不符合规范！'));
+			if(!preg_match('/^([a-zA-Z0-9]|[\/\(\)\\\+\-~!@_]){0,50}$/', $_POST['urlrule'])) return_json(array('status'=>0,'message'=>'URL规则不符合规范！'));
 			$r = $urlrule->field('urlrule')->where(array('urlrule' => $_POST['urlrule']))->find();
 			if($r) return_json(array('status'=>0,'message'=>'URL规则已存在！'));
 			
@@ -67,7 +67,7 @@ class urlrule extends common {
 				return_json(array('status'=>0,'message'=>L('lose_parameters')));
 			}
 			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-			if(!preg_match('/^([a-zA-Z0-9]|[\/\(\)\\\+\-~!@_]){0,30}$/', $_POST['urlrule'])) return_json(array('status'=>0,'message'=>'URL规则不符合规范！'));
+			if(!preg_match('/^([a-zA-Z0-9]|[\/\(\)\\\+\-~!@_]){0,50}$/', $_POST['urlrule'])) return_json(array('status'=>0,'message'=>'URL规则不符合规范！'));
 			if($urlrule->update($_POST, array('urlruleid' => $id), true)){
 				delcache('urlrule');
 				delcache('mapping');

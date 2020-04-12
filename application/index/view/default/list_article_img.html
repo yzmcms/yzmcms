@@ -57,10 +57,10 @@
  		 	<div class="yzm-line"></div>
 		 	<div class="yzm-content-box">
 				<div class="yzm-title">
-		 			<h2>猜你喜欢</h2>
+		 			<h2>随机推荐</h2>
 		 		</div>
 		 	    <ul class="yzm-like-list">
-		 			{m:hits field="title,url,color,inputtime" catid="$catid" limit="10"}
+		 			{m:lists field="title,url,color,inputtime" catid="$catid" order="RAND()" limit="10"}
 					{loop $data $v}
 					   <li><span class="date">{date('m-d',$v['inputtime'])}</span><a href="{$v[url]}" title="{$v[title]}" target="_blank">{title_color($v['title'], $v['color'])}</a></li>	
 					{/loop}						
@@ -95,7 +95,7 @@
 	 	 			<h2>热门标签</h2>
 	 	 		</div>
 			    <ul class="yzm-tag-list">
-				{m:tag field="id,tag,total" limit="30"}
+				{m:tag field="id,tag,total,remarks" limit="30"}
 				{loop $data $v}
 				   <li><a href="{tag_url($v['id'])}" target="_blank">{$v[tag]}({$v[total]})</a></li>	
 				{/loop}						

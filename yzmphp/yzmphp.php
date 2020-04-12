@@ -105,7 +105,7 @@ class yzm_base {
 
 		$key = md5($path.$classname);
 		if (isset($classes[$key])) {
-			return !empty($classes[$key]) ? $classes[$key] : true;
+			return $initialize&&!is_object($classes[$key]) ? new $classname : $classes[$key];
 		}
 		if (!is_file($path.DIRECTORY_SEPARATOR.$classname.EXT)) {
 			debug::addmsg($path.DIRECTORY_SEPARATOR.$classname.EXT.L('does_not_exist'));

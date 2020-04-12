@@ -107,6 +107,7 @@ class param {
 			if(preg_match($reg, $pathinfo)){
 				$res = preg_replace($reg, $v, $pathinfo);
 				$_SERVER['PATH_INFO'] = '/'.$res;
+				break;
 			}
 		}
 	}

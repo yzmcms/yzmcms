@@ -14,22 +14,29 @@
 		<tbody>
 			<?php 
 			foreach($model_data as $val){
-			    echo '<tr><td>'.$val['name'].':</td><td>'.$data[$val['field']].'</td></tr>';
+				if($val['fieldtype'] == 'image'){
+					$va = $data[$val['field']] ? '<a href="'.$data[$val['field']].'" target="_blank"><img src="'.$data[$val['field']].'" height="100"></a>' : '';
+				}elseif($val['fieldtype'] == 'images'){
+					$arr = string2array($data[$val['field']]);
+					$va = '';
+					foreach($arr as $v){
+						$va .= '<a href="'.$v['url'].'" title="'.$v['alt'].'" target="_blank" style="margin-right:10px"><img src="'.$v['url'].'" height="80"></a>';
+					}
+				}elseif($val['fieldtype'] == 'attachment'){
+					$va = '<a href="'.$data[$val['field']].'" target="_blank">'.$data[$val['field']].'</a>';
+				}else{
+					$va = $data[$val['field']];
+				}
+			    echo '<tr><td>'.$val['name'].'：</td><td>'.$va.'</td></tr>';
 			}
 			?>
 		</tbody>
 	</table>
 </div>
 
-<div style="position:fixed;bottom:20px;right:10px;z-index:99;"><input type="button" class="btn btn-primary radius w_120" onclick="myclose()" value="确定"></div>
+<div style="position:fixed;bottom:20px;right:10px;z-index:99;"><input type="button" class="btn btn-primary radius w_120" onclick="yzmcms_close()" value="确定"></div>
 </article>
 <?php include $this->admin_tpl('footer', 'admin');?>
-<script type="text/javascript">
-	function myclose(){
-		var index = parent.layer.getFrameIndex(window.name);
-		parent.layer.close(index);
-	}
-</script> 
 
 </body>
 </html>

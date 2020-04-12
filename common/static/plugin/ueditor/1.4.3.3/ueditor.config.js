@@ -298,7 +298,7 @@
 
         //pageBreakTag
         //分页标识符,默认是_ueditor_page_break_tag_
-        ,pageBreakTag:'_yzmcms_content_page_'
+        ,pageBreakTag:'_yzm_content_page_'
 
         //autotypeset
         //自动排版参数
@@ -425,7 +425,8 @@
             tt:     [],
             u:      [],
             ul:     ['class', 'style'],
-            video:  ['autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width', 'class', 'style']
+            video:  ['autoplay', 'controls', 'loop', 'preload', 'src', 'height', 'width', 'class', 'style'],
+            embed:  ['type', 'class', 'pluginspage', 'src', 'width', 'height', 'align', 'style', 'wmode', 'play', 'autoplay', 'loop', 'menu', 'allowscriptaccess', 'allowfullscreen', 'controls', 'preload']
         }
     };
 

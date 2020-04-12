@@ -1,6 +1,6 @@
 <?php
 /**
- * 会员积分处理类   
+ * 会员余额/积分处理类   
  * 
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
@@ -40,7 +40,7 @@ class point {
 	 */
 	public function point_add($type, $value, $pay_type, $userid, $username, $experience = 0, $remarks = '', $adminnote = '', $mod_experience = true) {
 
-		if($value == 0) return true;
+		if($value == 0) return false;
 		
 		$data = array();
 		$data['trade_sn'] = create_tradenum();
@@ -53,7 +53,7 @@ class point {
 		$data['creat_time'] = SYS_TIME;
 		$data['ip'] = getip();
 		$data['adminnote'] = $adminnote;
-		if($type == 1) $data['status'] = 1;
+		$data['status'] = 1;
 		
 		//自增积分/金钱或经验
 		$update = $type == '1' ? '`point`=`point`+'.$value : '`amount`=`amount`+'.$value;
@@ -85,7 +85,7 @@ class point {
 	 */
 	public function point_spend($type, $value, $pay_type, $userid = '', $username = '', $remarks = '') {
 
-		if($value == 0) return true;
+		if($value == 0) return false;
 		
 		if(!$userid || !$username || $value<0) showmsg(L('illegal_parameters'), 'stop');
 		$data = D('member')->field('point,amount')->where(array('userid'=>$userid))->find();
@@ -93,7 +93,7 @@ class point {
 			if(($data['point']-$value)<0) showmsg('积分不足本次交易！', 'stop');
 			$update = '`point`=`point`-'.$value;
 		}else{
-			if(($data['amount']-$value)<0) showmsg('金钱不足本次交易！', 'stop');
+			if(($data['amount']-$value)<0) showmsg('账户余额不足本次交易！', 'stop');
 			$update = '`amount`=`amount`-'.$value;
 		}
 		

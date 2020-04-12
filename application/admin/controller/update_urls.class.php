@@ -36,7 +36,7 @@ class update_urls extends common {
 			
 			$category = D('category');
 			//根据系统URL规则生成栏目URL
-			$url_rule = get_config('url_rule');
+			$url_mode = get_config('url_mode');
 			
 			//更新所有栏目
 			if(!$catids[0]){
@@ -48,14 +48,7 @@ class update_urls extends common {
 			
 			foreach($catinfo as $val){
 				if($val['type'] == 2) continue;  //如果是外部链接则跳过	
-
-				//如果系统设置是伪静态模式
-				if($url_rule){
-					$pclink = URL_MODEL == 1 ? SITE_URL.'index.php?s=/'.$val['catdir'].'/' : SITE_URL.$val['catdir'].'/';
-				}else{  
-					$pclink = U('index/index/lists','catid='.$val['catid']);
-				}				
-				
+				$pclink = $url_mode ? get_config('site_url').$val['catdir'].'/' : SITE_PATH.$val['catdir'].'/';			
 				$category->update(array('pclink' => $pclink), array('catid' => $val['catid']));
 			}
 			
@@ -74,7 +67,7 @@ class update_urls extends common {
 		$autoid = isset($_GET['autoid']) ? intval($_GET['autoid']) : 0;
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$total = isset($_GET['total']) ? intval($_GET['total']) : 0;
-		$pagesize = 200;
+		$pagesize = 50;
 
 		$modelid_arr = getcache('update_content_url_'.$_SESSION['adminid']);
 		if(!$modelid_arr){

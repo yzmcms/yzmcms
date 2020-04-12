@@ -8,11 +8,15 @@ class admin_content extends common {
 	 * 投稿管理
 	 */
 	public function init() {
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','catid','username','updatetime','status','userid')) ? $of : 'updatetime';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		yzm_base::load_sys_class('page','',0);
 		$member_content = D('member_content');
 		$total = $member_content->total();
 		$page = new page($total, 15);
-		$data = $member_content->order('updatetime DESC')->limit($page->limit())->select();		
+		$data = $member_content->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('member_publish_list');
 	}
 

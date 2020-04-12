@@ -38,16 +38,16 @@
   </div>
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6a7;</i> 通过审核</a></span></div>
 	<form method="post" action="<?php echo U('del');?>" id="myform">
-	<table class="table table-border table-bordered table-bg table-hover">
+	<table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
 		<thead>
 			<tr class="text-c">
 				<th width="25"><input type="checkbox"></th>
-				<th width="120">发布人</th>
+				<th width="120">发布人<?php echo field_order('username');?></th>
 				<th>评论内容</th>
-				<th width="260">原文标题</th>	
-				<th width="135">发布时间</th>	
-				<th width="100">发布IP</th>	
-				<th width="70">状态</th>	
+				<th width="260">原文标题<?php echo field_order('title');?></th>	
+				<th width="135">发布时间<?php echo field_order('inputtime');?></th>	
+				<th width="100">发布IP<?php echo field_order('ip');?></th>	
+				<th width="70">状态<?php echo field_order('status');?></th>	
 			</tr>
 		</thead>
 		<tbody>

@@ -1,19 +1,21 @@
 <?php
+defined('IN_YZMPHP') or exit('Access Denied'); 
 return array(
 
     //系统配置
-    'site_theme' => 'default',    //站点默认主题目录
-    'url_html_suffix'    => '.html',      //URL伪静态后缀
+    'auth_key' => 'TEZTYUQ0N1BZVmGCW4BeFSrmLsoq8ENh',    //系统密钥
+    'site_theme' => 'default',                           //站点默认主题目录
+    'url_html_suffix'    => '.html',                     //URL伪静态后缀
     'set_pathinfo'       => false,         //Nginx默认不支持PATHINFO模式，需配置此项为true，则Nginx可支持PATHINFO，系统默认为false
     
     //数据库配置
-    'db_type' => 'pdo',     	  // 数据库链接扩展 , 支持 pdo | mysqli | mysql
-    'db_host' => '127.0.0.1',  // 服务器地址
-    'db_name' => 'yzmcms',		// 数据库名
-    'db_user' => 'root',       // 用户名
-    'db_pwd' => '',       		// 密码
-    'db_port' => 3306,         // 端口
-    'db_prefix' => 'yzm_',        // 数据库表前缀
+    'db_type' => 'pdo',     	    // 数据库链接扩展 , 支持 pdo | mysqli | mysql
+    'db_host' => '127.0.0.1',       // 服务器地址
+    'db_name' => 'yzmcms',		    // 数据库名
+    'db_user' => 'root',            // 用户名
+    'db_pwd' => '123456',       	// 密码
+    'db_port' => 3306,              // 端口
+    'db_prefix' => 'yzm_',          // 数据库表前缀
     
     //路由配置
     'route'              => array('m' => 'index', 'c' => 'index', 'a' => 'init'),  //默认加载配置，基中“m”为模块,“c”为控制器，“a”为方法
@@ -62,7 +64,7 @@ return array(
     
     //附件相关配置
     'upload_file'        => 'uploads',    //上传文件目录，后面一定不要加斜杠（“/”）
-    'watermark_enable' => '1',          //是否开启图片水印
+    'watermark_enable' => '0',          //是否开启图片水印
     'watermark_name' => 'mark.png',   //水印名称
     'watermark_position' => '9',          //水印位置
     

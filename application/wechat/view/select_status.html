@@ -5,7 +5,7 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 查询群发状态 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <article class="page-container">
 <div class="formdoby_normal"> 
-	<form method="post" action="" onsubmit="return dosub(this)">
+	<form method="post" action="<?php echo U(ROUTE_A);?>" onsubmit="return dosub(this)">
 		<ul>
 			<li><label>任务ID：</label><input type="text" class="input" style="width:300px" name="msg_id" value=""></li>
 			<li><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="查询">

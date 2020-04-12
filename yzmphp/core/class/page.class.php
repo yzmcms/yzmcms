@@ -25,7 +25,7 @@ class page{
      * @param int $list_rows   每页显示记录数
      * @param array $parameter  分页跳转的参数
      */
-	function __construct($total_rows, $list_rows = 10, $parameter = array()){
+	public function __construct($total_rows, $list_rows = 10, $parameter = array()){
 		$this->total_rows = $total_rows;	
 		$this->list_rows = $list_rows; 
 		$this->total_page = ceil($this->total_rows/$this->list_rows); 
@@ -61,7 +61,7 @@ class page{
 	/**
 	 * 总页数
 	 */
-	function total(){
+	public function total(){
 		return $this->total_page;
 	}
 
@@ -85,7 +85,7 @@ class page{
 	/**
 	 * 获得尾页
 	 */
-	function getend(){	
+	public function getend(){	
 		return '<a href="'.$this->make_url($this->total_page).'" class="endpage">'.L('end_page').'</a>';
 	}
 

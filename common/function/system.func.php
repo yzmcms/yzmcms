@@ -53,15 +53,11 @@ function get_config($key = ''){
  * @param $id 
  */
 function get_content_url($catid, $id){
-	$url_rule = get_config('url_rule');
-	//如果系统设置是伪静态模式
-	if($url_rule){
-		$catinfo = get_category($catid);
-		$url = URL_MODEL == 1 ? SITE_URL.'index.php?s=/'.$catinfo['catdir'].'/'.$id.C('url_html_suffix') : SITE_URL.$catinfo['catdir'].'/'.$id.C('url_html_suffix');
-	}else{  
-		$url = U('index/index/show',array('catid'=>$catid,'id'=>$id));
+	$catinfo = get_category($catid);
+	if(get_config('url_mode')){
+		return get_config('site_url').$catinfo['catdir'].'/'.$id.C('url_html_suffix');
 	}
-	return $url;
+	return SITE_PATH.$catinfo['catdir'].'/'.$id.C('url_html_suffix');
 }
 
 
@@ -138,34 +134,18 @@ function return_json($arr = array()){
  * 判断是否为手机访问
  * @return bool
  */
-function ismobile(){ 
-    // 如果有HTTP_X_WAP_PROFILE则一定是移动设备
-    if (isset ($_SERVER['HTTP_X_WAP_PROFILE'])){
+function ismobile(){
+    if(isset ($_SERVER['HTTP_X_WAP_PROFILE'])){
         return true;
-    } 
-    // 如果via信息含有wap则一定是移动设备,部分服务商会屏蔽该信息
-    if (isset ($_SERVER['HTTP_VIA'])){ 
-        // 找不到为flase,否则为true
-        return stristr($_SERVER['HTTP_VIA'], 'wap') ? true : false;
-    } 
-    // 脑残法，判断手机发送的客户端标志,兼容性有待提高
-    if (isset ($_SERVER['HTTP_USER_AGENT'])){
-        $clientkeywords = array ('nokia','sony','ericsson','mot','samsung','htc','sgh','lg','sharp','sie-','philips','panasonic','alcatel','lenovo','iphone','ipod','blackberry','meizu','android','netfront','symbian','ucweb','windowsce','palm','operamini','operamobi','openwave','nexusone','cldc','midp','wap','mobile'); 
-        // 从HTTP_USER_AGENT中查找手机浏览器的关键字
-        if (preg_match("/(" . implode('|', $clientkeywords) . ")/i", strtolower($_SERVER['HTTP_USER_AGENT']))){
-            return true;
-        } 
-    } 
-    // 协议法，因为有可能不准确，放到最后判断
-    if (isset ($_SERVER['HTTP_ACCEPT'])){ 
-        // 如果只支持wml并且不支持html那一定是移动设备
-        // 如果支持wml和html但是wml在html之前则是移动设备
-        if ((strpos($_SERVER['HTTP_ACCEPT'], 'vnd.wap.wml') !== false) && (strpos($_SERVER['HTTP_ACCEPT'], 'text/html') === false || (strpos($_SERVER['HTTP_ACCEPT'], 'vnd.wap.wml') < strpos($_SERVER['HTTP_ACCEPT'], 'text/html')))){
-            return true;
-        } 
-    } 
+    }
+    if(isset ($_SERVER['HTTP_USER_AGENT'])){
+        $clientkeywords = array ('android','iphone','ipod','mobile','comfront','midp','symbianos','wap');
+        foreach($clientkeywords as $value){
+            if(stristr($_SERVER['HTTP_USER_AGENT'], $value)) return true;
+        }
+    }
     return false;
-} 
+}
 
 
 /**
@@ -361,13 +341,15 @@ function get_catname($catid){
  * 根据栏目ID获取子栏目信息
  *
  * @param  int $catid
+ * @param  boll $is_show 前端不显示栏目是否显示
  * @return array
  */
-function get_childcat($catid){
+function get_childcat($catid, $is_show = false){
 	$catid = intval($catid);
     $data = get_category();
 	$r = array();
 	foreach($data as $v){
+		if(!$v['display'] && !$is_show) continue;
 		if($v['parentid'] == $catid) $r[] = $v;
 	}
     return $r; 	
@@ -378,18 +360,28 @@ function get_childcat($catid){
  * 根据栏目ID获取当前位置
  *
  * @param  int $catid
- * @param  bool $self 是否包含本身 0为不包含
+ * @param  bool $is_mobile 是否为手机版
+ * @param  bool $self 是否包含本身 false为不包含
  * @param  string $symbol 栏目间隔符
  * @return string
  */
-function get_location($catid, $self=true, $symbol=' &gt; '){
+function get_location($catid, $is_mobile=false, $self=true, $symbol=' &gt; '){
 	$catid = intval($catid);
 	$data = explode(',', get_category($catid, 'arrparentid'));
-	$str = '<a href="'.SITE_URL.'">首页</a>';
-	foreach($data as $v){
-		if($v) $str .= $symbol.'<a href="'.get_category($v, 'pclink').'">'.get_category($v, 'catname').'</a>';
+	if($is_mobile){
+		$str = '<a href="'.U('mobile/index/init').'">首页</a>';
+		foreach($data as $v){
+			if($v) $str .= $symbol.'<a href="'.U('mobile/index/lists', array('catid'=>$v)).'">'.get_category($v, 'mobname').'</a>';
+		}
+		if($self) $str .= $symbol.'<a href="'.U('mobile/index/lists', array('catid'=>$catid)).'">'.get_category($catid, 'mobname').'</a>';
+	}else{
+		$str = '<a href="'.SITE_URL.'">首页</a>';
+		foreach($data as $v){
+			if($v) $str .= $symbol.'<a href="'.get_category($v, 'pclink').'">'.get_category($v, 'catname').'</a>';
+		}
+		if($self) $str .= $symbol.'<a href="'.get_category($catid, 'pclink').'">'.get_category($catid, 'catname').'</a>';
 	}
-	if($self) $str .= $symbol.'<a href="'.get_category($catid, 'pclink').'">'.get_category($catid, 'catname').'</a>';
+
     return $str;	
 }
 
@@ -410,6 +402,23 @@ function get_model($modelid, $parameter = 'tablename'){
 	}
 	if(!isset($modelarr[$modelid])) return false;
 	return $modelarr[$modelid][$parameter];
+}
+
+
+/**
+ * 获取内容关键字
+ *
+ * @param  int $catid
+ * @param  string $parameter
+ * @return array or string
+ */
+function get_content_keyword(){
+	$res = getcache('keyword_link');
+    if($res === false){
+		$res = D('keyword_link')->field('keyword,url')->order('id DESC')->limit(300)->select();
+		setcache('keyword_link', $res);
+	}
+	return $res;
 }
 
 
@@ -491,14 +500,14 @@ function get_memberavatar($user, $type=1, $default=true) {
  */
 function set_mapping() {
     if(!$mapping = getcache('mapping')){
-		$data = D('category')->field('type,catid,catdir')->where(array('type!=' => 2))->select();
+		$data = D('category')->field('catid,type,catdir,arrchildid')->where(array('type<' => 2))->order('catid ASC')->select();
 		$mapping = array();
 		foreach($data as $val){
 			$mapping['^'.str_replace('/', '\/', $val['catdir']).'$'] = 'index/index/lists/catid/'.$val['catid'];
-			if(!$val['type']){
+			if($val['type']) continue;	
 			$mapping['^'.str_replace('/', '\/', $val['catdir']).'\/list_(\d+)$'] = 'index/index/lists/catid/'.$val['catid'].'/page/$1';
+			if($val['catid']!=$val['arrchildid']) continue;	
 			$mapping['^'.str_replace('/', '\/', $val['catdir']).'\/(\d+)$'] = 'index/index/show/catid/'.$val['catid'].'/id/$1';				
-			}
 		}
 		//结合自定义URL规则
 		$route_rules = get_urlrule();
@@ -552,9 +561,23 @@ function get_memberinfo($userid, $additional=false){
 
 
 /**
+ * 字段排序
+ * @param $field 字段名
+ * @return string 
+ */
+function field_order($field){
+	$str = isset($_GET['of'])&&$_GET['of']==$field&&in_array($_GET['or'],array('ASC', 'DESC')) ? strtolower($_GET['or']) : '';
+	unset($_GET['m'],$_GET['c'],$_GET['a'],$_GET['page']);
+	return '<span class="yzm-caret-wrapper '.$str.'">
+            <a class="yzm-sort-caret yzm-ascending" href="'.U(ROUTE_A, array_merge($_GET, array('of'=>$field,'or'=>'ASC'))).'" title="正序排列"></a><a class="yzm-sort-caret yzm-descending" href="'.U(ROUTE_A, array_merge($_GET, array('of'=>$field,'or'=>'DESC'))).'" title="倒序排列"></a>
+          </span>';
+}
+
+
+/**
  * 对用户的密码进行加密
  * @param $pass 字符串
- * @return string 字符串
+ * @return string 
  */
 function password($pass) {
 	return md5(substr(md5(trim($pass)), 3, 26));

@@ -12,19 +12,19 @@
 	  <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> 
   </div>
   <form method="post" action="<?php echo U('order');?>" id="myform">
-  <table class="table table-border table-bordered table-bg table-hover table-sort">
+  <table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
     <thead>
       <tr class="text-c">
 		<th width="25"><input type="checkbox"></th>
-		<th>排序</th>
+		<th>排序<?php echo field_order('listorder');?></th>
 		<th>网站名称</th>
 		<th>网站地址</th>
 		<th>网站logo</th>
 		<th>站长姓名</th>
-		<th>链接分类</th>
-		<th>链接类型</th>
-		<th>添加时间</th>
-		<th>状态</th>
+		<th>链接分类<?php echo field_order('typeid');?></th>
+		<th>链接类型<?php echo field_order('linktype');?></th>
+		<th>添加时间<?php echo field_order('addtime');?></th>
+		<th>状态<?php echo field_order('status');?></th>
 		<th>管理操作</th>
       </tr>
     </thead>

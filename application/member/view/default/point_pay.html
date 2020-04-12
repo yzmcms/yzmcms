@@ -1,47 +1,70 @@
-{m:include "member","header"} 
+{m:include "member","header"}
 <div class="yzm_member_container main">
-{m:include "member","left"} 
-  <div class="main_right">
-	<div class="tit"><h3>积分充值</h3></div>
-	<div class="main_cont">
-	  <form method="post" action="{U('create_order')}" onsubmit="return chcekall()" target="_blank">
-	  <table>
-	   <tr><td>剩余积分：</td><td><span class="red point">{$point}</span></td></tr>
-	   <tr><td>充值金额：</td><td><input type="money" name="money" required value="30" class="input" style="width:100px"> 元 <span class="red">1元人民币可充值 {get_config('rmb_point_rate')} 点积分</span></td></tr>
-	   <tr><td>支付方式：</td>
-	   <td>
-	   {loop $data $key=>$val}
-	   <label class="label_img"><input type="radio" name="paytype" value="{$val[id]}" {if $key==0} checked{/if}/> <img src="{STATIC_URL}images/pay/{$val[logo]}" alt="{$val[name]}" title="{$val[name]}"></label> 
-	   {/loop}
-	   </td>
-	   </tr>
-	   <tr><td>验证码：</td><td><input type="text" name="code" value="" required class="input" style="width:100px;">
-	   <img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" style="height:28px;cursor:pointer" title="看不清，换一张">
-	   </td></tr>
-	   <tr><td></td><td><input type="submit" name="dosubmit" class="submit" value="确认支付"></td></tr>
-	  </table>
-	  </form>
-	</div>
-  </div>		  
+    {m:include "member","left"}
+    <div class="main_right">
+        <div class="tit">
+            <h3>在线充值</h3>
+        </div>
+        <div class="main_cont">
+            <form method="post" action="{U('create_order')}" onsubmit="return chcekall()" target="_blank">
+                <table>
+                    <tr>
+                        <td>账户余额：</td>
+                        <td><span class="red amount">￥{$amount}</span> ，积分点数：<span class="red point">{$point}</span></td>
+                    </tr>
+                    <tr>
+                        <td>充值类型：</td>
+                        <td>
+                        	<label class="option_label option_radio"><input type="radio" name="type" value="2" checked /> 金钱 </label> 
+                        	<label class="option_label option_radio"><input type="radio" name="type" value="1" /> 积分 </label> 
+                        	<span class="red">(1元人民币可充值 {get_config('rmb_point_rate')} 点积分)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>充值金额：</td>
+                        <td><input type="text" name="money" required value="30" class="input" style="width:100px"> 元 </td>
+                    </tr>
+                    <tr>
+                        <td>支付方式：</td>
+                        <td>
+                            {loop $data $key=>$val}
+                            <label class="label_img"><input type="radio" name="paytype" value="{$val[id]}" {if $key==0} checked{/if}/> <img src="{STATIC_URL}images/pay/{$val[logo]}" alt="{$val[name]}" title="{$val[name]}"></label>
+                            {/loop}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>验证码：</td>
+                        <td><input type="text" name="code" value="" required class="input" style="width:100px;">
+                            <img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="yzm-code-img" title="看不清，换一张">
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><input type="submit" name="dosubmit" class="submit" value="确认支付"></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </div>
 </div>
 <script type="text/javascript">
-  function chcekall(){
-		if($("input[name='money']").val()=='' || isNaN($("input[name='money']").val())){
-			layer.msg('充值金额只能为数字！', {icon:2});
-			return false;
-		}
-		
-		if($("input[name='code']").val()==''){
-			layer.msg('验证码不能为空！', {icon:2});
-			return false;
-		}
+function chcekall() {
+    if ($("input[name='money']").val() == '' || isNaN($("input[name='money']").val())) {
+        layer.msg('充值金额只能为数字！', { icon: 2 });
+        return false;
+    }
 
-		if($('input:radio[name="paytype"]:checked').val() == null){
-			layer.msg('请选择支付方式！', {icon:2});
-			return false;
-		}
-		
-		return true;
-  }
+    if ($("input[name='code']").val() == '') {
+        layer.msg('验证码不能为空！', { icon: 2 });
+        return false;
+    }
+
+    if ($('input:radio[name="paytype"]:checked').val() == null) {
+        layer.msg('请选择支付方式！', { icon: 2 });
+        return false;
+    }
+
+    return true;
+}
 </script>
-{m:include "member","footer"} 
+{m:include "member","footer"}

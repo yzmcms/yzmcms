@@ -146,3 +146,17 @@ function htmlspecialchars(str)  {
     str = str.replace(/'/g, '&#039;');
     return str;
 }
+
+
+//新窗口打开
+function yzm_win_open(url,name,w,h) {
+	if(!w) w=screen.width;
+	if(!h) h=screen.height;
+	var winobj = window.open(url,name,"width=" + w + ",height=" + h + ",toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no");
+	var loop = setInterval(function(){
+		if(winobj.closed){
+			clearInterval(loop);
+			location.reload();
+		}
+	},1000);
+}

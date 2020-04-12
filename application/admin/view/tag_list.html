@@ -6,14 +6,15 @@
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  <a href="javascript:;" onclick="yzm_open('添加TAG','<?php echo U('add');?>','600','300')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加TAG</a></span></div>
 	<form method="post" action="<?php echo U('del');?>" id="myform">
-	<table class="table table-border table-bordered table-bg table-hover">
+	<table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
 		<thead>
 			<tr class="text-c">
 				<th width="25"><input type="checkbox"></th>
-				<th>ID</th>
+				<th>ID<?php echo field_order('id');?></th>
 				<th>TAG名称</th>
-				<th>文档数</th>
-				<th>添加时间</th>		
+				<th>文档数<?php echo field_order('total');?></th>
+				<th>描述</th>
+				<th>添加时间<?php echo field_order('inputtime');?></th>		
 				<th>管理操作</th>
 			</tr>
 		</thead>
@@ -26,9 +27,10 @@
 				<td><?php echo $val['id'];?></td>
 				<td><?php echo $val['tag'];?></td>
 				<td><?php echo $val['total'];?></td>
+				<td><?php echo $val['remarks'];?></td>
 				<td><?php echo date('Y-m-d H:i:s',$val['inputtime']);?></td>
 				<td class="td-manage">
-					<a title="编辑" href="javascript:;" onclick="yzm_open('编辑TAG','<?php echo U('edit',array('id'=>$val['id']));?>','600','300')" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
+					<a title="编辑" href="javascript:;" onclick="yzm_open('编辑TAG','<?php echo U('edit',array('id'=>$val['id']));?>','600','320')" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
 
 				</td>
 			</tr>

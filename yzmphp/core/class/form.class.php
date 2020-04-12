@@ -15,12 +15,13 @@ class form {
 	 * @param $value 默认值 如：YzmCMS
 	 * @param $required  是否为必填项 默认false
 	 * @param $width  宽度 如：100
+	 * @param $attribute 外加属性
 	 */
-	public static function input($name = '', $value = '', $required=false, $width = 0) {
+	public static function input($name = '', $value = '', $required=false, $width = 0, $attribute='') {
 		$string = '<input class="yzm-input-text" ';
 		if($width) $string .= ' style="width:'.$width.'px" ';
 		if($required) $string .= ' required="required" ';
-		$string .= ' name="'.$name.'" id="'.$name.'" ';
+		$string .= ' name="'.$name.'" id="'.$name.'" '.$attribute;
 		$string .= ' type="text" value="'.$value.'">';
 		return $string;
 	}
@@ -32,12 +33,13 @@ class form {
 	 * @param $value 默认值 如：YzmCMS
 	 * @param $required  是否为必填项 默认false
 	 * @param $width  宽度 如：100
+	 * @param $attribute 外加属性
 	 */
-	public static function textarea($name = '', $value = '', $required=false, $width = 0) {
+	public static function textarea($name = '', $value = '', $required=false, $width = 0, $attribute='') {
 		$string = '<textarea class="textarea yzm-textarea" name="'.$name.'" id="'.$name.'" ';
 		if($width) $string .= ' width="'.$width.'px" ';
 		if($required) $string .= ' required="required" ';
-		$string .= '>'.$value.'</textarea>';
+		$string .= $attribute.' >'.$value.'</textarea>';
 		return $string;
 	}
 
@@ -48,9 +50,10 @@ class form {
 	 * @param $val 默认选中值 如：1
 	 * @param $array 一维数组 如：array('交易成功', '交易失败', '交易结果未知');
 	 * @param $default_option 提示词 如：请选择交易 
+	 * @param $attribute 外加属性
 	 */
-	public static function select($name, $val = 0, $array = array(), $default_option = '') {
-		$string = '<select name="'.$name.'" id="'.$name.'" class="select yzm-select">';
+	public static function select($name, $val = 0, $array = array(), $default_option = '', $attribute='') {
+		$string = '<select name="'.$name.'" id="'.$name.'" class="select yzm-select" '.$attribute.'>';
 		if($default_option) $string .= "<option value=''>$default_option</option>";
 		if(!is_array($array) || count($array)== 0) return false;
 		$ids = array();
@@ -123,16 +126,16 @@ class form {
 	 * @param $val 默认值
 	 * @param $isdatetime 是否显示时分秒
 	 * @param $loadjs 是否重复加载js，防止页面程序加载不规则导致的控件无法显示
-	 * @param $str 其他字符串，可加样式等
+	 * @param $attribute 外加属性
 	 */
-	public static function datetime($name, $val = '', $isdatetime = 0, $loadjs = 0, $str = '') {		
+	public static function datetime($name, $val = '', $isdatetime = 0, $loadjs = 0, $attribute = '') {		
 		$string = '';
 		if($loadjs || !defined('DATETIME')) {
 			define('DATETIME', 1);
 			$string .= '<script type="text/javascript" src="'.STATIC_URL.'plugin/laydate/1.1/laydate.js"></script>';
 		}
 		
-		$string .= '<input class="laydate-icon date"  value="'.$val.'" name="'.$name.'" id="'.$name.'" '.$str.'>';	
+		$string .= '<input class="laydate-icon date"  value="'.$val.'" name="'.$name.'" id="'.$name.'" '.$attribute.'>';	
 		$string .= '<script type="text/javascript"> laydate({elem: "#'.$name.'",';
 		if($isdatetime) $string .= 'istime: true,format: "YYYY-MM-DD hh:mm:ss",';
 		$string .= '});</script>';
@@ -146,9 +149,10 @@ class form {
 	 * @param $name name
 	 * @param $val 默认值
 	 * @param $style 样式
+	 * @param $attribute 外加属性	 
 	 */
-	public static function image($name, $val = '', $style = 'width:370px', $iscropper = false) {		
-		$string = '<input class="input-text uploadfile" type="text" name="'.$name.'"  value="'.$val.'"  onmouseover="yzm_img_preview(\''.$name.'\', this.value)" onmouseout="layer.closeAll();" id="'.$name.'" style="'.$style.'" > <a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name)).'\')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>';
+	public static function image($name, $val = '', $style = 'width:370px', $iscropper = false, $attribute = '') {		
+		$string = '<input class="input-text uploadfile" type="text" name="'.$name.'"  value="'.$val.'"  onmouseover="yzm_img_preview(\''.$name.'\', this.value)" onmouseout="layer.closeAll();" id="'.$name.'" style="'.$style.'" '.$attribute.'> <a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name)).'\')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>';
 		
 		if($iscropper) $string = $string .' '.form::cropper($name);
 		return $string;
@@ -198,9 +202,10 @@ class form {
 	 * @param $name name
 	 * @param $val 默认值
 	 * @param $style 样式
+	 * @param $attribute 外加属性	
 	 */
-	public static function attachment($name, $val = '', $style='width:370px') {		
-		$string = '<input class="input-text uploadfile" type="text" name="'.$name.'"  value="'.$val.'"  id="'.$name.'" style="'.$style.'" > <a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name, 't'=>2)).'\')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>';
+	public static function attachment($name, $val = '', $style='width:370px', $attribute='') {		
+		$string = '<input class="input-text uploadfile" type="text" name="'.$name.'"  value="'.$val.'"  id="'.$name.'" style="'.$style.'" '.$attribute.'> <a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name, 't'=>2)).'\')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>';
 		
 		return $string;
 	}	

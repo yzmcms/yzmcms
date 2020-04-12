@@ -21,6 +21,13 @@
 					</div>
 				</div>
 				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><!-- <span class="c-red">*</span> -->站点Logo：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input class="input-text uploadfile" type="text" name="site_logo"  value="<?php echo $data["site_logo"];?>"  onmouseover="yzm_img_preview('site_logo', this.value)" onmouseout="layer.closeAll();" id="site_logo" style="width:370px" >
+						<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>'site_logo'));?>')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+					</div>
+				</div>	
+				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">站点关键词：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" placeholder="用英文,隔开" name="site_keyword" value="<?php echo $data["site_keyword"];?>" class="input-text" style="width:50%">
@@ -67,17 +74,11 @@
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2"><!-- <span class="c-red">*</span> -->站点Logo：</label>
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>前台URL模式：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input class="input-text uploadfile" type="text" name="site_logo"  value="<?php echo $data["site_logo"];?>"  onmouseover="yzm_img_preview('site_logo', this.value)" onmouseout="layer.closeAll();" id="site_logo" style="width:370px" >
-						<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>'site_logo'));?>')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
-					</div>
-				</div>	
-				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>前端URL规则：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<label class="label_radio"><input name="url_rule" type="radio" <?php echo $data["url_rule"]? '' : 'checked' ?> value="0"> 兼容模式</label>
-						<label class="label_radio"><input name="url_rule" type="radio" <?php echo $data["url_rule"]? 'checked' : '' ?> value="1"> 伪静态模式</label>
+						<label class="label_radio"><input name="url_mode" type="radio" <?php echo $data["url_mode"]? '' : 'checked' ?> value="0"> 相对地址</label>
+						<label class="label_radio"><input name="url_mode" type="radio" <?php echo $data["url_mode"]? 'checked' : '' ?> value="1"> 绝对地址</label>
+						<span style="color:#888">[URL模式修改后，请批量更新URL]</span>
 					</div>
 				</div>	
 				<div class="row cl">
@@ -93,7 +94,16 @@
 						<input type="text" name="baidu_push_token" placeholder="例如：66XJXYDfMKfeeIRM" value="<?php echo $data["baidu_push_token"];?>"  class="input-text w_420">
 						<span style="color:#888">[百度主动推送token，请到百度申请]</span>
 					</div>
-				</div>	
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">启用内容关键字替换：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="keyword_link" type="radio" <?php echo $data["keyword_link"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="keyword_link" type="radio" <?php echo $data["keyword_link"]? '' : 'checked' ?> value="0"> 关闭</label>
+						<input type="text" name="keyword_replacenum" value="<?php echo $data["keyword_replacenum"];?>"  class="input-text w_120"> 
+						替换次数  <span style="color:#888">[0为不限,效率高]</span>
+					</div>
+				</div>					
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>前端搜索每页展示条数：</label>
 					<div class="formControls col-xs-8 col-sm-9">
@@ -104,7 +114,7 @@
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>允许上传附件类型</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" name="upload_types" value="<?php echo $data["upload_types"];?>"  class="input-text w_420">
-						<span style="color:#888">[多个类型直接用“|”分开]</span>
+						<span style="color:#888">[多个类型直接用“|”分开，不在系统白名单时，设置无效]</span>
 					</div>
 				</div>		
 				<div class="row cl">
@@ -132,7 +142,7 @@
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>水印图片名称：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" name="watermark_name" value="<?php echo $data["watermark_name"];?>"  class="input-text w_420"> <span style="color:#888">[水印存放路径:/common/data/water]</span>
+						<input type="text" name="watermark_name" value="<?php echo $data["watermark_name"];?>"  class="input-text w_420"> <span style="color:#888">[水印存放路径：/common/data/water]</span>
 					</div>
 				</div>
 				<div class="row cl">
@@ -242,7 +252,7 @@
 					<label class="form-label col-xs-4 col-sm-2">邮件设置测试：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="email" name="mail_to" value=""  class="input-text" style="width:50%">
-						<input type="button" class="btn btn-primary radius" value="测试发送" onclick="test_mail()"> [先保存，在发送]
+						<input type="button" class="btn btn-primary radius" value="测试发送" onclick="test_mail()"> [先保存，再发送]
 					</div>
 				</div>
 			</div>
@@ -277,6 +287,10 @@ function check_all(){
 		layer.alert('缩略图默认设置只能为数字！');
 		return false;
 	}
+	if(isNaN($("input[name='keyword_replacenum']").val()) || $("input[name='keyword_replacenum']").val()<0){
+		layer.alert('关键字替换次数只能为数字且不能小于0！');
+		return false;
+	}	
 	if(isNaN($("input[name='search_page']").val()) || $("input[name='search_page']").val()<1){
 		layer.alert('前端搜索每页展示条数只能为数字且不能小于1！');
 		return false;
@@ -301,7 +315,7 @@ function test_mail() {
 		layer.alert('请输入邮件测试地址！');
 		return false;
 	}
-	layer.msg('正在发送中……', { icon: 16, shade: 0.21,shadeClose:true,time:100000 });
+	layer.msg('正在发送中……', { icon: 16, shade: 0.21, shadeClose:true, time:0 });
 	$.ajax({
 		type: 'POST',
 		url: '<?php echo U('public_test_mail');?>', 

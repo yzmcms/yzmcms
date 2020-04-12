@@ -17,12 +17,16 @@ class member extends common{
 	 * 会员列表
 	 */	
 	public function init(){
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('userid','username','email','groupid','regip','lastdate','loginnum','experience','amount','point')) ? $of : 'userid';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$groupid = 0;
 		$member_group = get_groupinfo();
 		$member = D('member');
 		$total = $member->total();
 		$page = new page($total, 15);
-		$data = $member->order('userid DESC')->limit($page->limit())->select();			
+		$data = $member->order("$of $or")->limit($page->limit())->select();			
 		include $this->admin_tpl('member_list');
 	}
 	
@@ -32,6 +36,10 @@ class member extends common{
 	 * 用户搜索
 	 */
 	public function search() {
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('userid','username','email','groupid','regip','lastdate','loginnum','experience','amount','point')) ? $of : 'userid';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$member = D('member');
 		$member_group = get_groupinfo();
 		$where = '1=1';
@@ -65,7 +73,7 @@ class member extends common{
 		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $member->where($where)->total();
 		$page = new page($total, 15);
-		$data = $member->where($where)->order('userid DESC')->limit($page->limit())->select();		
+		$data = $member->where($where)->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('member_list');
 	}	
 
@@ -201,10 +209,14 @@ class member extends common{
 	 * 待审核用户列表
 	 */	
 	public function check(){ 
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('userid','username','email','groupid','regip','lastdate','loginnum','experience','point')) ? $of : 'userid';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$member = D('member');
 		$total = $member->where(array('status'=>0))->total();
 		$page = new page($total, 15);
-		$data = $member->where(array('status'=>0))->order('userid DESC')->limit($page->limit())->select();			
+		$data = $member->where(array('status'=>0))->order("$of $or")->limit($page->limit())->select();			
 		include $this->admin_tpl('member_check');
 	}
 	
@@ -257,10 +269,14 @@ class member extends common{
 	 * 入账记录
 	 */	
 	public function pay(){ 
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','userid','username','money','ip','creat_time')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$pay = D('pay');
 		$total = $pay->total();
 		$page = new page($total, 15);
-		$data = $pay->order('id DESC')->limit($page->limit())->select();			
+		$data = $pay->order("$of $or")->limit($page->limit())->select();			
 		include $this->admin_tpl('pay_list');
 	}
 	
@@ -270,6 +286,10 @@ class member extends common{
 	 * 入账记录搜索
 	 */	
 	public function pay_search(){ 
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','userid','username','money','ip','creat_time')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$pay = D('pay');
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){
@@ -294,7 +314,7 @@ class member extends common{
 		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $pay->where($where)->total();
 		$page = new page($total, 15);
-		$data = $pay->where($where)->order('id DESC')->limit($page->limit())->select();					
+		$data = $pay->where($where)->order("$of $or")->limit($page->limit())->select();					
 		include $this->admin_tpl('pay_list');
 	}
 	
@@ -318,10 +338,14 @@ class member extends common{
 	 * 消费记录
 	 */	
 	public function pay_spend(){ 
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','userid','username','money','ip','creat_time')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$pay_spend = D('pay_spend');
 		$total = $pay_spend->total();
 		$page = new page($total, 15);
-		$data = $pay_spend->order('id DESC')->limit($page->limit())->select();			
+		$data = $pay_spend->order("$of $or")->limit($page->limit())->select();			
 		include $this->admin_tpl('pay_spend_list');
 	}
 	
@@ -331,6 +355,10 @@ class member extends common{
 	 * 消费记录搜索
 	 */	
 	public function pay_spend_search(){ 
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','userid','username','money','ip','creat_time')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$pay_spend = D('pay_spend');
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){	
@@ -355,7 +383,7 @@ class member extends common{
 		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $pay_spend->where($where)->total();
 		$page = new page($total, 15);
-		$data = $pay_spend->where($where)->order('id DESC')->limit($page->limit())->select();					
+		$data = $pay_spend->where($where)->order("$of $or")->limit($page->limit())->select();					
 		include $this->admin_tpl('pay_spend_list');
 	}
 	

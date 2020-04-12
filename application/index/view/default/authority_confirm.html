@@ -2,7 +2,7 @@
 <html>	
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		<title>YzmCMS提示信息</title>
+	<title>YzmCMS提示信息</title>
 	<style type="text/css">
 	  *{padding:0;margin:0;}
 	  body{background:#fff;color:#000;font-family:"Microsoft Yahei","Hiragino Sans GB","Helvetica Neue",Helvetica,tahoma,arial,"WenQuanYi Micro Hei",Verdana,sans-serif;}
@@ -12,8 +12,9 @@
 	  .yzm-info{margin-bottom:10px;}
 	  .yzm-exp{color:red;}
 	  .yzm-msg-body p{font-size:12px;}
-	  .yzm-msg-body p a{font-size:12px;background:#6f8698;color:#fff;padding:5px 20px;text-decoration:none;margin-right:20px;transition:all 0.3s}
-	  .yzm-msg-body p a:hover{color:#fff;}
+	  .yzm-msg-body p a{font-size:12px;background:#677a89;color:#fff;padding:5px 20px;text-decoration:none;margin-right:20px;transition:all 0.3s}
+	  .yzm-msg-body p a:hover{color:#fff;background:#859aab}
+	  .yzm-red{color:red;margin:0 2px;}
 	</style>
 </head>
 <body>
@@ -22,7 +23,7 @@
     <div class="yzm-msg">        	
     	<div class="yzm-msg-title">提示信息</div>
     	<div class="yzm-msg-body">
-    		<div class="yzm-info">您目前有<span style="color:red">{$point}点</span>积分，阅读此内容，需扣除<span style="color:red">{$readpoint}点</span>积分！</div>
+    		<div class="yzm-info">您目前有<span class="yzm-red">{$point}</span>{$lang}，阅读此内容，需扣除<span class="yzm-red">{$readpoint}</span>{$lang}！</div>
     		<p class="yzm-exp">温馨提示：24小时重复阅读不收费</p>
 	 		<p><a href="{U('member/member_pay/spend_point',$parurl)}" title="确定支付">确定支付</a><a href="javascript:history.back(-1)" title="返回上一页">返回上一页</a></p>
     	</div>

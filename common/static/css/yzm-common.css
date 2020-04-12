@@ -17,8 +17,8 @@ a:hover{color:#1eaff1;}
 .clearfix{clear:both;width:0px;height:0px;overflow:hidden;}
 /*.title_color{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}*/
 
-.yzm-container-box{width:100%;background: #fff}
-.yzm-header-box{height: 35px; line-height: 35px; background: #fbfbfb; border-bottom: 1px solid #e8e8e8; } 
+.yzm-container-box{width:100%;background:#fff;min-width:1170px}
+.yzm-header-box{height: 35px; line-height: 35px; background: #fbfbfb; border-bottom: 1px solid #e8e8e8;} 
 .yzm-header-top{width:1170px;margin:0 auto;color:#747d87;}
 .yzm-header-top a{color:#747d87;margin-left:10px;}
 .yzm-header-top a:hover{color:#ff0000;}

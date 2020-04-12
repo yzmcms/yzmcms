@@ -47,7 +47,7 @@
 			</li> 
 			<li><label>生成数量：</label>
 			<input type="text" class="input" style="width:200px" name="limit" value="100"> 
-			<span style="margin-left:15px;font-size:12px;color:#888">每个模型的数量，不建议太大</span>
+			<span style="margin-left:15px;font-size:12px;color:#888">每个模型的数量，最大值为1000</span>
 			</li>
 			<li><label>文件格式：</label>
 			<label><input type="radio" name="type" value="0" checked>XML格式</label> &nbsp; 
@@ -72,9 +72,14 @@
 </div>
 <script type="text/javascript">
 function check_all(){
-
-	if($("input[name='limit']").val()=='' || isNaN($("input[name='limit']").val())){
-		layer.alert('生成数量只能为数字！');
+	
+	var v = $("input[name='limit']").val();
+	if(v=='' || isNaN(v)){
+		layer.msg('单个模型生成数量只能为数字！', {icon:2});
+		return false;
+	}
+	if(v<1 || v>1000){
+		layer.msg('单个模型生成数量取值范围是1到1000！', {icon:2});
 		return false;
 	}
 	return true;			

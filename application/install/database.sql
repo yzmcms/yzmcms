@@ -160,6 +160,7 @@ CREATE TABLE `yzm_article` (
   `listorder` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `groupids_view` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '阅读权限',
   `readpoint` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '阅读收费',
+  `paytype` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '收费类型',
   `is_push` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否百度推送',
   PRIMARY KEY (`id`),
   KEY `status` (`status`,`listorder`),
@@ -170,8 +171,8 @@ CREATE TABLE `yzm_article` (
 -- ----------------------------
 -- Records of yzm_article
 -- ----------------------------
-INSERT INTO `yzm_article` VALUES ('1', '2', '1', 'yzmcms', '袁志蒙', 'YZMPHP轻量级开源框架2.0', 'YZMPHP轻量级开源框架2.0_YzmCMS - 演示站', '', '1526387722', '1526387996', 'yzmphp,php框架,轻量级框架,mvc框架', '简介：YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效...', '100', '<p><strong>简介:</strong></p><p>YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效率高、速度快，扩展性和可维护性都很好等特点。</p><p>2016年12月19日完成框架的1.0版本，经过近两年的磨炼与成长，今日发布YZMPHP 2.0版本，该框架已经被多家公司企业采用和认可，是一款简单强大的PHP框架。上手快、框架源码简单明了结构清析，使得项目开发更加容易和方便，使用YZMPHP框架适合开发BBS、电子商城、SNS、CMS、Blog、企业门户等任何的中小型系统！</p><p><br/></p><p><strong>特点：</strong></p><p>简洁、高效、轻量级、高性能</p><p>软件环境：Apache/Nginx/IIS</p><p>PHP：支持PHP5.2至7.2之间的所有版本</p><p><br/></p><p><strong>YZMPHP 2.0更新日志：</strong></p><p>1.新增：框架命令模式,可自定义或新增命令;</p><p>2.新增：缓存类型配置，支持类型:file/redis/memcache;</p><p>3.新增：系统URL路由映射重写;</p><p>4.新增：DB类库事务处理;</p><p>5.新增：支持切换和链接其他数据库;</p><p>6.新增：DB类库多种操作数据库方法;</p><p>7.新增：Nginx支持PATHINFO模式配置;</p><p>8.新增：系统函数库多种方法;</p><p>9.新增：支持捕捉致命错误;</p><p>10.优化：数据对象单例模式;</p><p>11.优化：支持join多表链接查询;</p><p>12.修复：框架漏洞一枚;</p><p>本次更新优化内容包括但不限于以上所列举的项！</p><p><br/></p>', '原创', '', 'guanfangxinwen/1.html', '4', '1', '1', '10', '0', '0', '0');
-INSERT INTO `yzm_article` VALUES ('2', '2', '1', 'yzmcms', '袁志蒙', 'YzmCMS v5.5正式版发布', 'YzmCMS v5.5正式版发布_YzmCMS - 演示站', '#ff0000', '1577813450', '1577813450', 'cms系统,yzmcms最新版,yzmcms下载,php建站系统,轻量级开源', '产品说明：YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一...', '100', '<p><strong style=\"color: red;\">产品说明：</strong></p><p>YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一款高效开源的内容管理系统，可运行在Linux、Windows、MacOSX、Solaris等各种平台上。</p><p>它可以让您不需要任何专业技术轻松搭建您需要的网站，操作简单，很容易上手，快捷方便的后台操作让您10分钟就会建立自己的爱站。在同类产品的比较中，YzmCMS更是凸显出了体积轻巧、功能强大、源码简洁、系统安全等特点，无论你是做企业网站、新闻网站、个人博客、门户网站、行业网站、电子商城等，它都能完全胜任，而且还提供了非常方便的二次开发体系，是一款全能型的建站系统！</p><p><br/></p><p>下载地址：<a href=\"http://www.yzmcms.com/xiazai/\" target=\"_blank\" style=\"color:blue\">官方下载</a></p>', '原创', '', 'guanfangxinwen/2.html', '1,4', '1', '1', '1', '0', '0', '0');
+INSERT INTO `yzm_article` VALUES ('1', '2', '1', 'yzmcms', '袁志蒙', 'YZMPHP轻量级开源框架2.0', 'YZMPHP轻量级开源框架2.0_YzmCMS - 演示站', '', '1526387722', '1526387996', 'yzmphp,php框架,轻量级框架,mvc框架', '简介：YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效...', '100', '<p><strong>简介:</strong></p><p>YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效率高、速度快，扩展性和可维护性都很好等特点。</p><p>2016年12月19日完成框架的1.0版本，经过近两年的磨炼与成长，今日发布YZMPHP 2.0版本，该框架已经被多家公司企业采用和认可，是一款简单强大的PHP框架。上手快、框架源码简单明了结构清析，使得项目开发更加容易和方便，使用YZMPHP框架适合开发BBS、电子商城、SNS、CMS、Blog、企业门户等任何的中小型系统！</p><p><br/></p><p><strong>特点：</strong></p><p>简洁、高效、轻量级、高性能</p><p>软件环境：Apache/Nginx/IIS</p><p>PHP：支持PHP5.2以上的所有版本</p><p><br/></p><p><strong>YZMPHP 2.0更新日志：</strong></p><p>1.新增：框架命令模式,可自定义或新增命令;</p><p>2.新增：缓存类型配置，支持类型:file/redis/memcache;</p><p>3.新增：系统URL路由映射重写;</p><p>4.新增：DB类库事务处理;</p><p>5.新增：支持切换和链接其他数据库;</p><p>6.新增：DB类库多种操作数据库方法;</p><p>7.新增：Nginx支持PATHINFO模式配置;</p><p>8.新增：系统函数库多种方法;</p><p>9.新增：支持捕捉致命错误;</p><p>10.优化：数据对象单例模式;</p><p>11.优化：支持join多表链接查询;</p><p>12.修复：框架漏洞一枚;</p><p>本次更新优化内容包括但不限于以上所列举的项！</p><p><br/></p>', '原创', '', 'guanfangxinwen/1.html', '4', '1', '1', '10', '0', '0', '1', '0');
+INSERT INTO `yzm_article` VALUES ('2', '2', '1', 'yzmcms', '袁志蒙', 'YzmCMS v5.6正式版发布', 'YzmCMS v5.6正式版发布_YzmCMS - 演示站', '#ff0000', '1586623840', '1586623840', 'cms系统,yzmcms最新版,yzmcms下载,php建站系统,轻量级开源', '产品说明：YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一...', '100', '<p><strong style=\"color: red;\">产品说明：</strong></p><p>YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一款高效开源的内容管理系统，可运行在Linux、Windows、MacOSX、Solaris等各种平台上。</p><p>它可以让您不需要任何专业技术轻松搭建您需要的网站，操作简单，很容易上手，快捷方便的后台操作让您10分钟就会建立自己的爱站。在同类产品的比较中，YzmCMS更是凸显出了体积轻巧、功能强大、源码简洁、系统安全等特点，无论你是做企业网站、新闻网站、个人博客、门户网站、行业网站、电子商城等，它都能完全胜任，而且还提供了非常方便的二次开发体系，是一款全能型的建站系统！</p><p><br/></p><p>下载地址：<a href=\"http://www.yzmcms.com/xiazai/\" target=\"_blank\" style=\"color:blue\">官方下载</a></p>', '原创', '', 'guanfangxinwen/2.html', '1,4', '1', '1', '1', '0', '0', '1', '0');
 
 -- ----------------------------
 -- Table structure for yzm_attachment
@@ -240,29 +241,28 @@ CREATE TABLE `yzm_banner_type` (
 -- ----------------------------
 DROP TABLE IF EXISTS `yzm_category`;
 CREATE TABLE `yzm_category` (
-  `catid` smallint(5) NOT NULL AUTO_INCREMENT,
-  `catname` varchar(50) NOT NULL DEFAULT '',
-  `modelid` smallint(5) unsigned NOT NULL DEFAULT '0',
-  `parentid` smallint(5) NOT NULL DEFAULT '0',
-  `arrparentid` varchar(255) NOT NULL DEFAULT '',
-  `arrchildid` mediumtext NOT NULL,
-  `catdir` varchar(30) NOT NULL DEFAULT '',
-  `catimg` varchar(150) NOT NULL DEFAULT '',
-  `type` tinyint(1) unsigned NOT NULL DEFAULT '0',
-  `listorder` smallint(5) NOT NULL DEFAULT '0',
-  `member_publish` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '会员投稿',
-  `display` tinyint(1) unsigned NOT NULL DEFAULT '1',
-  `pclink` varchar(100) NOT NULL DEFAULT '',
-  `moblink` varchar(100) NOT NULL DEFAULT '',
+  `catid` smallint(5) NOT NULL AUTO_INCREMENT COMMENT '栏目ID',
+  `catname` varchar(50) NOT NULL DEFAULT '' COMMENT '栏目名称',
+  `modelid` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '模型id',
+  `parentid` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '父级id',
+  `arrparentid` varchar(255) NOT NULL DEFAULT '' COMMENT '父级路径',
+  `arrchildid` mediumtext NOT NULL COMMENT '子栏目id集合',
+  `catdir` varchar(30) NOT NULL DEFAULT '' COMMENT '栏目目录',
+  `catimg` varchar(150) NOT NULL DEFAULT '' COMMENT '栏目图片',
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '栏目类型:0普通栏目1单页2外部链接',
+  `listorder` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '栏目排序',
+  `member_publish` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否会员投稿',
+  `display` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '在导航显示',
+  `pclink` varchar(100) NOT NULL DEFAULT '' COMMENT '电脑版地址',
+  `moblink` varchar(100) NOT NULL DEFAULT '' COMMENT '手机版地址',
   `subtitle` varchar(60) NOT NULL DEFAULT '' COMMENT '副标题',
-  `mobname` varchar(30) NOT NULL DEFAULT '',
-  `category_urlrule` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'URL规则',
-  `category_template` varchar(30) NOT NULL DEFAULT '',
-  `list_template` varchar(30) NOT NULL DEFAULT '',
-  `show_template` varchar(30) NOT NULL DEFAULT '',
-  `seo_title` varchar(100) NOT NULL DEFAULT '',
-  `seo_keywords` varchar(200) NOT NULL DEFAULT '',
-  `seo_description` varchar(250) NOT NULL DEFAULT '',
+  `mobname` varchar(30) NOT NULL DEFAULT '' COMMENT '手机版名称',
+  `category_template` varchar(30) NOT NULL DEFAULT '' COMMENT '频道页模板',
+  `list_template` varchar(30) NOT NULL DEFAULT '' COMMENT '列表页模板',
+  `show_template` varchar(30) NOT NULL DEFAULT '' COMMENT '内容页模板',
+  `seo_title` varchar(100) NOT NULL DEFAULT '' COMMENT 'SEO标题',
+  `seo_keywords` varchar(200) NOT NULL DEFAULT '' COMMENT 'SEO关键字',
+  `seo_description` varchar(250) NOT NULL DEFAULT '' COMMENT 'SEO描述',
   PRIMARY KEY (`catid`),
   KEY `modelid` (`modelid`)
 ) ENGINE=MyISAM AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
@@ -270,11 +270,11 @@ CREATE TABLE `yzm_category` (
 -- ----------------------------
 -- Records of yzm_category
 -- ----------------------------
-INSERT INTO `yzm_category` VALUES ('1', '新闻中心', '1', '0', '0', '1,2,3', 'xinwenzhongxin', '', '0', '0', '0', '1', '/xinwenzhongxin/', '', '', '新闻中心', '0', 'category_article', 'list_article', 'show_article', '', '', '');
-INSERT INTO `yzm_category` VALUES ('2', '官方新闻', '1', '1', '0,1', '2', 'guanfangxinwen', '', '0', '0', '0', '1', '/guanfangxinwen/', '', '', '官方新闻', '0', 'category_article', 'list_article_img', 'show_article', '', '', '');
-INSERT INTO `yzm_category` VALUES ('3', '其他新闻', '1', '1', '0,1', '3', 'qitaxinwen', '', '0', '0', '1', '1', '/qitaxinwen/', '', '', '其他新闻', '0', 'category_article', 'list_article', 'show_article', '', '', '');
-INSERT INTO `yzm_category` VALUES ('4', '关于我们', '0', '0', '0', '4', 'guanyuwomen', '', '1', '0', '0', '1', '/guanyuwomen/', '', '', '关于我们', '0', 'category_page', '', '', '', '', '');
-INSERT INTO `yzm_category` VALUES ('5', '官方网站', '0', '0', '0', '5', '', '', '2', '0', '0', '1', 'http://www.yzmcms.com/', '', '', '官方网站', '0', '', '', '', '', '', '');
+INSERT INTO `yzm_category` VALUES ('1', '新闻中心', '1', '0', '0', '1,2,3', 'xinwenzhongxin', '', '0', '0', '0', '1', '/xinwenzhongxin/', '', '', '新闻中心', 'category_article', 'list_article', 'show_article', '', '', '');
+INSERT INTO `yzm_category` VALUES ('2', '官方新闻', '1', '1', '0,1', '2', 'guanfangxinwen', '', '0', '0', '0', '1', '/guanfangxinwen/', '', '', '官方新闻', 'category_article', 'list_article_img', 'show_article', '', '', '');
+INSERT INTO `yzm_category` VALUES ('3', '其他新闻', '1', '1', '0,1', '3', 'qitaxinwen', '', '0', '0', '1', '1', '/qitaxinwen/', '', '', '其他新闻', 'category_article', 'list_article', 'show_article', '', '', '');
+INSERT INTO `yzm_category` VALUES ('4', '关于我们', '0', '0', '0', '4', 'guanyuwomen', '', '1', '0', '0', '1', '/guanyuwomen/', '', '', '关于我们', 'category_page', '', '', '', '', '');
+INSERT INTO `yzm_category` VALUES ('5', '官方网站', '0', '0', '0', '5', '', '', '2', '0', '0', '1', 'http://www.yzmcms.com/', '', '', '官方网站', '', '', '', '', '', '');
 
 -- ----------------------------
 -- Table structure for yzm_collection_content
@@ -320,7 +320,7 @@ CREATE TABLE `yzm_collection_node` (
   `time_rule` char(100) NOT NULL DEFAULT '' COMMENT '时间采集规则',
   `time_html_rule` text COMMENT '时间过滤规则',
   `content_rule` char(100) NOT NULL DEFAULT '' COMMENT '内容采集规则',
-  `content_html_rule` text NOT NULL COMMENT '内容过滤规则',
+  `content_html_rule` text COMMENT '内容过滤规则',
   `down_attachment` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否下载图片',
   `watermark` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '图片加水印',
   `coll_order` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '导入顺序',
@@ -383,12 +383,12 @@ CREATE TABLE `yzm_config` (
   `title` varchar(60) NOT NULL DEFAULT '' COMMENT '配置说明',
   `value` text NOT NULL COMMENT '配置值',
   `fieldtype` varchar(20) NOT NULL DEFAULT '' COMMENT '字段类型',
-  `setting` text NOT NULL COMMENT '字段设置',
+  `setting` text COMMENT '字段设置',
   `status` tinyint(3) unsigned NOT NULL DEFAULT '1' COMMENT '状态',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `type` (`type`)
-) ENGINE=MyISAM AUTO_INCREMENT=54 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yzm_config
@@ -396,18 +396,18 @@ CREATE TABLE `yzm_config` (
 INSERT INTO `yzm_config` VALUES ('1', 'site_name', '0', '站点名称', 'YzmCMS - 演示站', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('2', 'site_url', '0', '站点根网址', '', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('3', 'site_keyword', '0', '站点关键字', 'yzmcms,YzmCMS演示站,开源cms,cms系统', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('4', 'site_description', '0', '站点描述', 'YzmCMS是由袁志蒙独自开发的一款基于PHP+Mysql架构的轻量级开源内容管理系统，YzmCMS简单、实用、开源，可运行在Linux、Windows、MacOSX、Solaris等各种平台上，专注为公司企业、个人站长快速建站提供解决方案。', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('4', 'site_description', '0', '站点描述', 'YzmCMS是一款基于YZMPHP开发的一套轻量级开源内容管理系统，YzmCMS简洁、安全、开源、实用，可运行在Linux、Windows、MacOSX、Solaris等各种平台上，专注为公司企业、个人站长快速建站提供解决方案。', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('5', 'site_copyright', '0', '版权信息', 'Powered By YzmCMS内容管理系统 © 2014-2020 袁志蒙工作室', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('6', 'site_filing', '0', '站点备案号', '京ICP备666666号', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('7', 'site_code', '0', '统计代码', '', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('8', 'site_theme', '0', '站点模板主题', 'default', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('9', 'site_logo', '0', '站点logo', '', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('10', 'url_rule', '0', '前端URL规则', '1', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('10', 'url_mode', '0', '前台URL模式', '1', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('11', 'is_words', '0', '是否开启前端留言功能', '0', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('12', 'upload_maxsize', '0', '允许上传附件大小', '2048', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('13', 'upload_types', '0', '允许上传附件类型', 'zip|rar|mp3|mp4', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('14', 'ishtml5', '0', '选择上传附件插件类型', '1', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('15', 'watermark_enable', '0', '是否开启图片水印', '1', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('15', 'watermark_enable', '0', '是否开启图片水印', '0', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('16', 'watermark_name', '0', '水印图片名称', 'mark.png', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('17', 'watermark_position', '0', '水印的位置', '9', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('18', 'mail_server', '1', 'SMTP服务器', 'smtp.qq.com', '', '', '1');
@@ -417,7 +417,7 @@ INSERT INTO `yzm_config` VALUES ('21', 'mail_auth', '1', 'AUTH LOGIN验证', '1'
 INSERT INTO `yzm_config` VALUES ('22', 'mail_user', '1', 'SMTP服务器的用户帐号', '', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('23', 'mail_pass', '1', 'SMTP服务器的用户密码', '', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('24', 'mail_inbox', '1', '收件邮箱地址', '', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('25', 'admin_log', '2', '启用后台管理操作日志', '1', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('25', 'admin_log', '2', '启用后台管理操作日志', '0', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('26', 'admin_prohibit_ip', '2', '禁止登录后台的IP', '', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('27', 'prohibit_words', '2', '屏蔽词', '她妈|它妈|他妈|你妈|去死|贱人', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('28', 'comment_check', '2', '是否开启评论审核', '0', '', '', '1');
@@ -446,6 +446,8 @@ INSERT INTO `yzm_config` VALUES ('50', 'thumb_width', '2', '缩略图默认宽�
 INSERT INTO `yzm_config` VALUES ('51', 'thumb_height', '2', '缩略图默认高度', '300', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('52', 'advertise', '99', '首页广告位', '免费又好用的CMS建站系统，就选YzmCMS!', 'textarea', '', '1');
 INSERT INTO `yzm_config` VALUES ('53', 'search_page', '3', '前端搜索每页展示条数', '10', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('54', 'keyword_link', '2', '是否启用关键字替换', '0', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('55', 'keyword_replacenum', '2', '关键字替换次数', '1', '', '', '1');
 
 -- ----------------------------
 -- Table structure for yzm_download
@@ -475,6 +477,7 @@ CREATE TABLE `yzm_download` (
   `listorder` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `groupids_view` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '阅读权限',
   `readpoint` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '阅读收费',
+  `paytype` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '收费类型',
   `is_push` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否百度推送',
   `down_url` varchar(200) NOT NULL DEFAULT '' COMMENT '下载地址',
   `copytype` varchar(30) NOT NULL DEFAULT '' COMMENT '授权形式',
@@ -661,7 +664,7 @@ CREATE TABLE `yzm_member_detail` (
   `industry` varchar(60) NOT NULL DEFAULT '' COMMENT '行业',
   `area` varchar(60) NOT NULL DEFAULT '',
   `motto` varchar(210) NOT NULL DEFAULT '' COMMENT '个性签名',
-  `introduce` text NOT NULL COMMENT '个人简介',
+  `introduce` text COMMENT '个人简介',
   `guest` int(10) unsigned NOT NULL DEFAULT '0',
   `fans` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '粉丝数',
   UNIQUE KEY `userid` (`userid`)
@@ -752,7 +755,7 @@ CREATE TABLE `yzm_menu` (
   KEY `listorder` (`listorder`),
   KEY `parentid` (`parentid`),
   KEY `module` (`m`,`c`,`a`)
-) ENGINE=MyISAM AUTO_INCREMENT=295 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=301 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yzm_menu
@@ -849,7 +852,7 @@ INSERT INTO `yzm_menu` VALUES ('94', '审核会员', '2', 'member', 'member', 'c
 INSERT INTO `yzm_menu` VALUES ('95', '通过审核', '94', 'member', 'member', 'adopt', '', '0', '0');
 INSERT INTO `yzm_menu` VALUES ('96', '锁定用户', '88', 'member', 'member', 'lock', '', '0', '0');
 INSERT INTO `yzm_menu` VALUES ('97', '解锁用户', '88', 'member', 'member', 'unlock', '', '0', '0');
-INSERT INTO `yzm_menu` VALUES ('98', '积分记录', '2', 'member', 'member', 'pay', '', '22', '1');
+INSERT INTO `yzm_menu` VALUES ('98', '账单管理', '2', 'member', 'member', 'pay', '', '22', '1');
 INSERT INTO `yzm_menu` VALUES ('99', '入账记录搜索', '98', 'member', 'member', 'pay_search', '', '0', '0');
 INSERT INTO `yzm_menu` VALUES ('100', '入账记录删除', '98', 'member', 'member', 'pay_del', '', '0', '0');
 INSERT INTO `yzm_menu` VALUES ('101', '消费记录', '98', 'member', 'member', 'pay_spend', '', '0', '0');
@@ -989,6 +992,12 @@ INSERT INTO `yzm_menu` VALUES ('291', '增加/删除内容属性', '30', 'admin'
 INSERT INTO `yzm_menu` VALUES ('292', '更改model', '69', 'admin', 'update_urls', 'change_model', '', '0', '0');
 INSERT INTO `yzm_menu` VALUES ('293', '更新栏目URL', '69', 'admin', 'update_urls', 'update_category_url', '', '0', '0');
 INSERT INTO `yzm_menu` VALUES ('294', '更新内容页URL', '69', 'admin', 'update_urls', 'update_content_url', '', '0', '0');
+INSERT INTO `yzm_menu` VALUES ('295', '留言搜索', '79', 'guestbook', 'guestbook', 'search', '', '0', '0');
+INSERT INTO `yzm_menu` VALUES ('296', '内容关键字', '3', 'admin', 'keyword_link', 'init', '', '1', '1');
+INSERT INTO `yzm_menu` VALUES ('297', '添加关键字', '296', 'admin', 'keyword_link', 'add', '', '0', '0');
+INSERT INTO `yzm_menu` VALUES ('298', '编辑关键字', '296', 'admin', 'keyword_link', 'edit', '', '0', '0');
+INSERT INTO `yzm_menu` VALUES ('299', '删除关键字', '296', 'admin', 'keyword_link', 'del', '', '0', '0');
+INSERT INTO `yzm_menu` VALUES ('300', '应用商店', '3', 'admin', 'store', 'init', '', '0', '1');
 
 -- ----------------------------
 -- Table structure for yzm_message
@@ -1091,7 +1100,7 @@ CREATE TABLE `yzm_model_field` (
   `errortips` varchar(100) NOT NULL DEFAULT '',
   `fieldtype` varchar(20) NOT NULL DEFAULT '',
   `defaultvalue` varchar(30) NOT NULL DEFAULT '',
-  `setting` text NOT NULL,
+  `setting` text,
   `isrequired` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `issystem` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `isunique` tinyint(1) unsigned NOT NULL DEFAULT '0',
@@ -1202,6 +1211,7 @@ CREATE TABLE `yzm_order` (
   `transaction` varchar(32) NOT NULL DEFAULT '' COMMENT '第三方交易单号',
   `money` decimal(8,2) unsigned NOT NULL DEFAULT '0.00' COMMENT '订单金额',
   `quantity` int(8) unsigned NOT NULL DEFAULT '0' COMMENT '数量',
+  `type` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1积分,2金钱',
   `ip` char(15) NOT NULL DEFAULT '',
   `desc` varchar(250) NOT NULL DEFAULT '' COMMENT '备注',
   PRIMARY KEY (`id`),
@@ -1224,7 +1234,7 @@ CREATE TABLE `yzm_page` (
   `pagedir` varchar(30) NOT NULL DEFAULT '',
   `keywords` varchar(60) NOT NULL DEFAULT '',
   `description` varchar(255) NOT NULL DEFAULT '',
-  `content` text NOT NULL,
+  `content` text,
   `updatetime` int(10) unsigned NOT NULL DEFAULT '0',
   KEY `catid` (`catid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
@@ -1269,7 +1279,7 @@ CREATE TABLE `yzm_pay_mode` (
   `name` varchar(60) NOT NULL DEFAULT '',
   `logo` varchar(100) NOT NULL DEFAULT '',
   `desc` varchar(250) NOT NULL DEFAULT '',
-  `config` text NOT NULL,
+  `config` text,
   `enabled` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `author` varchar(60) NOT NULL DEFAULT '',
   `version` varchar(10) NOT NULL DEFAULT '',
@@ -1336,11 +1346,12 @@ CREATE TABLE `yzm_product` (
   `listorder` tinyint(3) unsigned NOT NULL DEFAULT '1',
   `groupids_view` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '阅读权限',
   `readpoint` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '阅读收费',
+  `paytype` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '收费类型',
   `is_push` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否百度推送',
   `brand` varchar(50) NOT NULL DEFAULT '' COMMENT '品牌',
   `standard` varchar(100) NOT NULL DEFAULT '' COMMENT '型号',
   `yieldly` varchar(100) NOT NULL DEFAULT '' COMMENT '产地',
-  `pictures` text NOT NULL COMMENT '产品图集',
+  `pictures` text COMMENT '产品图集',
   `price` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '单价',
   `unit` varchar(30) NOT NULL DEFAULT '' COMMENT '价格单位',
   `stock` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '库存',
@@ -1362,6 +1373,7 @@ CREATE TABLE `yzm_tag` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `tag` varchar(30) NOT NULL DEFAULT '',
   `total` mediumint(9) unsigned NOT NULL DEFAULT '0',
+  `remarks` varchar(255) NOT NULL DEFAULT '',
   `inputtime` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `tag` (`tag`)
@@ -1402,6 +1414,21 @@ CREATE TABLE `yzm_urlrule` (
 
 -- ----------------------------
 -- Records of yzm_urlrule
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for yzm_keyword_link
+-- ----------------------------
+DROP TABLE IF EXISTS `yzm_keyword_link`;
+CREATE TABLE `yzm_keyword_link` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `keyword` varchar(36) NOT NULL DEFAULT '' COMMENT '关键字',
+  `url` varchar(100) NOT NULL DEFAULT '' COMMENT '地址',
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of yzm_keyword_link
 -- ----------------------------
 
 -- ----------------------------

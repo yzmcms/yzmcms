@@ -11,7 +11,7 @@
 </head>
 <body>
 <article class="page-container">
-	<form class="form form-horizontal" onsubmit="return checkall()" method="post">
+	<form class="form form-horizontal mb-20" onsubmit="return checkall()" method="post">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>标　　题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -106,7 +106,11 @@
 			    ?>	
 				</select>
 				</span>  
-				<span class="yzmcms_small">消费积分：<input type="text" id="readpoint" class="input-text" style="width:150px" value="<?php echo $data['readpoint'];?>"  name="readpoint" onfocus="layer.tips('vip会员可免积分查看', '#readpoint');"></span>  
+				<span class="yzmcms_small">
+					阅读收费：<input type="text" class="input-text" style="width:150px" value="<?php echo $data['readpoint'];?>"  name="readpoint" onfocus="layer.tips('vip会员可免费查看', this, {tips:[1,'#666']});">
+					<label class="mr-5"><input type="radio" name="paytype" value="1" <?php if($data['paytype']==1) echo 'checked'; ?>>点</label> 
+					<label><input type="radio" name="paytype" value="2" <?php if($data['paytype']==2) echo 'checked'; ?>>元</label>
+				</span>  
 			</div>
 		</div>
 		<div class="row cl">
@@ -138,12 +142,12 @@
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
 				<input type="hidden" name="status" value="<?php echo $data['status'];?>">
 				<?php if(!isset($_GET['is_draft'])){ ?>
-				<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(1)"><i class="Hui-iconfont">&#xe632;</i> 保存并提交审核</button>
+				<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(1)"><i class="Hui-iconfont">&#xe603;</i> 立即发布</button>
 				<button name="dosubmit" class="btn btn-secondary radius" type="submit" onclick="set_status(0)"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
 				<?php }else{ ?>
 				<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(0)"><i class="Hui-iconfont">&#xe632;</i> 修改稿件</button>
 				<?php } ?>
-				<button onclick="myclose()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
+				<button onclick="yzm_win_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
 			</div>
 		</div>
 		<input type="hidden"  value="<?php echo $data['listorder'];?>"  name="listorder">
@@ -178,13 +182,13 @@
 		}
 	}
 	
-	function myclose(){
+	function yzm_win_close(){
 		if(UE.getEditor('content').getContent()!=''){
 			layer.confirm('内容未保存，确定要关闭吗？',function(index){
-				yzmcms_close();
+				window.close();
 			});
 		}else{
-			yzmcms_close();
+			window.close();
 		}
 	}
 	

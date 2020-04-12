@@ -1,12 +1,16 @@
 <?php
 /**
  * YzmCMS 手机模块
+ * 手机版如果想实现与PC版一样可自由切换模板方式，查看教程:
+ * https://bbs.yzmcms.com/bbs/index/show/id/504.html
+ * 
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
- * @lastmodify       2018-10-31
+ * @lastmodify       2020-03-26
  */
  
 defined('IN_YZMPHP') or exit('Access Denied');
+yzm_base::load_model('content', 'index', 0);
 
 class index{
 	
@@ -48,7 +52,6 @@ class index{
 		$keywords = $seo_keywords ? $seo_keywords : $site['site_keyword'];
 		$description = $seo_description ? $seo_description : $site['site_description'];
 		
-		$title = $catname;
 		//手机模板暂时就做这一个，不要问我为什么，因为没时间~~
 		$template = 'category_article';
 		
@@ -94,9 +97,14 @@ class index{
 		$db->update('`click` = `click`+1', array('id' => $id));
 
 		//内容分页
-		if(strpos($content, '_yzmcms_content_page_') !== false){
-			$content = $this->_content_page($content);
+		if(strpos($content, '_yzm_content_page_') !== false){
+			$content = content::content_page($content);
 		}	
+		
+		//内容关键字
+		if(get_config('keyword_link')){
+			$content = content::keyword_content($content);
+		}			
 		
 		//获取相同分类的上一篇/下一篇内容	
 		$pre = $db->field('id,catid,title')->where(array('id<'=>$id , 'status'=>'1' , 'catid'=>$catid))->order('id DESC')->find();
@@ -113,32 +121,12 @@ class index{
 	 */
 	public function guestbook() {
 		
-		$title = '留言反馈';
 		//SEO相关设置
 		$site = get_config();
 		$seo_title = '留言反馈_'.$site['site_name'];
 		$keywords = $site['site_keyword'];
 		$description = $site['site_description'];
 		include template('mobile', 'guestbook');
-	}
-
-
-	/**
-	 * 内容分页
-	 */
-	private function _content_page($content) {
-		$arr = explode('_yzmcms_content_page_', $content);
-		$page = isset($_GET['page']) ? max(intval($_GET['page']), 1) : 1;
-		$total_page = count($arr);
-		$off = $page-1<$total_page ? $page-1 : $total_page-1;
-
-		$pages = '<div id="page">';
-		yzm_base::load_sys_class('page','',0);
-		$page = new page($total_page, 1);
-		$pages .= $page->getpre().$page->getlist().$page->getnext();
-		$pages .= '</div>';
-
-		return $arr[$off].$pages;
 	}
 
 }

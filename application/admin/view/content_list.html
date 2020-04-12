@@ -52,7 +52,7 @@
   </div>
   <div class="cl pd-5 bg-1 bk-gray mt-20"> 
   <span class="l">
-  <a href="javascript:;" onclick="yzm_open_full('添加内容','<?php echo U('add', array('modelid'=>$modelid));?>')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加内容</a>
+  <a href="javascript:;" onclick="yzm_win_open('<?php echo U('add', array('modelid'=>$modelid));?>', '')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加内容</a>
   <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
   <a href="javascript:;" onclick="baidu_push()" class="btn btn-secondary radius">推送至百度</a> 
   <a href="javascript:;" onclick="attribute_operation('移动分类', '<?php echo U('remove', array('modelid' => $modelid))?>')" class="btn btn-primary radius">移动分类</a> 
@@ -61,19 +61,19 @@
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
   <form method="post" action="<?php echo U('del');?>" id="myform">
   <input type="hidden" name="modelid" value="<?php echo $modelid;?>">
-  <table class="table table-border table-bordered table-bg table-hover">
+  <table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
     <thead>
       <tr class="text-c">
         <th width="25"><input type="checkbox"></th>
-		<th width="40">ID</th>
+		<th width="50">ID<?php echo field_order('id');?></th>
 		<th>标题</th>
-		<th width="125">内容分类</th>
-		<th width="50">点击量</th>
-		<th width="120">发布人</th>
-		<th width="135">更新时间</th>
-		<th width="50">状态</th>
-		<th width="50">是否推送</th>
-		<th width="50">管理操作</th>
+		<th width="120">内容分类<?php echo field_order('catid');?></th>
+		<th width="65">点击量<?php echo field_order('click');?></th>
+		<th width="120">发布人<?php echo field_order('username');?></th>
+		<th width="135">更新时间<?php echo field_order('updatetime');?></th>
+		<th width="50">状态<?php echo field_order('status');?></th>
+		<th width="50">推送<?php echo field_order('is_push');?></th>
+		<th width="55">管理操作</th>
       </tr>
     </thead>
     <tbody>
@@ -122,7 +122,7 @@
 			<td><?php echo $val['status'] ? '<span class="label label-success radius">正常</span>' : '<span class="label radius">草稿</span>';?></td>
 			<td><?php echo $val['is_push'] ? '已推送' : '<span class="c-red">未推送</span>';?></td>
 			<td>
-				<a title="编辑" href="javascript:;" onclick="yzm_open_full('编辑内容','<?php echo U('edit',array('modelid'=>$modelid,'id'=>$val['id']));?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
+				<a title="编辑" href="javascript:;" onclick="yzm_win_open('<?php echo U('edit',array('modelid'=>$modelid,'id'=>$val['id']));?>', '')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
 				<a title="预览" href="<?php echo $val['url'];?>" class="ml-5" target="_blank" style="text-decoration:none"><i class="Hui-iconfont">&#xe695;</i></a>
 			</td>
 		  </tr>		

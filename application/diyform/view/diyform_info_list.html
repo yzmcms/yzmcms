@@ -31,11 +31,11 @@
 		  <tr class="text-c">
 			<td><input type="checkbox" value="<?php echo $val['id']?>" name="id[]"></td>
 			<td><?php echo $val['id'];?></td>
-			<td><?php echo $val['username'];?></td>
+			<td><?php echo $val['username'] ? $val['username'] : '<span class="c-red">无</span>';?></td>
 			<td><?php echo $val['ip']; ?></td>
 			<td><?php echo date('Y-m-d H:i:s',$val['inputtime'])?></td>
 			<td>
-			<a href="javascript:;" onclick="yzm_open('查看详细','<?php echo U('view', array('modelid'=>$modelid,'id'=>$val['id']));?>','750','500')"  class="btn-mini btn-secondary ml-5"  style="text-decoration:none">查看详细</a>
+			<a href="javascript:;" onclick="yzm_open('查看详细','<?php echo U('view', array('modelid'=>$modelid,'id'=>$val['id']));?>')"  class="btn-mini btn-secondary ml-5"  style="text-decoration:none">查看详细</a>
 			</td>
 		  </tr>		
 		<?php 

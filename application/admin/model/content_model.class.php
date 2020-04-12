@@ -46,7 +46,7 @@ class content_model {
 		//自动提取缩略图
 		if(isset($data['auto_thum']) && $data['thumb'] == '') {
 			$img = match_img($data['content']);
-			$data['thumb'] = $img ? thumb($img) : '';
+			$data['thumb'] = $img ? thumb($img, get_config('thumb_width'), get_config('thumb_height')) : '';
 		}
 
 		$content_tabname = D($this->tabname);
@@ -210,7 +210,8 @@ class content_model {
 			if(!$val) continue;
 			$tagid = $tag->field('id')->where(array('tag' => $val))->one();
 			if($tagid){
-				$tag->update('`total` = `total`+1', array('id' => $tagid));
+				$total = $tag_content->where(array('tagid' => $tagid))->total();
+				$tag->update(array('total' => $total+1), array('id' => $tagid));
 			}else{
 				$tagid = $tag->insert(array('tag'=>$val, 'total'=>1, 'inputtime'=>SYS_TIME));
 			}

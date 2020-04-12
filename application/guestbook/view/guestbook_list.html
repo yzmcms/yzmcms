@@ -4,18 +4,47 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 留言管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span></div>
+  <div> 
+		<form action="<?php echo U('search');?>" method="get">
+		  <span class="select-box inline">
+		 	<select name="ischeck" class="select">
+		 		<option value="99">审核状态</option>
+		 		<option <?php if(isset($_GET["ischeck"]) && $_GET["ischeck"]=='0'){echo "selected";} ?> value="0">未审核</option>
+		 		<option <?php if(isset($_GET["ischeck"]) && $_GET["ischeck"]=='1'){echo "selected";} ?> value="1">已审核</option>
+		 	</select>
+		 </span>
+		 <span class="select-box inline">
+		 	<select name="isread" class="select">
+		 		<option value="99">阅读状态</option>
+		 		<option <?php if(isset($_GET["isread"]) && $_GET["isread"]=='0'){echo "selected";} ?> value="0">未读</option>
+		 		<option <?php if(isset($_GET["isread"]) && $_GET["isread"]=='1'){echo "selected";} ?> value="1">已读</option>
+		 	</select>
+		 </span>
+		 <span class="select-box inline">
+			<select name="type" class="select">
+				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='1'){echo "selected";} ?> value="1">留言主题</option>
+				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo "selected";} ?> value="2">联系人</option>		
+			</select>
+		</span>
+		 <input type="text" name="searinfo"  class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+		</form>	
+  </div>
+
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> 
+		<span class="l"><a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span>
+	</div>
 	<form method="post" action="<?php echo U('del');?>" id="myform">
-	<table class="table table-border table-bordered table-bg table-hover">
+	<table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
 		<thead>
 			<tr class="text-c">
 				<th width="25"><input type="checkbox"></th>
+				<th width="50">ID<?php echo field_order('id');?></th>
 				<th style="text-align:left">留言主题</th>
 				<th width="200" style="text-align:left">联系人</th>
-				<th width="100">IP地址</th>
-				<th width="150">留言日期</th>
-				<th width="50">状态</th>
-				<th width="80">是否审核</th>	
+				<th width="100">IP地址<?php echo field_order('ip');?></th>
+				<th width="150">留言日期<?php echo field_order('booktime');?></th>
+				<th width="55">状态<?php echo field_order('isread');?></th>
+				<th width="80">审核状态<?php echo field_order('ischeck');?></th>	
 			</tr>
 		</thead>
 		<tbody>
@@ -24,11 +53,12 @@
 			 ?>
 			<tr class="text-c">
 				<td><input type="checkbox" value="<?php echo $val['id']?>" name="id[]"></td>
+				<td><?php echo $val['id']?></td>
 				<td style="text-align:left"><a href="javascript:;" onclick="yzm_open_full('查看留言','<?php echo U('read',array('id'=>$val['id']));?>')" ><?php echo $val['title'];?></a> <span class="yzmcms_small"><?php echo $val['ispc'] ? '<i class="Hui-iconfont" title="来自PC端">&#xe64f;</i>' : '<i class="Hui-iconfont" title="来自移动端">&#xe696;</i>';?></span></td>
 				<td style="text-align:left"><?php echo $val['name'];?></td>
 				<td><?php echo $val['ip'];?></td>
 				<td><?php echo date('Y-m-d H:i:s',$val['booktime']);?></td>
-				<td><?php echo $val['isread'] ? "<b style='color:green'>已读</b>" : "<b style='color:red'>未读</b>"; ?></td>
+				<td><?php echo $val['isread'] ? "<span style='color:green'>已读</span>" : "<span style='color:red'>未读</span>"; ?></td>
 				<td class="td-manage"><?php echo $val['ischeck'] ? '<a onclick="toggle(this,\''.$val['id'].'\',\'0\')" href="javascript:;">已审核</a>' : '<a class="c-primary" onclick="toggle(this,\''.$val['id'].'\',\'1\')" href="javascript:;">未审核</a>' ?></td>
 			</tr>
 			<?php 
@@ -54,7 +84,7 @@ function toggle(obj, id, ischeck){
 		layer.msg('留言已审核！',{icon: 6,time:1000});
 	}else{
 		$(obj).parents("tr").find(".td-manage").html('<a class="c-primary" onclick="toggle(this,\''+id+'\',\'1\')" href="javascript:;">未审核</a>');
-		layer.msg('留言未审核！',{icon: 5,time:1000});
+		layer.msg('留言已取消审核！',{icon: 5,time:1000});
 	}
 	
 }

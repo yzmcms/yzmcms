@@ -58,10 +58,10 @@
  		 	<div class="yzm-line"></div>
 		 	<div class="yzm-content-box">
 				<div class="yzm-title">
-		 			<h2>猜你喜欢</h2>
+		 			<h2>最近更新</h2>
 		 		</div>
 		 	    <ul class="yzm-like-list">
-		 			{m:hits field="title,url,color,inputtime" modelid="1" limit="10"}
+		 			{m:lists field="title,url,color,inputtime" modelid="1" limit="10"}
 					{loop $data $v}
 					   <li><span class="date">{date('m-d',$v['inputtime'])}</span><a href="{$v[url]}" title="{$v[title]}" target="_blank">{title_color($v['title'], $v['color'])}</a></li>	
 					{/loop}						

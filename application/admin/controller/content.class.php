@@ -16,13 +16,17 @@ class content extends common {
 	 * 内容列表
 	 */
 	public function init() {
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','catid','click','username','updatetime','status','is_push')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$modelinfo = $this->content->modelarr;
 		$content = D('article'); //默认加载文章列表
 		$modelid = 1; //默认加载文章模型
 		$catid = 0; //默认加载全部分类
 		$total = $content->total();
 		$page = new page($total, 15);
-		$data = $content->order('id DESC')->limit($page->limit())->select();	
+		$data = $content->order("$of $or")->limit($page->limit())->select();	
 		include $this->admin_tpl('content_list');
 	}
 
@@ -31,6 +35,10 @@ class content extends common {
 	 * 内容搜索
 	 */
 	public function search() {
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','catid','click','username','updatetime','status','is_push')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$modelinfo = $this->content->modelarr;
 		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
@@ -68,7 +76,7 @@ class content extends common {
 		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $content->where($where)->total();
 		$page = new page($total, 15);
-		$data = $content->where($where)->order('id DESC')->limit($page->limit())->select();		
+		$data = $content->where($where)->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('content_list');
 	}
 	
@@ -81,7 +89,7 @@ class content extends common {
 		if(isset($_POST['dosubmit'])) {
 			$r = $this->content->content_add($_POST);
 			if($r){
-				echo '<script type="text/javascript">parent.location.reload();</script>';
+				echo '<script type="text/javascript">window.close();</script>';
 			}else{
 				showmsg(L('data_not_modified'));
 			}
@@ -104,7 +112,7 @@ class content extends common {
 		if(isset($_POST['dosubmit'])) {
 			$r = $this->content->content_edit($_POST, $id);
 			if($r){
-				echo '<script type="text/javascript">parent.location.reload();</script>';
+				echo '<script type="text/javascript">window.close();</script>';
 			}else{
 				showmsg(L('data_not_modified'));
 			}

@@ -1,0 +1,55 @@
+<?php include $this->admin_tpl('meta');?>
+<title>编辑内容关键字 - YzmCMS内容管理系统</title>
+<style>
+	.formdoby_normal ul li .input{width:300px}
+</style>
+</head>
+<body>
+<article class="page-container">
+<div class="formdoby_normal"> 
+	<form method="post" onsubmit="return dosub(this)">
+		<ul>
+			<li><label><span class="c-red">*</span>关键字</label><input type="text" class="input" name="keyword" value="<?php echo $data['keyword'];?>"></li>	
+			<li><label><span class="c-red">*</span>链接地址</label><input type="text" class="input" name="url" value="<?php echo $data['url'];?>"></li>	
+			<li>&nbsp;</li>				 
+			<li>
+				<input type="hidden" name="id" value="<?php echo $data['id'];?>">
+				<input type="hidden" name="dosubmit" value="1">
+				<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
+			 	<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			</li>
+		</ul>
+	</form>
+</div>
+</article>
+<?php include $this->admin_tpl('footer');?>
+
+<script type="text/javascript">
+	function dosub(obj){	
+		if(obj.keyword.value==''){
+		 layer.msg('请输入关键字！', {icon:2});
+		 return false;
+		}
+		if(obj.url.value=='' || obj.url.value=='<?php echo SERVER_PORT;?>'){
+			 layer.msg('请输入链接地址！', {icon:2});
+			 return false;
+		}
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo U('edit');?>', 
+            data: $(obj).serialize(),
+		    dataType: "json", 
+            success: function (msg) {
+				if(msg.status == 1){
+					parent.location.reload();       
+			    }else{
+					layer.msg(msg.message, {icon:2});
+				}
+            }
+        })		 
+		return false;			 
+	}
+</script> 
+
+</body>
+</html>

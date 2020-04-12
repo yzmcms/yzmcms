@@ -20,15 +20,19 @@
 	   {m:include "index","header"} 
 		<div class="box">
 			<!-- 轮播图 开始 -->
+			<!-- 
+				这里并没有调用后台自带的轮播图，如果有需要请自行调用轮播图标签即可，
+				YzmCMS标签大全：https://blog.yzmcms.com/php/76.html 
+			-->
 			<div class="swiper-container yzm-banner">
 				 <div class="swiper-wrapper">
 				      <div class="swiper-slide">
-				      	<a href="http://www.yzmcms.com" target="_blank">
+				      	<a href="https://www.yzmcms.com" target="_blank">
 				      		<img src="{STATIC_URL}images/banner1.png" alt="YzmCMS内容管理系统" title="YzmCMS内容管理系统" />
 				      	</a>
 				      </div>
 				      <div class="swiper-slide">
-				      	<a href="http://www.yzmcms.com" target="_blank">
+				      	<a href="https://www.yzmcms.com/xiazai/" target="_blank">
 				      		<img src="{STATIC_URL}images/banner2.png" alt="YzmCMS内容管理系统" title="YzmCMS内容管理系统" />
 				      	</a>
 				      </div>	
@@ -135,7 +139,7 @@
 					<h2>热门标签</h2>
 				</div>
 			    <ul>
-				{m:tag field="id,tag,total" limit="27"}
+				{m:tag field="id,tag,total,remarks" limit="27"}
 				{loop $data $v}
 				   <li><a href="{tag_url($v['id'])}" target="_blank">{$v[tag]}({$v[total]})</a></li>	
 				{/loop}						

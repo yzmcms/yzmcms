@@ -27,7 +27,7 @@
                         <td>{get_catname($val['catid'])}</td>
                         <td>{date('Y-m-d H:i:s',$val['updatetime'])}</td>
                         <td><span style='color:green;'>通过</span></td>
-                        <td><a href="{U('edit_through',array('catid'=>$val['catid'],'id'=>$val['id']))}">编辑</a></td>
+                        <td><a href="{U('edit_through',array('catid'=>$val['catid'],'id'=>$val['id']))}" class="yzm-xs-btn">编辑</a></td>
                     </tr>
                     {/loop}
                 </tbody>

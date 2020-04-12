@@ -4,7 +4,7 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 管理员管理 <span class="c-gray en">&gt;</span> 管理员列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a href="javascript:;" onclick="yzm_open('添加管理员','<?php echo U('add');?>','600','400')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a></span></div>
+	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a href="javascript:;" onclick="yzm_open('添加管理员','<?php echo U('add');?>','600','410')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a></span></div>
 	<table class="table table-border table-bordered table-bg table-hover">
 		<thead>
 			<tr class="text-c">
@@ -31,11 +31,11 @@
 				<td><?php echo $val['email'];?></td>
 				<td><?php echo $val['rolename'];?></td>
 				<td><?php echo date('Y-m-d H:i:s',$val['addtime']);?></td>
-				<td><?php echo date('Y-m-d H:i:s',$val['logintime']);?></td>
+				<td><?php echo $val['logintime'] ? date('Y-m-d H:i:s',$val['logintime']) : '从未登录';?></td>
 				<td><?php echo $val['loginip'];?></td>
 				<td><?php echo $val['addpeople'];?></td>
 				<td class="td-manage">
-					<a title="编辑" href="javascript:;" onclick="yzm_open('管理员编辑','<?php echo U('edit',array('adminid'=>$val['adminid']));?>','600','400')" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
+					<a title="编辑" href="javascript:;" onclick="yzm_open('管理员编辑','<?php echo U('edit',array('adminid'=>$val['adminid']));?>','600','410')" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
 					<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('adminid'=>$val['adminid']));?>')" class="yzm-box-img btn-warning ml-5"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a>
 				</td>
 			</tr>

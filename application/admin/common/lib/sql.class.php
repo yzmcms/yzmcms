@@ -38,6 +38,7 @@ class sql{
 		  `listorder` tinyint(3) unsigned NOT NULL DEFAULT '1',
 		  `groupids_view` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '阅读权限',
 		  `readpoint` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT '阅读收费',
+		  `paytype` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '收费类型',
 		  `is_push` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否百度推送',
 		  PRIMARY KEY (`id`),
 		  KEY `status` (`status`,`listorder`),

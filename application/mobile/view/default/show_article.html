@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
     <title>{$seo_title}</title>
-    <link href="{STATIC_URL}css/yzm-mobile-category.css" rel="stylesheet" type="text/css" />
+    <link href="{STATIC_URL}css/yzm-mobile-category.css?v=yzmcms" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="{STATIC_URL}js/mobile_simpler-sidebar.min.js"></script>
     <meta name="keywords" content="{$keywords}" />
@@ -14,68 +14,77 @@
 
 <body>
     <!--网站容器-->
-    <div id="container">
+    <div class="yzm-container">
         {m:include "mobile","header"}
         <!--主要内容-->
-        <div id="main_article">
-            <div id="content">
-                <h1>{$title}</h1>
-                <div id="info">{date("Y-m-d H:i:s",$inputtime)}&nbsp;&nbsp;浏览：{$click}&nbsp;&nbsp;作者：{$nickname}</div>
+        <div class="yzm-main-article">
+            <h1>{$title}</h1>
+            <div class="yzm-info">
+            {date("Y-m-d H:i:s",$inputtime)}&nbsp;&nbsp;浏览：{$click}&nbsp;&nbsp;作者：{$nickname}
+            </div>
+            <div class="yzm-content">
                 {$content}
             </div>
-            <div id="next">
+            <div class="yzm-next">
                 <p>上一篇：{$pre}</p>
                 <p>下一篇：{$next}</p>
             </div>
-            <!--评论区 开始-->
-            <h3 class="ind_bt">评论区</h3>
-            <div class="com_form">
-                <form action="{U('comment/index/init')}" method="post" onsubmit="return check_comm(this)">
+
+            <!-- 评论区开始 -->
+            <div class="yzm-content-box">
+                <h3 class="yzm-title-btn">评论区</h3>
+                <div class="yzm-comment-box">
+                    <div class="yzm-comment-form">
+                    <form action="{U('comment/index/init')}" method="post"  onsubmit="return check_comm(this)">
                     <input type="hidden" name="modelid" value="{$modelid}">
                     <input type="hidden" name="catid" value="{$catid}">
                     <input type="hidden" name="id" value="{$id}">
                     <input type="hidden" name="title" value="{$title}">
                     <input type="hidden" name="url" value="{$url}">
-                    <textarea class="textarea" id="content" name="content" placeholder="让评论变得如此简单~" required="required"></textarea>
-                    <p><input type="submit" class="sub_btn" name="dosubmit" value="提交"></p>
-                </form>
-            </div>
-            <div class="comment_list">
-                {m:comment_list modelid="$modelid" catid="$catid" id="$id" limit="20"}
-                <div class="comment_list_top">共 {count($data)} 条评论</div>
-                <div class="comment_list_body">
+                    <textarea class="textarea" id="content" name="content" placeholder="我来说两句~"></textarea>
+                    <p><input type="submit" class="yzm-comment-submit" name="dosubmit" value="提交"></p>
+                    </form>
+                    </div>
+                </div>
+                <div class="yzm-comment-list-box">
+                    {m:comment_list modelid="$modelid" catid="$catid" id="$id" limit="20"}
+                    <div class="yzm-comment-list-top">共 {get_comment_total($id, $catid, $modelid)} 条评论</div>
+                    <div class="yzm-comment-list-body">
                     <ul>
                         {loop $data $v}
                         <li>
-                            <div class="comm_right">
+                            <a class="user_pic" href="{U('member/myhome/init', array('userid'=>$v['userid']))}" target="blank"><img src="{if !empty($v['userpic'])}{$v[userpic]}{else}{STATIC_URL}images/default.gif{/if}" height="35" width="35"></a>
+                            <div class="yzm-comm-right">
                                 <a class="user_name" href="{U('member/myhome/init', array('userid'=>$v['userid']))}" target="blank">{$v[username]}</a>
                                 <p>{nl2br($v['content'])}</p>
                                 <p><span class="comm_time">{date('Y-m-d H:i:s',$v['inputtime'])}</span> <a href="javascript:toreply('{$v[id]}');" class="comm_a">回复</a></p>
                                 <div id="rep_{$v[id]}" class="none">
-                                    <form action="{U('comment/index/init')}" method="post" onsubmit="return check_rep(this)">
-                                        <input type="hidden" name="modelid" value="{$modelid}">
-                                        <input type="hidden" name="catid" value="{$catid}">
-                                        <input type="hidden" name="id" value="{$id}">
-                                        <input type="hidden" name="title" value="{$title}">
-                                        <input type="hidden" name="url" value="{$url}">
-                                        <input type="hidden" name="reply" value="{$v[id]}">
-                                        <input type="hidden" name="reply_to" value="{$v[username]}">
-                                        <textarea name="content" class="textarea textarea2" placeholder="让评论变得如此简单~" required="required"></textarea>
-                                        <input type="submit" class="sub_btn static" name="dosubmit" value="提交">
-                                    </form>
+                                <form action="{U('comment/index/init')}" method="post"  onsubmit="return check_rep(this)">
+                                <input type="hidden" name="modelid" value="{$modelid}">
+                                <input type="hidden" name="catid" value="{$catid}">
+                                <input type="hidden" name="id" value="{$id}">
+                                <input type="hidden" name="title" value="{$title}">
+                                <input type="hidden" name="url" value="{$url}">
+                                <input type="hidden" name="reply" value="{$v[id]}">
+                                <input type="hidden" name="reply_to" value="{$v[username]}">
+                                <textarea name="content" class="textarea textarea2" placeholder="我来说两句~"></textarea>
+                                <input type="submit" class="yzm-comment-submit static" name="dosubmit" value="提交">
+                                </form>
                                 </div>
                             </div>
                         </li>
                         {/loop}
                         {if empty($data)}<li>这篇文章还没有收到评论，赶紧来抢沙发吧~</li>{/if}
                     </ul>
-                </div>
+                    </div>
+                </div> 
             </div>
-            <!--评论区 结束-->
+            <!-- 评论区结束 -->
+
         </div>
         <div class="clearfix"></div>
-        <div id="article_img">
-            <h3 class="yzm-title">【随机新闻】</h3>
+        <div class="yzm-article-img">
+            <h3 class="yzm-title">【随机内容】</h3>
             <ul>
                 {m:lists field="id,catid,title,thumb,updatetime,description" modelid="$modelid" order="RAND()" limit="4"}
                 {loop $data $k=>$v}
@@ -90,30 +99,30 @@
             </ul>
         </div>
         <script type="text/javascript">
-        function toreply(obj) {
-            if ($("#rep_" + obj).css("display") == "none") {
-                $("#rep_" + obj).css("display", "block");
-            } else {
-                $("#rep_" + obj).css("display", "none");
+            function toreply(obj) {
+                if ($("#rep_" + obj).css("display") == "none") {
+                    $("#rep_" + obj).css("display", "block");
+                } else {
+                    $("#rep_" + obj).css("display", "none");
+                }
             }
-        }
 
-        function check_comm(obj) {
-            var content = obj.content.value;
-            if (content === '') {
-                alert('你不打算说点什么吗？');
-                return false;
+            function check_comm(obj) {
+                var content = obj.content.value;
+                if (content === '') {
+                    alert('你不打算说点什么吗？');
+                    return false;
+                }
+                return true;
             }
-            return true;
-        }
 
-        function check_rep(obj) {
-            var content = obj.content.value;
-            if (content === '') {
-                alert('你不打算说点什么吗？');
-                return false;
+            function check_rep(obj) {
+                var content = obj.content.value;
+                if (content === '') {
+                    alert('你不打算说点什么吗？');
+                    return false;
+                }
+                return true;
             }
-            return true;
-        }
         </script>
         {m:include "mobile","footer"}

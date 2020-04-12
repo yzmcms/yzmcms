@@ -10,7 +10,7 @@
 			 <li><label>所属角色：</label><?php echo $data['rolename'];?></li>
 			 <li><label>最后登录IP：</label><?php echo $data['loginip'];?></li>
 			 <li><label>最后登录时间：</label><?php echo date('Y-m-d H:i:s',$data['logintime']);?></li>
-			 <li><label>昵称：</label><input type="text" class="input" placeholder="昵称" name="nickname" value="<?php echo $data['nickname'];?>"> <span style="color:#888">[用于在发布文章时，显示昵称]</span></li>
+			 <li><label>昵称：</label><input type="text" class="input" placeholder="发布内容时显示" name="nickname" value="<?php echo $data['nickname'];?>"></li>
 			 <li><label>邮箱：</label><input type="text" class="input" placeholder="邮箱" name="email" value="<?php echo $data['email'];?>"></li>
 			 <li><label>真实姓名：</label><input type="text" class="input" placeholder="真实姓名" name="realname" value="<?php echo $data['realname'];?>"></li>
 			 <input type="hidden" name="dosubmit" value="1">

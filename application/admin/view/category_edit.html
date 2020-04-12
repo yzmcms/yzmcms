@@ -40,6 +40,7 @@
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>英文目录：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" name="catdir" value="<?php echo $data['catdir']; ?>" class="input-text" placeholder="支持多级目录，如： xinwen/guonei">
+						<i class="Hui-iconfont" style="position:absolute;top:5px;right:23px;cursor:pointer;" title="继承父级目录" onclick="change_dir()">&#xe68f;</i>
 					</div>
 				</div>
 				<div class="row cl">
@@ -180,6 +181,19 @@ function yzmcms_pinyin(){
 		$("input[name='catdir']").val(pinyin.toLowerCase());
 	}
 	$("input[name='mobname']").val($("input[name='catname']").val());
+}
+
+var s = 1;
+function change_dir(){
+	var pinyin = codefans_net_CC2PY($("input[name='catname']").val());
+	pinyin = pinyin.toLowerCase();
+	if(s){
+		s = 0;
+		$("input[name='catdir']").val('<?php echo $parent_dir;?>'+pinyin);	
+	}else{
+		s = 1;
+		$("input[name='catdir']").val(pinyin);	
+	}
 }
 
 function dosub(obj){

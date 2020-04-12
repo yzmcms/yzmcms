@@ -37,13 +37,9 @@ class menu extends common {
 	 */
 	public function delete() {
 		$id = intval($_GET['id']);
-		$menu = D('menu');
-		if($menu->where(array('parentid' => $id))->total() > 0){
-			showmsg('删除失败，该菜单下有子菜单！');
-		}else{
-			$menu->delete(array('id'=>$id));
-			delcache('menu_string_1');
-		}	
+		D('menu')->delete(array('id'=>$id));
+		D('menu')->delete(array('parentid'=>$id));
+		delcache('menu_string_1');	
 		showmsg(L('operation_success'));
 	}
 	

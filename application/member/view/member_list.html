@@ -46,20 +46,19 @@
   <a href="javascript:;" onclick="unlock()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe605;</i> 解锁用户</a>
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
   <form method="post" action="<?php echo U('del');?>" id="myform">
-  <table class="table table-border table-bordered table-bg table-hover">
+  <table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
     <thead>
       <tr class="text-c">
         <th width="25"><input type="checkbox"></th>
-		<th width='60'>用户ID</th>
-		<th>用户名</th>
-		<th>邮箱</th>
-		<th width='85'>用户组</th>
-		<th width='110'>注册IP</th>
-		<th width='135'>最后登录时间</th>
-		<th width='70'>登录次数</th>
-		<th width='55'>经验</th>
-		<th width='55'>积分</th>
-		<th width='75'>操作</th>
+		<th>用户ID<?php echo field_order('userid');?></th>
+		<th>用户名<?php echo field_order('username');?></th>
+		<th>邮箱<?php echo field_order('email');?></th>
+		<th>用户组<?php echo field_order('groupid');?></th>
+		<th>最后登录时间<?php echo field_order('lastdate');?></th>
+		<th>登录次数<?php echo field_order('loginnum');?></th>
+		<th>账户余额<?php echo field_order('amount');?></th>
+		<th>积分<?php echo field_order('point');?></th>
+		<th width="100">操作</th>
       </tr>
     </thead>
     <tbody>
@@ -69,13 +68,12 @@
 		  <tr class="text-c">
 			<td><input type="checkbox" value="<?php echo $val['userid']?>" name="ids[]"></td>
 			<td><?php echo $val['userid']?></td>
-			<td><?php if($val['vip']) echo '<img src="'.STATIC_URL.'images/vip.gif" title="vip会员"> ';?><?php if($val['status'] == 2) echo '<img src="'.STATIC_URL.'images/icon_padlock.gif" title="用户已锁定"> '; echo '<a href="'.U('edit',array('userid'=>$val['userid'])).'" style="text-decoration:none"><img src="'.get_memberavatar($val['userid']).'" height="25" class="radius"> '.$val['username'];?></a></td>
-			<td><?php echo $val['email_status'] ? $val['email'].' <span class="green" title="已验证">[验]</span>' : $val['email'];?></td>
+			<td><?php if($val['vip']) echo '<img src="'.STATIC_URL.'images/vip.gif" title="vip会员"> ';?><?php if($val['status'] == 2) echo '<img src="'.STATIC_URL.'images/icon_padlock.gif" title="用户已锁定"> '; echo '<a href="'.U('edit',array('userid'=>$val['userid'])).'" style="text-decoration:none"><img src="'.get_memberavatar($val['userid']).'" height="25" class="radius"> '.$val['username'];?></a> <?php if($val['status'] == 0) echo '<span style="color:#c7254e;text-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);" title="待审核">「审」</span>'; ?></td>
+			<td><?php echo $val['email_status'] ? $val['email'].' <span style="color:green;text-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);" title="已验证">「验」</span>' : $val['email'];?></td>
 			<td><?php echo get_groupname($val['groupid']);?></td>
-			<td><?php echo $val['regip']?></td>
-			<td><?php echo date("Y-m-d H:i:s",$val['lastdate'])?></td>
+			<td><?php echo $val['lastdate'] ? date("Y-m-d H:i:s",$val['lastdate']) : '从未登录';?></td>
 			<td><?php echo $val['loginnum']?></td>
-			<td><?php echo $val['experience']?></td>
+			<td><?php echo $val['amount']?></td>
 			<td><?php echo $val['point']?></td>
 			<td>
 			<a title="修改资料" href="<?php echo U('edit',array('userid'=>$val['userid']));?>" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 

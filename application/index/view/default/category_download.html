@@ -56,7 +56,7 @@
 	 	 			<h2>热门标签</h2>
 	 	 		</div>
 			    <ul class="yzm-tag-list">
-				{m:tag field="id,tag,total" limit="30"}
+				{m:tag field="id,tag,total,remarks" limit="30"}
 				{loop $data $v}
 				   <li><a href="{tag_url($v['id'])}" target="_blank">{$v[tag]}({$v[total]})</a></li>	
 				{/loop}						

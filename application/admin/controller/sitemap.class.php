@@ -40,21 +40,30 @@ class sitemap extends common {
 			$changefreq = isset($_POST['changefreq']) ? safe_replace($_POST['changefreq']) : 'weekly';
 			$priority = isset($_POST['priority']) ? $_POST['priority'] : 0.8;
 			$type = isset($_POST['type']) ? intval($_POST['type']) : 1;
+			$limit = $limit >= 1000 ? 1000 : $limit;
 			
-			// 生成地图头部　第一条
+			// 生成网站地址链接
 			$item = $this->_sitemap_item(SITE_URL, SYS_TIME, 'daily', '1.0');
 			$this->_add_data($item);
 			
+			// 生成栏目链接
+			$data = D('category')->field('pclink')->order('listorder ASC,catid ASC')->select();
+			foreach($data as $val){
+				if(!strpos($val['pclink'], '://')) $val['pclink'] = SITE_URL.ltrim($val['pclink'], '/');
+				$item = $this->_sitemap_item($val['pclink'], SYS_TIME, $changefreq, $priority);
+				$this->_add_data($item);
+			}
+			
+			// 生成内容链接
 			foreach($model as $m){
 				$table = get_model($m);
 				if(!$table) showmsg(L('illegal_parameters'), 'stop');
 				$data = D($table)->field('updatetime,url')->where(array('status'=>'1'))->order('id DESC')->limit($limit)->select();
 				foreach($data as $val){
+					if(!strpos($val['url'], '://')) $val['url'] = SITE_URL.ltrim($val['url'], '/');
 					$item = $this->_sitemap_item($val['url'], $val['updatetime'], $changefreq, $priority);
-					
-					//在兼容模式下，需要加上 htmlspecialchars 函数进行URL转义，如以下所示
+					// 在兼容模式下，需要加上 htmlspecialchars 函数进行URL转义
 					// $item = $this->_sitemap_item(htmlspecialchars($val['url']), $val['updatetime'], $changefreq, $priority);
-					
 					$this->_add_data($item);
 				}
 			}
@@ -68,7 +77,7 @@ class sitemap extends common {
 			$strlen = @file_put_contents(YZMPHP_PATH.$this->filename, $str);
 		  
 			if($strlen){
-				showmsg('生成文件 '.$this->filename.' 成功！');
+				showmsg('生成文件 '.$this->filename.' 成功！', '', 1);
 			}else{
 				showmsg('生成文件 '.$this->filename.' 失败，请检查是否有写入权限！', 'stop');
 			}

@@ -1,8 +1,8 @@
-		<div id="yzm-back">
-		  <a href="#top">返回顶部</a>
+		<div class="yzm-back">
+			<a href="#top"><img src="{STATIC_URL}images/yzm-back-top.png" alt="返回顶部" title="返回顶部"></a>
 		</div>
 		<!--底部导航-->
-		<div id="footer_nav">
+		<div class="yzm-footer-nav">
 			<ul>
 				<li><a href="{U('guestbook')}">留言板</a></li>
 				{loop $nav_data $v}
@@ -13,7 +13,7 @@
 			</ul>	 
 		</div>
 		<!--网站底部-->
-		<footer id="footer">
+		<footer class="yzm-footer">
 		   <a href="{SITE_URL}index.php?m=mobile">手机版</a> | <a href="{SITE_URL}">电脑版</a> {$site[site_code]}
 		  <p>{$site[site_copyright]}</p>
 		  <p>Powered by <a href="http://www.yzmcms.com" target="_blank">YzmCMS</a> © 2014-2020</p>

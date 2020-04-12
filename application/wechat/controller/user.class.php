@@ -10,6 +10,11 @@ class user extends wechat_common{
      */
     public function init(){
 
+    	$of = input('get.of');
+    	$or = input('get.or');
+    	$of = in_array($of, array('wechatid','openid','groupid','sex','subscribe','subscribe_time')) ? $of : 'wechatid';
+    	$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
+
 		//微信分组
 		$groupid = 99;
         $wechat_group = D('wechat_group')->select(); 
@@ -17,7 +22,7 @@ class user extends wechat_common{
 		$wechat_user = D('wechat_user');
 		$total = $wechat_user->total();
 		$page = new page($total, 15);
-		$data = $wechat_user->order('wechatid DESC')->limit($page->limit())->select();
+		$data = $wechat_user->order("$of $or")->limit($page->limit())->select();
 		include $this->admin_tpl('user_list');
     }
 	

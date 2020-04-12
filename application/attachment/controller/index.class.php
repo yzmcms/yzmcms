@@ -1,6 +1,7 @@
 <?php
 defined('IN_YZMPHP') or exit('Access Denied'); 
 yzm_base::load_controller('common', 'admin', 0);
+yzm_base::load_sys_class('page','',0);
 
 class index extends common{
 	
@@ -8,11 +9,14 @@ class index extends common{
 	 * 附件列表
 	 */	
 	public function init(){ 
-		yzm_base::load_sys_class('page','',0);
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','module','filesize','uploadtime','username','uploadip')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$attachment = D('attachment');
 		$total = $attachment->total();
 		$page = new page($total, 15);
-		$data = $attachment->order('id DESC')->limit($page->limit())->select();		
+		$data = $attachment->order("$of $or")->limit($page->limit())->select();		
 
 		include $this->admin_tpl('attachment_list');
 	}
@@ -22,7 +26,10 @@ class index extends common{
 	 * 附件搜索
 	 */	
 	public function search_list(){ 
-		yzm_base::load_sys_class('page','',0);
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','module','filesize','uploadtime','username','uploadip')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$attachment = D('attachment');
 		$where = array();
 		if(isset($_GET['dosubmit'])){
@@ -43,7 +50,7 @@ class index extends common{
 		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $attachment->where($where)->total();
 		$page = new page($total, 15);
-		$data = $attachment->where($where)->order('id DESC')->limit($page->limit())->select();			
+		$data = $attachment->where($where)->order("$of $or")->limit($page->limit())->select();			
 
 		include $this->admin_tpl('attachment_list');
 	}

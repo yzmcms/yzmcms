@@ -9,10 +9,14 @@ class tag extends common {
 	 * TAG列表
 	 */
 	public function init() {
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','total','inputtime')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$tag = D('tag');
 		$total = $tag->total();
 		$page = new page($total, 15);
-		$data = $tag->order('id DESC')->limit($page->limit())->select();		
+		$data = $tag->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('tag_list');
 	}
 
@@ -48,9 +52,10 @@ class tag extends common {
 			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 			$total = isset($_POST['total']) ? intval($_POST['total']) : 0;
 			$tagv = trim($_POST['tag']);
+			$remarks = trim($_POST['remarks']);
 			$data = $tag->where(array('id!=' => $id, 'tag' => $tagv))->find();
 			if($data) return_json(array('status'=>0,'message'=>'TAG标签重复，请修改名称！'));
-			if($tag->update(array('tag' => $tagv, 'total' => $total), array('id' => $id), true)){
+			if($tag->update(array('tag' => $tagv, 'total' => $total, 'remarks'=>$remarks), array('id' => $id), true)){
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();
@@ -70,12 +75,14 @@ class tag extends common {
 	 */
 	public function del() {
 		if($_POST && is_array($_POST['id'])){
-			if(D('tag')->delete($_POST['id'], true)){
-				showmsg(L('operation_success'));
-			}else{
-				showmsg(L('operation_failure'));
+			$tag = D('tag'); 
+			$tag_content = D('tag_content'); 
+			foreach($_POST['id'] as $id){
+				$tag->delete(array('id' => $id)); 
+				$tag_content->delete(array('tagid'=>$id));
 			}
 		}
+		showmsg(L('operation_success'),'',1);
 	}
 
 

@@ -41,18 +41,18 @@
 	</div>
 	<form method="post" action="<?php echo U('move_user_group');?>" id="myform">
 	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="member_remove()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe67a;</i> 移动分组</a> <a href="javascript:;" onclick="synchronization()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe68f;</i> 同步微信服务器用户</a></span></div>
-	<table class="table table-border table-bordered table-bg table-hover">
+	<table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
 		<thead>
 			<tr class="text-c">
 				<th width="25"><input type="checkbox"></th>
-				<th>OpenID</th>
+				<th>OpenID<?php echo field_order('openid');?></th>
 				<th>微信昵称</th>
 				<th>用户备注</th>
-				<th>分组名称</th>
-				<th>性别</th>
+				<th>分组名称<?php echo field_order('groupid');?></th>
+				<th>性别<?php echo field_order('sex');?></th>
 				<th>地区</th>
-				<th width="50">状态</th>
-				<th width="125">关注时间</th>		
+				<th>状态<?php echo field_order('subscribe');?></th>
+				<th width="125">关注时间<?php echo field_order('subscribe_time');?></th>		
 				<th width="60">来源场景</th>		
 				<th width="150">管理操作</th>
 			</tr>

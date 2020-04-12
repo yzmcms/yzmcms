@@ -15,8 +15,8 @@
                     <tr>
                         <td>性别：</td>
                         <td>
-                            <label><input class="radio" type="radio" name="sex" value="男" {if $sex !='女' }checked="checked" {/if}>男 </label> 
-                            <label><input class="radio" type="radio" name="sex" value="女" {if $sex=='女' }checked="checked" {/if}>女 </label> 
+                            <label class="option_label option_radio"><input class="radio" type="radio" name="sex" value="男" {if $sex !='女' }checked="checked" {/if}>男 </label> 
+                            <label class="option_label option_radio"><input class="radio" type="radio" name="sex" value="女" {if $sex=='女' }checked="checked" {/if}>女 </label> 
 						</td> 
 					</tr> 
 					<tr>
@@ -52,7 +52,7 @@
                     </tr>
                     <tr>
                         <td>个性签名：</td>
-                        <td><input type="text" name="motto" value="{$motto}" class="input w550"></td>
+                        <td><input type="text" name="motto" value="{$motto}" class="input w660"></td>
                     </tr>
                     <tr>
                         <td>个人简介：</td>

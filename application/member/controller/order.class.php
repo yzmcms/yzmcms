@@ -19,10 +19,14 @@ class order extends common{
 	 * 订单列表
 	 */	
 	public function init(){ 
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','username','money','addtime','paytime','status','paytype')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$order = D('order');
 		$total = $order->total();
 		$page = new page($total, 15);
-		$data = $order->order('id DESC')->limit($page->limit())->select();			
+		$data = $order->order("$of $or")->limit($page->limit())->select();			
 		include $this->admin_tpl('order_list');
 	}
 	
@@ -32,15 +36,24 @@ class order extends common{
 	 * 订单记录搜索
 	 */	
 	public function order_search(){ 
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('id','username','money','addtime','paytime','status','paytype')) ? $of : 'id';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$order = D('order');
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){
 
 			$searinfo = isset($_GET["searinfo"]) ? safe_replace($_GET["searinfo"]) : '';
 			$status = isset($_GET["status"]) ? intval($_GET["status"]) : 99;
+			$t_type = isset($_GET["t_type"]) ? $_GET["t_type"] : 0;
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
 			
 			if($status != 99) $where .= ' AND status = '.$status;
+
+			if($t_type){
+				$where .= ' AND `type` = '.$t_type;
+			}
 				
 			if($searinfo != ''){
 				if($type == '1')
@@ -56,7 +69,7 @@ class order extends common{
 		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $order->where($where)->total();
 		$page = new page($total, 15);
-		$data = $order->where($where)->order('id DESC')->limit($page->limit())->select();					
+		$data = $order->where($where)->order("$of $or")->limit($page->limit())->select();					
 		include $this->admin_tpl('order_list');
 	}
 	

@@ -34,7 +34,7 @@ class category extends common {
 				$v['catlink'] = $v['pclink']."'  target='_blank";
 			} 
 			$v['cattype'] = $v['type']=="0" ? '内部栏目' : ($v['type']=="1" ? '<span style="color:green">单页面</span>' : '<span style="color:red">外部链接</span>');
-			$v['catmodel'] = $v['modelid'] ? $modelarr[$v['modelid']] : '';
+			$v['catmodel'] = $v['modelid'] ? $modelarr[$v['modelid']] : '无';
 			$v['display'] = $v['display'] ? '是' : '<span style="color:red">否</span>';
 			$v['member_publish'] = $v['member_publish'] ? '<span style="color:red">是</span>' : '否';
 			$v['string'] = '<a title="增加子类" href="javascript:;" onclick="yzm_open(\'增加栏目\',\''.U('add',array('modelid'=>$v['modelid'],'type'=>$v['type'],'catid'=>$v['id'])).'\',800,500)" class="btn-mini btn-secondary ml-5" style="text-decoration:none">增加子类</a> 
@@ -49,6 +49,7 @@ class category extends common {
 					<td class='text-l'>\$spacer<a href='\$catlink'>\$name</a></td>
 					<td>\$cattype</td>
 					<td>\$catmodel</td>
+					<td><a href='\$pclink' target='_blank'> <i class='Hui-iconfont'>&#xe6f1;</i> 访问</a></td>
 					<td>\$display</td>
 					<td>\$member_publish</td>
 					<td class='td-manage'>\$string</td>
@@ -138,12 +139,8 @@ class category extends common {
 					D('page')->insert($arr, false, false); 
 				}
 			
-				//如果系统设置是伪静态模式
-				if(get_config('url_rule')){
-					$_POST['pclink'] = URL_MODEL == 1 ? SITE_URL.'index.php?s=/'.$_POST['catdir'].'/' : SITE_URL.$_POST['catdir'].'/';
-				}else{  
-					$_POST['pclink'] = U('index/index/lists','catid='.$catid);
-				}
+				//根据系统设置生成URL
+				$_POST['pclink'] = get_config('url_mode') ? get_config('site_url').$_POST['catdir'].'/' : SITE_PATH.$_POST['catdir'].'/';
 			}					
 			
 			$this->db->update(array('arrchildid' => $catid, 'pclink' => $_POST['pclink']), array('catid' => $catid));  //更新本类的子分类及更新URL
@@ -156,7 +153,8 @@ class category extends common {
 			$category_temp = $this->select_template('category_temp', 'category_');
 			$list_temp = $this->select_template('list_temp', 'list_');
 			$show_temp = $this->select_template('show_temp', 'show_');
-			$parent_temp = $this->db->field('category_template,list_template,show_template')->where(array('catid'=>$catid))->find();
+			$parent_temp = $this->db->field('category_template,list_template,show_template,pclink')->where(array('catid'=>$catid))->find();
+			$parent_dir = $parent_temp ? str_replace(SITE_URL, '', $parent_temp['pclink']) : '';
 			if($type == 0){
 				include $this->admin_tpl('category_add');
 			}else if($type == 1){
@@ -194,12 +192,7 @@ class category extends common {
 			}
 			
 			if(!isset($_POST['type'])){   //非外部链接，只有外部链接设置了type字段
-				//如果系统设置是伪静态模式
-				if(get_config('url_rule')){
-					$_POST['pclink'] = URL_MODEL == 1 ? SITE_URL.'index.php?s=/'.$_POST['catdir'].'/' : SITE_URL.$_POST['catdir'].'/';
-				}else{  
-					$_POST['pclink'] = U('index/index/lists','catid='.$catid);
-				}
+				$_POST['pclink'] = get_config('url_mode') ? get_config('site_url').$_POST['catdir'].'/' : SITE_PATH.$_POST['catdir'].'/';
 			}
 		
 			if($this->db->update($_POST, array('catid' => $catid))){		
@@ -221,6 +214,8 @@ class category extends common {
 			$show_temp = $this->select_template('show_temp', 'show_');
 			
 			$data = $this->db->where(array('catid' => $catid))->find();
+			$parent_temp = $this->db->field('category_template,list_template,show_template,pclink')->where(array('catid'=>$data['parentid']))->find();
+			$parent_dir = $parent_temp ? str_replace(SITE_URL, '', $parent_temp['pclink']) : '';
 			if($type == 0){
 				include $this->admin_tpl('category_edit');
 			}else if($type == 1){

@@ -16,7 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 define('APPDIR', _dir_path(substr(dirname(__FILE__), 0, -8)));
 define('SITEDIR', dirname(APPDIR).DIRECTORY_SEPARATOR);
-define("VERSION", 'YzmCMS 5.5');
+define("VERSION", 'YzmCMS 5.6');
 
 if(is_file(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock')){
     exit("YzmCMS程序已运行安装，如果你确定要重新安装，请先从FTP中删除 cache/install.lock！");
@@ -78,10 +78,10 @@ switch ($step) {
 
         $err = 0;
         if (empty($tmp['GD Version'])) {
-            $gd = '<font color=red>[×]Off</font>';
+            $gd = '<span class="correct_span error_span">&radic;</span> 未开启';
             $err++;
         } else {
-            $gd = '<font color=green>[√]On</font> ' . $tmp['GD Version'];
+            $gd = '<span class="correct_span">&radic;</span> 已开启';
         }
         if (class_exists('pdo')) {
             $mysql = '<span class="correct_span">&radic;</span> 已安装PDO扩展';
@@ -100,15 +100,15 @@ switch ($step) {
             $uploadSize = '<span class="correct_span error_span">&radic;</span>禁止上传';
         }
         if (function_exists('session_start')) {
-            $session = '<span class="correct_span">&radic;</span> 支持';
+            $session = '<span class="correct_span">&radic;</span> 已开启';
         } else {
-            $session = '<span class="correct_span error_span">&radic;</span> 不支持';
+            $session = '<span class="correct_span error_span">&radic;</span> 未开启';
             $err++;
         }
 		if(function_exists('curl_init')){
-			$curl = '<span class="correct_span">&radic;</span> 支持';
+			$curl = '<span class="correct_span">&radic;</span> 已开启';
 		}else{
-			$curl = '<span class="correct_span error_span">&radic;</span> 不支持';
+			$curl = '<span class="correct_span error_span">&radic;</span> 未开启';
             $err++;
 		}
         $folder = array('cache','uploads','common');
@@ -260,7 +260,6 @@ function testwrite($d) {
 }
 
 function sql_split($sql, $tablepre) {
-
     if ($tablepre != "yzm_")
         $sql = str_replace("yzm_", $tablepre, $sql);
     $sql = preg_replace("/TYPE=(InnoDB|MyISAM|MEMORY)( DEFAULT CHARSET=[^; ]+)?/", "ENGINE=\\1 DEFAULT CHARSET=utf8", $sql);
@@ -295,6 +294,7 @@ function set_config($config) {
 	$configfile = SITEDIR.'common'.DIRECTORY_SEPARATOR.'config/config.php';
 	if(!is_writable($configfile)) die('Please chmod '.$configfile.' to 0777 !');
 	$pattern = $replacement = array();
+	$config['auth_key'] = random(32);
 	foreach($config as $k=>$v) {
 		$v = trim($v);
 		$configs[$k] = $v;
@@ -304,5 +304,14 @@ function set_config($config) {
 	$str = file_get_contents($configfile);
 	$str = preg_replace($pattern, $replacement, $str);
 	return file_put_contents($configfile, $str, LOCK_EX);		
+}
+
+function random($length, $chars = '1294567890abcdefghigklmnopqrstuvwxyzABCDEFGHIGKLMNOPQRSTUVWXYZ') {
+	$hash = '';
+	$max = strlen($chars) - 1;
+	for($i = 0; $i < $length; $i++) {
+		$hash .= $chars[mt_rand(0, $max)];
+	}
+	return $hash;
 }
 ?>

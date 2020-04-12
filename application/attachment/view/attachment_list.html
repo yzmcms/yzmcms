@@ -23,18 +23,18 @@
 	  <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> 
   </div>
   <form method="post" action="<?php echo U('del');?>" id="myform">
-  <table class="table table-border table-bordered table-bg table-hover">
+  <table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
     <thead>
       <tr class="text-c">
 		<th width="25"><input type="checkbox"></th>
-		<th>ID</th>
-		<th>模块名称</th>
+		<th>ID<?php echo field_order('id');?></th>
+		<th>模块名称<?php echo field_order('module');?></th>
 		<th>附件预览</th>
 		<th>附件原名</th>
-		<th>附件大小</th>
-		<th>上传时间</th>
-		<th>上传者</th>
-		<th>上传者IP</th>
+		<th>附件大小<?php echo field_order('filesize');?></th>
+		<th>上传时间<?php echo field_order('uploadtime');?></th>
+		<th>上传者<?php echo field_order('username');?></th>
+		<th>上传者IP<?php echo field_order('uploadip');?></th>
 		<th>管理操作</th>
       </tr>
     </thead>

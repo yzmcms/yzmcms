@@ -21,7 +21,7 @@ class model_field extends common {
 	public function init() {
 		$modelid = $this->modelid;
 		$model_field = D('model_field'); 
-		$data = $model_field->where(array('modelid' => 0),array('modelid' => $this->modelid))->order('listorder ASC,field ASC')->select();	
+		$data = $model_field->where(array('modelid' => 0),array('modelid' => $this->modelid))->order('listorder ASC,fieldid ASC')->select();	
 		include $this->admin_tpl('model_field_list');
 	}
 

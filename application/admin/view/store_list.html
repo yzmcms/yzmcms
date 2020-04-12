@@ -1,0 +1,94 @@
+<?php include $this->admin_tpl('meta');?>
+<title>应用商店 - YzmCMS内容管理系统</title>
+</head>
+
+<body>
+    <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 应用商店 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新"><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+    <div class="page-container">
+        <div>
+            <form action="<?php echo U(ROUTE_A);?>" method="get">
+            	<input type="hidden" value="<?php echo ROUTE_M;?>" name="m">
+            	<input type="hidden" value="<?php echo ROUTE_C;?>" name="c">
+            	<input type="hidden" value="<?php echo ROUTE_A;?>" name="a">
+                <span class="select-box inline">
+                    <select name="catid" class="select">
+                        <option value="0">应用类型</option>
+                        <option value="1" <?php if(isset($_GET['catid'])&&$_GET['catid']==1) echo 'selected';?>>网站模板</option>
+                        <option value="2" <?php if(isset($_GET['catid'])&&$_GET['catid']==2) echo 'selected';?>>系统插件</option>
+                    </select>
+                </span>
+                <span class="select-box inline">
+                    <select name="point" class="select">
+                        <option value="99">应用价格</option>
+                        <option value="0" <?php if(isset($_GET['point'])&&$_GET['point']==0) echo 'selected';?>>免费</option>
+                        <option value="1" <?php if(isset($_GET['point'])&&$_GET['point']==1) echo 'selected';?>>收费</option>
+                    </select>
+                </span>
+                <span class="select-box inline">
+                    <select name="system" class="select">
+                        <option value="99">应用作者</option>
+                        <option value="1" <?php if(isset($_GET['system'])&&$_GET['system']==1) echo 'selected';?>>官方</option>
+                        <option value="0" <?php if(isset($_GET['system'])&&$_GET['system']==0) echo 'selected';?>>第三方</option>
+                    </select>
+                </span>
+                <button name="dosubmit" class="btn btn-success radius" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+                <a href="https://bbs.yzmcms.com/store/" target="_blank" class="btn btn-secondary radius"><i class="Hui-iconfont">&#xe603;</i> 我要发布</a>
+            </form>
+        </div>
+        <table class="table table-border table-bordered table-bg table-hover mt-20">
+            <thead>
+                <tr class="text-c">
+                    <th class="text-l">应用名称</th>
+                    <th class="text-l">应用说明</th>
+                    <th>版本</th>
+                    <th>作者</th>
+                    <th>价格</th>
+                    <th>更新日期</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php 
+			   foreach($data as $val){
+			 ?>
+                <tr class="text-c">
+                    <td class="text-l">
+                        <i class="Hui-iconfont">&#xe67f;</i> <a href="https://bbs.yzmcms.com/store/index/show/id/<?php echo $val['id'];?>.html" target="_blank">
+                            <?php echo $val['title'];?></a>
+                    </td>
+                    <td class="text-l">
+                        <?php echo $val['description'];?>
+                    </td>
+                    <td>
+                        <?php echo $val['version'];?>
+                    </td>
+                    <td>
+                        <?php echo $val['system'] ? '官方' : $val['username'];?>
+                    </td>
+                    <td>
+                        <?php echo $val['point'] ? ($val['paytype']==2 ? '<span class="c-red">'.$val['point'].'元</span>' : '<span class="c-red">'.$val['point'].'积分</span>') : '免费';?>
+                    </td>
+                    <td>
+                        <?php echo date('Y-m-d', $val['updatetime']);?>
+                    </td>
+                    <td><a href="https://bbs.yzmcms.com/store/index/show/id/<?php echo $val['id'];?>.html" target="_blank" class="btn-mini btn-secondary">查看购买</a></td>
+                </tr>
+                <?php 
+			   }
+			   if(!$data){
+			   		echo '<td colspan="7" class="text-c">暂无数据~</td>';
+			   }	 
+			?>
+            </tbody>
+        </table>
+        <div id="page"><span class="page_left">共
+                <?php echo $total?>条记录，共
+                <?php echo $page->total()?>页，当前显示第
+                <?php echo $page->getpage()?>页</span>
+            <span class="page_right">
+                <?php echo $page->getfull();?></span></div>
+    </div>
+    <?php include $this->admin_tpl('footer');?>
+</body>
+
+</html>

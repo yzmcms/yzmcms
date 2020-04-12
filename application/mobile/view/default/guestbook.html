@@ -5,53 +5,53 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
     <title>{$seo_title}</title>
-    <link href="{STATIC_URL}css/yzm-mobile-category.css" rel="stylesheet" type="text/css" />
+    <link href="{STATIC_URL}css/yzm-mobile-category.css?v=yzmcms" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="{STATIC_URL}js/mobile_simpler-sidebar.min.js"></script>
     <meta name="keywords" content="{$keywords}" />
     <meta name="description" content="{$description}" />
-    <script type="text/javascript">
-    function checksubmit() {
-        if (document.guest.title.value == "") {
-            alert("留言主题不能为空！");
-            return false;
-        }
-        if (document.guest.name.value == "") {
-            alert("联系人不能为空！");
-            return false;
-        }
-        if (document.guest.bookmsg.value == "") {
-            alert("留言内容不能为空！");
-            return false;
-        }
-        if (document.guest.code.value == "") {
-            alert("验证码不能为空！");
-            return false;
-        }
-        return true;
-    }
-    </script>
 </head>
 
 <body>
     <!--网站容器-->
-    <div id="container">
+    <div class="yzm-container">
         {m:include "mobile","header"}
-        <div id="main_book">
+        <div class="yzm-guestbook">
             <h3>我要留言</h3>
             <form action="{U('guestbook/index/init')}" method="post" name="guest" onSubmit="return checksubmit()">
-                <input type="text" name="title" placeholder="请输入留言主题（必填）" autofocus="autofocus" required="required" />
-                <input type="text" name="name" placeholder="请输入联系人（必填）" required="required" />
+                <input type="text" name="title" placeholder="请输入留言主题（必填）" autofocus="autofocus" required="required" class="yzm-input" />
+                <input type="text" name="name" placeholder="请输入联系人（必填）" required="required" class="yzm-input"/>
                 <p>其他信息：</p>
-                <input type="tel" name="phone" placeholder="电话（选填）" />
-                <input type="email" name="email" placeholder="邮箱（选填）" />
-                <input type="tel" name="qq" placeholder="QQ（选填）" />
-                <input type="text" name="address" placeholder="地址（选填）" />
+                <input type="tel" name="phone" placeholder="电话（选填）" class="yzm-input"/>
+                <input type="email" name="email" placeholder="邮箱（选填）" class="yzm-input"/>
+                <input type="tel" name="qq" placeholder="QQ（选填）" class="yzm-input"/>
+                <input type="text" name="address" placeholder="地址（选填）" class="yzm-input"/>
                 <textarea name="bookmsg" placeholder="请输入留言内容（必填）" /></textarea>
                 <img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" style="cursor:pointer;" title="看不清？点击更换">
-                <input name="code" type="text" required="required" placeholder="请输入验证码">
+                <input name="code" type="text" required="required" placeholder="请输入验证码" class="yzm-input">
                 <input type="hidden" name="mobile" value="mobile" />
-                <input type="submit" name="dosubmit" id="yzm-submit" value="提 交" />
+                <input type="submit" name="dosubmit" class="yzm-submit" value="提 交" />
             </form>
         </div>
+        <script type="text/javascript">
+        function checksubmit() {
+            if (document.guest.title.value == "") {
+                alert("留言主题不能为空！");
+                return false;
+            }
+            if (document.guest.name.value == "") {
+                alert("联系人不能为空！");
+                return false;
+            }
+            if (document.guest.bookmsg.value == "") {
+                alert("留言内容不能为空！");
+                return false;
+            }
+            if (document.guest.code.value == "") {
+                alert("验证码不能为空！");
+                return false;
+            }
+            return true;
+        }
+        </script>
         {m:include "mobile","footer"}

@@ -160,7 +160,7 @@ class index{
 		yzm_base::load_sys_class('form','',0);
 		$modelinfo = getcache($modelid.'_model');
 		if($modelinfo === false){
-			$modelinfo = D('model_field')->where(array('modelid' => $modelid, 'disabled' => 0))->order('listorder ASC, field ASC')->select();
+			$modelinfo = D('model_field')->where(array('modelid' => $modelid, 'disabled' => 0))->order('listorder ASC, fieldid ASC')->select();
 			setcache($modelid.'_model', $modelinfo);
 		}
 		
