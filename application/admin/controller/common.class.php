@@ -14,7 +14,7 @@ class common{
 	}
 
 	/**
-	 * 判断用户是否已经登陆
+	 * 判断用户是否已经登录
 	 */
 	final private function check_admin() {
 		if(ROUTE_M =='admin' && ROUTE_C =='index' && ROUTE_A =='login') {

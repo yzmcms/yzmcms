@@ -58,7 +58,7 @@ class myhome{
 		//现在的访客id
 		$now_userid = intval(get_cookie('_userid'));
 
-		//如果访客已登陆，并且访问的不是自己的主页，并且访客表的最后一个访客不是自己，则保存记录
+		//如果访客已登录，并且访问的不是自己的主页，并且访客表的最后一个访客不是自己，则保存记录
 		if($now_userid && $now_userid!=$userid && $guest_id!=$now_userid){
 			$data['space_id'] = $userid;
 			$data['guest_id'] = $now_userid;

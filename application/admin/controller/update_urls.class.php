@@ -31,7 +31,7 @@ class update_urls extends common {
 	 * 更新栏目URL
 	 */
 	public function update_category_url() {
- 		if(isset($_POST['dosubmit'])) {
+ 		if(is_post()) {
 			$catids = isset($_POST['catids']) && is_array($_POST['catids']) ? $_POST['catids'] : array('0');
 			
 			$category = D('category');
@@ -43,7 +43,7 @@ class update_urls extends common {
 				 $catinfo = get_category(); 
 			}else{
 				$catids = join(',', array_map('intval', $catids));
-				$catinfo = D('category')->field('catid,catname,type,category_urlrule,catdir')->where("catid IN ($catids)")->select();
+				$catinfo = D('category')->field('catid,catname,`type`,category_urlrule,catdir')->where("catid IN ($catids)")->select();
 			}
 			
 			foreach($catinfo as $val){
@@ -94,8 +94,9 @@ class update_urls extends common {
 		if(!$total)  $total = $db->total();
 		$num = ceil($total/$pagesize);
 		$limit = $offset.','.$pagesize;
-		$data = $db->field('catid, id')->order($order)->limit($limit)->select();
+		$data = $db->field('catid, id, flag')->order($order)->limit($limit)->select();
 		foreach($data as $val) {
+			if(strstr($val['flag'], '7')) continue;
 			$url = get_content_url($val['catid'], $val['id']);	
 			$db->update(array('url' => $url), array('id' => $val['id']));
 		}

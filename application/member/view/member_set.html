@@ -51,7 +51,7 @@
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">每日登陆奖励积分：</label>
+					<label class="form-label col-xs-4 col-sm-2">每日登录奖励积分：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text"  name="login_point" value="<?php echo $data["login_point"];?>" class="input-text w_200">
 					</div>
@@ -135,7 +135,7 @@ function check_all(){
 	}
 	val = $("input[name='login_point']").val();
 	if(val=='' || isNaN(val)){
-		layer.msg('每日登陆奖励积分只能为数字！');
+		layer.msg('每日登录奖励积分只能为数字！');
 		return false;
 	}
 	val = $("input[name='comment_point']").val();

@@ -504,43 +504,22 @@ function file_down($filepath, $filename = '') {
 
 /**
 * 传入日期格式或时间戳格式时间，返回与当前时间的差距，如1分钟前，2小时前，5月前，3年前等
-* @param string or int $date 分两种日期格式"2015-09-12 14:16:12"或时间戳格式"1386743303"
-* @param int $type
+* @param $date 分两种日期格式"2015-09-12 14:16:12"或时间戳格式"1386743303"
+* @param int $type 1为时间戳格式，$type = 2为date时间格式
 * @return string
 */
-function format_time($date = 0, $type = 1) { //$type = 1为时间戳格式，$type = 2为date时间格式
-    switch ($type) {
-        case 1:
-            //$data时间戳格式
-            $second = SYS_TIME - $date;
-            $minute = floor($second / 60) ? floor($second / 60) : 1; 
-            if ($minute >= 60 && $minute < (60 * 24)) { 
-                $hour = floor($minute / 60); 
-            } elseif ($minute >= (60 * 24) && $minute < (60 * 24 * 30)) { 
-                $day = floor($minute / ( 60 * 24)); 
-            } elseif ($minute >= (60 * 24 * 30) && $minute < (60 * 24 * 365)) { 
-                $month = floor($minute / (60 * 24 * 30));
-            } elseif ($minute >= (60 * 24 * 365)) { 
-                $year = floor($minute / (60 * 24 * 365)); 
-            }
-            break;
-            case 2:
-            //$date为字符串格式 2013-06-06 19:16:12
-            $date = strtotime($date);
-            $second = SYS_TIME - $date;
-            $minute = floor($second / 60) ? floor($second / 60) : 1; 
-            if ($minute >= 60 && $minute < (60 * 24)) { 
-                $hour = floor($minute / 60); 
-            } elseif ($minute >= (60 * 24) && $minute < (60 * 24 * 30)) { 
-                $day = floor($minute / ( 60 * 24)); 
-            } elseif ($minute >= (60 * 24 * 30) && $minute < (60 * 24 * 365)) { 
-               $mont = floor($minute / (60 * 24 * 30)); 
-            } elseif ($minute >= (60 * 24 * 365)) { 
-               $year = floor($minute / (60 * 24 * 365)); 
-            }
-            break;
-            default:
-            break;
+function format_time($date = 0, $type = 1) {
+	if($type == 2) $date = strtotime($date);
+    $second = SYS_TIME - $date;
+    $minute = floor($second / 60) ? floor($second / 60) : 1; 
+    if ($minute >= 60 && $minute < (60 * 24)) { 
+        $hour = floor($minute / 60); 
+    } elseif ($minute >= (60 * 24) && $minute < (60 * 24 * 30)) { 
+        $day = floor($minute / ( 60 * 24)); 
+    } elseif ($minute >= (60 * 24 * 30) && $minute < (60 * 24 * 365)) { 
+        $month = floor($minute / (60 * 24 * 30));
+    } elseif ($minute >= (60 * 24 * 365)) { 
+        $year = floor($minute / (60 * 24 * 365)); 
     }
     if (isset($year)) {
         return $year . '年前';
@@ -553,7 +532,7 @@ function format_time($date = 0, $type = 1) { //$type = 1为时间戳格式，$ty
     } elseif (isset($minute)) {
         return $minute . '分钟前';
     }
-}	
+}		
 
 
 /**

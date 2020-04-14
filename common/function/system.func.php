@@ -500,7 +500,7 @@ function get_memberavatar($user, $type=1, $default=true) {
  */
 function set_mapping() {
     if(!$mapping = getcache('mapping')){
-		$data = D('category')->field('catid,type,catdir,arrchildid')->where(array('type<' => 2))->order('catid ASC')->select();
+		$data = D('category')->field('catid,`type`,catdir,arrchildid')->where(array('`type`<' => 2))->order('catid ASC')->select();
 		$mapping = array();
 		foreach($data as $val){
 			$mapping['^'.str_replace('/', '\/', $val['catdir']).'$'] = 'index/index/lists/catid/'.$val['catid'];

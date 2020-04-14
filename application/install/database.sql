@@ -429,7 +429,7 @@ INSERT INTO `yzm_config` VALUES ('33', 'member_check', '3', '新会员注册是�
 INSERT INTO `yzm_config` VALUES ('34', 'member_point', '3', '新会员默认积分', '0', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('35', 'member_yzm', '3', '是否开启会员登录验证码', '1', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('36', 'rmb_point_rate', '3', '1元人民币购买积分数量', '10', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('37', 'login_point', '3', '每日登陆奖励积分', '1', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('37', 'login_point', '3', '每日登录奖励积分', '1', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('38', 'comment_point', '3', '发布评论奖励积分', '1', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('39', 'publish_point', '3', '投稿奖励积分', '3', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('40', 'qq_app_id', '3', 'QQ App ID', '', '', '', '1');

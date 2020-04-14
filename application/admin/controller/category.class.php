@@ -23,7 +23,7 @@ class category extends common {
 		$tree = yzm_base::load_sys_class('tree');
 		$tree->icon = array('&nbsp;&nbsp;&nbsp;│ ','&nbsp;&nbsp;&nbsp;├─ ','&nbsp;&nbsp;&nbsp;└─ ');
 		$tree->nbsp = '&nbsp;&nbsp;&nbsp;';
-		$data = $this->db->field('catid AS id,catname AS name,parentid,type,modelid,listorder,member_publish,pclink,display')->order('listorder ASC,catid ASC')->select();
+		$data = $this->db->field('catid AS id,catname AS name,parentid,`type`,modelid,listorder,member_publish,pclink,display')->order('listorder ASC,catid ASC')->select();
 		$array = array();
 		foreach($data as $v) {
 			if($v['type']=="0"){ 

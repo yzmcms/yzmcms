@@ -24,7 +24,7 @@ class common{
 
 	
 	/**
-	 * 判断用户是否已经登陆
+	 * 判断用户是否已经登录
 	 */
 	final private function check_member() {
 		if(ROUTE_M =='member' && ROUTE_C =='index' && in_array(ROUTE_A, array('login', 'register'))) {
