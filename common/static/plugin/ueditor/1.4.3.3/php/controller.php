@@ -4,7 +4,6 @@
 date_default_timezone_set('PRC');  
 error_reporting(E_ERROR);
 header("Content-Type: text/html; charset=utf-8");
-session_start();
 
 $CONFIG = json_decode(preg_replace("/\/\*[\s\S]+?\*\//", "", file_get_contents("config.json")), true);
 $action = $_GET['action'];
@@ -29,7 +28,15 @@ if(strpos($web_path, $document_root) !== false){
 		$web_path = '/';
 	}
 }
+
+define('URL_MODEL', '3');
+if(version_compare(PHP_VERSION,'5.4.0','<')) {
+    define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc() ? true : false);
+}else{
+    define('MAGIC_QUOTES_GPC', false);
+}
 define('YZMPHP_PATH', $document_root.$web_path);
+define('EXT', '.class.php'); 
 
 class yzm_base {
         
@@ -43,16 +50,15 @@ class yzm_base {
     public static function load_sys_class($classname, $path = '', $initialize = 1) {
         static $classes = array();
         if (empty($path)) $path = YZMPHP_PATH.'yzmphp'.DIRECTORY_SEPARATOR.'core'.DIRECTORY_SEPARATOR.'class';
-
         $key = md5($path.$classname);
         if (isset($classes[$key])) {
-            return !empty($classes[$key]) ? $classes[$key] : true;
+            return $initialize&&!is_object($classes[$key]) ? new $classname : $classes[$key];
         }
-        if (!is_file($path.DIRECTORY_SEPARATOR.$classname.'.class.php')) {
-            exit($path.DIRECTORY_SEPARATOR.$classname.'.class.php'.' FILE NOT Existent!');
+        if (!is_file($path.DIRECTORY_SEPARATOR.$classname.EXT)) {
+            return false;
         }
         
-        include $path.DIRECTORY_SEPARATOR.$classname.'.class.php'; 
+        include $path.DIRECTORY_SEPARATOR.$classname.EXT; 
         if ($initialize) {
             $classes[$key] = new $classname;
         } else {
@@ -72,11 +78,35 @@ class yzm_base {
         }
     }
 
+
+    /**
+     * 加载common目录下的文件
+     * @param string $path 文件地址（包括文件全称）
+     * @param string $m 模块(如果模块名为空，则加载根目录下的common)
+     */
+    public static function load_common($path, $m = '') {
+        if(!$m){
+            if (is_file(YZMPHP_PATH.'common'.DIRECTORY_SEPARATOR.$path)) {
+                return include YZMPHP_PATH.'common'.DIRECTORY_SEPARATOR.$path;
+            }           
+        }else{
+            if (is_file(APP_PATH.$m.DIRECTORY_SEPARATOR.'common'.DIRECTORY_SEPARATOR.$path)) {
+                return include APP_PATH.$m.DIRECTORY_SEPARATOR.'common'.DIRECTORY_SEPARATOR.$path;
+            }           
+        }
+    }
+
 }
 
 yzm_base::load_sys_class('debug', '', 0);
 yzm_base::load_sys_class('image', '', 0);
 yzm_base::load_sys_func('global');
+yzm_base::load_common('function/system.func.php');
+new_session_start();
+
+if(!isset($_SESSION['adminid']) && !isset($_SESSION['_userid'])){
+    exit(json_encode(array('state'=> '请登录后再继续操作！')));
+}
 
 $web_upload = $web_path.'uploads';
 $CONFIG['imagePathFormat'] = $web_upload.$CONFIG['imagePathFormat'];

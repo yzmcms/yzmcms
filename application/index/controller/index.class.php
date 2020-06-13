@@ -1,4 +1,10 @@
 <?php
+/**
+ * YzmCMS站点首页 - 商业用途请购买官方授权
+ * @license          http://www.yzmcms.com
+ * @lastmodify       2020-01-15
+ */
+
 defined('IN_YZMPHP') or exit('Access Denied');
 yzm_base::load_model('content', 'index', 0);
 

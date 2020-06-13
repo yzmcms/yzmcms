@@ -30,7 +30,7 @@
                     <tr>
                         <td>验证码：</td>
                         <td> 
-                        	<input type="text" class="input" required name="code" id="code" style="width:100px;"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="yzm-code-img" title="看不清，换一张">
+                        	<input type="text" class="input" required name="code" id="code" style="width:150px;"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="yzm-code-img" title="看不清，换一张">
                         </td>
                     </tr>
                     <tr>
@@ -58,43 +58,41 @@
 				url: "{U('member/index/public_checkname')}",   
 				dataType: "html",
 				async: false,	
-				data: "username="+$('#username').val(), 
-				beforeSend: function(){
-					$("#dosubmit").attr({ disabled: "disabled" });
-				},				
+				data: "username="+$('#username').val(), 			
 				success: function(msg){  
 				if(msg == '-1'){
-					$("#dosubmit").removeAttr("disabled");
 					res = true;				  
 				}else if(msg == '1'){
-					layer.msg('用户名不存在');		  
+					layer.msg('用户名不存在！', {icon:2, time:2000});		  
 				}else if(msg == '0'){
-					layer.msg('用户名格式不正确');		  
+					layer.msg('用户名格式不正确！', {icon:2, time:2000});		  
 				}else{
-					layer.msg('未知错误');			  
+					layer.msg('未知错误！', {icon:2, time:2000});			  
 				}				 
 				} 
 			});
 			return res;
 		}else{
-			layer.msg('用户名不能为空');
+			layer.msg('用户名不能为空！', {icon:2, time:2000});
 			return res;
 		}		   
 	}
 
 	function chcekall(){
-	    checkname();
+	    if(!checkname()){
+	    	return false;
+	    }
 		if($(".error").text()) return false;
 		if($("input[name='subject']").val()==''){
-		  layer.msg('标题不能为空！');
+		  layer.msg('标题不能为空！', {icon:2, time:2000});
 		  return false;
 		}
 		if($("input[name='content']").val()==''){
-		  layer.msg('内容不能为空！');
+		  layer.msg('内容不能为空！', {icon:2, time:2000});
 		  return false;
 		}
 		if($("input[name='code']").val()==''){
-		  layer.msg('验证码不能为空！');
+		  layer.msg('验证码不能为空！', {icon:2, time:2000});
 		  return false;
 		}	
 	}

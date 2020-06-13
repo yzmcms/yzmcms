@@ -1,20 +1,20 @@
 <?php include $this->admin_tpl('meta');?>
-<title>移动分类 - YzmCMS内容管理系统</title>
+<title>移动分类/复制内容 - YzmCMS内容管理系统</title>
 </head>
 <body>
 <article class="page-container">
 
 <form class="form form-horizontal" onsubmit="return dosub(this)" method="post">
 	<div class="row cl">
-		<label class="form-label col-xs-3"><span class="c-red">*</span>移动分类：</label>
+		<label class="form-label col-xs-3"><span class="c-red">*</span>选择栏目：</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<?php echo select_category('catid', 0, '≡ 请选择栏目 ≡', 0, 'style="height:30px;line-height:30px"', true, true, $modelid); ?>
+			<?php echo select_category('catid', 0, '≡ 请选择栏目 ≡', 0, 'style="height:30px;line-height:30px"', true, true, $flag ? 0 : $modelid); ?>
 		</div>
 	</div>
 	<div class="row cl">
 		<label class="form-label col-xs-3"><span class="c-red">*</span>内容ID：</label>
 		<div class="formControls col-xs-8 col-sm-9">
-			<input type="text" class="input-text" value=""  name="ids" id="ids">
+			<input type="text" class="input-text" value=""  name="ids" id="ids" readonly >
 			<input type="hidden" class="input-text" value="<?php echo $modelid; ?>"  name="modelid">
 			<input type="hidden" class="input-text" value="1"  name="dosubmit">
 		</div>
@@ -31,23 +31,25 @@
 <script type="text/javascript">
 	function dosub(obj){
 		if($("select[name='catid']").val()=='0'){
-			layer.msg('请选择内容分类！');
+			layer.msg('请选择内容分类！', {icon:2});
 			return false;
 		}
 		if($("input[name='ids']").val()==''){
-			layer.msg('内容ID不能为空！');
+			layer.msg('内容ID不能为空！', {icon:2});
 			return false;
 		}
 		$.ajax({
 			type: 'POST',
-			url: '<?php echo U('remove')?>', 
+			url: '<?php echo U(ROUTE_A)?>', 
 			data: $(obj).serialize(),
 			dataType: "json", 
 			success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1,time:1500}, function(){
+						parent.location.reload();
+					});      
 				}else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
 			}
 		})

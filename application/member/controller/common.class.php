@@ -5,14 +5,14 @@
  * @license          http://www.yzmcms.com
  * @lastmodify       2017-01-15
  */
- 
-session_start();
 
 class common{
 	
 	public $db, $userid, $memberinfo;
 	
 	public function __construct() {
+		new_session_start();
+		
 		//ajax验证信息不需要登录
 		if(substr(ROUTE_A, 0, 7) != 'public_') {
 			self::check_member();

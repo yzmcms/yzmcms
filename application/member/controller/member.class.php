@@ -46,7 +46,7 @@ class member extends common{
 		if(isset($_GET['dosubmit'])){	
 			$status = isset($_GET["status"]) ? intval($_GET["status"]) : 99;
 			$groupid = isset($_GET["groupid"]) ? intval($_GET["groupid"]) : 0;
-			$searinfo = isset($_GET["searinfo"]) ? safe_replace($_GET["searinfo"]) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
 			
 			if($searinfo != ''){
@@ -87,7 +87,8 @@ class member extends common{
 			
 			if(!is_username($_POST['username'])) return_json(array('status'=>0,'message'=>'用户名格式不正确！'));
 			if(!is_email($_POST['email'])) return_json(array('status'=>0,'message'=>'邮箱格式不正确！'));
-			if(D('member')->where(array('username' => $_POST['username']))->find()) return_json(array('status'=>0,'message'=>'用户名已存在！'));
+			if(D('member')->field('userid')->where(array('username' => $_POST['username']))->find()) return_json(array('status'=>0,'message'=>'用户名已存在！'));
+			if(D('member')->field('userid')->where(array('email' => $_POST['email']))->find()) return_json(array('status'=>0,'message'=>'邮箱已存在！'));
 
 			$data['username'] = $_POST['username'];
 			$data['password'] = password($_POST['password']);
@@ -294,17 +295,22 @@ class member extends common{
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){
 
-			$searinfo = isset($_GET["searinfo"]) ? safe_replace($_GET["searinfo"]) : '';
-			$capital_type = isset($_GET["capital_type"]) ? $_GET["capital_type"] : 1;
-			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
+			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$capital_type = isset($_GET["capital_type"]) ? intval($_GET["capital_type"]) : 99;
+			$type = isset($_GET["type"]) ? intval($_GET["type"]) : 1;
 			
-			$where .= $capital_type == '1' ? ' AND `type`=1' : ' AND `type`=2';
+			if($capital_type < 99){
+				$where .= $capital_type == 1 ? ' AND `type`=1' : ' AND `type`=2';
+			}
 				
 			if($searinfo != ''){
-				if($type == '1')
+				if($type == '1'){
 					$where .= ' AND username LIKE \'%'.$searinfo.'%\'';
-				else
+				}elseif($type == '2'){
 					$where .= ' AND trade_sn = \''.$searinfo.'\'';
+				}else{
+					$where .= ' AND remarks LIKE \'%'.$searinfo.'%\'';
+				}
 			}
 			
 			if(isset($_GET['start']) && isset($_GET['end']) && $_GET['start']) {
@@ -363,17 +369,22 @@ class member extends common{
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){	
 		
-			$searinfo = isset($_GET["searinfo"]) ? safe_replace($_GET["searinfo"]) : '';
-			$capital_type = isset($_GET["capital_type"]) ? $_GET["capital_type"] : 1;
-			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
+			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$capital_type = isset($_GET["capital_type"]) ? intval($_GET["capital_type"]) : 1;
+			$type = isset($_GET["type"]) ? intval($_GET["type"]) : 1;
 			
-			$where .= $capital_type == '1' ? ' AND `type`=1' : ' AND `type`=2';
+			if($capital_type < 99){
+				$where .= $capital_type == '1' ? ' AND `type`=1' : ' AND `type`=2';
+			}
 			
 			if($searinfo != ''){
-				if($type == '1')
+				if($type == '1'){
 					$where .= ' AND username LIKE \'%'.$searinfo.'%\'';
-				else
+				}elseif($type == '2'){
 					$where .= ' AND trade_sn = \''.$searinfo.'\'';
+				}else{
+					$where .= ' AND remarks LIKE \'%'.$searinfo.'%\'';
+				}
 			}
 			
 			if(isset($_GET['start']) && isset($_GET['end']) && $_GET['start']) {
@@ -436,12 +447,9 @@ class member extends common{
 	 */	
 	public function recharge(){ 
 		if(isset($_POST['dosubmit'])) {
-			$username = isset($_POST['username']) && is_username($_POST['username']) ? trim($_POST['username']) : showmsg(L('user_name_format_error'));
-			
+			$username = isset($_POST['username']) ? trim($_POST['username']) : showmsg(L('user_name_format_error'));
 			$userinfo = D('member')->field('userid,email')->where(array('username'=>$username))->find();
-			
 			if($userinfo){
-				
 				if($_POST['unit']) {
 					M('point')->point_add($_POST['type'], floatval($_POST['money']), 4, $userinfo['userid'], $username, 0, $_POST['remarks'], $_SESSION['adminname'], false);
 				}else{
@@ -458,12 +466,23 @@ class member extends common{
 				$op = $_POST['unit'] == '1' ? 'pay' : 'pay_spend';
 				showmsg(L('operation_success'), U($op), 2);
 			}else{
-				showmsg(L('operation_failure'));
+				showmsg(L('user_does_not_exist'));
 			}
 		    
 		}else{	
 			include $this->admin_tpl('recharge');
 		}
+	}
+
+
+	/**
+	 * 根据用户名获取用户信息
+	 */	
+	public function public_memberinfo(){
+		$username = isset($_POST['username']) ? trim($_POST['username']) : return_json(array('status'=>0, 'message'=>L('lose_parameters')));
+		$userinfo = D('member')->field('userid,username,email,regdate,lastdate,groupid,experience,amount,point,vip,overduedate')->where(array('username' => $username))->find();
+		if(!$userinfo) return_json(array('status'=>0, 'message'=>L('user_does_not_exist')));
+		return_json(array('status'=>1, 'message'=>L('operation_success'), 'data'=>$userinfo));
 	}
 
 	

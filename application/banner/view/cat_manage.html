@@ -5,20 +5,28 @@
 <article class="page-container">
 <div class="formdoby_normal"> 
 	<form method="post" action="" id="myform" onsubmit="return checkall(this)">
-		<ul>
-		<li>
-			<button name="dosubmit" class="btn btn-danger radius" type="submit"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</button>
-			<input class="btn w_120 btn-default radius" type="button" value="关闭" onclick="yzmcms_close()">
-		</li> 
-		<li>&nbsp;&nbsp;<span style="width:50px;display:inline-block">分类ID</span> <span style="width:100px;display:inline-block">分类名称</span></li> 
-		<?php 
-		foreach($data as $val){
-		?>
-			<li><label style="width:60px;">&nbsp;&nbsp;<input type="checkbox" value="<?php echo $val['tid']?>" name="id[]"> <?php echo $val['tid']?></label> <?php echo $val['name']?></li> 
-		<?php 
-		}
-		?>
-		</ul>
+		<button name="dosubmit" class="btn size-S btn-danger radius" type="submit">批量删除</button>
+		<table class="table table-border table-bordered table-bg table-hover mt-5 yzm-table-sort">
+			<thead>
+				<tr>
+					<th width="25"><input type="checkbox"></th>
+					<th>分类ID</th>
+					<th>分类名称</th>
+				</tr>
+			</thead>
+			<tbody>
+				<?php 
+				foreach($data as $val){
+				?>
+				<tr>
+					<td><input type="checkbox" value="<?php echo $val['tid']?>" name="id[]"></td>
+					<td><?php echo $val['tid']?></td>
+					<td><?php echo $val['name']?></td>
+				</tr>
+				<?php 
+				}
+				?>
+		</table>
 		
 	</form>
 </div>
@@ -40,9 +48,11 @@ function checkall(obj){
 				dataType: "json", 
 				success: function (msg) {
 					if(msg.status == 1){
-						parent.location.reload();       
+						layer.msg(msg.message, {icon:1,time:2000}, function(){
+							parent.location.reload();     
+						})  
 					}else{
-						layer.msg(msg.message);
+						layer.msg(msg.message, {icon:2});
 					}
 				}
 			})

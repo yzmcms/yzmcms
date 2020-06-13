@@ -116,7 +116,7 @@ class index{
 	 * 检查model
 	 */	
 	private function _check_model() {
-		session_start();
+		new_session_start();
 		$data = D('model')->where(array('modelid'=>$this->modelid))->find();
 		if(!$data || $data['type']!=1 || $data['disabled']==1){
 			showmsg('表单不存在或已禁用!', 'stop');

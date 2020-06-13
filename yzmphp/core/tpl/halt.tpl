@@ -6,7 +6,7 @@
 	<link rel="Shortcut Icon" href="<?php echo STATIC_URL;?>admin/yzm_admin/images/favicon.ico" />
     <style>
 	  *{padding:0;margin:0;}
-	  body{background:#fff;font-family:'微软雅黑';color:#333;font-size:16px;}
+	  body{background:#fff;font-family:Tahoma,Arial,sans-serif;color:#333;font-size:16px;}
 	  #msg{text-align:center;width:750px;margin:100px auto 0;overflow:hidden;word-break:keep-all;word-wrap:break-word;}
 	  #title{font-size:120px;}
 	  #body{font-size:50px;}

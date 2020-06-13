@@ -7,7 +7,7 @@
 /* CSS Document */
 
 *{margin:0;padding:0;}
-body{font-size:13px;font-family:"Microsoft Yahei","Hiragino Sans GB","Helvetica Neue",Helvetica,tahoma,arial,"WenQuanYi Micro Hei",Verdana,sans-serif,"\5B8B\4F53"; color: #232323; background: #f1f1f1;line-height: 25px}
+body{font-size:13px;font-family:Tahoma,Arial,sans-serif;color: #232323; background: #f1f1f1;line-height: 25px}
 div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0px;padding:0px;}
 table{border-collapse:collapse;}
 a,img{border:0;}
@@ -37,8 +37,8 @@ a:hover{color:#1eaff1;}
 
 /*网站头部 */
 .yzm-header{height:100px;padding:10px 0;width:1170px;margin:0 auto;}
-.yzm-logo{float:left;margin-top:35px;width:370px;}
-.yzm-logo a{color: #2196f3;font-size: 30px;overflow: hidden;display: block;height:35px;text-overflow: ellipsis;white-space: nowrap;}
+.yzm-logo{float:left;margin-top:30px;width:370px;}
+.yzm-logo a{color: #2196f3;font-size: 30px;overflow: hidden;display: block;height:35px;line-height:35px;text-overflow: ellipsis;white-space: nowrap;}
 .yzm-logo img{width:165px;height:55px}
 .yzm-search{float:left;margin-left:130px;margin-top:30px;}
 .searchtxt .searchmenu .searchselected{background-image:url(../images/icon2.png);background-repeat:no-repeat;}
@@ -54,7 +54,7 @@ a:hover{color:#1eaff1;}
 .searchbtn button{background:#2196f3;border:0;color:#fff;outline:none;cursor:pointer;float:left;height:39px;line-height:39px;width:86px;font-size:16px;transition:all 0.3s}
 .searchbtn button:hover{background:#1784db;}
 .yzm-add-content{width:110px;float:right;margin-top:30px;}
-.yzm-add-content a{border-radius: 1px;height: 38px;color: #2196f3;font-size: 14px;display:block;line-height: 38px;transition:0.3s all;border:1px solid #2196f3;text-align: center;}
+.yzm-add-content a{border-radius:2px;height:38px;color:#2196f3;font-size:14px;display:block;line-height: 38px;transition:0.3s all;border:1px solid #2196f3;text-align:center;}
 .yzm-add-content a:hover{text-decoration:none;background:#2196f3;color:#fff; }
 
 /*导航条*/
@@ -72,7 +72,7 @@ a:hover{color:#1eaff1;}
 /* 前端分页 */
 #page{margin:30px 0;font-size:14px;height:30px;line-height:30px;text-align:center}
 #page .pageinfo{display: none;}
-#page  a{border:1px solid #ddd;background:#fff;color:#808080;padding:4px 10px;margin-left:5px;transition:all 0.2s}
+#page  a{border:1px solid #ddd;background:#fff;color:#808080;padding:5px 11px;margin-left:5px;border-radius:2px;transition:all 0.2s}
 #page  a:hover,#page .curpage{background:#2196f3;color:#fff;text-decoration:none;border:1px solid #2196f3;}
 #page .nopage{cursor:not-allowed;}
 #page .nopage:hover{background:#fff;color:#808080;border:1px solid #ddd;}

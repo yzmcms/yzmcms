@@ -1,0 +1,206 @@
+<?php include $this->admin_tpl('meta');?>
+<title>批量添加栏目 - YzmCMS内容管理系统</title>
+<style>.exp{font-size:12px}.exp span{color:#959595;}</style>
+</head>
+<body>
+<div class="page-container">
+	<form class="form form-horizontal" method="" action="" onsubmit="return dosub(this)">
+		<div id="tab_system" class="HuiTab">
+			<div class="tabBar cl"><span>基本选项</span><span>模板设置</span></div>
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择模型：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box">
+						<select name="modelid" class="select" onchange="javascript:yzmcms_msg(this.value)">
+						  <?php 
+						      foreach($modelinfo as $val){
+									$str = $modelid==$val['modelid'] ? ' selected="selected" ' : '';
+									echo '<option value="'.$val['modelid'].'"'.$str.'>'.$val['name'].'</option>';
+							  }
+						  ?>
+						</select>
+						</span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>上级栏目：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box">
+						 <?php echo select_category('parentid', $catid, '', 0, '', false, false); ?>
+						</span>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>栏目名称：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<textarea class="textarea" name="catnames" placeholder="一行一个栏目，如：新闻中心|news" style="width:380px;float:left;margin-right:5px" onblur="yzmcms_pinyin()"></textarea>
+						<div class="exp">例如：
+							<br><span>新闻中心|news</span>
+							<br>竖线以及后面的英文名可留空，
+							<br>默认会自动生成栏目的拼音 
+						</div>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">栏目类型：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="type" type="radio" value="0" checked> 普通栏目</label>
+						<label class="label_radio"><input name="type" type="radio" value="1"> 单页面</label>
+					</div>
+				</div>	
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">导航显示：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="display" type="radio" value="1" checked> 是</label>
+						<label class="label_radio"><input name="display" type="radio" value="0"> 否</label>
+					</div>
+				</div>	
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">允许投稿：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="member_publish" type="radio" value="1"> 是</label>
+						<label class="label_radio"><input name="member_publish" type="radio" value="0" checked> 否</label>
+					</div>
+				</div>	
+			</div>
+			<div class="tabCon">
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>频道页模板：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box">
+						<select name="category_template" class="select">
+						  <?php 
+						      foreach($category_temp as $key => $val){
+									$str = $parent_temp&&$key==$parent_temp['category_template'] ? ' selected="selected" ' : '';
+									echo '<option value="'.$key.'"'.$str.'>'.$val.'('.$key.')</option>';
+							  }
+						  ?>
+						</select>
+						</span>
+					</div>
+				</div>	
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>列表页模板：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box">
+						<select name="list_template" class="select">
+						  <?php 
+						      foreach($list_temp as $key => $val){
+									$str = $parent_temp&&$key==$parent_temp['list_template'] ? ' selected="selected" ' : '';
+									echo '<option value="'.$key.'"'.$str.'>'.$val.'('.$key.')</option>';
+							  }
+						  ?>
+						</select>
+						</span>
+					</div>
+				</div>	
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>内容页模板：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<span class="select-box">
+						<select name="show_template" class="select">
+						  <?php 
+						      foreach($show_temp as $key => $val){
+									$str = $parent_temp&&$key==$parent_temp['show_template'] ? ' selected="selected" ' : '';
+									echo '<option value="'.$key.'"'.$str.'>'.$val.'('.$key.')</option>';
+							  }
+						  ?>
+						</select>
+						</span>
+					</div>
+				</div>					
+			</div>
+
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
+				<input type="hidden" name="dosubmit" value="1">
+				<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
+			 	<input class="btn w_120 btn-default radius h35" type="button" value="取消" onclick="yzmcms_close()">
+			</div>
+		</div>
+	</form>
+</div>
+
+<?php include $this->admin_tpl('footer');?>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>js/pinyin.js"></script> 
+
+<script type="text/javascript">
+
+var catdir_error = true;
+function yzmcms_pinyin() {
+	var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[-/]){0,29}$/;
+	var value = $(".textarea").val();
+	var lines = value.split("\n");
+	var str = '';
+	for(var i=0; i<lines.length; i++){
+		if(lines[i] == '') continue;
+		if(lines[i].indexOf('|') < 0){
+			var pinyin = codefans_net_CC2PY(lines[i]);
+			lines[i] = lines[i]+'|'+pinyin.toLowerCase();
+		}else{
+			value = lines[i].split('|'); 
+			if(!reg.test(value[1])){
+				layer.msg('英文名称「'+value[1]+'」格式不正确！');
+				return false;
+			}
+		}
+		str = str+lines[i]+"\n";
+	}
+	catdir_error = false;
+	$(".textarea").val(str);
+}
+
+function yzmcms_msg(modelid){
+	if(modelid != 1){
+		layer.alert('您选择的非文章模型，记得选择不同的模板哦');
+	}
+}
+
+function dosub(obj){
+	var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[-/]){0,29}$/;
+	if($("textarea[name='catnames']").val()==''){
+		layer.msg('栏目名称不能为空！');
+		return false;
+	}
+	if(catdir_error){
+		layer.msg('栏目英文名称有错误，请检查！');
+		return false;
+	}
+	if($("select[name='category_template']").val()=='0'){
+		layer.msg('请选择频道页模板！');
+		$.Huitab("#tab_system .tabBar span","#tab_system .tabCon","current","click","1");
+		return false;
+	}
+	if($("select[name='list_template']").val()=='0'){
+		layer.msg('请选择列表页模板！');
+		return false;
+	}
+	if($("select[name='show_template']").val()=='0'){
+		layer.msg('请选择内容页模板！');
+		return false;
+	}		
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo U('adds');?>', 
+		data: $(obj).serialize(),
+		dataType: "json", 
+		success: function (msg) {
+			if(msg.status == 1){
+				parent.location.reload();       
+			}else{
+				layer.msg(msg.message);
+			}
+		}
+	})
+	return false;		
+}
+
+$(function(){
+	$.Huitab("#tab_system .tabBar span","#tab_system .tabCon","current","click","<?php echo isset($_GET['tab']) ? intval($_GET['tab']) : '0'?>");
+});
+</script>
+
+</body>
+</html>

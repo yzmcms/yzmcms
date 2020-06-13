@@ -7,6 +7,7 @@
  */
  
 defined('IN_YZMPHP') or exit('Access Denied'); 
+new_session_start(); 
 
 class reset{
 	
@@ -30,7 +31,6 @@ class reset{
 	 * 选择邮箱找回密码
 	 */			
 	public function reset_email(){
-		session_start(); 
 		$_SESSION['step'] = isset($_SESSION['step']) ? $_SESSION['step'] : 1;
 
 		if($_SESSION['step']==1 && isset($_POST['dosubmit'])){
@@ -87,7 +87,6 @@ class reset{
 	 * 选择安全问题找回密码 
 	 */			
 	public function reset_problem(){
-		session_start(); 
 		$_SESSION['step'] = isset($_SESSION['step']) ? $_SESSION['step'] : 1;
 
 		if($_SESSION['step']==1 && isset($_POST['dosubmit'])){

@@ -34,7 +34,7 @@ class guestbook extends common {
 			$ischeck = isset($_GET['ischeck']) ? intval($_GET['ischeck']) : 99;
 			$isread = isset($_GET['isread']) ? intval($_GET['isread']) : 99;
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
-			$searinfo = isset($_GET["searinfo"]) ? trim(safe_replace($_GET["searinfo"])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
 
 			if($ischeck != 99) $where .= ' AND ischeck = '.$ischeck;
 			if($isread != 99) $where .= ' AND isread = '.$isread;

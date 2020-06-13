@@ -7,11 +7,15 @@
             <h3>修改头像</h3>
         </div>
         <div class="main_cont">
+            <div class="explain">
+                <p>禁止上传违法、色情、广告头像，情节严重者将会被封号处理。</p>
+                <p>支持 jpg, jpeg, png, gif 格式图片</p>
+            </div>
             <div class="userimg">
                 <img id="avatar" src="{if $userpic}{$userpic}{else}{STATIC_URL}images/default.gif{/if}" />
             </div>
             <form action="" method="post" enctype="multipart/form-data" onsubmit="return check()">
-                <p>选择图片：<input type="file" id="user_pic" name="user_pic" /></p>[*支持jpg,jpeg,png,gif格式图片]<br><br>
+                <input type="file" id="user_pic" class="file" name="user_pic" />
                 <input type="hidden" name="MAX_FILE_SIZE" value="2048000">
                 <input type="submit" name="dosubmit" value="保存" class="submit" />
             </form>
@@ -25,7 +29,7 @@
     function check(){
 		var file = $("#user_pic").val();
 		if(file == ''){
-		  layer.msg('请选择图片', {icon:2});
+		  layer.msg('请上传头像！', {icon:2});
 		  return false;
 		}
     }

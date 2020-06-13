@@ -45,6 +45,10 @@ class sql extends common {
 					$str = '<span class="c-red">ERROR : 检测到非法字符 “concat” ！</span>';
 					break;
 				}
+				if(stripos($sql, 'replace')){
+					$str = '<span class="c-red">ERROR : 检测到非法字符 “replace” ！</span>';
+					break;
+				}
 				if(preg_match("/^drop(.*)database/i", $sql)){
 					$str = '<span class="c-red">ERROR : 不允许删除数据库！</span>';
 					break;

@@ -252,7 +252,7 @@ class form {
 		$string .= '<script id="'.$name.'" type="text/plain" style="'.$style.'" name="'.$name.'">'.$val.'</script>
 			<script type="text/javascript"> var ue = UE.getEditor("'.$name.'",{
             toolbars:[[ "fullscreen","source","|","undo","redo","|",
-            "bold","italic","underline","blockquote","forecolor","|","fontfamily","fontsize","|","simpleupload","link","unlink","emotion","date","time","drafts"]],
+            "bold","italic","underline","blockquote","forecolor","|","paragraph","fontsize","|","simpleupload","link","unlink","emotion","date","time","drafts"]],
             //关闭字数统计
             wordCount:false,
             //关闭elementPath

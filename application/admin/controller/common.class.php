@@ -1,5 +1,6 @@
 <?php
-session_start();
+defined('IN_YZMPHP') or exit('Access Denied');
+new_session_start();
 
 class common{
 	

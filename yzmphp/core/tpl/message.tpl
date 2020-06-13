@@ -10,8 +10,8 @@
 	<link rel="Shortcut Icon" href="<?php echo STATIC_URL;?>admin/yzm_admin/images/favicon.ico" />
     <style type="text/css">
 	  *{padding:0;margin:0;}
-	  body{background:#fff;color:#000;font-family:"Microsoft Yahei","Hiragino Sans GB","Helvetica Neue",Helvetica,tahoma,arial,"WenQuanYi Micro Hei",Verdana,sans-serif;}
-	  .yzm-msg{width:500px;position:absolute;top:44%;left:50%;margin:-87px 0 0 -250px;line-height:30px;text-align:center;font-size:14px;background:#fff;box-shadow: 0px 0px 25px #999;border-radius: 3px;}
+	  body{background:#fff;color:#000;font-family:Tahoma,Arial,sans-serif;}
+	  .yzm-msg{width:500px;position:absolute;top:44%;left:50%;margin:-87px 0 0 -250px;line-height:30px;text-align:center;font-size:14px;background:#fff;box-shadow: 0px 0px 25px #999;border-radius:3px;overflow:hidden;}
 	  .yzm-msg-title{height:35px;line-height:35px;color:#fff;background:#333;}
 	  .yzm-msg-body{margin:20px 0;text-align:center}
 	  .yzm-info{margin-bottom:10px;}

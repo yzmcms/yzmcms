@@ -195,7 +195,7 @@ class mass extends wechat_common{
 		$wechat_group = D('wechat_group')->select();
 		$where = 'subscribe = 1';
 		if(isset($_GET['dosubmit'])){	
-			$searinfo = isset($_GET["searinfo"]) ? safe_replace($_GET["searinfo"]) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
 			
 			if($searinfo != ''){

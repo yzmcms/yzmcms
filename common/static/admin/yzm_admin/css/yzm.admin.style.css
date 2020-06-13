@@ -5,6 +5,7 @@
  * @license          http://www.yzmcms.com
  */
 
+em,i{font-style:normal;}
 .yzm-menubox{width:200px;overflow:hidden;position:absolute;top:44px;bottom:0;left:0;}
 .yzm-table-box{overflow-y:auto;box-sizing:border-box;}
 .Hui-aside{position:relative;top:0px;overflow-y:auto;overflow-x:hidden;width:218px;height:100%;}
@@ -56,7 +57,7 @@
 .formdoby_normal ul li .input:focus{border-color:#75a1f0;box-shadow: 0 0 12px #75a1f0;outline:medium none;transition:all 0.218s ease 0s;}
 .formdoby_normal ul li:last-child{border-bottom:none}
 
-.explain{background:#fffced;border:1px solid #ffbe7a;padding:8px 10px 0px;}
+.explain{background:#fffced;border:1px solid #ffbe7a;padding:8px 10px 0px;border-radius:3px}
 .explain p{margin-bottom:8px;}
 .search{width:100px;background-color:#fff;transition:width 400ms ease 0s;}
 .search:focus{width:150px;}

@@ -46,7 +46,7 @@ class content extends common {
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){	
 		
-			$searinfo = isset($_GET["searinfo"]) ? safe_replace($_GET["searinfo"]) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
 
 			if($searinfo != ''){
@@ -147,6 +147,19 @@ class content extends common {
 
 
 	/**
+	 * 数据快速修改
+	 */
+	public function public_fast_edit(){
+		$id = input('post.pk', 0, 'intval');
+		$value = input('post.value', 0, 'intval');
+		if(!$id) return_json(array('status'=>0, 'message'=>L('illegal_parameters')));	
+		$db = D($this->content->tabname);
+		$db->update(array('click'=>$value), array('id'=>$id));
+		return_json(array('status'=>1, 'message'=>L('operation_success')));	
+	}
+
+
+	/**
 	 * 百度主动推送
 	 */
 	public function baidu_push() {
@@ -211,6 +224,37 @@ class content extends common {
 			}
 			return_json(array('status' => 1, 'message' => '操作成功'));
 		}else{
+			$flag = false;
+			$modelid = $this->content->modelid;
+			include $this->admin_tpl('content_remove');	
+		}
+	}
+
+
+
+	/**
+	 * 复制内容
+	 */
+	public function copy() {
+		if(isset($_POST['dosubmit'])) {
+			$ids = safe_replace($_POST['ids']);
+			$ids_arr = array_reverse(explode(',', $ids));
+			$catid = intval($_POST['catid']);
+			$target_modelid = get_category($catid, 'modelid');
+			if(!$target_modelid) return_json(array('status' => 0, 'message' => '模型错误，请检查！'));
+			$db = D($this->content->tabname);
+			$target_db = D(get_model($target_modelid));
+			foreach ($ids_arr as $id) {
+				$id = intval($id);
+				$res = $db->where(array('id' => $id))->find();
+				$res['catid'] = $catid;
+				$target_id = $target_db->insert($res);
+				if(strstr($res['flag'], '7')) continue;
+				$target_db->update(array('url' => get_content_url($catid, $target_id)), array('id' => $target_id));
+			}
+			return_json(array('status' => 1, 'message' => '操作成功'));
+		}else{
+			$flag = true;
 			$modelid = $this->content->modelid;
 			include $this->admin_tpl('content_remove');	
 		}

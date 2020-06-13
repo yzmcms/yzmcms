@@ -11,15 +11,14 @@ class upload {
 	
 	private $filepath = './uploads/';     //指定上传文件保存的路径
 	private $allowtype = array('gif', 'jpg', 'png', 'jpeg');  //充许上传文件的类型
-	private $maxsize = 2097152;  //允上传文件的最大值 2M
-	private $israndname = true;  //是否随机重命名， true随机， false不随机，使用原文件名
-	private $originname;   //源文件名称
+	private $maxsize = 2097152;  //上传文件的最大值 2M
+	private $israndname = true;  //是否随机重命名， true随机， false不随机
+	private $originname;   //原文件名称
 	private $tmpfilename;  //临时文件名
 	private $filetype;  //文件类型
 	private $filesize;  //文件大小
 	private $newfilename; //新文件名
 	private $errornum = 0;  //错误号
-	private $errormess = ''; //用来提供错误报告
 
 
 	/**
@@ -28,11 +27,11 @@ class upload {
 	 * 1. 指定上传路径， 2，充许的类型， 3，限制大小， 4，是否使用随机文件名称
 	 * 让用户可以不用按位置传参数，后面参数给值不用将前几个参数也提供值
 	 */
-	function __construct($options = array()){		
+	public function __construct($options = array()){		
 		foreach($options as $key=>$val){
-			$key=strtolower($key);
+			$key = strtolower($key);
 			//查看用户参数中数组的下标是否和成员属性名相同
-			if(!in_array($key,get_class_vars(get_class($this)))){
+			if(!in_array($key, get_class_vars(get_class($this)))){
 				continue;
 			}
 			$this->setoption($key, $val);
@@ -42,14 +41,16 @@ class upload {
 	}
 
 
-
+	/**
+	 * 判断错误信息
+	 */
 	private function geterror(){
 		$str = '上传文件<span style="color:red;margin:0 3px">'.$this->originname.'</span>时出错：';
 		switch($this->errornum){
 			case 4: $str .= '没有文件被上传'; break;
 			case 3: $str .= '文件只被部分上传'; break;
 			case 2: $str .= '上传文件超过了HTML表单中max_file_size选项指定的值'; break;
-			case 1: $str .= '上传文件超过了php.ini 中upload_max_FILESize选项的值'; break;
+			case 1: $str .= '上传文件超过了php.ini 中upload_max_filesize选项的值'; break;
 			case -1: $str .= '末充许的类型'; break;
 			case -2: $str .= '文件过大，上传文件不能超过'.$this->maxsize.'个字节'; break;
 			case -3: $str .= '上传失败'; break;
@@ -97,7 +98,7 @@ class upload {
 	 * 用于检查文件上传类型
 	 */
 	private function checkfiletype() {
-		if(in_array(strtolower($this->filetype), $this->allowtype)) {
+		if(in_array($this->filetype, $this->allowtype)) {
 			return true;
 		}else{
 			$this->setoption('errornum', -1);
@@ -127,70 +128,26 @@ class upload {
 	}
 
 	
+	/**
+	 * 设置属性
+	 */
 	private function setoption($key, $val){
 		$this->$key = $val;
 	}
 	
-	
+
 	/**
-	 * 用来上传一个文件
-	 * @param string $filefield 上传文件的name名称
-	 * @return boolean
+	 * 移动文件
 	 */
-	function uploadfile($filefield){
-		$return = true;
-		//检查文件上传路径
-		if(!$this->checkfilepath()){
-			$this->errormess = $this->geterror();
-			return false;
-		}
+	private function movefile(){
+		if($this->errornum) return false;
+		$filepath = rtrim($this->filepath, '/').'/';
+		$filepath .= $this->newfilename;
 
-	    if(empty($_FILES)){
-			$this->errormess = 'files undefined';
-			return false;
-		} 
-		
-		$name = $_FILES[$filefield]['name'];
-		$tmp_name = $_FILES[$filefield]['tmp_name'];
-		$size = $_FILES[$filefield]['size'];
-		$error = $_FILES[$filefield]['error'];
-
-		if($this->setfiles($name, $tmp_name, $size, $error)){
-			if($this->checkfiletype() && $this->checkfilesize()){
-				$this->setnewfilename();
-				if($this->copyfile()){
-					return true;
-				}else{
-					$return = false;
-				}					
-			}else{
-				$return = false;
-			}	
+		if(@move_uploaded_file($this->tmpfilename, $filepath))	{
+			return true;
 		}else{
-			$return = false;
-		}
-
-		if(!$return)
-			$this->errormess = $this->geterror();
-
-		return $return;
-		
-	}
-
-	
-	private function copyfile(){
-		if(!$this->errornum){
-			$filepath = rtrim($this->filepath, '/').'/';
-			$filepath .= $this->newfilename;
-
-			if(@move_uploaded_file($this->tmpfilename, $filepath))	{
-				return true;
-			}else{
-				$this->setoption('errornum', -3);
-				return false;
-			}
-				
-		}else{
+			$this->setoption('errornum', -3);
 			return false;
 		}
 	}
@@ -201,14 +158,34 @@ class upload {
 	 */
 	private function setfiles($name = '', $tmp_name = '', $size = 0, $error = 0){	
 		$this->setoption('errornum', $error);			
-		if($error){
-			return false;
-		}
+		if($error) return false;
 		$this->setoption('originname', $name);
 		$this->setoption('tmpfilename', $tmp_name);
 		$arrstr = explode('.', $name); 
 		$this->setoption('filetype', strtolower($arrstr[count($arrstr)-1]));
 		$this->setoption('filesize', $size);	
+		return true;
+	}
+	
+	
+	/**
+	 * 用来上传一个文件
+	 * @param string $filefield 上传文件的name名称
+	 * @return boolean
+	 */
+	public function uploadfile($filefield){
+		if(empty($_FILES)){
+			$this->setoption('errornum', 4);
+			return false;
+		} 
+		if(!$this->checkfilepath()) return false;
+		if(!$this->setfiles($_FILES[$filefield]['name'], $_FILES[$filefield]['tmp_name'], $_FILES[$filefield]['size'], $_FILES[$filefield]['error'])) return false;
+		if($this->checkfiletype() && $this->checkfilesize()){
+			$this->setnewfilename();
+			if(!$this->movefile()) return false;
+		}else{
+			return false;
+		}
 		return true;
 	}	
 
@@ -245,6 +222,6 @@ class upload {
 	 * 上传如果失败，则调用这个方法，就可以查看错误报告
 	 */
 	public function geterrormsg() {
-		return $this->errormess;
+		return $this->geterror();
 	}
 }

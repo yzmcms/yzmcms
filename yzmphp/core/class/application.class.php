@@ -110,7 +110,8 @@ class application {
 	public static function halt($msg, $code = 404) {
 		if(ob_get_length() !== false) @ob_end_clean();
 		if(!APP_DEBUG) send_http_status($code);
-		include(YP_PATH.'core'.DIRECTORY_SEPARATOR.'tpl'.DIRECTORY_SEPARATOR.'halt.tpl');
+		$tpl = is_file(YZMPHP_PATH.C('error_page'))&&!APP_DEBUG ? YZMPHP_PATH.C('error_page') : YP_PATH.'core'.DIRECTORY_SEPARATOR.'tpl'.DIRECTORY_SEPARATOR.'halt.tpl';
+		include($tpl);
 		exit();
 	}
 }

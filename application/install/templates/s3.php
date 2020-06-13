@@ -22,7 +22,7 @@
                     <div class="server">
                         <table width="100%">
                             <tr>
-                                <td class="td1" width="100">数据库信息</td>
+                                <td class="td1" width="120">数据库信息</td>
                                 <td class="td1" width="200">&nbsp;</td>
                                 <td class="td1">&nbsp;</td>
                             </tr>
@@ -32,7 +32,7 @@
 								<select name="dbtype" id="dbtype" class="select">
 									<option value="pdo" >PDO (推荐)</option>
 									<option value="mysqli" >MYSQLI</option>
-									<option value="mysql" >MYSQL</option>
+									<!-- <option value="mysql" >MYSQL</option> -->
 								</select>
 								</td>
                                 <td><div id="J_install_tip_dbhost"><span class="gray">推荐使用PDO驱动</span></div></td>
@@ -70,7 +70,7 @@
                         </table>
                         <table width="100%">
                             <tr>
-                                <td class="td1" width="100">网站配置</td>
+                                <td class="td1" width="120">网站配置</td>
                                 <td class="td1" width="200">&nbsp;</td>
                                 <td class="td1">&nbsp;</td>
                             </tr>
@@ -97,7 +97,7 @@
                         </table>
                         <table width="100%">
                             <tr>
-                                <td class="td1" width="100">创始人信息</td>
+                                <td class="td1" width="120">创始人信息</td>
                                 <td class="td1" width="200">&nbsp;</td>
                                 <td class="td1">&nbsp;</td>
                             </tr>

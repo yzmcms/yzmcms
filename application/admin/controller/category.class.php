@@ -33,7 +33,7 @@ class category extends common {
 			}else{ 
 				$v['catlink'] = $v['pclink']."'  target='_blank";
 			} 
-			$v['cattype'] = $v['type']=="0" ? '内部栏目' : ($v['type']=="1" ? '<span style="color:green">单页面</span>' : '<span style="color:red">外部链接</span>');
+			$v['cattype'] = $v['type']=="0" ? '普通栏目' : ($v['type']=="1" ? '<span style="color:green">单页面</span>' : '<span style="color:red">外部链接</span>');
 			$v['catmodel'] = $v['modelid'] ? $modelarr[$v['modelid']] : '无';
 			$v['display'] = $v['display'] ? '是' : '<span style="color:red">否</span>';
 			$v['member_publish'] = $v['member_publish'] ? '<span style="color:red">是</span>' : '否';
@@ -90,7 +90,7 @@ class category extends common {
 			 if($type==1) D('page')->delete(array('catid' => $catid));    //删除单页数据
 			 $this->repairs($data['arrparentid']);
 			 delcache('categoryinfo');
-			 delcache('mapping');
+			 delcache('site_mapping_index');
 			 showmsg('分类删除成功！','',1);
 		}else{
 			 showmsg('分类删除失败！');
@@ -130,7 +130,8 @@ class category extends common {
 			
 				if($type == 1){   //单页类型
 					$arr = array();
-					$arr['catid'] = $catid;					
+					$arr['catid'] = $catid;	
+					$arr['title'] = $_POST['catname'];				
 					$arr['pagedir'] = $_POST['catdir'];										
 					$arr['keywords'] = $_POST['seo_keywords'];										
 					$arr['description'] = $_POST['seo_description'];										
@@ -146,7 +147,7 @@ class category extends common {
 			$this->db->update(array('arrchildid' => $catid, 'pclink' => $_POST['pclink']), array('catid' => $catid));  //更新本类的子分类及更新URL
 			if($_POST['parentid']!='0') $this->repairs($_POST['arrparentid']);
 			delcache('categoryinfo');
-			delcache('mapping');
+			delcache('site_mapping_index');
 			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}else{
 			$modelinfo = get_modelinfo();
@@ -165,7 +166,67 @@ class category extends common {
 		}
 		
 	}
+
+
+
+	/**
+	 * 批量添加
+	 */
+	public function adds() {
+		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
+		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
+		if(isset($_POST['dosubmit'])) { 
+			$type = isset($_POST['type']) ? intval($_POST['type']) : 0;
+			$catnames = explode(PHP_EOL, $_POST['catnames']);	
+			foreach ($catnames as $key => $val) {
+				if(strpos($val, '|')){
+					list($_POST['catname'], $_POST['catdir']) = explode('|', $val);
+				}
+
+				$res = $this->db->field('catid')->where(array('catdir' => $_POST['catdir']))->one();
+				if($res) continue;
+
+				if($_POST['parentid']=='0') {
+					$_POST['arrparentid'] = '0';
+				}else{
+					$data = $this->db->field('arrparentid,arrchildid')->where(array('catid'=>$_POST['parentid']))->find();
+					$_POST['arrparentid'] = $data["arrparentid"].','.$_POST['parentid'];
+				}
+				$_POST['mobname'] = $_POST['catname'];
+				$catid = $this->db->insert($_POST, true);
+				if($type == 1){   //单页类型
+					$arr = array();
+					$arr['catid'] = $catid;					
+					$arr['title'] = $_POST['catname'];															
+					$arr['pagedir'] = $_POST['catdir'];															
+					$arr['template'] = $_POST['category_template'];										
+					$arr['updatetime'] = SYS_TIME;										
+					D('page')->insert($arr, false, false); 
+				}
+				//根据系统设置生成URL
+				$_POST['pclink'] = get_config('url_mode') ? get_config('site_url').$_POST['catdir'].'/' : SITE_PATH.$_POST['catdir'].'/';					
+
+				$this->db->update(array('arrchildid' => $catid, 'pclink' => $_POST['pclink']), array('catid' => $catid));  //更新本类的子分类及更新URL
+				if($_POST['parentid']!='0') $this->repairs($_POST['arrparentid']);
+			}	
+
+			delcache('categoryinfo');
+			delcache('site_mapping_index');
+			return_json(array('status'=>1,'message'=>L('operation_success')));
+		}else{
+			$modelinfo = get_modelinfo();
+			$category_temp = $this->select_template('category_temp', 'category_');
+			$list_temp = $this->select_template('list_temp', 'list_');
+			$show_temp = $this->select_template('show_temp', 'show_');
+			$parent_temp = $this->db->field('category_template,list_template,show_template,pclink')->where(array('catid'=>$catid))->find();
+			$parent_dir = $parent_temp ? str_replace(SITE_URL, '', $parent_temp['pclink']) : '';
+			include $this->admin_tpl('category_adds');			
+		}
+		
+	}
 	
+
+
 	/**
 	 * 编辑栏目
 	 */
@@ -195,10 +256,10 @@ class category extends common {
 				$_POST['pclink'] = get_config('url_mode') ? get_config('site_url').$_POST['catdir'].'/' : SITE_PATH.$_POST['catdir'].'/';
 			}
 		
-			if($this->db->update($_POST, array('catid' => $catid))){		
+			if($this->db->update($_POST, array('catid' => $catid), true)){		
 				if($_POST['arrparentid']!=$_POST['cpath']) $this->repairs($_POST['arrparentid'], $_POST['cpath']);
 				delcache('categoryinfo');
-				delcache('mapping');
+				delcache('site_mapping_index');
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();

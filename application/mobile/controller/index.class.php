@@ -1,12 +1,12 @@
 <?php
 /**
- * YzmCMS 手机模块
+ * YzmCMS手机模块 - 商业用途请购买官方授权
  * 手机版如果想实现与PC版一样可自由切换模板方式，查看教程:
  * https://bbs.yzmcms.com/bbs/index/show/id/504.html
  * 
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
- * @lastmodify       2020-03-26
+ * @lastmodify       2020-05-10
  */
  
 defined('IN_YZMPHP') or exit('Access Denied');
@@ -16,8 +16,7 @@ class index{
 	
 	
 	public function __construct() {
-		//设置手机模块模板风格
-		set_module_theme('default');
+		set_module_theme(get_config('site_wap_theme'));
 	}
 	
 	

@@ -5,7 +5,10 @@
  * @license          http://www.yzmcms.com
  * @lastmodify       2017-01-18
  */
- 
+
+defined('IN_YZMPHP') or exit('Access Denied');
+new_session_start();
+
 class index{
 	
 	
@@ -13,7 +16,6 @@ class index{
 	 * 验证码图像
 	 */
 	public function code(){	
-		session_start();
 		$code = yzm_base::load_sys_class('code');
 		if(isset($_GET['width']) && intval($_GET['width'])) $code->width = intval($_GET['width']);
 		if(isset($_GET['height']) && intval($_GET['height'])) $code->height = intval($_GET['height']);
@@ -34,7 +36,6 @@ class index{
 	 * @return {1:成功;-1:未登录;-2:缺少参数}
 	 */	
 	public function favorite(){	
-		session_start();
 		if(isset($_POST['title']) && isset($_POST['url'])) {
 			$title = htmlspecialchars(addslashes($_POST['title']));
 			$url = safe_replace(addslashes($_POST['url']));

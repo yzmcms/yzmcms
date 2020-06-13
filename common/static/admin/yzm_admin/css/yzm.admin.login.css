@@ -5,7 +5,7 @@
  * @license          http://www.yzmcms.com
  */
 
-body{font-size:13px;font-family:"Helvetica Neue", Helvetica, "Microsoft Yahei", 微软雅黑, "Lantinghei SC", STXihei, "WenQuanYi Micro Hei", Arial, sans-serif;line-height:22px;padding:0px;margin:0px;height:100%;width:100%;background:url(../images/login_bg.jpg) no-repeat center center fixed;background-size:cover;background-color:#bbb;}
+body{font-size:13px;font-family:Tahoma,Arial,sans-serif;line-height:22px;padding:0px;margin:0px;height:100%;width:100%;background:url(../images/login_bg.jpg) no-repeat center center fixed;background-size:cover;background-color:#bbb;}
 div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0px;padding:0px;}
 table{border-collapse:collapse;}
 a,img{border:0;}

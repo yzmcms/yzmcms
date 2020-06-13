@@ -14,9 +14,21 @@ class tag extends common {
 		$of = in_array($of, array('id','total','inputtime')) ? $of : 'id';
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$tag = D('tag');
-		$total = $tag->total();
+		$where = array();
+		if(isset($_GET['dosubmit'])){
+			$type = isset($_GET['type']) ? intval($_GET['type']) : 1;
+			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			if($searinfo != ''){
+				if($type == 1)
+					$where = array('tag' => '%'.$searinfo.'%');
+				else
+					$where = array('remarks' => '%'.$searinfo.'%');
+			}			
+		}		
+		$_GET = array_map('htmlspecialchars', $_GET);
+		$total = $tag->where($where)->total();
 		$page = new page($total, 15);
-		$data = $tag->order("$of $or")->limit($page->limit())->select();		
+		$data = $tag->where($where)->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('tag_list');
 	}
 
@@ -95,7 +107,7 @@ class tag extends common {
 		if(isset($_GET['dosubmit'])){
 			$where['tag'] = '%'.$_GET['searinfo'].'%';
 		}
-		$data = D('tag')->field('id,tag,total')->where($where)->order('id DESC')->select();
+		$data = D('tag')->field('id,tag,total')->where($where)->order('id DESC')->limit('100')->select();
 		include $this->admin_tpl('tag_select');
 	}
 	

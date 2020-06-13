@@ -43,7 +43,7 @@ class update_urls extends common {
 				 $catinfo = get_category(); 
 			}else{
 				$catids = join(',', array_map('intval', $catids));
-				$catinfo = D('category')->field('catid,catname,`type`,category_urlrule,catdir')->where("catid IN ($catids)")->select();
+				$catinfo = D('category')->field('catid,catname,`type`,catdir')->where("catid IN ($catids)")->select();
 			}
 			
 			foreach($catinfo as $val){

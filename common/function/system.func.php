@@ -108,25 +108,26 @@ function get_modelinfo($typeall = 0){
  * @return true or false
  */
 function sendmail($email, $title = '', $content = '', $mailtype = 'HTML'){
-	$mail_pass = get_config('mail_pass');
-	if(!is_email($email)) return false;
-	yzm_base::load_sys_class('smtp', '', 0);
-	$smtp = new smtp(get_config('mail_server'),get_config('mail_port'),get_config('mail_auth'),get_config('mail_user'),get_config('mail_pass'));
-	$state = $smtp->sendmail($email, get_config('mail_from'), $title.' - '.get_config('site_name'), $content, $mailtype);
-	if(!$state) return false;
-	return true;
+    if(!is_email($email)) return false;
+    yzm_base::load_sys_class('smtp', '', 0);
+    $smtp = new smtp(get_config('mail_server'),get_config('mail_port'),get_config('mail_auth'),get_config('mail_user'),get_config('mail_pass'));
+    $state = $smtp->sendmail($email, get_config('mail_from'), $title.' - '.get_config('site_name'), $content, $mailtype);
+    if(!$state) return false;
+    return true;
 }
 
 
 /**
  * 返回json数组，默认提示 “数据未修改！” 
  * @param $arr
+ * @param $show_debug
  * @return string
  */
-function return_json($arr = array()){
+function return_json($arr = array(), $show_debug = true){
     header('Content-Type:application/json; charset=utf-8');
-	if(!$arr) exit(json_encode(array('status'=>0,'message'=>L('data_not_modified'))));
-	exit(json_encode($arr));	
+    if(!$arr) $arr = array('status'=>0,'message'=>L('data_not_modified'));
+	if($show_debug) $arr = array_merge($arr, debug::get_debug());
+    exit(json_encode($arr));
 }
 
 
@@ -260,7 +261,7 @@ function select_category($name="parentid", $value="0", $root="", $member_publish
 	
 	if($member_publish){
 		$where = array('member_publish'=>1);
-		$data = D('category')->field('catid,arrparentid')->where($where)->select(); 
+		$data = D('category')->field('catid,arrparentid')->where($where)->order('listorder ASC,catid ASC')->select(); 
 		$arr = array();
 		foreach($data as $val){
 			$arr[$val['catid']] = $val['arrparentid'];
@@ -271,7 +272,7 @@ function select_category($name="parentid", $value="0", $root="", $member_publish
 	$where = array();
 	if($modelid) $where['modelid'] = $modelid;
 	$tree = yzm_base::load_sys_class('tree');
-	$data = D('category')->field('catid AS id,catname AS name,parentid,arrchildid,type')->where($where)->select(); 
+	$data = D('category')->field('catid AS id,catname AS name,parentid,arrchildid,type')->where($where)->order('listorder ASC,catid ASC')->select(); 
 	foreach($data as $val){
 		if($member_publish){
 			if(!in_array($val['id'], $arr)) continue;
@@ -497,24 +498,26 @@ function get_memberavatar($user, $type=1, $default=true) {
 
 /**
  * 设置路由映射
+ * @param string $m 模块名
  */
-function set_mapping() {
-    if(!$mapping = getcache('mapping')){
-		$data = D('category')->field('catid,`type`,catdir,arrchildid')->where(array('`type`<' => 2))->order('catid ASC')->select();
-		$mapping = array();
-		foreach($data as $val){
-			$mapping['^'.str_replace('/', '\/', $val['catdir']).'$'] = 'index/index/lists/catid/'.$val['catid'];
-			if($val['type']) continue;	
-			$mapping['^'.str_replace('/', '\/', $val['catdir']).'\/list_(\d+)$'] = 'index/index/lists/catid/'.$val['catid'].'/page/$1';
-			if($val['catid']!=$val['arrchildid']) continue;	
-			$mapping['^'.str_replace('/', '\/', $val['catdir']).'\/(\d+)$'] = 'index/index/show/catid/'.$val['catid'].'/id/$1';				
-		}
-		//结合自定义URL规则
-		$route_rules = get_urlrule();
-		if(!empty($route_rules)) $mapping = array_merge($route_rules, $mapping); 
-		setcache('mapping', $mapping);
-	}
-	return array_merge($mapping, C('route_rules'));
+function set_mapping($m) {
+    $site_mapping = 'site_mapping_'.$m;
+    if(!$mapping = getcache($site_mapping)){
+        $data = D('category')->field('catid,`type`,catdir,arrchildid')->where(array('`type`<' => 2))->order('catid ASC')->select();
+        $mapping = array();
+        foreach($data as $val){
+            $mapping['^'.str_replace('/', '\/', $val['catdir']).'$'] = $m.'/index/lists/catid/'.$val['catid'];
+            if($val['type']) continue;  
+            $mapping['^'.str_replace('/', '\/', $val['catdir']).'\/list_(\d+)$'] = $m.'/index/lists/catid/'.$val['catid'].'/page/$1';
+            if($val['catid']!=$val['arrchildid']) continue; 
+            $mapping['^'.str_replace('/', '\/', $val['catdir']).'\/(\d+)$'] = $m.'/index/show/catid/'.$val['catid'].'/id/$1';             
+        }
+        //结合自定义URL规则
+        $route_rules = get_urlrule();
+        if(!empty($route_rules)) $mapping = array_merge($route_rules, $mapping); 
+        setcache($site_mapping, $mapping);
+    }
+    return array_merge($mapping, C('route_rules'));
 }
 
 
@@ -553,7 +556,7 @@ function get_memberinfo($userid, $additional=false){
 	if($additional){
 		global $member_detail;
 		$member_detail = isset($member_detail) ? $member_detail : D('member_detail');
-		$data = $member_detail->field('sex,realname,nickname,qq,mobile,phone,userpic,birthday,industry,area,motto,introduce,guest')->where(array('userid' => $userid))->find();
+		$data = $member_detail->field('sex,realname,nickname,qq,mobile,phone,userpic,birthday,industry,area,motto,introduce,guest,fans')->where(array('userid' => $userid))->find();
 		$memberinfo = array_merge($memberinfo, $data);
 	}
 	return $memberinfo;

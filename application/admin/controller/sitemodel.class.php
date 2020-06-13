@@ -61,7 +61,7 @@ class sitemodel extends common {
 		$model = D('model');
 		if(isset($_POST['dosubmit'])) {
 			$modelid = isset($_POST['modelid']) ? intval($_POST['modelid']) : 0;
-			if($model->update(array('name'=>$_POST["name"],'description'=>$_POST["description"],'disabled'=>$_POST["disabled"]), array('modelid' => $modelid))){
+			if($model->update(array('name'=>$_POST["name"],'description'=>$_POST["description"],'disabled'=>$_POST["disabled"]), array('modelid' => $modelid), true)){
 				delcache('modelinfo');
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{

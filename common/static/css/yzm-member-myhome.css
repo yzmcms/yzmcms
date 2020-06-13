@@ -6,7 +6,7 @@
  */
 /* CSS Document */
 
-body{font-size:12px;font-family:"Microsoft Yahei", "微软雅黑", Tahoma, Arial, Helvetica, STHeiti;line-height:22px;padding:0px;margin:0px;background:#96d4f2}
+body{font-size:12px;font-family:Tahoma,Arial,sans-serif;line-height:22px;padding:0px;margin:0px;background:#96d4f2}
 div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0px;padding:0px;}
 table{border-collapse:collapse;}
 a,img{border:0;}

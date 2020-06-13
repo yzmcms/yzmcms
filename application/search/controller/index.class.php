@@ -1,4 +1,10 @@
 <?php
+/**
+ * YzmCMS内容搜索模块 - 商业用途请购买官方授权
+ * @license          http://www.yzmcms.com
+ * @lastmodify       2020-03-15
+ */
+
 defined('IN_YZMPHP') or exit('Access Denied'); 
 yzm_base::load_sys_class('page','',0);
 
@@ -7,9 +13,12 @@ class index{
 	private $offset,$module;
 
 	function __construct() {
-		//搜索分页条数设置
 		$this->offset = get_config('search_page') ? intval(get_config('search_page')) : 10;
-		$this->module = ismobile() ? 'mobile' : 'index';
+		$this->module = 'index';
+		if(isset($_GET['is_wap'])){
+			set_module_theme(get_config('site_wap_theme'));
+			$this->module = 'mobile';
+		}
 	}
 
 	/**
@@ -62,7 +71,7 @@ class index{
 	
 		$total = $tag_content->where(array('tagid'=>$id))->total();
 		$page = new page($total, $this->offset);
-		$data = $tag_content->field('modelid,aid')->where(array('tagid'=>$id))->order('modelid ASC')->limit($page->limit())->select();
+		$data = $tag_content->field('modelid,aid')->where(array('tagid'=>$id))->order('modelid ASC,aid DESC')->limit($page->limit())->select();
 		$search_data = array();
 		foreach ($data as $value) {
 			$res = D(get_model($value['modelid']))->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid,flag,color')->where(array('id'=>$value['aid'],'status'=>1))->find();

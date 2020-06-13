@@ -10,7 +10,7 @@
 .bottom_button{position:fixed;bottom:20px;right:10px;z-index:99;}
 
 .uploadify{position:relative;display:inline-block;width:30px;vertical-align:middle;}
-.uploadify-button{display:inline-block;font-family: Microsoft YaHei,SimSun,Arial;margin: 0px;font-size: 12px;padding: 0px;line-height: 1.5em;background: #e6e6e6;cursor: pointer;background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);border-color:#b3b3b3;border-radius: 4px;border-style: solid;border-width: 1px;box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 1px rgba(0, 0, 0, 0.05);color: #333333;text-align: center;text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);vertical-align: middle;transition: all 0.15s linear 0s;}
+.uploadify-button{display:inline-block;font-family:Tahoma,Arial,sans-serif;margin: 0px;font-size: 12px;padding: 0px;line-height: 1.5em;background: #e6e6e6;cursor: pointer;background-image: linear-gradient(to bottom, #ffffff, #e6e6e6);border-color:#b3b3b3;border-radius: 4px;border-style: solid;border-width: 1px;box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 1px rgba(0, 0, 0, 0.05);color: #333333;text-align: center;text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);vertical-align: middle;transition: all 0.15s linear 0s;}
 .uploadify:hover .uploadify-button{opacity: 1;}
 .uploadify-button.disabled{background-color: #d0d0d0;color: #808080;}
 .uploadify-queue{margin-bottom: 1em;}

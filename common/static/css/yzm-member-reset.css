@@ -6,7 +6,7 @@
  */
 /* CSS Document */
 
-body{font-size:12px;font-family:"微软雅黑";line-height:22px;padding:0px;margin:0px;background:#f1f1f1}
+body{font-size:12px;font-family:Tahoma,Arial,sans-serif;line-height:22px;padding:0px;margin:0px;background:url(../images/yzmcms_login.png);color:#636b6f;}
 div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0px;padding:0px;}
 table{border-collapse:collapse;}
 a,img{border:0;}
@@ -25,7 +25,7 @@ a:hover{color:#2f549f;text-decoration:underline;}
 .red{color:red;font: 12px/1.5 tahoma,arial,宋体,sans-serif;}
 .form{width:620px;margin:0 auto;}
 .form ul li{margin-bottom:20px;}
-.input{height:28px;line-height:28px;width:250px;padding:2px 3px;border-radius:2px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}
+.input{height:30px;line-height:30px;width:250px;padding:2px 5px;border-radius:2px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}
 .input:focus{border-color:#75a1f0;box-shadow: 0 0 12px #75a1f0;outline:medium none;transition:all 0.218s ease 0s;}
 .code{width:100px;margin-right:20px;}
 .codeimg{cursor:pointer;vertical-align: middle;}
@@ -33,19 +33,18 @@ a:hover{color:#2f549f;text-decoration:underline;}
 .submit:hover{opacity: 0.8;color:#fff;}
 
 
-.main{margin:85px auto;padding:50px 50px 80px;overflow:auto;background:#fff;border:1px solid #eee;box-shadow:0 0px 10px rgba(0, 0, 0, 0.09);width:820px;}
-.main h1{border-bottom: 1px dashed #ccc;color:#494949;padding:10px 0;font-size: 25px;margin-bottom:30px;}
-.main_left{width:600px;float:left;border-right:1px solid #ccc;}
+.main{margin:85px auto;padding:50px 50px 80px;overflow:auto;background:#fff;border:1px solid #eee;1px solid #eee;width:820px;border-radius:3px;box-shadow:#e1e1e1 2px 2px 10px;}
+.main h1{border-bottom: 1px dashed #ddd;color:#494949;padding:10px 0;font-size: 25px;margin-bottom:30px;}
+.main_left{width:600px;float:left;border-right:1px solid #ddd;}
 .reset_type{font-size:16px;height:40px;line-height:40px;margin:20px 20px;background:#fffefc;border:1px solid #eee;width:520px;padding:20px 10px;}
 .reset_type span{color:#ff770d;font-family: Georgia,Arial;font-size:32px;margin:0 5px;}
-.reset_type a{border-color:#666;border-color: -moz-use-text-color #666 #666 -moz-use-text-color;border-style: none solid solid none;border-width: 0 1px 1px 0;display:black;float:right;color:#333;height:28px;line-height:28px;font-size:12px;width:75px;text-align:center;background:#eee;margin-top:5px;}
+.reset_type a{border-color:#666;border-color: -moz-use-text-color #666 #666 -moz-use-text-color;border-style: none solid solid none;border-width: 0 1px 1px 0;display:black;float:right;color:#333;height:30px;line-height:30px;font-size:12px;width:75px;text-align:center;background:#eee;margin-top:5px;}
 .reset_type a:hover{text-decoration:none;background:#fafafa;}
-
 .main_right{float:right;width:185px;font-size:14px}
 .button{background:#2196f3;color:#fff;border-radius: 2px;display: inline-block;font-size: 14px;text-align: center;padding:5px 25px;transition:all 0.213s}
 .button:hover{opacity: 0.8;color:#fff;text-decoration: none}
 
-.title{padding: 5px 10px;width:520px;margin-bottom:30px;background:#fffced;border:1px solid #ff8400;color:#ff8400;font-size:14px;font-weight:bold;}
+.title{padding: 5px 10px;width:520px;margin-bottom:30px;background:#fffaf3;border:1px solid #c9ba9b;color:#573a08;font-size:14px;border-radius:3px}
 
 
 /*网站底部 */

@@ -40,6 +40,7 @@ class point {
 	 */
 	public function point_add($type, $value, $pay_type, $userid, $username, $experience = 0, $remarks = '', $adminnote = '', $mod_experience = true) {
 
+		if($type == '1') $value = intval($value);
 		if($value == 0) return false;
 		
 		$data = array();
@@ -146,7 +147,7 @@ class point {
 		}
 
 		if($new_groupid != $groupid) {
-			set_cookie('_groupid', $new_groupid);
+			set_cookie('_groupid', $new_groupid, 0, true);
 			D('member')->update(array('groupid'=>$new_groupid), array('userid' => $userid));
 		}
 	}

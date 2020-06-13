@@ -5,7 +5,7 @@ http://www.yzmcms.com
 
 CSS初始化
 ===================*/
-body{font-family:Arial, "Microsoft Yahei", Simsun;}
+body{font-family:Tahoma,Arial,sans-serif;font-size:14px}
 html,body,div, dl, dt, dd, ul, p, th, td,h1, h2, h3, h4, h5, h6,pre, code, form,fieldset, legend{margin: 0;padding: 0;}
 cite,em,strong,th{font-style: normal;}
 td,th,div{word-break:break-all;word-wrap:break-word;}
@@ -74,14 +74,14 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display
 .f12{font-size:12px !important;}
 .f14{font-size:14px;}
 .f16{font-size:16px;}
-.f24{font-size:24px;font-family:Arial, "Microsoft Yahei", Simsun;}
+.f24{font-size:24px;}
 .fn{font-weight:normal !important;}
 .s1{color:#ff0000;}
 /*
 ===================
 全局
 ===================*/
-body{font:12px/1.5 Arial,Microsoft Yahei,Simsun;color:#333;background:url(../images/bg.png);}
+body{font:12px/1.5;color:#333;background:url(../images/bg.png);}
 a:link{color:#246EA5;text-decoration:none;}
 a:hover{text-decoration:underline;}
 a:visited{color:#762e9c;}
@@ -123,7 +123,7 @@ pre{white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;whit
 ===================
 LOGO
 ===================*/
-.logo{float:left;width:400px;height:80px;line-height: 80px;font-family: '微软雅黑';padding-left: 40px;/*background:url(../images/logo.png) no-repeat;overflow:hidden;text-indent:-2000em;*/}
+.logo{float:left;width:400px;height:80px;line-height: 80px;font-family:Tahoma,Arial,sans-serif;padding-left: 40px;/*background:url(../images/logo.png) no-repeat;overflow:hidden;text-indent:-2000em;*/}
 /*
 ===================
 安装类型文案
@@ -137,7 +137,7 @@ LOGO
 按钮
 ===================*/
 .btn,
-.btn_old{display:inline-block;width:100px;height:30px;background:url(../images/btn.png) no-repeat;font:bold 14px/30px Arial,"Microsoft Yahei",Simsun;text-decoration:none;color:#fff !important;margin:0 50px;border:0 none;cursor:pointer;vertical-align:top;}
+.btn_old{display:inline-block;width:100px;height:30px;line-height:30px;background:url(../images/btn.png) no-repeat;font:bold 14px/30px;text-decoration:none;color:#fff !important;margin:0 50px;border:0 none;cursor:pointer;vertical-align:top;}
 .btn:hover{background-position:0 -30px;text-decoration:none;}
 a.btn:visited{color:#ffffff;}
 .btn_old,
@@ -150,7 +150,7 @@ a.btn_old:visited{color:#999 !important;}
 .step,.step li em,.step li{background:url(../images/step.png) repeat-x;}
 .step{border-bottom:1px solid #dce1e5;height:60px;background-color:#fff;}
 .step li{float:left;height:60px;line-height:60px;width:33%;text-align:center;font-size:14px;color:#6f7885;font-weight:700;}
-.step li em{width:32px;height:32px;text-align:center;line-height:32px;display:inline-block;background-position:0 -70px;font-size:20px;color:#fff;font-family:Microsoft Yahei;margin-right:10px;vertical-align:0;}
+.step li em{width:32px;height:32px;text-align:center;line-height:32px;display:inline-block;background-position:0 -70px;font-size:20px;color:#fff;margin-right:10px;vertical-align:0;}
 .step li.current{background-position:right -106px;background-repeat:no-repeat;color:#246ea5;}
 .step li.current em{background-position:-35px -70px;}
 .step li.on{background-position:0 -176px;}
@@ -159,7 +159,7 @@ a.btn_old:visited{color:#999 !important;}
 ===================
 服务器检测/信息输入
 ===================*/
-.server{padding:20px 20px 10px 155px;}
+.server{padding:20px 20px 10px 155px;font-size:13px}
 .server table{margin-bottom:20px;}
 .server td{padding:3px 5px;}
 .server .td1{color:#417b9d;font-weight:700;}
@@ -233,4 +233,4 @@ loading
 .updata_type .tab_cont ul li{margin:0;padding-left:50px;list-style:none;color:#666;}
 /*立即升级*/
 .once_updata{text-align:center;padding:100px 0;}
-.once_updata button{font-size:32px;font-weight:700;background:#186196 url(../images/header.png) repeat-x;color:#fff;padding:30px 80px;font-weight:100;font-family:"Microsoft Yahei";border:1px solid #186196;cursor:pointer;letter-spacing:2px;}
+.once_updata button{font-size:32px;font-weight:700;background:#186196 url(../images/header.png) repeat-x;color:#fff;padding:30px 80px;font-weight:100;border:1px solid #186196;cursor:pointer;letter-spacing:2px;}

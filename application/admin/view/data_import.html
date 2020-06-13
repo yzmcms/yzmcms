@@ -27,12 +27,12 @@
 <script type="text/javascript">
 
 	function dosub(obj){
-		 if($("input[name='data_import']").val()==''){
-			 layer.msg('请上传文件！');
-			 return false;
-		 }
-
-		var form=document.getElementById("myform");
+		if($("input[name='data_import']").val()==''){
+		layer.msg('请上传文件！');
+		return false;
+		}
+		layer.msg('正在上传中……', { icon: 16, shade: 0.21, shadeClose:true, time:0 });
+		var form = document.getElementById("myform");
 		var data = new FormData(form);
         $.ajax({
             type: 'POST',
@@ -44,9 +44,11 @@
 		    dataType: "json", 
             success: function (msg) {		
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {time: 2000, icon:1}, function (){
+						parent.location.reload();
+					});     
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {time: 3000, icon:2});
 				}
             }
         })		 

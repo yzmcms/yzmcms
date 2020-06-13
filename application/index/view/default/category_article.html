@@ -16,14 +16,14 @@
 	<div class="yzm-line"></div>
 		
 	{php $data = get_childcat($catid);}
-	{loop $data $v}
+	{loop $data $val}
 	<div class="yzm-content-box yzm-img-list">
 		<div class="yzm-title">
-			<h2>{$v[catname]}</h2>
-			<span class="yzm-title-right"><a href="{$v[pclink]}">>>更多</a></span>
+			<h2>{$val[catname]}</h2>
+			<span class="yzm-title-right"><a href="{$val[pclink]}">>>更多</a></span>
 		</div>
 		<ul>
-		{m:lists field="title,thumb,url,color" catid="$v['catid']" limit="8"}
+		{m:lists field="title,thumb,url,color" catid="$val['catid']" limit="8"}
 		{loop $data $v}
 			<li>
 				<a href="{$v[url]}">

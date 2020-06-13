@@ -30,6 +30,7 @@ function https_request($url, $data = '', $array = true, $timeout = 2000){
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     $output = curl_exec($curl);
     curl_close($curl);
+	debug::addmsg(array('url'=>$url, 'data'=>$data), 2);
     return $array ? json_decode($output, true) : $output;
 }
 
@@ -305,8 +306,8 @@ function string2array($data) {
 	if($data == '') return array();
 	
 	if(strpos($data, '{\\')===0) $data = stripslashes($data);
-	$array=json_decode($data,true);
-	return $array;
+	$array = json_decode($data, true);
+	return is_array($array) ? $array : array();
 }
 
 
@@ -321,10 +322,10 @@ function array2string($data, $isformdata = 1) {
 	if($data == '' || empty($data)) return '';
 	
 	if($isformdata) $data = new_stripslashes($data);
-	if (version_compare(PHP_VERSION,'5.3.0','<')){
+	if (version_compare(PHP_VERSION,'5.4.0','<')){
 		return addslashes(json_encode($data));
 	}else{
-		return addslashes(json_encode($data,JSON_FORCE_OBJECT));
+		return json_encode($data, JSON_UNESCAPED_UNICODE|JSON_FORCE_OBJECT);
 	}
 }
 
@@ -664,7 +665,7 @@ function grab_image($content, $targeturl = ''){
 	
 	if($img_array) {
 		$path =  C('upload_file').'/'.date('Ym/d');
-		$urlpath = SITE_URL.$path;
+		$urlpath = SITE_PATH.$path;
 		$imgpath =  YZMPHP_PATH.$path;
 		if(!is_dir($imgpath)) @mkdir($imgpath, 0777, true);
 	}
@@ -785,16 +786,28 @@ function to_sqls($data, $front = ' AND ', $in_column = false) {
 
 
 /**
+ * 以httponly方式开启SESSION
+ * @return boolean
+ */
+function new_session_start(){
+	ini_set('session.cookie_httponly', true);
+	return session_start();
+}
+
+
+/**
  * 设置 cookie
  * @param string $name     变量名
  * @param string $value    变量值
  * @param int $time    过期时间
+ * @param boolean $httponly  
  */
-function set_cookie($name, $value = '', $time = 0) {
+function set_cookie($name, $value = '', $time = 0, $httponly = false) {
 	$time = $time > 0 ? SYS_TIME + $time : $time;
 	$name = C('cookie_pre').$name;
 	$value = is_array($value) ? 'in_yzmphp'.string_auth(json_encode($value),'ENCODE',md5(YZMPHP_PATH.C('db_pwd'))) : string_auth($value,'ENCODE',md5(YZMPHP_PATH.C('db_pwd')));
-	setcookie($name, $value, $time, C('cookie_path'), C('cookie_domain'), C('cookie_secure'));
+	$httponly = $httponly ? $httponly : C('cookie_httponly');
+	setcookie($name, $value, $time, C('cookie_path'), C('cookie_domain'), C('cookie_secure'), $httponly);
 	$_COOKIE[$name] = $value;
 }
 
@@ -826,13 +839,13 @@ function get_cookie($name = '', $default = '') {
 function del_cookie($name = '') {	
 	if(!$name){
 		foreach($_COOKIE as $key => $val) { 
-			setcookie($key, '', SYS_TIME - 3600, C('cookie_path'), C('cookie_domain'), C('cookie_secure'));
+			setcookie($key, '', SYS_TIME - 3600, C('cookie_path'), C('cookie_domain'), C('cookie_secure'), C('cookie_httponly'));
 			unset($_COOKIE[$key]);
 		}		
 	}else{
 		$name = C('cookie_pre').$name;
 		if(!isset($_COOKIE[$name])) return true;
-		setcookie($name, '', SYS_TIME - 3600, C('cookie_path'), C('cookie_domain'), C('cookie_secure'));
+		setcookie($name, '', SYS_TIME - 3600, C('cookie_path'), C('cookie_domain'), C('cookie_secure'), C('cookie_httponly'));
 		unset($_COOKIE[$name]);
 	}
 }
@@ -1070,7 +1083,8 @@ function template($module = '', $template = 'index'){
     $filename = $template.'.html';
 	$tplfile = $template_path.$filename;   
 	if(!is_file($tplfile)) {
-		showmsg(str_replace(YZMPHP_PATH, '', $tplfile).L('template_does_not_exist'),'stop');			                      
+		$template = APP_DEBUG ? str_replace(YZMPHP_PATH, '', $tplfile) : basename($tplfile);
+		showmsg($template.L('template_does_not_exist'), 'stop');			                      
 	}	
 	if(!is_dir(YZMPHP_PATH.'cache'.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR)){
 		@mkdir(YZMPHP_PATH.'cache'.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR, 0777, true);

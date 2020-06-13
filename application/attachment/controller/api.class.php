@@ -5,9 +5,7 @@ defined('IN_YZMPHP') or exit('Access Denied');
 $session_name = session_name();
 if(isset($_POST[$session_name])) session_id($_POST[$session_name]);
 
-session_start();
-
-yzm_base::load_sys_class('upload','',0);
+new_session_start();
 yzm_base::load_sys_class('page','',0);
 
 class api{
@@ -60,7 +58,11 @@ class api{
 		}else{
 			$option['allowtype'] = $this->_get_upload_types();
 		}
-		$upload = new upload($option);
+
+		$upload_type = C('upload_type', 'host');
+		yzm_base::load_model($upload_type, '', 0);
+		if(!class_exists($upload_type)) return_json(array('status'=>0, 'msg'=>'附件上传类「'.$upload_type.'」不存在！'));
+		$upload = new $upload_type($option);
 		if($upload->uploadfile($filename)){
 			$fileinfo = $upload->getnewfileinfo();
 			$fileinfo['module'] = $module;

@@ -4,6 +4,7 @@ CREATE TABLE `yzmcms_banner` (
   `title` varchar(100) NOT NULL DEFAULT '',
   `image` varchar(100) NOT NULL DEFAULT '',
   `url` varchar(150) NOT NULL DEFAULT '',
+  `introduce` varchar(255) NOT NULL DEFAULT '' COMMENT '简介',
   `inputtime` int(10) unsigned NOT NULL DEFAULT '0',
   `listorder` smallint(5) unsigned NOT NULL DEFAULT '0',
   `typeid` tinyint(2) unsigned NOT NULL DEFAULT '0',

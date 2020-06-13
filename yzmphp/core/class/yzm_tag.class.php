@@ -131,6 +131,9 @@ class yzm_tag{
 		$where = 'status = 1';
 		$order = isset($data['order']) ? $data['order'] : 'listorder ASC, id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
+		if(isset($data['typeid'])){
+			$where .= ' AND typeid = '.intval($data['typeid']);
+		}
 		if(isset($data['where'])){
 			$where = $data['where'];
 		}else{

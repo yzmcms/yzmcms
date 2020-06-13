@@ -1,5 +1,6 @@
 <?php include $this->admin_tpl('meta');?>
 <title>内容管理 - YzmCMS内容管理系统</title>
+<link href="<?php echo STATIC_URL;?>plugin/editable/css/jquery-editable.css" rel="stylesheet"/>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 内容列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
@@ -56,6 +57,7 @@
   <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
   <a href="javascript:;" onclick="baidu_push()" class="btn btn-secondary radius">推送至百度</a> 
   <a href="javascript:;" onclick="attribute_operation('移动分类', '<?php echo U('remove', array('modelid' => $modelid))?>')" class="btn btn-primary radius">移动分类</a> 
+  <a href="javascript:;" onclick="attribute_operation('复制内容', '<?php echo U('copy', array('modelid' => $modelid))?>')" class="btn btn-primary radius">复制内容</a> 
   <a href="javascript:;" onclick="attribute_operation('增加属性', '<?php echo U('attribute_operation', array('modelid' => $modelid, 'op' => 1))?>')" class="btn btn-primary radius">增加属性</a> 
   <a href="javascript:;" onclick="attribute_operation('删除属性', '<?php echo U('attribute_operation', array('modelid' => $modelid, 'op' => 0))?>')" class="btn btn-primary radius">删除属性</a> 
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
@@ -87,7 +89,7 @@
 			<a href="<?php echo $val['url'];?>" target="_blank" ><?php echo title_color($val['title'], $val['color']);?></a>
 			<?php
 			if($val['thumb']){
-			 echo '<span style="color:#0a6999;margin:0 3px" title="图片"><i class="Hui-iconfont">&#xe646;</i></span>';
+			 echo '<span style="color:#0a6999;margin:0 3px" title="含缩略图"><i class="Hui-iconfont">&#xe646;</i></span>';
 			}
 			if(strpos($val['flag'], '1') !== false){
 			 echo '<span class="c-red">[置顶]</span>';
@@ -116,7 +118,7 @@
 			?>	
 			</td>
 			<td><?php echo get_catname($val['catid']);?></td>
-			<td><?php echo $val['click']?></td>
+			<td><span class="click" data-pk="<?php echo $val['id']?>"><?php echo $val['click']?></span></td>
 			<td><?php echo $val['username'];if(!$val['system']) echo '<span style="color:blue;margin-left:3px;" title="会员发布"><i class="Hui-iconfont">&#xe60d;</i><span>';?></td>
 			<td><?php echo date('Y-m-d H:i:s', $val['updatetime'])?></td>
 			<td><?php echo $val['status'] ? '<span class="label label-success radius">正常</span>' : '<span class="label radius">草稿</span>';?></td>
@@ -137,78 +139,98 @@
 </div>
 <?php include $this->admin_tpl('footer');?>
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/editable/js/jquery.poshytip.js"></script>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/editable/js/jquery-editable-poshytip.min.js"></script>
 <script type="text/javascript">
 
-function attribute_operation(s, url){
-	var ids = $("input[name='ids[]']:checked");
-	if (ids.length<1){
-	   layer.alert('请勾选信息！');
-	   return false;
-	}
+	$('.click').editable({
+	    url: '<?php echo U('public_fast_edit');?>',
+	    name: 'click',
+	    title: '数据修改',
+	    params: {"modelid":"<?php echo $modelid?>"},
+	    dataType: "json", 
+	    validate:function (value) {
+	        if(value=='' || isNaN(value) || value < 0){
+	            return '点击量必须为数字且不能小于0！';
+	        }
+	    },
+	    success: function(msg, newvalue) {
+	        if(!msg.status){
+	        	return msg.message; 
+		    }
+	    }
+	});
 
-	var str = '';
-	$.each(ids,function(){
-		if(this.checked){
-			str += $(this).val() + ',';
+	function attribute_operation(s, url){
+		var ids = $("input[name='ids[]']:checked");
+		if (ids.length<1){
+		   layer.alert('请勾选信息！');
+		   return false;
 		}
-	 });
-	str = str.substr(0,str.length-1);
-	layer.open({  
-        type: 2,  
-        title: s,  
-        shadeClose: true,  
-        shade: 0.2,  
-        area: ['500px', '250px'],  
-        content: url,
-		success: function(layero, index){
-			var body = layer.getChildFrame('body', index);
-			body.find('#ids').val(str);
+
+		var str = '';
+		$.each(ids,function(){
+			if(this.checked){
+				str += $(this).val() + ',';
+			}
+		 });
+		str = str.substr(0,str.length-1);
+		layer.open({  
+	        type: 2,  
+	        title: s,  
+	        shadeClose: true,  
+	        shade: 0.2,  
+	        area: ['500px', '250px'],  
+	        content: url,
+			success: function(layero, index){
+				var body = layer.getChildFrame('body', index);
+				body.find('#ids').val(str);
+			}
+		})  
+					
+	}
+
+	function baidu_push() {
+		var ids = $("input[name='ids[]']:checked");
+		if (ids.length<1){
+		   layer.alert('请勾选信息！');
+		   return false;
 		}
-	})  
-				
-}
 
-function baidu_push() {
-	var ids = $("input[name='ids[]']:checked");
-	if (ids.length<1){
-	   layer.alert('请勾选信息！');
-	   return false;
+		document.getElementById('myform').action='<?php echo U('baidu_push');?>';
+		document.getElementById('myform').submit();
 	}
 
-	document.getElementById('myform').action='<?php echo U('baidu_push');?>';
-	document.getElementById('myform').submit();
-}
-
-function change_model(){
-	$("#search").submit();
-}
-
-var start = {
-	elem: '#start',
-	format: 'YYYY-MM-DD',
-	min: '1999-01-01', //设定最小日期
-	max: '2099-01-01', //最大日期
-	istime: false,
-	istoday: false,
-	choose: function(datas){
-		 end.min = datas; //开始日选好后，重置结束日的最小日期
-		 end.start = datas //将结束日的初始值设定为开始日
+	function change_model(){
+		$("#search").submit();
 	}
-};
 
-var end = {
-	elem: '#end',
-	format: 'YYYY-MM-DD',
-	min: '1999-01-01',
-	max: '2099-01-01',
-	istime: false,
-	istoday: false,
-	choose: function(datas){
-		start.max = datas; //结束日选好后，充值开始日的最大日期
-	}
-};
-laydate(start);
-laydate(end);
+	var start = {
+		elem: '#start',
+		format: 'YYYY-MM-DD',
+		min: '1999-01-01', //设定最小日期
+		max: '2099-01-01', //最大日期
+		istime: false,
+		istoday: false,
+		choose: function(datas){
+			 end.min = datas; //开始日选好后，重置结束日的最小日期
+			 end.start = datas //将结束日的初始值设定为开始日
+		}
+	};
+
+	var end = {
+		elem: '#end',
+		format: 'YYYY-MM-DD',
+		min: '1999-01-01',
+		max: '2099-01-01',
+		istime: false,
+		istoday: false,
+		choose: function(datas){
+			start.max = datas; //结束日选好后，充值开始日的最大日期
+		}
+	};
+	laydate(start);
+	laydate(end);
 </script>
 
 </body>

@@ -18,8 +18,8 @@ class admin {
 			$_SESSION['adminname'] = $res['adminname'];
 			$_SESSION['roleid'] = $res['roleid'];
 			$_SESSION['admininfo'] = $res;						
-			set_cookie('adminid', $res['adminid']);						
-			set_cookie('adminname', $res['adminname']);						
+			set_cookie('adminid', $res['adminid'], 0, true);						
+			set_cookie('adminname', $res['adminname'], 0, true);						
 			showmsg(L('login_success'), U('init'), 1);
 		}else{
 			$admin_login_log->insert(array('adminname'=>$adminname,'logintime'=>SYS_TIME,'loginip'=>$loginip,'password'=>$_POST['password'],'loginresult'=>'0','cause'=>L('password_error')));

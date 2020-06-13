@@ -91,7 +91,7 @@ class payment {
 			// 充值余额/积分
 			if($order['quantity']){
 				$point = yzm_base::load_model('point', 'member');
-				$point->point_add($order['type'], $order['quantity'], 6, $order['userid'], $order['username'], 0, $order['desc'], '', false);				
+				$point->point_add($order['type'], $order['quantity'], 3, $order['userid'], $order['username'], 0, $order['desc'], '', false);				
 			}
             return true;
         } else {

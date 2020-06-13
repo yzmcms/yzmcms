@@ -61,10 +61,10 @@ class index extends common{
 			
 			$_SESSION['_userid'] = $data['userid'];
 			$_SESSION['_username'] = $data['username'];
-			set_cookie('_userid', $data['userid']);
-			set_cookie('_username', $data['username']);
+			set_cookie('_userid', $data['userid'], 0, true);
+			set_cookie('_username', $data['username'], 0, true);
+			set_cookie('_groupid', $data['groupid'], 0, true);			
 			set_cookie('_nickname', $data['username']);
-			set_cookie('_groupid', $data['groupid']);			
 			
 			//每日登录，增加积分和经验，并更新新用户组
 			$last_day = date('d', $data['lastdate']);
@@ -113,9 +113,9 @@ class index extends common{
 			$data['password'] = isset($_POST['password']) && is_password($_POST['password']) ? trim($_POST['password']) : showmsg(L('password_format_error'));	
 			$data['email'] = isset($_POST['email']) && is_email($_POST['email']) ? trim($_POST['email']) : showmsg(L('mail_format_error'));				
 			
-			$result = $member->where(array('username'=>$_POST['username']))->find();
+			$result = $member->field('userid')->where(array('username'=>$_POST['username']))->find();
 			if($result) showmsg(L('user_already_exists'));
-			$result = $member->where(array('email'=>$_POST['email']))->find();
+			$result = $member->field('userid')->where(array('email'=>$_POST['email']))->find();
 			if($result) showmsg("邮箱已存在！");
 			
 			$data['nickname'] = $data['username'];
@@ -146,10 +146,10 @@ class index extends common{
 			
 			$_SESSION['_userid'] = $data['userid'];
 			$_SESSION['_username'] = $data['username'];
-			set_cookie('_userid', $data['userid']);
-			set_cookie('_username', $data['username']);
+			set_cookie('_userid', $data['userid'], 0, true);
+			set_cookie('_username', $data['username'], 0, true);
+			set_cookie('_groupid', $data['groupid'], 0, true);		
 			set_cookie('_nickname', $data['username']);
-			set_cookie('_groupid', $data['groupid']);		
 			showmsg('注册成功！', U('member/index/init'), 1);			
 			
 		}else{
@@ -193,7 +193,7 @@ class index extends common{
 	 */	
 	public function public_checkname(){ 
 		$username = isset($_POST['username']) && is_username($_POST['username']) ? trim($_POST['username']) : exit('0');
-		$result = D('member')->where(array('username' => $username))->find();
+		$result = D('member')->field('userid')->where(array('username' => $username))->find();
 		$result ? exit('-1') : exit('1');
 	}
 	
@@ -205,7 +205,7 @@ class index extends common{
 	 */	
 	public function public_checkemail(){ 
 		$email = isset($_POST['email']) && is_email($_POST['email']) ? trim($_POST['email']) : exit('0');
-		$result = D('member')->where(array('email' => $email))->find();
+		$result = D('member')->field('userid')->where(array('email' => $email))->find();
 		$result ? exit('-1') : exit('1');
 	}
 	

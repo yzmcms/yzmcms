@@ -210,11 +210,12 @@ class db_pdo{
 	/**
 	 * 执行添加记录操作
 	 * @param $data         要增加的数据，参数为数组。数组key为字段值，数组值为数据取值
-	 * @param $filter       第二个参数选填 如果为真值[1为真] 则开启实体转义
+	 * @param $filter       如果为真值[1为真] 则开启实体转义
 	 * @param $primary 		是否过滤主键
+	 * @param $replace 		是否为replace
 	 * @return int/boolean  成功：返回自动增长的ID，失败：false
 	 */
-	public function insert($data, $filter = false, $primary = true){
+	public function insert($data, $filter = false, $primary = true, $replace = false){
 		if(!is_array($data)) {
 		    $this->geterr('insert function First parameter Must be array!'); 
 			return false;
@@ -227,7 +228,36 @@ class db_pdo{
 		}		
 		
 		if(empty($fields)) return false;
-		$sql = 'INSERT INTO '.$this->get_tablename().' ('. implode(', ', $fields) .') VALUES ('. implode(', ', $values) .')';
+		$sql = ($replace ? 'REPLACE' : 'INSERT').' INTO '.$this->get_tablename().' ('. implode(', ', $fields) .') VALUES ('. implode(', ', $values) .')';
+		$this->execute($sql);
+		return self::$link->lastInsertId();
+	}
+
+
+	/**
+	 * 批量执行添加记录操作
+	 * @param $data         要增加的数据，参数为二维数组
+	 * @param $filter       如果为真值[1为真] 则开启实体转义
+	 * @param $replace 		是否为replace
+	 * @return int/boolean  成功：返回首个自动增长的ID，失败：false
+	 */
+	public function insert_all($datas, $filter = false, $replace = false){
+		if(!is_array($datas) || empty($datas[0])) {
+		    $this->geterr('insert all function First parameter Must be array!'); 
+			return false;
+		}
+		$fields = array_keys($datas[0]);
+		$values = array();
+		foreach ($datas as $data){
+			$value = array();
+			foreach ($data as $key => $val) {
+				$value[] = "'" . $this->safe_data($val, $filter) . "'";
+			}
+			$values[] = '('.implode(',', $value).')';
+		}		
+		
+		if(empty($fields)) return false;
+		$sql = ($replace ? 'REPLACE' : 'INSERT').' INTO '.$this->get_tablename().' ('. implode(', ', $fields) .') VALUES '. implode(', ', $values);
 		$this->execute($sql);
 		return self::$link->lastInsertId();
 	}

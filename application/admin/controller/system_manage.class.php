@@ -10,7 +10,8 @@ class system_manage extends common {
 	 */
 	public function init() {
 		$data = get_config();
-		$theme_list = get_theme_list();
+		$pc_theme_list = get_theme_list('index');
+		$wap_theme_list = get_theme_list('mobile');
 		include $this->admin_tpl('system_set');
 	}
 	

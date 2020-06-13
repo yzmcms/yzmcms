@@ -6,7 +6,7 @@
  */
 /* CSS Document */
 
-body{font: 14px "Microsoft YaHei", Arial, Helvetica, sans-serif;line-height:22px;padding:0px;margin:0px;min-width: 960px;background:url(../images/yzmcms_login.png);min-width:400px}
+body{font-family:Tahoma,Arial,sans-serif;font-size:14px;line-height:22px;padding:0px;margin:0px;min-width: 960px;background:url(../images/yzmcms_login.png);min-width:400px}
 html,body{height:100%;width:100%;}
 div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0px;padding:0px;}
 table{border-collapse:collapse;}

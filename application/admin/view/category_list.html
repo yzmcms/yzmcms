@@ -4,7 +4,14 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 栏目管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a href="javascript:;" onclick="yzm_open('添加栏目','<?php echo U('add', array('type'=>0));?>',800,500)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加栏目</a> <a href="javascript:;" onclick="yzm_open('添加单页','<?php echo U('add', array('type'=>1));?>',800,500)" class="btn btn-secondary radius"><i class="Hui-iconfont">&#xe600;</i> 添加单页</a> <a href="javascript:;" onclick="yzm_open('添加外部链接','<?php echo U('add', array('type'=>2));?>',800,500)" class="btn btn-success radius"><i class="Hui-iconfont">&#xe600;</i> 添加外部链接</a></span></div>
+	<div class="cl pd-5 bg-1 bk-gray"> 
+		<span class="l">
+			<a href="javascript:;" onclick="yzm_open('添加栏目','<?php echo U('add', array('type'=>0));?>',800,500)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加栏目</a> 
+			<a href="javascript:;" onclick="yzm_open('添加单页','<?php echo U('add', array('type'=>1));?>',800,500)" class="btn btn-secondary radius"><i class="Hui-iconfont">&#xe600;</i> 添加单页</a> 
+			<a href="javascript:;" onclick="yzm_open('添加外部链接','<?php echo U('add', array('type'=>2));?>',800,500)" class="btn btn-success radius"><i class="Hui-iconfont">&#xe600;</i> 添加外部链接</a>
+			<a href="javascript:;" onclick="yzm_open('批量添加','<?php echo U('adds');?>',800,500)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 批量添加</a>
+		</span>
+	</div>
 	<form action="<?php echo U('order');?>" method="post">
 	<table class="table table-border table-bordered table-bg table-hover">
 		<thead>

@@ -12,8 +12,9 @@ class param {
 	private $route_config = '';  //路由配置
 	
 	public function __construct() {
-		$this->route_config = C('route');
-		if(URL_MODEL != 0){
+		$route_config = C('route_config');
+		$this->route_config = isset($route_config[HTTP_HOST]) ? $route_config[HTTP_HOST] : $route_config['default'];
+		if(URL_MODEL){
 			if(C('set_pathinfo')) $this->set_pathinfo();
 			$this->pathinfo_url();
 		}
@@ -82,7 +83,7 @@ class param {
 		unset($_GET['s']);
 		if (isset($_SERVER['PATH_INFO']) && !empty($_SERVER['PATH_INFO'])){
 			$_SERVER['PATH_INFO'] = str_ireplace(array(C('url_html_suffix'), 'index.php'), '', $_SERVER['PATH_INFO']);
-			if(C('route_mapping')) $this->mapping(set_mapping());
+			if(C('route_mapping')) $this->mapping(set_mapping($this->route_config['m']));
 			$pathinfo = explode('/', trim($_SERVER['PATH_INFO'], '/'));		
 			$_GET['m'] = isset($pathinfo[0]) ? $pathinfo[0] : '';
 			$_GET['c'] = isset($pathinfo[1]) ? $pathinfo[1] : '';

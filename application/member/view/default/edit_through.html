@@ -14,16 +14,16 @@
             <form method="post" action="" onsubmit="return chcekall()">
                 <table>
                     <tr>
-                        <td>栏目：</td>
+                        <td width="70">栏目：</td>
                         <td>{get_catname($data['catid'])}<input type="hidden" name="catid" value="{$data['catid']}"></td>
                     </tr>
                     <tr>
                         <td>标题：</td>
-                        <td><input type="text" name="title" value="{$data['title']}" required class="input" style="width:370px"><span class="red">*</span></td>
+                        <td><input type="text" name="title" value="{$data['title']}" required class="input w370"><span class="red">*</span></td>
                     </tr>
                     <tr>
                         <td>来源：</td>
-                        <td><input type="text" name="copyfrom" value="{$data['copyfrom']}" class="input"></td>
+                        <td><input type="text" name="copyfrom" value="{$data['copyfrom']}" class="input w370"></td>
                     </tr>
                     <tr>
                         <td>缩略图：</td>
@@ -31,7 +31,7 @@
                     </tr>
                     <tr>
                         <td>摘要：</td>
-                        <td><textarea name="description" class="textarea" style="width:615px;">{$data['description']}</textarea></td>
+                        <td><textarea name="description" class="textarea" style="width:690px;">{$data['description']}</textarea></td>
                     </tr>
                     {loop $fieldstr $val}
                     <tr>

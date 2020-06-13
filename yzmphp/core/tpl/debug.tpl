@@ -1,4 +1,4 @@
-<div id="yzmphp_debug" style="<?php if(!self::$info) echo 'display:none;';?>margin:0px;padding:0px;font-size:12px;font-family:'微软雅黑';line-height:20px;text-align:left;border-top:1px solid #ddd;color:#333;background:#fff;position:fixed;_position:absolute;bottom:0;left:0;width:100%;z-index:999999;">
+<div id="yzmphp_debug" style="<?php if(!self::$info) echo 'display:none;';?>margin:0px;padding:0px;font-size:12px;font-family:Tahoma,Arial,sans-serif;line-height:20px;text-align:left;border-top:1px solid #ddd;color:#333;background:#fff;position:fixed;_position:absolute;bottom:0;left:0;width:100%;z-index:999999;">
 	<div style="padding-left:15px;height:36px;line-height:36px;border-bottom:1px solid #ddd;background-color:#f5f5f5;color:#444"><span onclick="close_yzmphp_debug()" style="cursor:pointer;float:right;width:25px;color:#333;padding-top:10px;overflow:hidden;"><img style="height:18px;vertical-align:top;" title="关闭" alt="关闭" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAABOUlEQVRYR+2W0W0CMRBE33VACXQAdAAlpAJIBaGTKBUk6SAdJB0AHaQESogG3UknY+Pd9cfl4+7Tsj3v1rOr6Zj46ybWZwb4txVYAC/AJ/Db6JMlsAfegGt6V6kCB+C9P7ADzkGINfAN6IeegQ8rgA78AKsGiLH4Bdh6KiDQFgiTuERqJoxAmMUtAN5KuMStAFYIt7gHoAYREvcClCC0PrRa0e2lNq6ZMHcuNeYA5haPVGAAGkNoLSTeAjB+c92jERuamJEnSA0ngPDE9ALk3C6A8Nj2ADxqtcjEvPnJCmDp8xCEBcAinusOkzFrAB7xEMQjgIi4G6IEoBh16jNBdMikntjk4l0J4Ai8tky4vhRjiCfgyxrJtE8RSlnwLkg686EglDGVB82h1KkR317rgvjNxpMzwOQV+AM8QnIhRC5g4gAAAABJRU5ErkJggg=="></span><span onclick="min_yzmphp_debug()" style="cursor:pointer;float:right;color:#333;padding:0 10px;margin-right:10px;" title="最小化">—</span>
 	<span style="font-size:14px">运行信息( <span style="color:red"><?php echo self::spent();?></span> 秒):</span>
 	</div>
@@ -23,7 +23,7 @@
 	?>
 	</div>
 </div>
-<div id="yzmphp_open" onclick="show_yzmphp_debug()" title="查看详细" style="<?php if(self::$info) echo 'display:none;';?>height:28px;line-height:28px;border-top-left-radius:3px;z-index:999998;font-family:'微软雅黑';float:right;text-align: right;overflow:hidden;position:fixed;_position:absolute;bottom:0;right:0;background:#232323;color:#fff;font-size:14px;padding:0 8px;cursor:pointer;"><?php echo self::spent();?>s
+<div id="yzmphp_open" onclick="show_yzmphp_debug()" title="查看详细" style="<?php if(self::$info) echo 'display:none;';?>height:28px;line-height:28px;border-top-left-radius:3px;z-index:999998;font-family:Tahoma,Arial,sans-serif;float:right;text-align: right;overflow:hidden;position:fixed;_position:absolute;bottom:0;right:0;background:#232323;color:#fff;font-size:14px;padding:0 8px;cursor:pointer;"><?php echo self::spent();?>s
 </div>	
 <script type="text/javascript">
 	function show_yzmphp_debug(){

@@ -37,7 +37,7 @@ class user extends wechat_common{
 		if(isset($_GET['dosubmit'])){	
 			$status = isset($_GET["status"]) ? intval($_GET["status"]) : 99;
 			$groupid = isset($_GET["groupid"]) ? intval($_GET["groupid"]) : 99;
-			$searinfo = isset($_GET["searinfo"]) ? safe_replace($_GET["searinfo"]) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
 			
 			if($searinfo != ''){

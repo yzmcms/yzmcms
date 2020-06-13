@@ -25,6 +25,12 @@ class order extends common{
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$order = D('order');
 		$total = $order->total();
+		$money_total = $order->where(array('type'=>2))->total();
+		$point_total = $total-$money_total;
+		$money_sum = $order->field('SUM(quantity)')->where(array('type'=>2))->one();
+		$money_success = $order->field('SUM(quantity)')->where(array('status'=>1, 'type'=>2))->one();
+		$point_sum = $order->field('SUM(quantity)')->where(array('type'=>1))->one();
+		$point_success = $order->field('SUM(quantity)')->where(array('status'=>1, 'type'=>1))->one();
 		$page = new page($total, 15);
 		$data = $order->order("$of $or")->limit($page->limit())->select();			
 		include $this->admin_tpl('order_list');
@@ -44,7 +50,7 @@ class order extends common{
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){
 
-			$searinfo = isset($_GET["searinfo"]) ? safe_replace($_GET["searinfo"]) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
 			$status = isset($_GET["status"]) ? intval($_GET["status"]) : 99;
 			$t_type = isset($_GET["t_type"]) ? $_GET["t_type"] : 0;
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
@@ -68,6 +74,56 @@ class order extends common{
 		}
 		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $order->where($where)->total();
+
+		// 根据充值类型分情况
+		if($t_type){
+			if($t_type == 2){
+				$money_total = $total;
+				$point_total = 0;
+				$money_sum = $order->field('SUM(quantity)')->where($where)->one();
+				if($status==99){
+					$money_success = $order->field('SUM(quantity)')->where('status = 1 AND '.$where)->one();
+				}elseif($status==1){
+					$money_success = $money_sum;
+				}else{
+					$money_success = 0;
+				}
+				$point_sum = 0;
+				$point_success = 0;
+			}else{
+				$money_total = 0;
+				$point_total = $total;
+				$money_sum = 0;
+				$money_success = 0;
+				$point_sum = $order->field('SUM(quantity)')->where($where)->one();
+				if($status==99){
+					$point_success = $order->field('SUM(quantity)')->where('status = 1 AND '.$where)->one();
+				}elseif($status==1){
+					$point_success = $point_sum;
+				}else{
+					$point_success = 0;
+				}
+			}
+		}else{
+			$money_total = $order->where($where.' AND `type` = 2')->total();
+			$point_total = $total-$money_total;
+			$money_sum = $order->field('SUM(quantity)')->where($where.' AND `type` = 2')->one();
+			if($status==99){
+				$money_success = $order->field('SUM(quantity)')->where('status = 1 AND `type` = 2 AND '.$where)->one();
+			}elseif($status==1){
+				$money_success = $money_sum;
+			}else{
+				$money_success = 0;
+			}
+			$point_sum = $order->field('SUM(quantity)')->where($where.' AND `type` = 1')->one();
+			if($status==99){
+				$point_success = $order->field('SUM(quantity)')->where('status = 1 AND `type` = 1 AND '.$where)->one();
+			}elseif($status==1){
+				$point_success = $point_sum;
+			}else{
+				$point_success = 0;
+			}
+		}
 		$page = new page($total, 15);
 		$data = $order->where($where)->order("$of $or")->limit($page->limit())->select();					
 		include $this->admin_tpl('order_list');

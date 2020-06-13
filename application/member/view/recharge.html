@@ -12,7 +12,11 @@
 			 	<label class="label_radio"><input name="type" type="radio" value="2" checked> 金钱</label>
 			 	<label class="label_radio"><input name="type" type="radio" value="1" > 积分</label>
 			 </li>
-			 <li><label>用户名：</label><input type="text" class="input" name="username" id="username" value=""></li> 
+			 <li>
+			 	<label>用户名：</label>
+			 	<input type="text" class="input" name="username" id="username" value="">
+			 	<span class="userinfo f-12 ml-5"></span>
+			 </li> 
 			 <li><label>充值额度：</label>
 			 <label class="label_radio"><input name="unit" type="radio" value="1" checked> 增加</label>
 			 <label class="label_radio"><input name="unit" type="radio" value="0" > 减少</label>
@@ -46,25 +50,24 @@ function checkname(){
 	if($("#username").val() != ''){
 		$.ajax({   
 			type: "post",   
-			url: "<?php echo U('member/index/public_checkname');?>",   
-			dataType: "html",
+			url: "<?php echo U('member/member/public_memberinfo');?>",   
+			dataType: "json",
 			async: false,	
 			data: "username="+$('#username').val(), 			
 			success: function(msg){  
-			if(msg == '-1'){
-				res = true;				  
-			}else if(msg == '1'){
-				layer.msg('该用户不存在！', {icon:2});		  
-			}else if(msg == '0'){
-				layer.msg('用户名格式不正确！', {icon:2});		  
-			}else{
-				layer.msg('未知错误！', {icon:2});			  
-			}				 
+				if(msg.status){
+					res = true;
+					$(".userinfo").html('用户邮箱：'+msg.data.email+'，余额：<em class="c-red">'+msg.data.amount+'</em>，积分：<em class="c-green">'+msg.data.point+'</em>');	  
+				}else{
+					$(".userinfo").html('<span class="c-red">'+msg.message+'</span>');	
+					layer.msg(msg.message, {icon:2});  
+				}				 
 			} 
 		});
 		return res;
 	}else{
-		layer.msg('用户名不能为空！', {icon:2});
+		$(".userinfo").html('<span class="c-red">用户名不能为空！</span>');
+		layer.msg('用户名不能为空！', {icon:2});  
 		return res;
 	}		   
 }

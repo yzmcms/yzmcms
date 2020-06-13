@@ -9,8 +9,8 @@
 	 <input type="hidden" value="<?php echo ROUTE_M;?>" name="m">
 	 <input type="hidden" value="<?php echo ROUTE_C;?>" name="c">
 	 <input type="hidden" value="search" name="a">
-     下单时间：<input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
-     至 <input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d'); ?>">
+     下单时间：<input type="text" class="input-text laydate-icon" style="width:170px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
+     至 <input type="text" class="input-text laydate-icon" style="width:170px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d H:i:s'); ?>">
      <span class="select-box inline">
 		<select name="status" class="select">
 		<option <?php if(isset($_GET['status']) && $_GET['status']=='99'){?> selected <?php }?> value="99">全部</option>
@@ -34,8 +34,11 @@
       <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	 </form>	
   </div>
+  <div class="cl pd-10 bg-1 bk-gray mt-20"> 
+  	总计 <span class="c-red"><?php echo $total?></span> 笔交易(金钱：<?php echo $money_total;?>笔，积分：<?php echo $point_total;?>笔)，金钱总金额：<span class="c-red"><?php echo floatval($money_sum);?></span> 元 ,成功交易：<span class="c-green"><?php echo floatval($money_success);?></span> 元 ，积分总点数：<span class="c-red"><?php echo intval($point_sum)?></span> 点 ,成功交易：<?php echo intval($point_success);?> 点
+   </div>
   <form method="post" action="<?php echo U('pay_del');?>" id="myform">
-  <table class="table table-border table-bordered table-bg table-hover mt-20 yzm-table-sort">
+  <table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
     <thead>
       <tr class="text-c">
 		<th>订单ID<?php echo field_order('id');?></th>
@@ -85,10 +88,10 @@
 <script type="text/javascript">
 var start = {
 	elem: '#start',
-	format: 'YYYY-MM-DD',
+	format: 'YYYY-MM-DD hh:mm:ss',
 	min: '1999-01-01', //设定最小日期
 	max: '2099-01-01', //最大日期
-	istime: false,
+	istime: true,
 	istoday: false,
 	choose: function(datas){
 		 end.min = datas; //开始日选好后，重置结束日的最小日期
@@ -98,10 +101,10 @@ var start = {
 
 var end = {
 	elem: '#end',
-	format: 'YYYY-MM-DD',
+	format: 'YYYY-MM-DD hh:mm:ss',
 	min: '1999-01-01',
 	max: '2099-01-01',
-	istime: false,
+	istime: true,
 	istoday: false,
 	choose: function(datas){
 		start.max = datas; //结束日选好后，充值开始日的最大日期

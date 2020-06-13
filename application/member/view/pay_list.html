@@ -10,10 +10,11 @@
 	 <input type="hidden" value="<?php echo ROUTE_M;?>" name="m">
 	 <input type="hidden" value="<?php echo ROUTE_C;?>" name="c">
 	 <input type="hidden" value="search" name="a">
-     时间：<input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
-     至 <input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d'); ?>">
+     时间：<input type="text" class="input-text laydate-icon" style="width:170px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
+     至 <input type="text" class="input-text laydate-icon" style="width:170px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d H:i:s'); ?>">
      <span class="select-box inline">
 		<select name="capital_type" class="select">
+		<option value="99">全部</option>
 		<option <?php if(isset($_GET['capital_type']) && $_GET['capital_type']=='2'){?> selected <?php }?> value="2">金钱</option>	
 		<option <?php if(isset($_GET['capital_type']) && $_GET['capital_type']=='1'){?> selected <?php }?> value="1">积分</option>
 		</select>
@@ -22,6 +23,7 @@
 		<select name="type" class="select">
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='1'){?> selected <?php }?> value="1">用户名</option>
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='2'){?> selected <?php }?> value="2">订单号</option>	
+		<option <?php if(isset($_GET['type']) && $_GET['type']=='3'){?> selected <?php }?> value="3">备注说明</option>	
 		</select>
 	  </span>
       <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
@@ -76,10 +78,10 @@
 <script type="text/javascript">
 var start = {
 	elem: '#start',
-	format: 'YYYY-MM-DD',
+	format: 'YYYY-MM-DD hh:mm:ss',
 	min: '1999-01-01', //设定最小日期
 	max: '2099-01-01', //最大日期
-	istime: false,
+	istime: true,
 	istoday: false,
 	choose: function(datas){
 		 end.min = datas; //开始日选好后，重置结束日的最小日期
@@ -89,10 +91,10 @@ var start = {
 
 var end = {
 	elem: '#end',
-	format: 'YYYY-MM-DD',
+	format: 'YYYY-MM-DD hh:mm:ss',
 	min: '1999-01-01',
 	max: '2099-01-01',
-	istime: false,
+	istime: true,
 	istoday: false,
 	choose: function(datas){
 		start.max = datas; //结束日选好后，充值开始日的最大日期

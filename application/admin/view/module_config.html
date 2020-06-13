@@ -6,7 +6,7 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label>模块名称：</label><?php echo $name?></li>
+			 <li><label>模块名称：</label><?php echo $name?>（<?php echo $version?>）</li>
 			 <li><label>模块简介：</label><?php echo $description?></li>
 			 <li><label>作者：</label><?php echo $author?></li>
 			 <li><label>作者邮箱：</label><?php echo $authoremail?></li>
@@ -24,7 +24,7 @@
 <?php include $this->admin_tpl('footer');?>
 <script type="text/javascript">
 	function dosub(obj){
-		layer.msg('正在操作中……', { icon: 16, shade: 0.21,shadeClose:true,time:100000 });
+		layer.msg('正在安装中……', { icon: 16, shade: 0.21,shadeClose:true,time:100000 });
 		$.ajax({
 		 type: 'POST',
 		 url: '<?php echo U(ROUTE_A);?>', 

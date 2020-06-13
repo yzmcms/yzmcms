@@ -26,7 +26,7 @@ class index{
  	public function post() {
  		if(isset($_POST['dosubmit'])) {
 			
-			session_start();
+			new_session_start();
 			if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
 				$_SESSION['code'] = '';
 				showmsg(L('code_error'));

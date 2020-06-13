@@ -62,15 +62,28 @@
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>模板风格：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<span class="select-box" style="width:120px;"><select name="site_theme" class="select">
+						<span class="select-box" style="width:150px;margin-right:20px">
+						<select name="site_theme" class="select">
+						<option value="">PC端模板风格</option>
 						  <?php 
-						      foreach($theme_list as $val){
+						      foreach($pc_theme_list as $val){
 									$str = $data["site_theme"]==$val ? ' selected="selected" ' : '';
 									echo '<option value="'.$val.'" '.$str.'>'.$val.'</option>';
 							  }
 						  ?>
 						</select>
 						</span>
+						<span class="select-box" style="width:150px;">
+						<select name="site_wap_theme" class="select">
+						<option value="">WAP端模板风格</option>
+						  <?php 
+						      foreach($wap_theme_list as $val){
+									$str = $data["site_wap_theme"]==$val ? ' selected="selected" ' : '';
+									echo '<option value="'.$val.'" '.$str.'>'.$val.'</option>';
+							  }
+						  ?>
+						</select>
+						</span>						
 					</div>
 				</div>
 				<div class="row cl">
@@ -183,6 +196,13 @@
 					</div>
 				</div>
 				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">留言须包含为中文内容：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="is_words_chinese" type="radio" <?php echo $data["is_words_chinese"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="is_words_chinese" type="radio" <?php echo $data["is_words_chinese"]? '' : 'checked' ?> value="0"> 关闭</label>
+					</div>
+				</div>
+				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">允许用户申请友情链接：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<label class="label_radio"><input name="is_link" type="radio" <?php echo $data["is_link"]? 'checked' : '' ?> value="1"> 开启</label>
@@ -272,39 +292,39 @@
 function check_all(){
 	var reg = /^http(.+)\/$/;
 	if($("input[name='site_name']").val()==''){
-		layer.alert('站点名称不能为空！');
+		layer.msg('站点名称不能为空！');
 		return false;
 	}
 	if(!reg.test($("input[name='site_url']").val())){
 		layer.alert('站点根网址格式为：http://www.yzmcms.com/，请以“/”结尾！');
 		return false;
 	}
-	// if($("input[name='site_logo']").val()==''){
-	// 	layer.alert('站点Logo不能为空！');
-	// 	return false;
-	// }
+	if($("select[name='site_theme']").val()=='' || $("select[name='site_wap_theme']").val()==''){
+		layer.msg('请选择模板风格！');
+		return false;
+	}
 	if(isNaN($("input[name='thumb_width']").val()) || isNaN($("input[name='thumb_height']").val())){
-		layer.alert('缩略图默认设置只能为数字！');
+		layer.msg('缩略图默认设置只能为数字！');
 		return false;
 	}
 	if(isNaN($("input[name='keyword_replacenum']").val()) || $("input[name='keyword_replacenum']").val()<0){
-		layer.alert('关键字替换次数只能为数字且不能小于0！');
+		layer.msg('关键字替换次数只能为数字且不能小于0！');
 		return false;
 	}	
 	if(isNaN($("input[name='search_page']").val()) || $("input[name='search_page']").val()<1){
-		layer.alert('前端搜索每页展示条数只能为数字且不能小于1！');
+		layer.msg('前端搜索每页展示条数只能为数字且不能小于1！');
 		return false;
 	}
 	if($("input[name='upload_maxsize']").val()=='' || isNaN($("input[name='upload_maxsize']").val())){
-		layer.alert('允许上传附件大小只能为数字！');
+		layer.msg('允许上传附件大小只能为数字！');
 		return false;
 	}
 	if($("input[name='upload_types']").val()==''){
-		layer.alert('允许上传附件类型不能为空！');
+		layer.msg('允许上传附件类型不能为空！');
 		return false;
 	}
 	if($("input[name='watermark_name']").val()==''){
-		layer.alert('水印图片名称不能为空！');
+		layer.msg('水印图片名称不能为空！');
 		return false;
 	}
 	return true;			
@@ -312,7 +332,7 @@ function check_all(){
 function test_mail() {
 	var mail_to = $("input[name='mail_to']").val();
 	if(mail_to == ''){
-		layer.alert('请输入邮件测试地址！');
+		layer.msg('请输入邮件测试地址！');
 		return false;
 	}
 	layer.msg('正在发送中……', { icon: 16, shade: 0.21, shadeClose:true, time:0 });

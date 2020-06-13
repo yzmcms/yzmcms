@@ -29,8 +29,15 @@
 				<td class="td-manage"><a title="还原" href="javascript:;" onclick="databack_import('<?php echo U('import',array('random'=>$val['random'],'time'=>$val['time']));?>')" class="btn-mini btn-secondary ml-5" style="text-decoration:none">还原</a> <a title="下载" href="<?php echo U('databack_down',array('random'=>$val['random'],'time'=>$val['time'],'part'=>$val['part']));?>" class="btn-mini btn-success ml-5" style="text-decoration:none">下载</a> <a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('databack_del',array('random'=>$val['random'],'time'=>$val['time']));?>')" class="btn-mini btn-warning ml-5" style="text-decoration:none">删除</a></td>
 			</tr>
 			<?php 
-			   }		 
+			   }
+			   if(!$data){		 
 			?>	
+			<tr class="text-c">
+				<td colspan="5" style="height:30px;">暂无备份数据</td>
+			</tr>
+			<?php 
+			   } 
+			?>
 		</tbody>
 	</table>
 </div>

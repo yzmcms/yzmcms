@@ -77,12 +77,21 @@ class index extends common{
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 		$attachment = D('attachment');
 		$info = $attachment->field('filepath,filename')->where(array('id'=>$id))->find();
-		$file = YZMPHP_PATH.strstr($info['filepath'].$info['filename'], C('upload_file'));
-		if(is_file($file)) @unlink($file);
+		$upload_type = C('upload_type', 'host');
+		yzm_base::load_model($upload_type, '', 0);
+		if(!class_exists($upload_type)){
+			showmsg('附件操作类「'.$upload_type.'」不存在！', 'stop');
+		}
+
+		// PHP5.2不支持 $class::$method();
+		$upload = new $upload_type();
+		$res = $upload->deletefile($info);
+		if(!$res)  showmsg('删除文件「'.$info['filename'].'」失败！', 'stop');
+
 		if($attachment->delete(array('id' => $id))){
-			showmsg(L('operation_success'));
+			showmsg(L('operation_success'), '', 1);
 		}else{
-			showmsg(L('operation_failure'));
+			showmsg('删除文件「'.$info['filename'].'」失败！', 'stop');
 		}
 	}
 
@@ -93,13 +102,21 @@ class index extends common{
 	public function del() {
 		if($_POST && is_array($_POST['id'])){
 			$attachment = D('attachment');
+			$upload_type = C('upload_type', 'host');
+			yzm_base::load_model($upload_type, '', 0);
+			if(!class_exists($upload_type)){
+				showmsg('附件操作类「'.$upload_type.'」不存在！', 'stop');
+			}
+
+			// PHP5.2不支持 $class::$method();
+			$upload = new $upload_type();
 			foreach($_POST['id'] as $val){
 				$info = $attachment->field('filepath,filename')->where(array('id'=>$val))->find();
-				$file = YZMPHP_PATH.strstr($info['filepath'].$info['filename'], C('upload_file'));
-				if(is_file($file)) @unlink($file);
+				$res = $upload->deletefile($info);
+				if(!$res)  showmsg('删除文件「'.$info['filename'].'」失败！', 'stop');
 				$attachment->delete(array('id' => $val));
 			}
-			showmsg(L('operation_success'));
+			showmsg(L('operation_success'), '', 1);
 		}
 	}
 	
