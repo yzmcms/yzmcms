@@ -84,7 +84,8 @@ class param {
 		if (isset($_SERVER['PATH_INFO']) && !empty($_SERVER['PATH_INFO'])){
 			$_SERVER['PATH_INFO'] = str_ireplace(array(C('url_html_suffix'), 'index.php'), '', $_SERVER['PATH_INFO']);
 			if(C('route_mapping')) $this->mapping(set_mapping($this->route_config['m']));
-			$pathinfo = explode('/', trim($_SERVER['PATH_INFO'], '/'));		
+			$no_query_params = strstr($_SERVER['PATH_INFO'], '?', true);
+			$pathinfo = explode('/', trim($no_query_params ? $no_query_params : $_SERVER['PATH_INFO'], '/'));		
 			$_GET['m'] = isset($pathinfo[0]) ? $pathinfo[0] : '';
 			$_GET['c'] = isset($pathinfo[1]) ? $pathinfo[1] : '';
 			$_GET['a'] = isset($pathinfo[2]) ? $pathinfo[2] : '';
