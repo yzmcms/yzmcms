@@ -404,7 +404,7 @@ function is_username($username) {
 	$strlen = strlen($username);
 	if(is_badword($username) || !preg_match("/^[a-zA-Z0-9_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/", $username)){
 		return false;
-	} elseif ( 20 < $strlen || $strlen < 2 ) {
+	} elseif ( $strlen > 30 || $strlen < 3 ) {
 		return false;
 	}
 	
@@ -790,6 +790,7 @@ function to_sqls($data, $front = ' AND ', $in_column = false) {
  * @return boolean
  */
 function new_session_start(){
+	// session_save_path(YZMPHP_PATH.'cache/sessions');
 	ini_set('session.cookie_httponly', true);
 	return session_start();
 }
@@ -919,6 +920,7 @@ function U($url='', $vars='', $domain=false) {
 		if($vars){
 			if(!is_array($vars)) parse_str($vars, $vars);			
             foreach ($vars as $var => $val){
+            	if(is_array($val)) continue;
                 if(trim($val) !== '') $string .= '/'.urlencode($var).'/'.urlencode($val);
             } 
 		}
@@ -1192,6 +1194,20 @@ function make_auth_key($prefix) {
 
 
 /**
+ * 返回json数组，默认提示 “数据未修改！” 
+ * @param $arr
+ * @param $show_debug
+ * @return string
+ */
+function return_json($arr = array(), $show_debug = false){
+    header('Content-Type:application/json; charset=utf-8');
+    if(!$arr) $arr = array('status'=>0,'message'=>L('data_not_modified'));
+	if(APP_DEBUG || $show_debug) $arr = array_merge($arr, debug::get_debug());
+    exit(json_encode($arr));
+}
+
+
+/**
  * 记录日志
  * @param $message 日志信息
  * @param $filename 文件名称
@@ -1259,12 +1275,12 @@ function input($key = '', $default = '', $function = ''){
 	if ($method == 'get') {
 		return empty($key) ? $_GET : (isset($_GET[$key]) ? ($function ? $function($_GET[$key]) : $_GET[$key]) : $default);
 	} elseif ($method == 'post') {
-		$_POST = $_POST ? $_POST : json_decode(file_get_contents('php://input'), true);
+		$_POST = $_POST ? $_POST : (file_get_contents('php://input') ? json_decode(file_get_contents('php://input'), true) : array());
 		return empty($key) ? $_POST : (isset($_POST[$key]) ? ($function ? $function($_POST[$key]) : $_POST[$key]) : $default);
 	} elseif ($method == 'request') {
 		return empty($key) ? $_REQUEST : (isset($_REQUEST[$key]) ? ($function ? $function($_REQUEST[$key]) : $_REQUEST[$key]) : $default);
 	} elseif ($method == 'param') {
-		$param = array_merge($_GET, $_POST, $_REQUEST);
+		$param = array_merge($_GET, is_array($_POST)?$_POST:array(), $_REQUEST);
 		return empty($key) ? $param : (isset($param[$key]) ? ($function ? $function($param[$key]) : $param[$key]) : $default);
 	} else {
 		return false;

@@ -99,7 +99,7 @@ $(function(){
 		var strs= new Array(); 
 		strs = att_status.split("|");
 		for (i=0;i<strs.length;i++ ){ 
-			string += '<li>文件：<input type="text" name="<?php echo $pid;?>[url][]" value="'+strs[i]+'" id="<?php echo $pid;?>_'+i+'" onMouseOver="yzm_img_preview(\'<?php echo $pid;?>_'+i+'\', this.value)"  onmouseout="layer.closeAll();" class="input-text w_300"> 描述：<input type="text" name="<?php echo $pid;?>[alt][]" value="" class="input-text w_200"><a href="javascript:;" onclick="remove_li(this);">删除</a></li>';
+			string += '<li>文件：<input type="text" name="<?php echo $pid;?>[url][]" value="'+strs[i]+'" id="<?php echo $pid;?>_'+i+'" onMouseOver="yzm_img_preview(\'<?php echo $pid;?>_'+i+'\', this.value)"  onmouseout="layer.closeAll();" class="input-text yzm-input-url"> 描述：<input type="text" name="<?php echo $pid;?>[alt][]" value="" class="input-text yzm-input-alt"><a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 1);">上移</a> <a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 0);">下移</a> <a href="javascript:;" class="danger" onclick="yzm_delete_li(this);">删除</a></li>';
 		} 
 		parent.$("#<?php echo $pid;?>").append(string);	
 		

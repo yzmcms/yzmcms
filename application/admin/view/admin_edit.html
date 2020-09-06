@@ -38,14 +38,14 @@
 <script type="text/javascript">
 	function dosub(obj){
 		if(obj.password.value!=''){
-			 if(obj.password.value.length < 6){
-				 layer.msg('密码长度不能低于6位！');
-				 return false;
-			 }
-			 if(obj.password.value!==obj.password2.value){
-				 layer.msg('两次密码值不相等！');
-				 return false;
-			 }
+				if(obj.password.value.length < 6 || obj.password.value.length > 20){
+					layer.msg('密码长度为6-20位！', {icon:2});
+					return false;
+				}
+				if(obj.password.value!==obj.password2.value){
+					layer.msg('两次密码值不相等！', {icon:2});
+					return false;
+				}
 		 }
         $.ajax({
             type: 'POST',
@@ -54,9 +54,11 @@
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1, time:800}, function(){
+						parent.location.reload();
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

@@ -35,12 +35,6 @@ class index{
 		//外部链接
 		if($type == 2) showmsg(L('is_jump'), $pclink, 1);
 		
-		//SEO相关设置
-		$site = get_config();
-		$seo_title = $seo_title ? $seo_title : $catname.'_'.$site['site_name'];
-		$keywords = $seo_keywords ? $seo_keywords : $site['site_keyword'];
-		$description = $seo_description ? $seo_description : $site['site_description'];
-		
 		$template = $catid==$arrchildid ? $list_template : $category_template;
 		
 		//单页面
@@ -51,7 +45,13 @@ class index{
 		}
 		
 		//如果没有设置search,则为静态分页URL规则
-		if(!isset($_GET['s'])) define('LIST_URL', true);			
+		if(!isset($_GET['s'])) define('LIST_URL', true);	
+
+		//SEO相关设置
+		$site = get_config();
+		$seo_title = $seo_title ? $seo_title : $catname.'_'.$site['site_name'];
+		$keywords = $seo_keywords ? $seo_keywords : $site['site_keyword'];
+		$description = $seo_description ? $seo_description : $site['site_description'];		
 				
 		include template('index', $template);
 	}
@@ -74,7 +74,10 @@ class index{
 		if(!$tablename)  showmsg(L('model_not_existent'),'stop');
 		$db = D($tablename);
 		$data = $db->where(array('id'=>$id))->find();
-		if(!$data || $data['status'] != 1 || $data['catid'] != $catid) showmsg(L('content_not_existent'),'stop');
+		if(!$data || $data['status'] != 1 || $data['catid'] != $catid){
+			if(!APP_DEBUG) send_http_status(404);
+			showmsg(L('content_not_existent'),'stop');
+		}
 		extract($data);
 		
 		//会员组权限检测

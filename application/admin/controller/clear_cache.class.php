@@ -10,7 +10,7 @@ class clear_cache extends common {
 	public function public_clear() {
 		
 		//清除模块模板缓存
-		$chache_files = array('index', 'member');
+		$chache_files = array('index', 'mobile', 'member');
 		foreach ($chache_files as $files){
 			$files = glob(YZMPHP_PATH.'cache/'.$files.'/*.tpl.php');
 			foreach ($files as $v){

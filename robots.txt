@@ -1,5 +1,5 @@
 #
-# robots.txt for YzmCMS v5.7
+# robots.txt for YzmCMS v5.8
 #
 User-agent: * 
 Disallow: /cache

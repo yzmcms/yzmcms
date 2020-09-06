@@ -33,7 +33,7 @@
 					<span class="btn-mini btn-disabled ml-5">编辑</span>
 					<span class="btn-mini btn-disabled ml-5">删除</span>
 				<?php } else { ?>
-					<a title="权限管理" href="javascript:;" onclick="yzm_open_full('权限管理','<?php echo U('role_priv',array('roleid'=>$val['roleid']));?>')"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">权限管理</a>
+					<a title="权限管理" href="<?php echo U('role_priv',array('roleid'=>$val['roleid']));?>"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">权限管理</a>
 					<a title="成员管理" href="<?php echo U('admin_manage/init/',array('roleid'=>$val['roleid']));?>"  class="btn-mini btn-success ml-5" style="text-decoration:none">成员管理</a>
 					<a title="编辑" href="javascript:;" onclick="yzm_open('角色编辑','<?php echo U('edit',array('roleid'=>$val['roleid']));?>','600','350')"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">编辑</a>
 					<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('roleid'=>$val['roleid']));?>')"  class="btn-mini btn-warning ml-5" style="text-decoration:none">删除</a>

@@ -49,8 +49,8 @@
 				<tr <?php if($data['fieldtype'] != 'datetime') echo 'style="display:none"';?> id="dates">
 					<td>时间格式</td> 
 					<td> 
-					 <label><input type="radio" name="dateset" value="0" <?php if($data['fieldtype']== 'datetime' && $data['setting']=='0') echo 'checked';?>> 日期（<?php echo date('Y-m-d')?>）</label>
-					 <br><label><input type="radio" name="dateset" value="1" <?php if($data['fieldtype']== 'datetime' && $data['setting']=='1') echo 'checked';?>> 日期+时间（<?php echo date('Y-m-d H:i:s')?>）</label>
+					 <label><input type="radio" name="dateset" value="0" <?php if($data['fieldtype']== 'datetime' && $data['setting']=='') echo 'checked';?>> 日期（<?php echo date('Y-m-d')?>）</label>
+					 <br><label><input type="radio" name="dateset" value="1" <?php if($data['fieldtype']== 'datetime' && $data['setting']!='') echo 'checked';?>> 日期+时间（<?php echo date('Y-m-d H:i:s')?>）</label>
 					</td>
 				</tr>				
 				<tr>

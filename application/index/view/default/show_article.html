@@ -3,6 +3,7 @@
   <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	  <title>{$seo_title}</title>
+	  <meta name="author" content="YzmCMS内容管理系统">
 	  <meta name="keywords" content="{$keywords}" />
 	  <meta name="description" content="{$description}" />
 	  <link href="{STATIC_URL}css/yzm-common.css" rel="stylesheet" type="text/css" />
@@ -127,7 +128,7 @@
 		 			<h2>点击排行</h2>
 		 		</div>
 		 	    <ul class="yzm-ranking">
-		 			{m:hits field="title,url,color,inputtime" catid="$catid" limit="10"}
+		 			{m:hits field="title,url,color,inputtime" catid="$catid" limit="10" cache="3600"}
 					{loop $data $k=>$v}
 					{php $k=$k+1;}
 					   <li><em>{$k}</em><span class="date">{date('m-d',$v['inputtime'])}</span><a href="{$v[url]}" title="{$v[title]}" target="_blank">{title_color($v['title'], $v['color'])}</a></li>	
@@ -140,7 +141,7 @@
 		 			<h2>文章归档</h2>
 		 		</div>
 		 	    <ul class="yzm-like-list">
-		 			{m:content_archives modelid="$modelid" type="2" limit="10"}
+		 			{m:content_archives modelid="$modelid" type="2" limit="10" cache="3600"}
 					{loop $data $v}
 					   <li><a href="{U('search/index/archives',array('pubtime'=>$v['inputtime']))}" target="_blank">{$v[pubtime]}({$v[total]})</a></li>
 					{/loop}						
@@ -159,7 +160,7 @@
  	 	 			<h2>评论排行榜</h2>
  	 	 		</div>
  				<ul class="yzm-comment-list">		
- 				{m:comment_ranking  modelid="1" limit="10"}
+ 				{m:comment_ranking  modelid="1" limit="10" cache="3600"}
  				{loop $data $v}	
  					<li><a href="{$v[url]}" title="{$v[title]}">{$v[title]}</a></li>
  				{/loop}			

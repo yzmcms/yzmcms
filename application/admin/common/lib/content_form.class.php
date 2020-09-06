@@ -20,19 +20,19 @@ class content_form {
 				if($fieldtype == 'input' || $fieldtype == 'number'){
 						$errortips = !empty($val['errortips']) ? $val['errortips'] : '必填项不能为空';
 						$required = $val['isrequired'] ? ' required" errortips="'.$errortips : '';
-						$string .= $this->tag_start($val['name']).'<input type="text" class="input-text'.$required.'" value="'.$val['defaultvalue'].'" name="'.$val['field'].'" placeholder="'.$val['tips'].'">'.$this->tag_end();		   
+						$string .= $this->tag_start($val['name'], $val['isrequired']).'<input type="text" class="input-text'.$required.'" value="'.$val['defaultvalue'].'" name="'.$val['field'].'" placeholder="'.$val['tips'].'">'.$this->tag_end();		   
 				}elseif($fieldtype == 'textarea'){
 						$errortips = !empty($val['errortips']) ? $val['errortips'] : '必填项不能为空';
 						$required = $val['isrequired'] ? ' required" errortips="'.$errortips : '';
-						$string .= $this->tag_start($val['name']).'<textarea name="'.$val['field'].'" class="textarea'.$required.'"  placeholder="'.$val['tips'].'" >'.$val['defaultvalue'].'</textarea>'.$this->tag_end();
+						$string .= $this->tag_start($val['name'], $val['isrequired']).'<textarea name="'.$val['field'].'" class="textarea'.$required.'"  placeholder="'.$val['tips'].'" >'.$val['defaultvalue'].'</textarea>'.$this->tag_end();
 				}elseif($fieldtype == 'select'){
-						$string .= $this->tag_start($val['name']).'<span class="select-box">'.form::select($val['field'],'',string2array($val['setting'])).'</span>'.$this->tag_end();
+						$string .= $this->tag_start($val['name'], $val['isrequired']).'<span class="select-box">'.form::select($val['field'],'',string2array($val['setting'])).'</span>'.$this->tag_end();
 				}elseif($fieldtype == 'radio' || $fieldtype == 'checkbox'){
-						$string .= $this->tag_start($val['name']).form::$fieldtype($val['field'],$val['defaultvalue'],string2array($val['setting'])).$this->tag_end();
+						$string .= $this->tag_start($val['name'], $val['isrequired']).form::$fieldtype($val['field'],$val['defaultvalue'],string2array($val['setting'])).$this->tag_end();
 				}elseif($fieldtype == 'datetime'){
-						$string .= $this->tag_start($val['name']).form::datetime($val['field'], '', $val['setting']).$this->tag_end();
+						$string .= $this->tag_start($val['name'], $val['isrequired']).form::datetime($val['field'], '', $val['setting']).$this->tag_end();
 				}else{
-						$string .= $this->tag_start($val['name']).form::$fieldtype($val['field']).$this->tag_end();
+						$string .= $this->tag_start($val['name'], $val['isrequired']).form::$fieldtype($val['field']).$this->tag_end();
 				}
 				
 			}
@@ -49,25 +49,26 @@ class content_form {
 			$fieldtype = $val['fieldtype'];
 			if($fieldtype == 'input' || $fieldtype == 'number'){
 					$required = $val['isrequired'] ? ' required="required" ' : '';
-					$string .= $this->tag_start($val['name']).'<input type="text" class="input-text" value="'.$data[$val['field']].'" '.$required.' name="'.$val['field'].'" placeholder="'.$val['tips'].'">'.$this->tag_end();		   
+					$string .= $this->tag_start($val['name'], $val['isrequired']).'<input type="text" class="input-text" value="'.$data[$val['field']].'" '.$required.' name="'.$val['field'].'" placeholder="'.$val['tips'].'">'.$this->tag_end();		   
 			}elseif($fieldtype == 'textarea'){
-					$string .= $this->tag_start($val['name']).'<textarea name="'.$val['field'].'" class="textarea"  placeholder="'.$val['tips'].'" >'.$data[$val['field']].'</textarea>'.$this->tag_end();
+					$string .= $this->tag_start($val['name'], $val['isrequired']).'<textarea name="'.$val['field'].'" class="textarea"  placeholder="'.$val['tips'].'" >'.$data[$val['field']].'</textarea>'.$this->tag_end();
 			}elseif($fieldtype == 'select'){
-					$string .= $this->tag_start($val['name']).'<span class="select-box">'.form::select($val['field'],$data[$val['field']],string2array($val['setting'])).'</span>'.$this->tag_end();
+					$string .= $this->tag_start($val['name'], $val['isrequired']).'<span class="select-box">'.form::select($val['field'],$data[$val['field']],string2array($val['setting'])).'</span>'.$this->tag_end();
 			}elseif($fieldtype == 'radio' || $fieldtype == 'checkbox'){
-					$string .= $this->tag_start($val['name']).form::$fieldtype($val['field'],$data[$val['field']],string2array($val['setting'])).$this->tag_end();
+					$string .= $this->tag_start($val['name'], $val['isrequired']).form::$fieldtype($val['field'],$data[$val['field']],string2array($val['setting'])).$this->tag_end();
 			}elseif($fieldtype == 'datetime'){
-					$string .= $this->tag_start($val['name']).form::datetime($val['field'],$data[$val['field']], $val['setting']).$this->tag_end();
+					$string .= $this->tag_start($val['name'], $val['isrequired']).form::datetime($val['field'],$data[$val['field']], $val['setting']).$this->tag_end();
 			}else{
-					$string .= $this->tag_start($val['name']).form::$fieldtype($val['field'],$data[$val['field']]).$this->tag_end();
+					$string .= $this->tag_start($val['name'], $val['isrequired']).form::$fieldtype($val['field'],$data[$val['field']]).$this->tag_end();
 			}
 		}		
 		return $string;
 	}
 	
 	
-	public function tag_start($tip) {
-		return '<div class="row cl"><label class="form-label col-xs-4 col-sm-2">'.$tip.'：</label><div class="formControls col-xs-8 col-sm-9">';
+	public function tag_start($tip, $isrequired) {
+		$str = $isrequired ? '<span class="c-red">*</span>' : '';
+		return '<div class="row cl"><label class="form-label col-xs-4 col-sm-2">'.$str.$tip.'：</label><div class="formControls col-xs-8 col-sm-9">';
 	}
 	
 

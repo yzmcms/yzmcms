@@ -78,8 +78,8 @@ class common{
 	 */
 	final private function check_referer(){
 		if(strpos(ROUTE_A, 'public_') === 0) return true;
-		if(HTTP_REFERER){
-			if(strpos(HTTP_REFERER, SERVER_PORT.HTTP_HOST) === false)  showmsg('非法来源，拒绝访问！', 'stop');
+		if(HTTP_REFERER && strpos(HTTP_REFERER, SERVER_PORT.HTTP_HOST) !== 0){
+			showmsg('非法来源，拒绝访问！', 'stop');
 		}
 		return true;
  	}
@@ -95,4 +95,3 @@ class common{
 		return APP_PATH.$m.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.$file.'.html';
 	}	
 }
-?>

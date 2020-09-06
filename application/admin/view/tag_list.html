@@ -9,16 +9,18 @@
 		 <input type="hidden" value="<?php echo ROUTE_M;?>" name="m">
 		 <input type="hidden" value="<?php echo ROUTE_C;?>" name="c">
 		 <input type="hidden" value="init" name="a">	 
-		 <span class="select-box inline">
+		 
+		<span class="select-box inline"><?php echo select_category('catid', $catid, '绑定栏目'); ?></span>
+		<span class="select-box inline">
 			<select name="type" class="select">
 				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='1'){echo "selected";} ?> value="1">TAG名称</option>
 				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo "selected";} ?> value="2">TAG描述</option>		
 			</select>
 		</span>
-		 <input type="text" name="searinfo"  class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
-		 </form>	
+		<input type="text" name="searinfo"  class="input-text" style="width:200px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+		</form>	
   </div>
-	<div class="cl pd-5 bg-1 bk-gray mt-10"> <span class="l"><a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  <a href="javascript:;" onclick="yzm_open('添加TAG','<?php echo U('add');?>','600','300')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加TAG</a></span></div>
+	<div class="cl pd-5 bg-1 bk-gray mt-10"> <span class="l"><a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  <a href="javascript:;" onclick="yzm_open('添加TAG','<?php echo U('add');?>',600,350)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加TAG</a></span></div>
 	<form method="post" action="<?php echo U('del');?>" id="myform">
 	<table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
 		<thead>
@@ -27,6 +29,7 @@
 				<th>ID<?php echo field_order('id');?></th>
 				<th>TAG名称</th>
 				<th>文档数<?php echo field_order('total');?></th>
+				<th>绑定栏目<?php echo field_order('catid');?></th>
 				<th>描述</th>
 				<th>添加时间<?php echo field_order('inputtime');?></th>		
 				<th>管理操作</th>
@@ -40,12 +43,13 @@
 				<td><input type="checkbox" value="<?php echo $val['id']?>" name="id[]"></td>
 				<td><?php echo $val['id'];?></td>
 				<td><a href="<?php echo tag_url($val['id']);?>" target="_blank"><?php echo $val['tag'];?></a></td>
-				<td><?php echo $val['total'];?></td>
-				<td><?php echo $val['remarks'];?></td>
+				<td><a href="<?php echo tag_url($val['id']);?>" target="_blank"><?php echo $val['total'];?></a></td>
+				<td><?php echo $val['catid'] ? get_catname($val['catid']) : '无';?></td>
+				<td><?php echo $val['remarks'] ? $val['remarks'] : '无';?></td>
 				<td><?php echo date('Y-m-d H:i:s',$val['inputtime']);?></td>
 				<td class="td-manage">
-					<a title="编辑" href="javascript:;" onclick="yzm_open('编辑TAG','<?php echo U('edit',array('id'=>$val['id']));?>','600','320')" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
-
+					<a title="编辑TAG" href="javascript:;" onclick="yzm_open('编辑TAG','<?php echo U('edit',array('id'=>$val['id']));?>',600,350)" class="yzm-box-img btn-secondary">编辑TAG</a> 
+					<a title="管理内容" href="javascript:;" onclick="yzm_open('Tag - <?php echo $val['tag'];?>','<?php echo U('content',array('id'=>$val['id']));?>', 850, 550)" class="btn-mini btn-success ml-5" style="text-decoration:none">管理内容</a> 
 				</td>
 			</tr>
 			<?php 

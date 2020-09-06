@@ -185,9 +185,9 @@
 			<div class="panel-body">
 					<div class="swiper-container">
 						 <div class="swiper-wrapper">
-						      <div class="swiper-slide yzm-bg-blue"><a href="http://www.yzmcms.com" target="_blank">YzmCMS官网网站</a></div>
+						      <div class="swiper-slide yzm-bg-blue"><a href="http://www.yzmcms.com" target="_blank">YzmCMS官方网站</a></div>
 						      <div class="swiper-slide yzm-bg-green"><a href="http://bbs.yzmcms.com" target="_blank">YzmCMS论坛社区</a></div>
-						      <div class="swiper-slide yzm-bg-red"><a href="http://blog.yzmcms.com" target="_blank">YzmCMS官网博客</a></div>	
+						      <div class="swiper-slide yzm-bg-red"><a href="http://blog.yzmcms.com" target="_blank">YzmCMS官方博客</a></div>	
 						 </div>
 					 </div>		 
 
@@ -199,6 +199,7 @@
 <?php include $this->admin_tpl('footer', 'admin');?>
 <script type="text/javascript">
 	var swiper = new Swiper('.swiper-container', {
+		loop: true,
 		autoplay: {
 			delay: 3500,
 			disableOnInteraction: false
@@ -217,7 +218,7 @@
 			    dataType: "json", 
 	            success: function (msg) {
 					if(msg.status == 1){
-						layer.msg(msg.message, {icon:1,time: 1500}, function(){
+						layer.msg(msg.message, {icon:1,time: 800}, function(){
 						  window.location.reload();     
 						});
 				    }else{

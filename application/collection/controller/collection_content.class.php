@@ -259,7 +259,7 @@ class collection_content extends common {
 		$data['click'] = intval($_POST['click']);
 		$data['catid'] = intval($_POST['catid']);
 		$data['listorder'] = 10;
-		$data['system'] = 1;
+		$data['issystem'] = 1;
 		$data['userid'] = $_SESSION['adminid'];
 		$data['username'] = $_SESSION['adminname'];
 		
@@ -279,7 +279,7 @@ class collection_content extends common {
 			//自动提取缩略图
 			if($_POST['auto_thumb']) {
 				$img = match_img($data['content']);
-				$data['thumb'] = $img ? thumb($img) : '';
+				$data['thumb'] = $img ? thumb($img, get_config('thumb_width'), get_config('thumb_height')) : '';
 			}
 
 			//自动提取内容摘要
@@ -290,8 +290,12 @@ class collection_content extends common {
 			$data['updatetime'] = $data['inputtime'];
 			$data['seo_title'] = $data['title'].'_'.$site_name;
 			$id = $content_tabname->insert($data);
-		
 			$url = get_content_url($data['catid'], $id);
+
+			$data['modelid'] = $modelid;
+			$data['id'] = $id;
+			$data['url'] = $url;
+			D('all_content')->insert($data);
 			$content_tabname->update(array('url' => $url), array('id'=>$id));
 			$collection_content->update(array('status' => 2), array('id'=>$v['cid']));
 			$i++;

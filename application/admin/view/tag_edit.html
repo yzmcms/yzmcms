@@ -6,9 +6,10 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			<li><label><span class="c-red">*</span>TAG：</label><input type="text" class="input" value="<?php echo $data['tag']?>" name="tag"></li>						 
-			<li><label><span class="c-red">*</span>文档数：</label><input type="text" class="input" value="<?php echo $data['total']?>" name="total" readonly="readonly"></li>	
-			<li><label>描述：</label><textarea name="remarks" class="textarea" style="width:388px"><?php echo $data['remarks']?></textarea></li>			
+			<li><label><span class="c-red">*</span>TAG：</label><input type="text" class="input" value="<?php echo $data['tag']?>" name="tag" placeholder="请填写TAG名称" ></li>						 
+			<!-- <li><label><span class="c-red">*</span>文档数：</label><input type="text" class="input" value="<?php echo $data['total']?>" name="total" readonly="readonly" placeholder="请填写文档数"></li>	 -->
+			<li><label>绑定栏目：</label><?php echo select_category('catid', $data['catid'], '≡ 全站通用 ≡', 0, 'style="width:auto"'); ?></li>	
+			<li><label>描述：</label><textarea name="remarks" class="textarea" style="width:388px" placeholder="根据Tag搜索时，会展示到网站描述."><?php echo $data['remarks']?></textarea></li>			
 			<li>
 				<input type="hidden" name="id" value="<?php echo $data['id']?>">
 				<input type="hidden" name="dosubmit" value="1">
@@ -27,10 +28,10 @@
 		 layer.msg('TAG名称不能为空！', {icon:2});
 		 return false;
 		}
-		if(isNaN(obj.total.value) || obj.total.value<0){
-			 layer.msg('文档数只能为数字且大于0的值！', {icon:2});
-			 return false;
-		}
+		// if(isNaN(obj.total.value) || obj.total.value<0){
+		// 	 layer.msg('文档数只能为数字且大于0的值！', {icon:2});
+		// 	 return false;
+		// }
         $.ajax({
             type: 'POST',
             url: '<?php echo U('edit');?>', 
@@ -38,7 +39,9 @@
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1, time:800}, function(){
+						parent.location.reload();
+					});
 			    }else{
 					layer.msg(msg.message, {icon:2});
 				}

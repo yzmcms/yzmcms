@@ -184,7 +184,7 @@ class page{
 		}		
 		
 		$parameter = '';
-		$request_url = trim($_SERVER['REQUEST_URI'], '/');
+		$request_url = trim(str_replace(C('url_html_suffix'), '', $_SERVER['REQUEST_URI']), '/');
 
 		// 支持传入自定义参数  ?aa=1&bb=2
 		$pos = strpos($request_url, '?');

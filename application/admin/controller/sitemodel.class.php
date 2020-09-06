@@ -25,6 +25,7 @@ class sitemodel extends common {
 		if($r) sql::sql_delete($r['tablename']); 
 		$model->delete(array('modelid'=>$modelid)); //删除model信息
 		D('model_field')->delete(array('modelid'=>$modelid)); //删除字段
+		D('all_content')->delete(array('modelid'=>$modelid)); //删除全部模型表
 		D('tag_content')->delete(array('modelid'=>$modelid)); //删除TAG内容
 		delcache('modelinfo');
 	

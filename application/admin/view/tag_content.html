@@ -1,0 +1,148 @@
+<?php include $this->admin_tpl('meta', 'admin');?>
+<title>Tag内容管理 - YzmCMS内容管理系统</title>
+	<style type="text/css">
+		.table tbody tr.selected td, .table tbody tr.selected:hover td{background-color:#5b748e;color:#fff;}
+		.table tbody tr.selected td a{color:#fff;}
+	</style>
+</head>
+<body>
+	<article class="page-container">
+		<form action="<?php echo U(ROUTE_A);?>" method="get" id="search">
+		<input type="hidden" value="<?php echo 	ROUTE_M?>" name="m">
+		<input type="hidden" value="<?php echo 	ROUTE_C?>" name="c">
+		<input type="hidden" value="<?php echo 	ROUTE_A?>" name="a">
+		<input type="hidden" name="id" value="<?php echo $id?>" >
+		<table width="100%" cellspacing="0" class="search-form">
+		    <tbody>
+				<tr>
+				<td>
+				<span class="select-box inline">
+					<select name="modelid" class="select" onchange="change_model()">
+						<?php 
+							foreach($modelinfo as $val){
+								$str = $val['modelid']==$modelid ? 'selected' : '';
+								echo '<option value="'.$val['modelid'].'" '.$str.'>'.$val['name'].'</option>';
+							}
+						?>
+					</select>
+				</span>
+				<span class="select-box inline"><?php echo select_category('catid', $catid, '不限栏目', 0, '', true, true, $modelid); ?></span>
+				<span class="select-box inline">
+				<select name="type" class="select">
+					<option value="1" <?php if(isset($_GET['type']) && $_GET['type']==1) echo 'selected';?>>标题</option>
+					<option value="2" <?php if(isset($_GET['type']) && $_GET['type']==2) echo 'selected';?>>关键词</option>
+					<option value="3" <?php if(isset($_GET['type']) && $_GET['type']==3) echo 'selected';?>>描述</option>
+					<option value="4" <?php if(isset($_GET['type']) && $_GET['type']==4) echo 'selected';?>>内容ID</option>
+				</select>
+				</span>
+				<input name="searinfo" type="text" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo']; ?>" style="width:330px;" class="input-text" />
+				
+				<button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button> 
+				</td>
+				</tr>
+		    </tbody>
+		</table>
+		</form>
+		<form action="<?php echo U('content_oper');?>" method="post" id="myform">
+	    <div class="table table-border table-bordered table-bg table-hover mt-10">
+	        <table width="100%" cellspacing="0">
+	            <thead>
+	                <tr>
+	                	<th width="20"><input type="checkbox"></th>
+	                    <th>标题</th>
+	                    <th width="100">所属栏目</th>
+	                    <th width="45">点击量</th>
+	                    <th width="35">状态</th>
+	                    <th width="70">更新时间</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	            	<?php 
+	            	foreach($data as $val){
+						$is_exist = D('tag_content')->field('tagid')->where(array('modelid'=>$modelid,'aid'=>$val['id'],'tagid'=>$id))->one();
+	            	?>
+	                <tr <?php if($is_exist) echo 'class="selected'; ?>">
+	                	<td><input type="checkbox" value="<?php echo $val['catid']?>" name="ids[<?php echo $val['id']?>]"></td>
+	                    <td>
+                			<a href="<?php echo $val['url'];?>" target="_blank" ><?php echo $val['title'];?></a>
+                			<?php
+                			if($val['thumb']){
+                			 echo '<span style="color:#0a6999;margin:0 3px" title="图片"><i class="Hui-iconfont">&#xe646;</i></span>';
+                			}
+                			if(strpos($val['flag'], '1') !== false){
+                			 echo '<span class="c-red">[置顶]</span>';
+                			}
+                            if(strpos($val['flag'], '2') !== false){
+                			 echo '<span class="c-red">[头条]</span>';
+                			}
+                            if(strpos($val['flag'], '3') !== false){
+                			 echo '<span class="c-red">[特荐]</span>';
+                			}
+                            if(strpos($val['flag'], '4') !== false){
+                			 echo '<span class="c-red">[推荐]</span>';
+                			}
+                            if(strpos($val['flag'], '5') !== false){
+                			 echo '<span class="c-red">[热点]</span>';
+                			}
+                            if(strpos($val['flag'], '6') !== false){
+                			 echo '<span class="c-red">[幻灯]</span>';
+                			}
+                			if(strpos($val['flag'], '7') !== false){
+                			 echo '<span class="c-red">[跳转]</span>';
+                			}
+                			if($val['readpoint']){
+                			 echo '<span class="c-red">[付费]</span>';
+                			}			
+                			?>	
+	                    </td>
+	                    <td><?php echo get_catname($val['catid']);?></td>
+	                    <td><?php echo $val['click']?></td>
+	                    <td><?php echo $val['status'] ? '<span class="label label-success radius">正常</span>' : '<span class="label radius">草稿</span>';?></td>
+	                    <td><?php echo date('Y-m-d', $val['updatetime'])?></td>
+	                </tr>
+	                <?php 
+	                }
+	                ?>
+	            </tbody>
+	        </table>
+	        <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
+  			<span class="page_right"><?php echo $page->getfull();?></span></div>
+	    </div>
+	    <input type="hidden" name="modelid" value="<?php echo $modelid;?>">
+	    <input type="hidden" name="tagid" value="<?php echo $id;?>">
+	    <input type="hidden" name="operation" value="1">
+	    <div style="position:fixed;bottom:20px;left:20px;z-index:99;">
+	    	<input class="dosubmit w_120 btn-primary radius" type="button" onclick="dosub(1)" value="加入Tag">
+	    	<input class="btn w_120 btn-warning radius h35" type="button" onclick="dosub(0)" value="移除Tag">
+	    </div>
+	    </form>
+	</article>
+	<?php include $this->admin_tpl('footer', 'admin');?>
+	<script>
+
+	function change_model() {
+		$("#search").submit();
+	}
+
+	function dosub(oper){
+		$("input[name='operation']").val(oper);
+		$.ajax({
+			type: 'POST',
+			url: '<?php echo U('content_oper');?>', 
+			data: $("#myform").serialize(),
+			dataType: "json", 
+			success: function (msg) {
+				if(msg.status == 1){
+					layer.msg(msg.message, {icon:1, time:800}, function(){
+						location.reload();     
+					});
+				}else{
+					layer.msg(msg.message, {icon:2});
+				}
+			}
+		})	
+	}
+	</script>
+</body>
+
+</html>

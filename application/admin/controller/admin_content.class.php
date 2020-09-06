@@ -13,10 +13,10 @@ class admin_content extends common {
 		$of = in_array($of, array('id','catid','username','updatetime','status','userid')) ? $of : 'updatetime';
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		yzm_base::load_sys_class('page','',0);
-		$member_content = D('member_content');
-		$total = $member_content->total();
+		$all_content = D('all_content');
+		$total = $all_content->where(array('issystem'=>0))->total();
 		$page = new page($total, 15);
-		$data = $member_content->order("$of $or")->limit($page->limit())->select();		
+		$data = $all_content->where(array('issystem'=>0))->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('member_publish_list');
 	}
 
@@ -63,12 +63,13 @@ class admin_content extends common {
 	 */
 	public function del() {
 		if($_POST && is_array($_POST['ids'])){	
-			$member_content = D('member_content');
+			$all_content = D('all_content');
 			foreach($_POST['ids'] as $val){
-				$member_content->delete(array('checkid' => $val));   //删除会员内容表
-				list($modelid, $id) = explode('_', $val);
-				$content_tabname = D(get_model($modelid));
-				$content_tabname->delete(array('id' => $id));   //删除model内容表
+				$res = $all_content->field('modelid,id')->where(array('allid' => $val))->find(); 
+				if(!$res) continue;
+				$all_content->delete(array('allid' => $val)); 
+				$content_tabname = D(get_model($res['modelid']));
+				$content_tabname->delete(array('id' => $res['id']));
 			}
 			showmsg(L('operation_success'));			
 		}
@@ -80,24 +81,25 @@ class admin_content extends common {
 	 */
 	public function adopt() {
 		if($_POST && is_array($_POST['ids'])){	
-			$member_content = D('member_content');
+			$all_content = D('all_content');
 			$member = D('member');
 			$pay = D('pay');
 			$ip = getip();
 			$publish_point = get_config('publish_point');
 			
 			foreach($_POST['ids'] as $val){
-				$data = $member_content->field('catid,userid,username,status')->where(array('checkid' => $val))->find();
-				if($data['status']) continue;
+				$data = $all_content->field('modelid,catid,id,userid,username,status')->where(array('allid' => $val))->find();
+				if($data['status'] == 1) continue;
+
+				$modelid = $data['modelid'];
+				$catid = $data['catid'];
+				$id = $data['id'];
 				
 				$updatearr['status'] = '1';
-				$member_content->update($updatearr, array('checkid' => $val));  //更新会员内容表状态
-				$catid = $data['catid'];
-				
-				list($modelid, $id) = explode('_', $val);
-				$content_tabname = D(get_model($modelid));
 				$updatearr['url'] = get_content_url($catid, $id);
-				$content_tabname->update($updatearr, array('id' => $id));  //更新model内容表状态
+				$content_tabname = D(get_model($modelid));
+				$content_tabname->update($updatearr, array('id' => $id));
+				$all_content->update($updatearr, array('allid' => $val));
 				
 				//投稿奖励积分和经验
 				if($publish_point > 0){
@@ -129,19 +131,14 @@ class admin_content extends common {
 			}
 
 			$message = D('message');
-			$member_content = D('member_content');
+			$all_content = D('all_content');
 			foreach($_POST['ids'] as $val){
-				$r = $member_content->field('catid,title,username')->where(array('checkid' => $val))->find();
+				$r = $all_content->field('modelid,catid,id,title,username')->where(array('allid' => $val))->find();
 				if(!$r) showmsg('内容不存在！', 'stop');
-				$member_content->update(array('status' => '2'), array('checkid' => $val));  //更新会员内容表退稿状态
-				
-				list($modelid, $id) = explode('_', $val);
-				// $content_tabname = D(get_model($modelid));
-				// $content_tabname->update(array('status' => '2'), array('id' => $id));  //更新model内容表退稿状态
-				
+				$all_content->update(array('status' => '2'), array('allid' => $val)); 
 				$data['send_to'] = $r['username'];  //收件人
-				$data['content'] = '您发送的投稿不满足我们的要求，请重新编辑投稿！<br>标题：'.$r['title'].'<br><a href="'.U('member/member_content/edit_through',array('catid'=>$r['catid'], 'id'=>$id)).'" style="color:red">点击这里修改</a><br>'.$data['content_c'];
-				$message->insert($data);		  //发送短信息
+				$data['content'] = '您发送的投稿不满足我们的要求，请重新编辑投稿！<br>标题：'.$r['title'].'<br><a href="'.U('member/member_content/edit_through',array('catid'=>$r['catid'], 'id'=>$r['id'])).'" style="color:red">点击这里修改</a><br>'.$data['content_c'];
+				$message->insert($data);
 			}
 			showmsg(L('operation_success'));			
 		}

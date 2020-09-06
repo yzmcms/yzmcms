@@ -14,7 +14,7 @@
 			<li><label><span class="c-red">*</span>指向的路由：</label><input type="text" class="input" style="width:400px" name="route" value="<?php echo $data['route'];?>">
 			<p class="exp">如：对应上面的例子：模块/控制器/方法/参数1/$1</p>
 			<p class="exp">URL规则：模块/控制器/方法/参数1/$1/参数2/$2...<span class="c-red">（$1,$2为规则中匹配到的动态值）</span></p></li>
-			<li></li>
+			<li><label><span class="c-red">*</span>优先级排序：</label><input type="text" class="input" style="width:400px" name="listorder" value="<?php echo $data['listorder'];?>"><p class="exp">取值范围1-255，数值越小优先级越高</p></li>
 			<li><?php echo creat_token();?>
 				<input type="hidden" name="id" value="<?php echo $data['urlruleid'];?>"><input type="hidden" name="dosubmit" value="1">
 				<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
@@ -28,18 +28,22 @@
 
 <script type="text/javascript">
 	function dosub(obj){
-		 if(obj.name.value==''){
-			 layer.msg('名称不能为空！');
+		if(obj.name.value==''){
+			layer.msg('名称不能为空！', {icon:2});
+			return false;
+		}
+		if(obj.urlrule.value==''){
+			layer.msg('URL规则不能为空！', {icon:2});
+			return false;
+		}
+		if(obj.route.value==''){
+			layer.msg('指向的路由不能为空！', {icon:2});
+			return false;
+		}
+		if(isNaN(obj.listorder.value) || obj.listorder.value<1){
+			 layer.msg('优先级排序只能为数字类型且大于1！', {icon:2});
 			 return false;
-		 }
-		 if(obj.urlrule.value==''){
-			 layer.msg('URL规则不能为空！');
-			 return false;
-		 }
-		 if(obj.route.value==''){
-			 layer.msg('指向的路由不能为空！');
-			 return false;
-		 }
+		}
         $.ajax({
             type: 'POST',
             url: '<?php echo U('edit');?>', 
@@ -47,9 +51,11 @@
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1, time:800}, function(){
+						parent.location.reload();
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

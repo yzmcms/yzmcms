@@ -1,5 +1,12 @@
 <?php include $this->admin_tpl('meta');?>
 <title>修改个人信息 - YzmCMS内容管理系统</title>
+<style>
+	.pwdstrength{display:inline;}
+	.pwdstrength span{width:50px;height:15px;line-height:17px;color:#333;font-size:10px;padding:2px 0;border-radius:2px;background:#d0d0d0;display:inline-block;margin-left:3px;text-align:center;}
+	.pwdstrength .weak{background:#bf3333;color:#fff;}
+	.pwdstrength .medium{background:#fc0;color:#fff}
+	.pwdstrength .strong{background:#0c0;color:#fff}
+</style>
 </head>
 <body>
 <article class="page-container">
@@ -11,9 +18,11 @@
 			 <li><label>真实姓名：</label><?php echo $data['realname'];?></li>
 			 <li><label>昵称：</label><?php echo $data['nickname'];?></li>
 			 <li><label>邮箱：</label><?php echo $data['email'];?></li>
-			 <li><label>旧密码：</label><input type="password" class="input" placeholder="旧密码" name="old_password" value=""></li>
-			 <li><label>新密码：</label><input type="password" class="input" placeholder="新密码" name="password" value=""> <span style="color:#888">[不修改请留空]</span></li>
-			 <li><label>确认密码：</label><input type="password" class="input" placeholder="确认密码" name="password2" value=""> <span style="color:#888">[不修改请留空]</span></li>
+			 <li><label>旧密码：</label><input type="password" class="input" placeholder="请输入旧密码" name="old_password" value=""></li>
+			 <li>
+			 	<label>新密码：</label><input type="password" class="input" placeholder="密码长度为6-20位" name="password" value="" onkeyup="checkpwd(this.value)"> <div class="pwdstrength"><span>弱</span><span>中</span><span>强</span></div>
+			 </li>
+			 <li><label>确认密码：</label><input type="password" class="input" placeholder="密码长度为6-20位" name="password2" value=""></li>
 			 <input type="hidden" name="dosubmit" value="1">
 			 <li>
 			 	<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
@@ -25,19 +34,63 @@
 </article>
 <?php include $this->admin_tpl('footer');?> 
 <script type="text/javascript">
+	function checkpwd(pwd) {
+	    var spans = $(".pwdstrength span");
+	    spans.removeClass();
+	    var result = 0;
+	    for (var i = 0, len = pwd.length; i < len; ++i) {
+	        result |= chartype(pwd.charCodeAt(i));
+	    }
+	    var level = 0;
+	    for (var i = 0; i <= 4; i++) {
+	        if (result & 1) {
+	            level++;
+	        }
+	        result = result >>> 1;
+	    }
+	    if (pwd.length >= 6) {
+	        switch (level) {
+	        case 1:
+	            spans.eq(0).addClass('weak');
+	            break;
+	        case 2:
+	            spans.eq(1).addClass('medium');
+	            break;
+	        case 3:
+	        case 4:
+	            spans.eq(2).addClass('strong');
+	            break;
+	        }
+	    }
+	}
+
+	function chartype(num) {
+	    if (num >= 48 && num <= 57) {
+	        return 1;
+	    }
+	    if (num >= 97 && num <= 122) {
+	        return 2;
+	    }
+	    if (num >= 65 && num <= 90) {
+	        return 4;
+	    }
+	    return 8;
+	}
+
 	function dosub(obj){
-		 if($("input[name='old_password']").val() == ''){
-			 layer.msg('旧密码不能为空！');
-			 return false;
-		 }
-		 if($("input[name='password']").val().length < 6){
-			 layer.msg('密码长度不能低于6位！');
-			 return false;
-		 }
-		 if($("input[name='password']").val()!==$("input[name='password2']").val()){
-			 layer.msg('两次密码值不相等！');
-			 return false;
-		 }
+		if($("input[name='old_password']").val() == ''){
+			layer.msg('旧密码不能为空！', {icon:2});
+			return false;
+		}
+		var password = $("input[name='password']").val();
+		if(password.length <6 || password.length > 20){
+			layer.msg('密码长度为6-20位!', {icon:2});
+			return false;
+		}
+		if($("input[name='password']").val()!==$("input[name='password2']").val()){
+			layer.msg('两次密码值不相等！', {icon:2});
+			return false;
+		}
 
 		$.ajax({
 		 type: 'POST',
@@ -46,16 +99,17 @@
 		 dataType: "json", 
 		 success: function (msg) {
 			if(msg.status == 1){
-				layer.msg('修改密码成功，请重新登录！');
-				setTimeout('parent.location.reload()', 2500);
+				layer.msg('修改密码成功，请重新登录！', {icon:1, time:2500}, function(){
+					parent.location.reload();
+				});
 		    }else{
-				layer.msg(msg.message);
+				layer.msg(msg.message, {icon:2});
 			}
 		 }
 		})
 
-		 return false;			 
+		return false;			 
 	}
-</script> 
+</script>  
 </body>
 </html>

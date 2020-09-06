@@ -31,6 +31,7 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display
 .cc{zoom:1;}
 .cc:after{content:'\20';display:block;height:0;clear:both;visibility: hidden;}
 .c{clear:both;height:0;font:0/0 Arial;overflow:hidden;width:0;}
+.c-red{color:red;}
 /*
 ===================
 基础样式
@@ -77,65 +78,36 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display
 .f24{font-size:24px;}
 .fn{font-weight:normal !important;}
 .s1{color:#ff0000;}
-/*
-===================
-全局
-===================*/
+
 body{font:12px/1.5;color:#333;background:url(../images/bg.png);}
 a:link{color:#246EA5;text-decoration:none;}
 a:hover{text-decoration:underline;}
 a:visited{color:#762e9c;}
-/*
-===================
-包裹
-===================*/
 .wrap{margin:60px auto 20px;box-shadow:0 0 10px #ccc;width:850px;background:#fff;}
-/*
-===================
-头部
-===================*/
 .header{background:#246fa6 url(../images/header.png) 0 0 repeat-x;}
 .header{height:80px;box-shadow:0 3px 3px #ddd;position:relative;color:#fff;}
-/*
-===================
-主体
-===================*/
 .main{padding-top:35px;}
-/*
-===================
-底部
-===================*/
 .footer{text-align:center;padding:15px 0 50px;color:#999999;}
 .footer a{color:#999;text-decoration:none;}
 .bottom{padding:0 0 25px;}
 /*
 ===================
 协议
-===================*/
+===================
+*/
 .pact{box-shadow:5px 5px 5px #f7f7f7 inset;border:1px solid #bdbcbc;width:750px;height:350px;padding:10px;overflow:hidden;display:block;overflow-y:scroll;margin:0 auto;font-size:12px;line-height:1.5;margin-bottom:22px;outline:none;}
 pre{white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;word-break : normal;}
-/*
-===================
-版本号
-===================*/
 .version{float:right;margin:50px 45px 0 0;}
-/*
-===================
-LOGO
-===================*/
 .logo{float:left;width:400px;height:80px;line-height: 80px;font-family:Tahoma,Arial,sans-serif;padding-left: 40px;/*background:url(../images/logo.png) no-repeat;overflow:hidden;text-indent:-2000em;*/}
 /*
 ===================
 安装类型文案
-===================*/
+===================
+*/
 .icon_install,
 .icon_update{float:left;margin-top:35px;width:90px;height:30px;overflow:hidden;text-indent:-2000em;}
 .icon_install{background:url(../images/icon_install.png) no-repeat;}
 .icon_update{background:url(../images/icon_update.png) no-repeat;}
-/*
-===================
-按钮
-===================*/
 .btn,
 .btn_old{display:inline-block;width:100px;height:30px;line-height:30px;background:url(../images/btn.png) no-repeat;font:bold 14px/30px;text-decoration:none;color:#fff !important;margin:0 50px;border:0 none;cursor:pointer;vertical-align:top;}
 .btn:hover{background-position:0 -30px;text-decoration:none;}
@@ -146,7 +118,8 @@ a.btn_old:visited{color:#999 !important;}
 /*
 ===================
 步骤
-===================*/
+===================
+*/
 .step,.step li em,.step li{background:url(../images/step.png) repeat-x;}
 .step{border-bottom:1px solid #dce1e5;height:60px;background-color:#fff;}
 .step li{float:left;height:60px;line-height:60px;width:33%;text-align:center;font-size:14px;color:#6f7885;font-weight:700;}
@@ -158,7 +131,8 @@ a.btn_old:visited{color:#999 !important;}
 /*
 ===================
 服务器检测/信息输入
-===================*/
+===================
+*/
 .server{padding:20px 20px 10px 155px;font-size:13px}
 .server table{margin-bottom:20px;}
 .server td{padding:3px 5px;}
@@ -171,25 +145,29 @@ a.btn_old:visited{color:#999 !important;}
 /*
 ===================
 正确错误
-===================*/
+===================
+*/
 .correct_span,
 .error_span{display:block;float:left;width:20px;height:16px;text-indent:-2000em;overflow:hidden;background:url(../images/icon.png) no-repeat;margin-right:5px;}
 .error_span{background-position:0 -23px;}
 /*
 ===================
 数据表写入
-===================*/
+===================
+*/
 .install{box-shadow:5px 5px 5px #f7f7f7 inset;border:1px solid #bdbcbc;width:670px;height:350px;padding:10px;overflow:hidden;display:block;overflow-y:scroll;margin:25px auto;font-size:12px;margin-bottom:22px;outline:none;}
 .install ul{line-height:1.8;}
 /*
 ===================
 成功提示
-===================*/
-.success_tip{/*border:1px solid #e0e9f0;*/background:#fff url(../images/complete.png) 280px center no-repeat;padding:50px 80px 50px 380px;line-height:2;}
+===================
+*/
+.success_tip{background:#fff url(../images/complete.png) 150px center no-repeat;padding:50px 80px 50px 280px;line-height:30px;}
+.success_tip p{font-size:13px}
 .success_tip a,.s4{color:#0166a5;text-decoration:none;}
 .success_tip a:hover{text-decoration:underline;}
 .error_tip{background:url(../images/ignore.png) 130px 45px no-repeat;padding:50px 80px 60px 230px;}
-/*founder login*/.login{border:1px solid #e0e9f0;background:#fff;margin:30px 120px 130px;}
+.login{border:1px solid #e0e9f0;background:#fff;margin:30px 120px 130px;}
 /*
 ===================
 操作提示
@@ -198,7 +176,8 @@ a.btn_old:visited{color:#999 !important;}
 >>tips_success正确
 >>tips_loading加载中
 使用方法 可独立样式使用，亦可与tips组装，例： <div class="tips"><span class="tips_error">错误内容</span></div> 可在外出包裹 tips_block 对错误提示进行块级效果展示
-===================*/
+===================
+*/
 .tips,.tips_block span{line-height:25px;padding:0 6px;}
 .tips{border:1px solid #faebd2;background:#ffffe9;color:#666;}
 .tips_error,.tips_success{color:#cc3333;padding-left:16px;background:url(../images/tips_system.png) -20px 2px no-repeat;display:inline-block;line-height:18px;}
@@ -207,15 +186,18 @@ a.btn_old:visited{color:#999 !important;}
 /*
 ===================
 loading
-===================*/
+===================
+*/
 .loading{border-radius: 16px;width: 100px;height: 30px;line-height: 30px;text-align: center;background:#000;background-color: rgba(0, 0, 0, 0.5);color: white;position: fixed;_position:absolute;left: 50%;margin-left: -50px;top: 50%;margin-top:-15px;}
 .loading span{background:url(../images/pop_loading.gif) 0 center no-repeat;padding-left:24px;}
 /*
 ===================
 升级类型选择
-===================*/
+===================
+*/
 .updata_type{padding:20px 30px 40px;}
 .updata_type .hd{font-size:16px;}
+
 /*切换选择*/
 .updata_type .tab{padding-top:10px;}
 .updata_type .tab li{float:left;width:50%;display:inline;}

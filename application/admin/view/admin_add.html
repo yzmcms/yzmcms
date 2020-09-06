@@ -6,9 +6,9 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label><span class="c-red">*</span>用户名：</label><input type="text" class="input" placeholder="用户名" name="adminname" value=""></li>
-			 <li><label><span class="c-red">*</span>密码：</label><input type="password" class="input" autocomplete="off" value="" placeholder="密码" name="password"></li>	
-			 <li><label><span class="c-red">*</span>确认密码：</label><input type="password" class="input" autocomplete="off"  placeholder="确认新密码" id="password2" name="password2"></li>	
+			 <li><label><span class="c-red">*</span>用户名：</label><input type="text" class="input" placeholder="用户名长度为3-30位" name="adminname" value=""></li>
+			 <li><label><span class="c-red">*</span>密码：</label><input type="password" class="input" autocomplete="off" value="" placeholder="密码长度为6-20位" name="password"></li>	
+			 <li><label><span class="c-red">*</span>确认密码：</label><input type="password" class="input" autocomplete="off"  placeholder="密码长度为6-20位" id="password2" name="password2"></li>	
 			 <li><label>邮箱：</label><input type="email" class="input" placeholder="@" name="email"></li>
 			 <li><label>真实姓名：</label><input type="text" class="input" placeholder="真实姓名" name="realname"></li>
 			 <li><label>用户昵称：</label><input type="text" class="input" placeholder="发布内容时显示" name="realname" value=""></li>
@@ -36,15 +36,15 @@
 <script type="text/javascript">
 	function dosub(obj){
 		 if(obj.adminname.value==''){
-			 layer.msg('用户名不能为空！');
+			 layer.msg('用户名不能为空！', {icon:2});
 			 return false;
 		 }
-		 if(obj.password.value.length < 6){
-			 layer.msg('密码长度不能低于6位！');
+		 if(obj.password.value.length < 6 || obj.password.value.length > 20){
+			 layer.msg('密码长度为6-20位！', {icon:2});
 			 return false;
 		 }
 		 if(obj.password.value!==obj.password2.value){
-			 layer.msg('两次密码值不相等！');
+			 layer.msg('两次密码值不相等！', {icon:2});
 			 return false;
 		 }
         $.ajax({
@@ -54,9 +54,11 @@
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1, time:800}, function(){
+						parent.location.reload();
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

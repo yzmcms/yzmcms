@@ -12,6 +12,7 @@
     <thead>
       <tr class="text-c">
         <th width="25"><input type="checkbox"></th>
+		<th width="50">稿件ID</th>
 		<th>标题</th>
 		<th width="120">发布人<?php echo field_order('userid');?></th>
 		<th width="135">更新时间<?php echo field_order('updatetime');?></th>
@@ -24,12 +25,17 @@
     <tbody>
 		<?php 
 		foreach($data as $val){
-		list($val['modelid'], $val['id']) = explode('_', $val['checkid']);
 		?>
 		  <tr class="text-c">
-			<td><input type="checkbox" value="<?php echo $val['checkid']?>" name="ids[]"></td>
+			<td><input type="checkbox" value="<?php echo $val['allid']?>" name="ids[]"></td>
+			<td><?php echo $val['allid'];?></td>
 			<td class="text-l">
 			<a href="<?php echo U('public_preview', array('catid'=>$val['catid'], 'id'=>$val['id']));?>" target="_blank" ><?php echo $val['title'];?></a>	
+			<?php
+			if($val['thumb']){
+			 echo '<span style="color:#0a6999;margin:0 3px" title="含缩略图"><i class="Hui-iconfont">&#xe646;</i></span>';
+			}
+			?>
 			</td>
 			<td><?php echo $val['username'];?></td>
 			<td><?php echo date('Y-m-d H:i:s', $val['updatetime'])?></td>

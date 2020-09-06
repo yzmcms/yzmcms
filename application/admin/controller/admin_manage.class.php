@@ -40,10 +40,6 @@ class admin_manage extends common {
 		$admin_role = D('admin_role');
 		$roles = $admin_role->where(array('disabled'=>'0'))->select();
 		if(isset($_POST['dosubmit'])) { 
-			if(!check_token($_POST['token'])){
-				return_json(array('status'=>0,'message'=>'TOKEN'.L('error')));
-			}
-
 			if($_POST['roleid'] < $_SESSION['roleid']) return_json(array('status'=>0,'message'=>'您无权添加该角色管理员，请更换角色'));
 			
 			if(!is_username($_POST["adminname"]))  return_json(array('status'=>0,'message'=>L('user_name_format_error')));
@@ -53,6 +49,10 @@ class admin_manage extends common {
 			}
 			$res = $admin->where(array('adminname'=>$_POST["adminname"]))->find();
 			if($res) return_json(array('status'=>0,'message'=>L('user_already_exists')));
+			
+			if(!check_token($_POST['token'])){
+				return_json(array('status'=>0,'message'=>'TOKEN'.L('error')));
+			}
 			
 			$_POST['password'] = password($_POST['password']);
 			$r = $admin_role->field('rolename')->where(array('roleid' => $_POST['roleid']))->find();
@@ -76,10 +76,6 @@ class admin_manage extends common {
 		$admin_role = D('admin_role');
 		$roles = $admin_role->where(array('disabled'=>'0'))->select();
 		if(isset($_POST['dosubmit'])) {
-			if(!check_token($_POST['token'])){
-				return_json(array('status'=>0,'message'=>'TOKEN'.L('error')));
-			}
-
 			$adminid = isset($_POST['adminid']) ? intval($_POST['adminid']) : 0;
 			$roleid = $admin->field('roleid')->where(array('adminid'=>$adminid))->one();
 			if($roleid < $_SESSION['roleid']) return_json(array('status'=>0,'message'=>'您无权编辑该管理员.'));
@@ -96,6 +92,10 @@ class admin_manage extends common {
 			
 			if($_POST["email"]!=''){
 				if(!is_email($_POST["email"])) return_json(array('status'=>0,'message'=>L('mail_format_error')));
+			}
+			
+			if(!check_token($_POST['token'])){
+				return_json(array('status'=>0,'message'=>'TOKEN'.L('error')));
 			}
 
 			$r = $admin_role->field('rolename')->where(array('roleid' => $_POST['roleid']))->find();
@@ -148,6 +148,8 @@ class admin_manage extends common {
 			$admin = D('admin');
 			if(!$admin->where(array('adminid' => $adminid,'password' => password($_POST['old_password'])))->find()) 
 				return_json(array('status'=>0,'message'=>'旧密码不正确！'));
+
+			if(!is_password($_POST["password"])) return_json(array('status'=>0,'message'=>L('password_format_error')));
 
 			if($admin->update(array('password' => password($_POST['password'])), array('adminid' => $adminid))){
 				session_destroy();

@@ -37,7 +37,7 @@
 <script type="text/javascript">
 function dosub(obj){
 	if($("input[name='ids']").val()==''){
-		layer.msg('内容ID不能为空！');
+		layer.msg('内容ID不能为空！', {icon:2});
 		return false;
 	}
 	$.ajax({
@@ -47,9 +47,11 @@ function dosub(obj){
 		dataType: "json", 
 		success: function (msg) {
 			if(msg.status == 1){
-				parent.location.reload();       
-			}else{
-				layer.msg(msg.message);
+				layer.msg(msg.message, {icon:1, time:800}, function(){
+					parent.location.reload();
+				});
+		    }else{
+				layer.msg(msg.message, {icon:2});
 			}
 		}
 	})

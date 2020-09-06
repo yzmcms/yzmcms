@@ -118,20 +118,6 @@ function sendmail($email, $title = '', $content = '', $mailtype = 'HTML'){
 
 
 /**
- * 返回json数组，默认提示 “数据未修改！” 
- * @param $arr
- * @param $show_debug
- * @return string
- */
-function return_json($arr = array(), $show_debug = true){
-    header('Content-Type:application/json; charset=utf-8');
-    if(!$arr) $arr = array('status'=>0,'message'=>L('data_not_modified'));
-	if($show_debug) $arr = array_merge($arr, debug::get_debug());
-    exit(json_encode($arr));
-}
-
-
-/**
  * 判断是否为手机访问
  * @return bool
  */
@@ -342,10 +328,11 @@ function get_catname($catid){
  * 根据栏目ID获取子栏目信息
  *
  * @param  int $catid
- * @param  boll $is_show 前端不显示栏目是否显示
+ * @param  bool $is_show 前端不显示栏目是否显示
+ * @param  int $limit 限制数量
  * @return array
  */
-function get_childcat($catid, $is_show = false){
+function get_childcat($catid, $is_show = false, $limit = 0){
 	$catid = intval($catid);
     $data = get_category();
 	$r = array();
@@ -353,7 +340,7 @@ function get_childcat($catid, $is_show = false){
 		if(!$v['display'] && !$is_show) continue;
 		if($v['parentid'] == $catid) $r[] = $v;
 	}
-    return $r; 	
+    return $limit ? array_slice($r, 0, $limit) : $r; 	
 }
 
 
@@ -416,7 +403,7 @@ function get_model($modelid, $parameter = 'tablename'){
 function get_content_keyword(){
 	$res = getcache('keyword_link');
     if($res === false){
-		$res = D('keyword_link')->field('keyword,url')->order('id DESC')->limit(300)->select();
+		$res = D('keyword_link')->field('keyword,url')->order('id DESC')->limit(500)->select();
 		setcache('keyword_link', $res);
 	}
 	return $res;
@@ -528,7 +515,7 @@ function set_mapping($m) {
  */
 function get_urlrule() {
     if(!$urlrule = getcache('urlrule')){
-		$data = D('urlrule')->select();
+		$data = D('urlrule')->order('listorder ASC,urlruleid ASC')->limit(300)->select();
 		$urlrule = array();
 		foreach($data as $val){
 			$val['urlrule'] = '^'.str_replace('/', '\/', $val['urlrule']).'$';

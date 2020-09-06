@@ -97,7 +97,7 @@ class role extends common {
 			}
 			
 			delcache('menu_string_'.$_POST['roleid']);
-			showmsg(L('operation_success'));
+			showmsg(L('operation_success'), U('init'), 1);
 			
 		}else{
 			$roleid = isset($_GET['roleid']) ? intval($_GET['roleid']) : 0;
@@ -106,15 +106,17 @@ class role extends common {
 			$tree = yzm_base::load_sys_class('tree');
 			$tree->icon = array('│ ','├─ ','└─ ');
 			$tree->nbsp = '&nbsp;&nbsp;&nbsp;';
-			$data = D('menu')->field('id,name,parentid,m,c,a')->order('listorder ASC,id DESC')->select();
+			$data = D('menu')->field('id,name,parentid,m,c,a')->order('listorder ASC,id ASC')->select();
 			$priv_data = D('admin_role_priv')->field('roleid,m,c,a')->where(array('roleid'=>$roleid))->select();
 			foreach($data as $k=>$v) {
+				$data[$k]['style'] = $v['parentid'] ? 'child' : 'top';
+				$data[$k]['add'] = !$v['parentid'] ? '<i class="Hui-iconfont parentid" action="2">&#xe67e;</i> ' : '';
 				$data[$k]['level'] = $this->get_level($v['id'],$data);
 				$data[$k]['checked'] = ($this->is_checked($v,$roleid,$priv_data))? ' checked' : '';
 			}		
 			
-			$str  = "<tr>
-						<td><label>\$spacer<input type='checkbox' name='menuid[]' value='\$id' level='\$level' \$checked onclick='javascript:checknode(this);'> \$name</label></td>
+			$str  = "<tr class='\$style'>
+						<td>\$add<label>\$spacer<input type='checkbox' name='menuid[]' value='\$id' level='\$level' \$checked onclick='javascript:checknode(this);'> \$name</label></td>
 					</tr>";
 			$tree->init($data);
 			$menus = $tree->get_tree(0, $str);

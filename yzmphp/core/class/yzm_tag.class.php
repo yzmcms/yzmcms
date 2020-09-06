@@ -70,6 +70,21 @@ class yzm_tag{
 		//当前页：$this->page->getpage();
 		return '<span class="pageinfo">共<strong>'.$this->page->total().'</strong>页<strong>'.$this->total.'</strong>条记录</span>'.$this->page->getfull();
 	}
+
+
+
+	/**
+	 * 全站最近更新
+	 * @param $data
+	 */
+	public function all($data) {
+
+		$field = isset($data['field']) ? $data['field'] : 'modelid,catid,id,userid,username,title,inputtime,updatetime,url,thumb,issystem';
+		$order = isset($data['order']) ? $data['order'] : 'allid DESC';
+		$limit = isset($data['limit']) ? $data['limit'] : '20';
+		
+		return D('all_content')->field($field)->where('`status` = 1')->order($order)->limit($limit)->select();
+	}
 	
 	
 	
@@ -149,10 +164,11 @@ class yzm_tag{
 	 * @param $data
 	 */
 	public function tag($data) {
+		$field = isset($data['field']) ? $data['field'] : 'id,tag,total,remarks';
+		$catid = isset($data['catid']) ? intval($data['catid']) : 0;
 		$order = isset($data['order']) ? $data['order'] : 'id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
-		$where = isset($data['where']) ? $data['where'] : '';
-		$field = isset($data['field']) ? $data['field'] : 'id,tag,total,remarks';
+		$where = $catid ? 'catid='.$catid : '';
 		return D('tag')->field($field)->where($where)->order($order)->limit($limit)->select();
 	}	
 	

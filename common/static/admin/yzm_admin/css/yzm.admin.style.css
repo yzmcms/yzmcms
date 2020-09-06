@@ -64,11 +64,17 @@ em,i{font-style:normal;}
 
 .listorder{width:40px;height:20px;line-height:20px;padding:0px 2px;text-align:center}
 .orderbutton{border:0px;outline:none;height:28px;line-height:28px;width:60px;cursor:pointer;transition:background 0.3s}
-.fieldset_list legend{font-size:14px;color:#666;background-color:#f9f9f9;border:1px solid #d8d8d8;padding:0 15px;height:25px;line-height:25px;width:56px;font-weight:bold;margin-bottom:0px;}
+.fieldset_list legend{font-size:13px;color:#666;background-color:#f9f9f9;border:1px solid #d8d8d8;padding:0 15px;height:25px;line-height:25px;width:56px;font-weight:bold;margin-bottom:0px;}
 .fieldset_tip{text-align:center;font-size:13px;margin-top:5px;margin-bottom:10px}
 .file_ul li{margin-bottom:5px;margin-left:10px}
-.file_ul li input{margin-right:10px}
-.file_ul li a{color:#06c}
+.file_ul li .input-text{margin-right:10px;width:300px;}
+.file_ul li .yzm-input-alt{width:200px;}
+.file_ul li a{font-size:12px;padding:6px 10px;border-radius:3px;color:#fff;transition:all 0.3s}
+.file_ul li a:hover{text-decoration:none;}
+.file_ul li a.secondary{background:#3bb4f2;}
+.file_ul li a.secondary:hover{background:#0f9ae0}
+.file_ul li a.danger{background:#dd514c;}
+.file_ul li a.danger:hover{background:#c62b26;}
 
 #page{margin-top:10px;font-size:14px;height:30px;line-height:30px;}
 #page .page_right{float:right;text-align:right;}
@@ -84,13 +90,16 @@ em,i{font-style:normal;}
 .option_label{margin-right:10px}
 
 .formdoby_info  fieldset{border:1px solid #d8d8d8;padding:10px;margin-bottom:15px;}
-.formdoby_info  fieldset legend{background-color: #f9f9f9;border: 1px solid #d8d8d8;font-weight:bold;font-size:14px;padding: 3px 8px;color:#444;width:auto;line-height:25px;margin-bottom:0px}
+.formdoby_info  fieldset legend{background-color: #f9f9f9;border: 1px solid #d8d8d8;font-size:13px;padding: 3px 8px;color:#444;width:auto;line-height:25px;margin-bottom:0px}
 .formdoby_info  textarea{border: 1px solid #d0d0d0;padding: 2px 0 2px 5px;line-height:18px; font-size: 12px;width:100%;}
 .formdoby_info  .tip{margin-left:5px;color:#888}
 .yzmcms_table{border-top:none;border-bottom:none;}
 .sub_menu{margin-bottom:20px;}
 .sub_menu a{background-color: #fff; border: 1px solid #ddd;border-radius: 2px;box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);color: #464646;display:inline-block;margin-right:8px;padding:3px 10px}
 .sub_menu a:hover,.sub_menu .on{background-color: #3498db;border-color: #3498db;border-radius: 2px;color: #ffffff;text-decoration:none}
+.footer_padding{padding-bottom:60px}
+.footer_btn{position:fixed;z-index:999;left:0px;bottom:0px;background:#fff;padding:10px 20px;width:100%;overflow:hidden;border-top:1px solid #d8d8d8;}
+.footer_btn input{padding:0 20px;}
 
 #yzmcms_notice{width:300px;line-height:50px;color:#fff;background-color:rgba(0,0,0,0.6);font-size:14px;text-align:center;position:fixed;top:50%;left:50%;margin-top:-30px;margin-left:-150px;overflow:hidden;display:none;border-radius:3px}
 #yzmcms_notice a{color:red;font-size:12px}

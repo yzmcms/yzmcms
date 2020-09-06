@@ -37,8 +37,13 @@ class member_message extends common{
 		$message = D('message');
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){	
-			$type = isset($_GET["type"]) ? $_GET["type"] : '0';
+			$isread = isset($_GET["isread"]) ? intval($_GET["isread"]) : '99';
+			$type = isset($_GET["type"]) ? intval($_GET["type"]) : '0';
 			$username = isset($_GET["username"]) ? safe_replace($_GET["username"]) : '';
+
+			if($isread < 99){
+				$where .= ' AND isread = '.$isread;
+			}
 			
 			if($username != '' && $type != '0'){
 				if($type == '1')

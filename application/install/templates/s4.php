@@ -4,8 +4,8 @@
 <head>
 <meta charset="UTF-8" />
 <title><?php echo $Title; ?> - <?php echo $Powered; ?></title>
-<link rel="stylesheet" href="./css/install.css?v=9.0" />
-<script src="./js/jquery.js?v=9.0"></script>
+<link rel="stylesheet" href="./css/install.css?v=yzmcms" />
+<script src="../../common/static/js/jquery-1.8.2.min.js"></script>
 </head>
 <body>
 <div class="wrap">

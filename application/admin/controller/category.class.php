@@ -131,11 +131,8 @@ class category extends common {
 				if($type == 1){   //单页类型
 					$arr = array();
 					$arr['catid'] = $catid;	
-					$arr['title'] = $_POST['catname'];				
-					$arr['pagedir'] = $_POST['catdir'];										
-					$arr['keywords'] = $_POST['seo_keywords'];										
+					$arr['title'] = $_POST['catname'];										
 					$arr['description'] = $_POST['seo_description'];										
-					$arr['template'] = $_POST['category_template'];										
 					$arr['updatetime'] = SYS_TIME;										
 					D('page')->insert($arr, false, false); 
 				}
@@ -197,9 +194,7 @@ class category extends common {
 				if($type == 1){   //单页类型
 					$arr = array();
 					$arr['catid'] = $catid;					
-					$arr['title'] = $_POST['catname'];															
-					$arr['pagedir'] = $_POST['catdir'];															
-					$arr['template'] = $_POST['category_template'];										
+					$arr['title'] = $_POST['catname'];									
 					$arr['updatetime'] = SYS_TIME;										
 					D('page')->insert($arr, false, false); 
 				}

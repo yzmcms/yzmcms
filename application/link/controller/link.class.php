@@ -69,7 +69,7 @@ class link extends common{
 	public function del() {
 		if($_POST && is_array($_POST['id'])){
 			if(D('link')->delete($_POST['id'], true)){
-				showmsg(L('operation_success'));
+				showmsg(L('operation_success'), '', 1);
 			}else{
 				showmsg(L('operation_failure'));
 			}
@@ -83,7 +83,7 @@ class link extends common{
 	public function del_one() {
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 		if(D('link')->delete(array('id' => $id))){
-			showmsg(L('operation_success'));
+			showmsg(L('operation_success'), '', 1);
 		}else{
 			showmsg(L('operation_failure'));
 		}
@@ -99,7 +99,7 @@ class link extends common{
 			foreach($_POST['order_id'] as $key=>$val){
 				$link->update(array('listorder'=>$_POST['listorder'][$key]),array('id'=>intval($val)));
 			}
-			showmsg(L('operation_success'),'',1);
+			showmsg(L('operation_success'), '', 1);
 		}
 	}
 	

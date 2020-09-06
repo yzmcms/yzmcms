@@ -36,7 +36,14 @@
 					</div>
 				</div>
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">在导航显示：</label>
+					<label class="form-label col-xs-4 col-sm-2">打开方式：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="target" type="radio" value="_self" <?php echo $data['target']=='_self' ? 'checked="checked"' : ''; ?>> 本窗口打开</label>
+						<label class="label_radio"><input name="target" type="radio" value="_blank" <?php echo $data['target']=='_blank' ? 'checked="checked"' : ''; ?>> 新窗口打开</label>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">导航显示：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<label class="label_radio"><input name="display" type="radio" value="1" <?php echo $data['display']==1 ? 'checked="checked"' : ''; ?>> 是</label>
 						<label class="label_radio"><input name="display" type="radio" value="0" <?php echo $data['display']==0 ? 'checked="checked"' : ''; ?>> 否</label>
@@ -82,6 +89,12 @@
 			</div>
 			<div class="tabCon">
 				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">英文标题：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="entitle" value="<?php echo $data['entitle']; ?>" placeholder="英文标题可留空" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">栏目副标题：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" name="subtitle" value="<?php echo $data['subtitle']; ?>" placeholder="栏目副标题可留空" class="input-text">
@@ -92,17 +105,11 @@
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" name="mobname" value="<?php echo $data['mobname']; ?>" placeholder="手机版栏目名称，为空则与电脑端一致" class="input-text">
 					</div>
-				</div>
-				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">手机版地址：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" name="moblink" value="<?php echo $data['moblink']; ?>" placeholder="手机版栏目地址，为空则为系统默认" class="input-text">
-					</div>
 				</div>	
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">栏目排序：</label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<input type="text" name="listorder" value="<?php echo $data['listorder']; ?>" class="input-text" style="width:200px">
+						<input type="text" name="listorder" value="<?php echo $data['listorder']; ?>" class="input-text">
 					</div>
 				</div>					
 			</div>
@@ -148,19 +155,19 @@ function change_dir(){
 function dosub(obj){
 	var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[-/]){0,29}$/;
 	if($("input[name='catname']").val()==''){
-		layer.msg('栏目名称不能为空！');
+		layer.msg('栏目名称不能为空！', {icon:2});
 		return false;
 	}
 	if($("input[name='catdir']").val()==''){
-		layer.msg('栏目目录不能为空！');
+		layer.msg('栏目目录不能为空！', {icon:2});
 		return false;
 	}
 	if(!reg.test($("input[name='catdir']").val())){
-		layer.msg('栏目目录只能是拼音或英文字符！');
+		layer.msg('栏目目录只能是拼音或英文字符！', {icon:2});
 		return false;
 	}
 	if($("select[name='category_template']").val()=='0'){
-		layer.msg('请选择单页模板！');
+		layer.msg('请选择单页模板！', {icon:2});
 		$.Huitab("#tab_system .tabBar span","#tab_system .tabCon","current","click","1");
 		return false;
 	}
@@ -171,9 +178,11 @@ function dosub(obj){
 		dataType: "json", 
 		success: function (msg) {
 			if(msg.status == 1){
-				parent.location.reload();       
+				layer.msg(msg.message, {icon:1,time:1000}, function(){
+					parent.location.reload();   
+				});
 			}else{
-				layer.msg(msg.message);
+				layer.msg(msg.message, {icon:2});
 			}
 		}
 	})

@@ -106,7 +106,7 @@ function yzm_img_cropper(cid, url){
 //图片预览
 function yzm_img_preview(id, src){
 	if(src == '') return;
-	layer.tips('<img src="'+htmlspecialchars(src)+'" style="max-width:180px" >', '#'+id, {
+	layer.tips('<img src="'+yzm_htmlspecialchars(src)+'" style="max-width:180px" >', '#'+id, {
 	  tips: [1, '#fff']
 	});	
 }
@@ -117,7 +117,7 @@ function yzm_img_browse(obj, src){
 	if(src == '') return false;
 	var ext = src.substring(src.length,src.lastIndexOf('.'));
 	if(ext!='.png' && ext!='.jpg' && ext!='.gif' && ext!='.jpeg') return false;
-	layer.tips('<img src="'+htmlspecialchars(src)+'" height="100">', obj, {
+	layer.tips('<img src="'+yzm_htmlspecialchars(src)+'" height="100">', obj, {
 	  tips: [1, '#fff']
 	});	
 }
@@ -125,20 +125,36 @@ function yzm_img_browse(obj, src){
 
 //添加远程地址
 function yzm_add_attachment(id){
-	var string = '<li>文件：<input type="text" name="'+id+'[url][]" value="" onmouseover="yzm_img_browse(this, this.value)" onmouseout="layer.closeAll();" class="input-text w_300"> 描述：<input type="text" name="'+id+'[alt][]" value="" class="input-text w_200"><a href="javascript:;" onclick="remove_li(this);">删除</a></li>';
+	var string = '<li>文件：<input type="text" name="'+id+'[url][]" value="" onmouseover="yzm_img_browse(this, this.value)" onmouseout="layer.closeAll();" class="input-text yzm-input-url"> 描述：<input type="text" name="'+id+'[alt][]" value="" class="input-text yzm-input-alt"><a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 1);">上移</a> <a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 0);">下移</a> <a href="javascript:;" class="danger" onclick="yzm_delete_li(this);">删除</a></li>';
 	
 	$("#"+id).append(string);	
 }
 
 
-//删除多文件上传
-function remove_li(obj){
+//删除多文件
+function yzm_delete_li(obj){
 	 $(obj).parent().remove();
 }
 
 
+//多文件上下移动
+function yzm_move_li(obj, is_up) {
+	if(is_up){
+		var prevLi = $(obj).parents("li").prev();
+		if(prevLi.length){
+		    prevLi.before($(obj).parents("li"));
+		}
+	}else{
+	    var nextLi = $(obj).parents("li").next();
+	    if(nextLi.length){
+	        nextLi.after($(obj).parents("li"));
+	    }
+	}
+}
+
+
 //html实体转换
-function htmlspecialchars(str)  {  
+function yzm_htmlspecialchars(str)  {  
     str = str.replace(/&/g, '&amp;');
     str = str.replace(/</g, '&lt;');
     str = str.replace(/>/g, '&gt;');

@@ -81,7 +81,7 @@ class index extends common{
 			showmsg(L('login_success'), $referer, 1);
 		}
 
-		$referer = isset($_GET['referer']) && trim($_GET['referer']) ? urlencode($_GET['referer']) : '';
+		$referer = isset($_GET['referer']) && is_string($_GET['referer']) ? urlencode($_GET['referer']) : '';
 		include template('member', 'login');
 	}
 
@@ -387,15 +387,13 @@ class index extends common{
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
 		
-		$member_content = D('member_content');
+		$all_content = D('all_content');
 		yzm_base::load_sys_class('page','',0);
-		$total = $member_content->join('yzmcms_member_follow ON yzmcms_member_follow.followid = yzmcms_member_content.userid', 'RIGHT')->where("yzmcms_member_follow.userid=$userid AND status=1")->total();
+		$total = $all_content->join('yzmcms_member_follow ON yzmcms_member_follow.followid = yzmcms_all_content.userid', 'RIGHT')->where("yzmcms_member_follow.userid=$userid AND status=1 AND issystem=0")->total();
 		$page = new page($total, 15);
-		$res = $member_content->field('yzmcms_member_content.checkid,yzmcms_member_content.catid,yzmcms_member_content.username,yzmcms_member_content.title,yzmcms_member_content.inputtime')->join('yzmcms_member_follow ON yzmcms_member_follow.followid = yzmcms_member_content.userid', 'RIGHT')->where("yzmcms_member_follow.userid=$userid AND status=1")->order('inputtime DESC')->limit($page->limit())->select();	
+		$res = $all_content->field('modelid,catid,thumb,title,url,username,yzmcms_all_content.inputtime')->join('yzmcms_member_follow ON yzmcms_member_follow.followid = yzmcms_all_content.userid', 'RIGHT')->where("yzmcms_member_follow.userid=$userid AND status=1 AND issystem=0")->order('allid DESC')->limit($page->limit())->select();	
 		$data = array();
 		foreach($res as $val) {
-			list($val['modelid'], $val['id']) = explode('_', $val['checkid']);
-			$val['url'] = SITE_URL.'index.php?m=index&c=index&a=show&catid='.$val['catid'].'&id='.$val['id'];
 			$val['event'] = $val['username'].' 发布了《<a href="'.$val['url'].'" target="_blank">'.$val['title'].'</a>》';
 			$data[] = $val;
 		}

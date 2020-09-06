@@ -2,22 +2,26 @@
 <title>TAG标签选择 - YzmCMS内容管理系统</title>
 <style>
 	.yzm_tags{margin-top:12px;}
-	.yzm_tags a{color:#666;margin-right:10px;cursor: pointer;}
-	.yzm_tags a:hover{color:red;}
+	.yzm_tags a{color:#454545;margin-right:10px;}
+	.yzm_tags a:hover, .yzm_tags .current{color:red;}
 	.tag_val{margin-top:10px}
 </style>
 </head>
 <body>
 <article class="page-container">
-	<form action="" method="get" id="search">
-    	 <input type="text" name="searinfo" class="input-text" style="width:200px;height:27px;line-height:27px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>">
-    	 <button name="dosubmit" class="btn btn-success size-S" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button> 
+	<form action="" method="get" id="search" onchange="do_search()" onsubmit="return do_search()">
+		 <span class="select-box inline"><?php echo select_category('catid', $catid, '绑定栏目'); ?></span>
+    	 <input type="text" name="searinfo" class="input-text" placeholder="请输入关键字" style="width:200px;height:27px;line-height:27px" value="<?php echo $searinfo;?>">
+    	 <input type="hidden" name="dosubmit" value="1">
+    	 <button class="btn btn-success size-S" type="button" onclick="do_search()"><i class="Hui-iconfont">&#xe665;</i> 搜索</button> 
+    	 <button class="btn btn-secondary size-S" type="button" onclick="do_reset()"><i class="Hui-iconfont">&#xe68f;</i> 重置</button> 
 	</form>	
 	<div class="yzm_tags">	
 			<?php 
 			foreach($data as $val){
-				echo '<a onclick="set_val(\''.$val['tag'].'\')">#'.$val['tag'].'</a>';
+				echo '<a onclick="set_val(this)" data-v="'.$val['tag'].'">#'.$val['tag'].'</a>';
 			}
+			if(!$data) echo '<span style="color:#888">暂无TAG</span>';
 		    ?>
 	</div>
 	<div class="tag_val">
@@ -25,7 +29,6 @@
 		<input type="text" class="input-text" name="" id="tags">
 	</div>
 	
-
 	<div style="position: fixed;bottom: 20px;right: 10px;z-index: 99;">
             <button onclick="dosub()" name="dosubmit" class="btn btn-primary radius" type="submit">&nbsp;&nbsp;确定&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
 			<button onclick="yzmcms_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
@@ -34,25 +37,61 @@
 <?php include $this->admin_tpl('footer', 'admin');?>
 
 <script type="text/javascript">
-	function set_val(val) { 
-		var v = $("#tags").val();
-		v = v ? v+','+val : val;
-		$("#tags").val(v);
+	function do_search() {
+		$.ajax({
+	        type: 'POST',
+	        data: $("#search").serialize(),
+	        url: '<?php echo U(ROUTE_A);?>', 
+		    dataType: "json", 
+	        success: function (msg) {
+				if(msg.status == 1){
+					var html = '';
+					var len = msg.data.length;
+					for(j = 0; j < len; j++) {
+					    html += '<a onclick="set_val(this)" data-v="'+msg.data[j]['tag']+'">#'+msg.data[j]['tag']+'</a>';
+					}
+					if(html == '') html = '<span style="color:#888">暂无TAG</span>';
+					$(".yzm_tags").html(html);
+			    }else{
+					layer.msg(msg.message, {icon:2});
+				}
+	        }
+	    })
+	    return false;
+	}
+
+
+	function do_reset() {
+		$("#search")[0].reset();
+		do_search();
+	}
+
+
+	var val_arr = new Array();
+	function set_val(obj) { 
+		if(!$(obj).hasClass("current")){
+			$(obj).addClass("current");
+			val_arr.push($(obj).data('v'));
+		}else{
+			$(obj).removeClass("current");
+			val_arr.splice($.inArray($(obj).data('v'),val_arr),1);
+		}
+		$("#tags").val(val_arr.join(','));
 	}
 
 
 	function dosub(){
 		var v = $("#tags").val();
 		if (v == ''){
-		   layer.alert('请选择TAG！');
+		   layer.msg('请选择TAG！', {icon:2});
 		   return false;
 		}
 
 		var str = '';
-		var strs= new Array();
-		strs = v.split(","); 
-		for (i=0;i<strs.length ;i++ ){
-			str += '<span class="Hui-tags-token">'+ strs[i] +'</span>';;
+		var arr= new Array();
+		arr = v.split(","); 
+		for (i=0;i<arr.length ;i++ ){
+			str += '<span class="Hui-tags-token">'+ arr[i] +'</span>';;
 		}
 		
 		var index = parent.layer.getFrameIndex(window.name);

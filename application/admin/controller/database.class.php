@@ -147,17 +147,18 @@ class database extends common {
             $len = @file_put_contents($lock, SYS_TIME); //创建锁文件
             if(!$len) showmsg($this->config['path'].'目录不存在或不可写，请检查！', 'stop');
 			
-            $_SESSION['backup_config'] = $this->config;
+            $backup_cache['backup_config'] = $this->config;
 
             //生成备份文件信息
             $file = array(
                 'name' => random(6, 'abcdefghigklmzopqrstuvwxyz').'-'.date('Ymd-His'),
                 'part' => 1,
             );
-            $_SESSION['backup_file'] = $file;
+            $backup_cache['backup_file'] = $file;
 
             //缓存要备份的表
-            $_SESSION['backup_tables'] = array_map(array($this, '_safe_replace'), $tables);
+            $backup_cache['backup_tables'] = array_map(array($this, '_safe_replace'), $tables);
+			setcache('backup_cache', $backup_cache);
 
             //创建备份文件
             $database = new databack($file, $this->config);
@@ -170,10 +171,13 @@ class database extends common {
 
         } elseif (isset($_GET['id']) && isset($_GET['start'])) {
 			
-            $tables = $_SESSION['backup_tables'];
+            $backup_cache = getcache('backup_cache');
+        	if(!is_array($backup_cache)) showmsg(L('illegal_operation'), 'stop');
+        	
+            $tables = $backup_cache['backup_tables'];
 			$id = intval($_GET['id']);
 			$start = intval($_GET['start']);
-            $database = new databack($_SESSION['backup_file'], $_SESSION['backup_config']);
+            $database = new databack($backup_cache['backup_file'], $backup_cache['backup_config']);
             $start  = $database->backup($tables[$id], $start);
             if(false === $start){  //出错
                 showmsg('备份出错！', 'stop');
@@ -182,8 +186,8 @@ class database extends common {
                     $tab = array('id' => $id, 'start' => 0);
                     showmsg('表'.$tables[$id].'备份完成！', U('export_list', $tab), 0.1);
                 } else {   //备份完成，清空缓存
-                    @unlink($_SESSION['backup_config']['path'].'backup.lock');
-					unset($_SESSION['backup_tables'], $_SESSION['backup_file'], $_SESSION['backup_config']);
+                    @unlink($backup_cache['backup_config']['path'].'backup.lock');
+					delcache('backup_cache');
                     showmsg('备份全部完成！', U('databack_list'), 2);
                 }
             } else {
@@ -193,7 +197,7 @@ class database extends common {
             }
 
         } else {
-            showmsg('参数错误！', 'stop');
+            showmsg(L('lose_parameters'), 'stop');
         }
 	}
 	
@@ -220,7 +224,7 @@ class database extends common {
             $last = end($list);
             if(count($list) === $last[0]){ 
                 //缓存备份列表
-				$_SESSION['backup_list'] = $list;
+				setcache('backup_list', $list);
                 showmsg('初始化成功！', U('import', array('part' => 1, 'start' => 0)), 1);
             } else {
                 showmsg('备份文件可能已经损坏，请检查！', 'stop');
@@ -228,8 +232,8 @@ class database extends common {
 		} elseif(isset($_GET['part']) && isset($_GET['start'])) {
 			$part = intval($_GET['part']);
 			$start = intval($_GET['start']);
-            $list  = $_SESSION['backup_list'];
-			if(!isset($list) || !is_array($list)) showmsg('非法操作！', 'stop');
+            $list  = getcache('backup_list');
+			if(!is_array($list)) showmsg(L('illegal_operation'), 'stop');
 				
             $databack = new databack($list[$part], array('path' => $this->config['path'],'compress' => $list[$part][2]));
 
@@ -242,7 +246,7 @@ class database extends common {
                     $data = array('part' => $part, 'start' => 0);
                     showmsg('正在还原：卷'.$part.'...', U('import', $data), 1);
                 } else {
-                    unset($_SESSION['backup_list']);
+                    delcache('backup_list');
                     showmsg('还原完成！', U('databack_list'), 2);
                 }
             } else {
@@ -257,7 +261,7 @@ class database extends common {
             }
 
         } else {
-            showmsg('参数错误！', 'stop');
+            showmsg(L('lose_parameters'), 'stop');
         }
 	}
 

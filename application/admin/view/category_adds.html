@@ -50,19 +50,19 @@
 					</div>
 				</div>	
 				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">打开方式：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="target" type="radio" value="_self" checked> 本窗口打开</label>
+						<label class="label_radio"><input name="target" type="radio" value="_blank"> 新窗口打开</label>
+					</div>
+				</div>	
+				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">导航显示：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<label class="label_radio"><input name="display" type="radio" value="1" checked> 是</label>
 						<label class="label_radio"><input name="display" type="radio" value="0"> 否</label>
 					</div>
-				</div>	
-				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">允许投稿：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<label class="label_radio"><input name="member_publish" type="radio" value="1"> 是</label>
-						<label class="label_radio"><input name="member_publish" type="radio" value="0" checked> 否</label>
-					</div>
-				</div>	
+				</div>		
 			</div>
 			<div class="tabCon">
 				<div class="row cl">
@@ -161,24 +161,24 @@ function yzmcms_msg(modelid){
 function dosub(obj){
 	var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[-/]){0,29}$/;
 	if($("textarea[name='catnames']").val()==''){
-		layer.msg('栏目名称不能为空！');
+		layer.msg('栏目名称不能为空！', {icon:2});
 		return false;
 	}
 	if(catdir_error){
-		layer.msg('栏目英文名称有错误，请检查！');
+		layer.msg('栏目英文名称有错误，请检查！', {icon:2});
 		return false;
 	}
 	if($("select[name='category_template']").val()=='0'){
-		layer.msg('请选择频道页模板！');
+		layer.msg('请选择频道页模板！', {icon:2});
 		$.Huitab("#tab_system .tabBar span","#tab_system .tabCon","current","click","1");
 		return false;
 	}
 	if($("select[name='list_template']").val()=='0'){
-		layer.msg('请选择列表页模板！');
+		layer.msg('请选择列表页模板！', {icon:2});
 		return false;
 	}
 	if($("select[name='show_template']").val()=='0'){
-		layer.msg('请选择内容页模板！');
+		layer.msg('请选择内容页模板！', {icon:2});
 		return false;
 	}		
 	$.ajax({
@@ -188,9 +188,11 @@ function dosub(obj){
 		dataType: "json", 
 		success: function (msg) {
 			if(msg.status == 1){
-				parent.location.reload();       
+				layer.msg(msg.message, {icon:1,time:1000}, function(){
+					parent.location.reload();   
+				});
 			}else{
-				layer.msg(msg.message);
+				layer.msg(msg.message, {icon:2});
 			}
 		}
 	})

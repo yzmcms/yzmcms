@@ -29,11 +29,11 @@
 <script type="text/javascript">
 	function dosub(obj){
 		 if(obj.subject.value==''){
-			 layer.msg('主题不能为空！');
+			 layer.msg('主题不能为空！', {icon:2});
 			 return false;
 		 }
 		 if(obj.content.value==''){
-			 layer.msg('内容不能为空！');
+			 layer.msg('内容不能为空！', {icon:2});
 			 return false;
 		 }
         $.ajax({
@@ -43,9 +43,11 @@
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1, time:800}, function(){
+						parent.location.reload();
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

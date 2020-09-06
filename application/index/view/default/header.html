@@ -24,16 +24,17 @@
 		<form method="get" action="{U('search/index/init')}" target="_blank">
 			<div id="searchtxt" class="searchtxt">
 				<div class="searchmenu">	
-					<div class="searchselected" id="searchselected">文章</div>	
+					<div class="searchselected" id="searchselected">全站</div>	
 					<div class="searchtab" id="searchtab">
 						<ul>
+							<li data="0">全站</li>
 							<li data="1">文章</li>
 							<li data="2">产品</li>
 							<li data="3">下载</li>
 						</ul>
 					</div>
 				</div>
-				<input type="hidden" name="modelid" value="1" id="modelid" />
+				<input type="hidden" name="modelid" value="0" id="modelid" />
 				<input name="q" type="text" placeholder="输入关键字"/>
 			</div>
 			<div class="searchbtn">
@@ -48,10 +49,10 @@
 	<div class="yzm-menu">
 	  <ul class="yzm-nav">
 		 <li><a {if !isset($catid)} class="current" {/if} href="{SITE_URL}">首页</a></li>
-		{m:nav field="catid,catname,arrchildid,pclink,type" where="parentid=0" limit="20"}
+		{m:nav field="catid,catname,arrchildid,pclink,target" where="parentid=0" limit="20"}
 		{loop $data $v}
 		    <li>
-				<a {if isset($catid) && $v['catid']==$catid} class="current" {/if} href="{$v[pclink]}" {if $v['type']==2} target="_blank" {/if}>{$v[catname]}</a>
+				<a {if isset($catid) && $v['catid']==$catid} class="current" {/if} href="{$v[pclink]}" target="{$v[target]}">{$v[catname]}</a>
 				<!-- 这里是二级栏目的循环，不需要的可以删除，代码开始 -->
 				{if $v['arrchildid']!=$v['catid']} 
 				{php $r = get_childcat($v['catid']);}

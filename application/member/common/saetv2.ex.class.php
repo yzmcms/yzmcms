@@ -454,7 +454,7 @@ class SaeTOAuthV2 {
 
 		foreach ($params as $parameter => $value) {
 
-			if( in_array($parameter, array('pic', 'image')) && $value{0} == '@' ) {
+			if( in_array($parameter, array('pic', 'image')) && $value[0] == '@' ) {
 				$url = ltrim( $value, '@' );
 				$content = file_get_contents( $url );
 				$array = explode( '?', basename( $url ) );
@@ -2992,7 +2992,7 @@ class SaeTClientV2
 	 * 对应API：{@link http://open.weibo.com/wiki/2/tags/destroy_batch tags/destroy_batch}
 	 * 
 	 * @access public
-	 * @param mixed $ids 必选参数，要删除的tag id，多个id用半角逗号分割，最多10个。或由多个tag id构成的数组。如：“553,554,555"或array(553, 554, 555)
+	 * @param mixed $ids 必选参数，要删除的tag id，多个id用半角逗号分隔，最多10个。或由多个tag id构成的数组。如：“553,554,555"或array(553, 554, 555)
 	 * @return array
 	 */
 	function delete_tags( $ids )

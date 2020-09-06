@@ -25,10 +25,6 @@
 <?php include $this->admin_tpl('footer');?> 
 <script type="text/javascript">
 	function dosub(obj){
-		 if($("input[name='nickname']").val() == ''){
-			 layer.msg('用户昵称不能为空！');
-			 return false;
-		 }
 
 		$.ajax({
 		 type: 'POST',
@@ -37,14 +33,17 @@
 		 dataType: "json", 
 		 success: function (msg) {
 			if(msg.status == 1){
-				layer.msg(msg.message, {time:2000});
+				var index = parent.layer.getFrameIndex(window.name);
+				layer.msg(msg.message, {icon:1, time:2000}, function(){
+					parent.layer.close(index);
+				});
 		    }else{
-				layer.msg(msg.message);
+				layer.msg(msg.message, {icon:2});
 			}
 		 }
 		})
 
-		 return false;			 
+		return false;			 
 	}
 </script> 
 </body>

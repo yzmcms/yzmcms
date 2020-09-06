@@ -176,9 +176,9 @@
 			</div>
 			<div class="tabCon">
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">禁止登录后台的IP列表：<br><span style="color:#888">匹配IP段用“*”占位<br>多个IP用“,”分割</span></label>
+					<label class="form-label col-xs-4 col-sm-2">禁止登录后台的IP列表：<br><span style="color:#888">匹配IP段用“*”占位<br>多个IP用“,”分隔</span></label>
 					<div class="formControls col-xs-8 col-sm-9">
-						<textarea class="textarea" name="admin_prohibit_ip" placeholder="匹配IP段用“*”占位，如192.168.*.*，多个IP地址请用英文逗号“,”分割"><?php echo $data["admin_prohibit_ip"];?></textarea>
+						<textarea class="textarea" name="admin_prohibit_ip" placeholder="匹配IP段用“*”占位，如192.168.*.*，多个IP地址请用英文逗号“,”分隔"><?php echo $data["admin_prohibit_ip"];?></textarea>
 					</div>
 				</div>
 				<div class="row cl">
@@ -292,39 +292,39 @@
 function check_all(){
 	var reg = /^http(.+)\/$/;
 	if($("input[name='site_name']").val()==''){
-		layer.msg('站点名称不能为空！');
+		layer.msg('站点名称不能为空！', {icon:2});
 		return false;
 	}
 	if(!reg.test($("input[name='site_url']").val())){
-		layer.alert('站点根网址格式为：http://www.yzmcms.com/，请以“/”结尾！');
+		layer.alert('站点根网址格式为：http://www.yzmcms.com/，请以“/”结尾！', {icon:2});
 		return false;
 	}
 	if($("select[name='site_theme']").val()=='' || $("select[name='site_wap_theme']").val()==''){
-		layer.msg('请选择模板风格！');
+		layer.msg('请选择模板风格！', {icon:2});
 		return false;
 	}
 	if(isNaN($("input[name='thumb_width']").val()) || isNaN($("input[name='thumb_height']").val())){
-		layer.msg('缩略图默认设置只能为数字！');
+		layer.msg('缩略图默认设置只能为数字！', {icon:2});
 		return false;
 	}
 	if(isNaN($("input[name='keyword_replacenum']").val()) || $("input[name='keyword_replacenum']").val()<0){
-		layer.msg('关键字替换次数只能为数字且不能小于0！');
+		layer.msg('关键字替换次数只能为数字且不能小于0！', {icon:2});
 		return false;
 	}	
 	if(isNaN($("input[name='search_page']").val()) || $("input[name='search_page']").val()<1){
-		layer.msg('前端搜索每页展示条数只能为数字且不能小于1！');
+		layer.msg('前端搜索每页展示条数只能为数字且不能小于1！', {icon:2});
 		return false;
 	}
 	if($("input[name='upload_maxsize']").val()=='' || isNaN($("input[name='upload_maxsize']").val())){
-		layer.msg('允许上传附件大小只能为数字！');
+		layer.msg('允许上传附件大小只能为数字！', {icon:2});
 		return false;
 	}
 	if($("input[name='upload_types']").val()==''){
-		layer.msg('允许上传附件类型不能为空！');
+		layer.msg('允许上传附件类型不能为空！', {icon:2});
 		return false;
 	}
 	if($("input[name='watermark_name']").val()==''){
-		layer.msg('水印图片名称不能为空！');
+		layer.msg('水印图片名称不能为空！', {icon:2});
 		return false;
 	}
 	return true;			
@@ -332,7 +332,7 @@ function check_all(){
 function test_mail() {
 	var mail_to = $("input[name='mail_to']").val();
 	if(mail_to == ''){
-		layer.msg('请输入邮件测试地址！');
+		layer.msg('请输入邮件测试地址！', {icon:2});
 		return false;
 	}
 	layer.msg('正在发送中……', { icon: 16, shade: 0.21, shadeClose:true, time:0 });

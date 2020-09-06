@@ -125,27 +125,27 @@
 function check_all(){
 	val = $("input[name='rmb_point_rate']").val();
 	if(val=='' || !(/(^[1-9]\d*$)/.test(val))){
-		layer.msg('人民币购买积分数量只能为正整数！');
+		layer.msg('人民币购买积分数量只能为正整数！', {icon:2});
 		return false;
 	}
 	val = $("input[name='member_point']").val();
 	if(val=='' || isNaN(val)){
-		layer.msg('新会员默认积分只能为数字！');
+		layer.msg('新会员默认积分只能为数字！', {icon:2});
 		return false;
 	}
 	val = $("input[name='login_point']").val();
 	if(val=='' || isNaN(val)){
-		layer.msg('每日登录奖励积分只能为数字！');
+		layer.msg('每日登录奖励积分只能为数字！', {icon:2});
 		return false;
 	}
 	val = $("input[name='comment_point']").val();
 	if(val=='' || isNaN(val)){
-		layer.msg('发布评论奖励积分只能为数字！');
+		layer.msg('发布评论奖励积分只能为数字！', {icon:2});
 		return false;
 	}
 	val = $("input[name='publish_point']").val();
 	if(val=='' || isNaN(val)){
-		layer.msg('投稿奖励积分只能为数字！');
+		layer.msg('投稿奖励积分只能为数字！', {icon:2});
 		return false;
 	}
 	return true;			

@@ -12,7 +12,7 @@ class urlrule extends common {
 		$urlrule = D('urlrule');
 		$total = $urlrule->total();
 		$page = new page($total, 15);
-		$data = $urlrule->order('urlruleid DESC')->limit($page->limit())->select();	
+		$data = $urlrule->order('listorder ASC,urlruleid ASC')->limit($page->limit())->select();	
 		include $this->admin_tpl('urlrule_list');
 	}
 	
@@ -40,7 +40,7 @@ class urlrule extends common {
 		$urlrule = D('urlrule');
 		if(isset($_POST['dosubmit'])) { 
 			if(!check_token($_POST['token'])){
-				return_json(array('status'=>0,'message'=>L('lose_parameters')));
+				return_json(array('status'=>0,'message'=>'Token错误，请重新添加！'));
 			}
 			if(!preg_match('/^([a-zA-Z0-9]|[\/\(\)\\\+\-~!@_]){0,50}$/', $_POST['urlrule'])) return_json(array('status'=>0,'message'=>'URL规则不符合规范！'));
 			$r = $urlrule->field('urlrule')->where(array('urlrule' => $_POST['urlrule']))->find();
@@ -64,7 +64,7 @@ class urlrule extends common {
 		$urlrule = D('urlrule');
 		if(isset($_POST['dosubmit'])) {
 			if(!check_token($_POST['token'])){
-				return_json(array('status'=>0,'message'=>L('lose_parameters')));
+				return_json(array('status'=>0,'message'=>'Token错误，请重新编辑！'));
 			}
 			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 			if(!preg_match('/^([a-zA-Z0-9]|[\/\(\)\\\+\-~!@_]){0,50}$/', $_POST['urlrule'])) return_json(array('status'=>0,'message'=>'URL规则不符合规范！'));

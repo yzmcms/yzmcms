@@ -52,8 +52,8 @@ class order extends common{
 
 			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
 			$status = isset($_GET["status"]) ? intval($_GET["status"]) : 99;
-			$t_type = isset($_GET["t_type"]) ? $_GET["t_type"] : 0;
-			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
+			$t_type = isset($_GET["t_type"]) ? intval($_GET["t_type"]) : 0;
+			$type = isset($_GET["type"]) ? intval($_GET["type"]) : 1;
 			
 			if($status != 99) $where .= ' AND status = '.$status;
 

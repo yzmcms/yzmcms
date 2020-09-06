@@ -22,7 +22,7 @@
 				?>
 			 </select>
 			</li>
-			<li id="openid_li" style="display:none"><label>openid：</label><textarea class="textarea" name="openid" id="openid" placeholder="多个openid之间用“,”分割" style="width:450px"></textarea>&nbsp;&nbsp;<a href="javascript:;" class="btn btn-default radius" onclick="yzm_open('选择用户','<?php echo U('select_user');?>',900,520)">选择用户</a></li>
+			<li id="openid_li" style="display:none"><label>openid：</label><textarea class="textarea" name="openid" id="openid" placeholder="多个openid之间用“,”分隔" style="width:450px"></textarea>&nbsp;&nbsp;<a href="javascript:;" class="btn btn-default radius" onclick="yzm_open('选择用户','<?php echo U('select_user');?>',900,520)">选择用户</a></li>
 			<li><label>消息类型：</label>
 			 <select  name="message_type" style="width:200px" onchange="javascript:change_type(this.value);">
 			    <option <?php if($message_type == 'news') echo 'selected';?> value="news">图文</option>

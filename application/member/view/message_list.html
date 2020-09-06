@@ -12,12 +12,19 @@
      时间：<input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
      至 <input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d'); ?>">
      <span class="select-box inline">
+		<select name="isread" class="select">
+			<option value="99">阅读状态</option>
+			<option value="1" <?php if(isset($_GET['isread']) && $_GET['isread']=='1'){?> selected <?php }?>>已读</option>
+			<option value="0" <?php if(isset($_GET['isread']) && $_GET['isread']=='0'){?> selected <?php }?>>未读</option>
+		</select>
+	 </span>
+	 <span class="select-box inline">
 		<select name="type" class="select">
 			<option value="0">全部</option>
 			<option value="1" <?php if(isset($_GET['type']) && $_GET['type']=='1'){?> selected <?php }?>>收件人</option>
 			<option value="2" <?php if(isset($_GET['type']) && $_GET['type']=='2'){?> selected <?php }?>>发件人</option>
 		</select>
-	</span>
+	 </span>
       用户名：<input type="text" name="username" class="input-text" style="width:170px" value="<?php if(isset($_GET['username'])) echo $_GET['username'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	 </form>	
   </div>

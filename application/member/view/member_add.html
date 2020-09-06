@@ -6,10 +6,10 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label><span class="c-red">*</span>用户名：</label><input type="text" class="input" name="username" value="" onblur="get_nickname()"></li>
-			 <li><label><span class="c-red">*</span>密码：</label><input type="text" class="input" name="password" value=""></li>
-			 <li><label>昵称：</label><input type="text" class="input" name="nickname" value=""></li>
-			 <li><label><span class="c-red">*</span>邮箱：</label><input type="email" class="input" name="email" value=""></li>
+			 <li><label><span class="c-red">*</span>用户名：</label><input type="text" class="input" name="username" value="" placeholder="用户名长度为3-30位" onblur="get_nickname()"></li>
+			 <li><label><span class="c-red">*</span>密码：</label><input type="password" class="input" name="password" value="" placeholder="密码长度为6-20位"></li>
+			 <li><label>昵称：</label><input type="text" class="input" name="nickname" value="" placeholder="长度为30个字符以内"></li>
+			 <li><label><span class="c-red">*</span>邮箱：</label><input type="email" class="input" name="email" value="" placeholder="@"></li>
 			 <li><label><span class="c-red">*</span>会员组：</label>
 			 <span class="span_input"><select  name="groupid" style="margin-left:0px;">
 			  <?php 
@@ -19,7 +19,7 @@
 			   ?>			
 			 </select> <span class="c-red">*会员组别影响到经验</span></span>
 			 </li>
-			 <li><label><span class="c-red">*</span>积分：</label><input type="text" class="input" name="point" value="0"></li>
+			 <li><label><span class="c-red">*</span>积分：</label><input type="text" class="input" name="point" value="0" placeholder="请输入积分"></li>
 			 <li><label>vip会员：</label>
 			 <span class="span_input" title="vip会员可以免积分查看付费内容">是否为vip会员 <input name="vip" value="1" type="checkbox">&nbsp;
 			 过期时间 <input type="text" class="input-text laydate-icon" style="width:175px;height:30px;" name="overduedate" value="" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"></span>
@@ -44,19 +44,19 @@
 	
 	function dosub(obj){
 		 if(obj.username.value==''){
-			 layer.msg('用户名不能为空！');
+			 layer.msg('用户名不能为空！', {icon:2});
 			 return false;
 		 }
 		 if(obj.password.value=='' || obj.password.value.length < 6){
-			 layer.msg('密码不能低于6位！');
+			 layer.msg('密码不能低于6位！', {icon:2});
 			 return false;
 		 }
 		 if(obj.email.value==''){
-			 layer.msg('邮箱不能为空！');
+			 layer.msg('邮箱不能为空！', {icon:2});
 			 return false;
 		 }
 		 if(obj.point.value=='' || isNaN(obj.point.value)){
-			 layer.msg('积分点数只能为数字类型！');
+			 layer.msg('积分点数只能为数字类型！', {icon:2});
 			 return false;
 		 }
         $.ajax({
@@ -66,9 +66,11 @@
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1, time:800}, function(){
+						parent.location.reload();
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

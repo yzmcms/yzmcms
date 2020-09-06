@@ -3,14 +3,15 @@
   <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	  <title>{$seo_title}</title>
+	  <meta name="author" content="YzmCMS内容管理系统">
+	  <meta name="keywords" content="{$keywords}" />
+	  <meta name="description" content="{$description}" />
 	  <link rel="stylesheet" type="text/css" href="{STATIC_URL}plugin/swiper/css/swiper.min.css" />
 	  <link href="{STATIC_URL}css/yzm-common.css" rel="stylesheet" type="text/css" />
 	  <link href="{STATIC_URL}css/yzm-style.css" rel="stylesheet" type="text/css" />
 	  <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
 	  <script type="text/javascript" src="{STATIC_URL}js/yzm-front.js"></script>
 	  <script type="text/javascript" src="{STATIC_URL}plugin/swiper/js/swiper.min.js"></script>
-	  <meta name="keywords" content="{$keywords}" />
-	  <meta name="description" content="{$description}" />
 	  <meta http-equiv="mobile-agent" content="format=xhtml;url={$site[site_url]}index.php?m=mobile">
       <script type="text/javascript">
       	if(window.location.toString().indexOf('pref=padindex') != -1){}else{if(/AppleWebKit.*Mobile/i.test(navigator.userAgent) || (/MIDP|SymbianOS|NOKIA|SAMSUNG|LG|NEC|TCL|Alcatel|BIRD|DBTEL|Dopod|PHILIPS|HAIER|LENOVO|MOT-|Nokia|SonyEricsson|SIE-|Amoi|ZTE/.test(navigator.userAgent))){if(window.location.href.indexOf("?mobile")<0){try{if(/Android|Windows Phone|webOS|iPhone|iPod|BlackBerry/i.test(navigator.userAgent)){window.location.href="{$site[site_url]}index.php?m=mobile";}else if(/iPad/i.test(navigator.userAgent)){}else{}}catch(e){}}}}

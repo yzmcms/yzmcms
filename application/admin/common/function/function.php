@@ -51,9 +51,9 @@ function show_menu() {
  * 获取菜单
  */
 function get_menu(){
-	$menu_list = D('menu')->field('`id`,`name`,`m`,`c`,`a`,`data`')->where(array('parentid'=>'0','display'=>'1'))->order('listorder ASC')->limit('20')->select();
+	$menu_list = D('menu')->field('`id`,`name`,`m`,`c`,`a`,`data`')->where(array('parentid'=>'0','display'=>'1'))->order('listorder ASC,id ASC')->limit('20')->select();
 	foreach ($menu_list as $key => $value) {
-		$child = D('menu')->field('`id`,`name`,`m`,`c`,`a`,`data`')->where(array('parentid'=>$value['id'],'display'=>'1'))->order('listorder ASC')->select();
+		$child = D('menu')->field('`id`,`name`,`m`,`c`,`a`,`data`')->where(array('parentid'=>$value['id'],'display'=>'1'))->order('listorder ASC,id ASC')->select();
 		foreach ($child as $k=>$v) {
 			if($_SESSION['roleid'] != 1){
 				$data = D('admin_role_priv')->field('roleid')->where(array('roleid'=>$_SESSION['roleid'], 'm'=>$v['m'], 'c'=>$v['c'], 'a'=>$v['a']))->find();

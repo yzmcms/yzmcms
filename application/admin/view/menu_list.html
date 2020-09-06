@@ -3,14 +3,19 @@
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span> 菜单管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a href="javascript:;" onclick="yzm_open('添加菜单','<?php echo U('add', array('type'=>0));?>',600,400)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加菜单</a></span></div>
+<div class="page-container footer_padding">
+	<div class="cl pd-5 bg-1 bk-gray"> 
+		<span class="l">
+		<a href="javascript:;" onclick="tree_toggle(this)" isshow="1" class="btn btn-secondary radius tree_toggle"><i class="Hui-iconfont">&#xe631;</i> 收起子项</a>
+		<a href="javascript:;" onclick="yzm_open('添加菜单','<?php echo U('add', array('type'=>0));?>',600,400)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加菜单</a>
+		</span>
+	</div>
 	<form action="<?php echo U('order');?>" method="post">
 	<table class="table table-border table-bordered table-bg table-hover">
 		<thead>
 			<tr class="text-c">
 				<th width="50">排序</th>
-				<th width="40">菜单ID</th>
+				<th width="60">菜单ID</th>
 				<th class="text-l">菜单名称</th>
 				<th width="60">状态</th>
 				<th width="200">管理操作</th>
@@ -20,9 +25,42 @@
 			 <?php echo $menus;?>
 		</tbody>
 	</table>
-	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><input class="orderbutton btn-primary radius" name="dosubmit" value="排序" type="submit"></span></div>
+	<div class="footer_btn"> 
+		<input class="btn btn-primary radius mr-10" name="dosubmit" value="排 序" type="submit">
+	</div>
 	</form>
 </div>
 <?php include $this->admin_tpl('footer');?>
+<script type="text/javascript">
+
+  	function tree_toggle(obj) {
+		$(".parentid").each(function () {
+            $(this).trigger('click');
+        })
+		var isshow = $(obj).attr("isshow");
+		if(isshow == "0"){
+			$(obj).attr("isshow", "1");
+			$(obj).html('<i class="Hui-iconfont">&#xe631;</i> 收起子项');
+		}else{
+			$(obj).attr("isshow", "0");
+			$(obj).html('<i class="Hui-iconfont">&#xe716;</i> 展开子项');
+		}
+    }
+
+    $(".parentid").click(function () {
+        var action = parseInt($(this).attr("action"));
+        var tr = $(this).parents('tr').eq(0);
+        switch (action) {
+            case 1://展示
+                $(tr).nextUntil('.top').show();
+                $(this).attr('action', 2);
+                break;
+            case 2://收缩
+                $(tr).nextUntil('.top').hide();
+                $(this).attr('action', 1);
+                break;
+        }
+    })
+</script>
 </body>
 </html>

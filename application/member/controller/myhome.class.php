@@ -29,16 +29,10 @@ class myhome{
 		$groupinfo = get_groupinfo($groupid);
 		D('member_detail')->update('`guest`=`guest`+1', array('userid'=>$userid));
 		
-		$member_content = D('member_content');
-		$total = $member_content->where(array('userid' =>$userid,'status' =>1))->total();
+		$all_content = D('all_content');
+		$total = $all_content->where(array('userid' =>$userid,'status' =>1,'issystem'=>0))->total();
 		$page = new page($total, 10);
-		$res = $member_content->field('checkid,title,catid,inputtime')->where(array('userid' =>$userid,'status' =>1))->order('id DESC')->limit($page->limit())->select();
-		$data = array();
-		foreach($res as $val) {
-			list($val['modelid'], $val['id']) = explode('_', $val['checkid']);
-			$val['url'] = U('index/index/show', array('catid'=>$val['catid'],'id'=>$val['id']));
-			$data[] = $val;
-		}
+		$data = $all_content->field('modelid,catid,id,thumb,title,url,inputtime')->where(array('userid' =>$userid,'status' =>1,'issystem'=>0))->order('id DESC')->limit($page->limit())->select();
 		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
 		
 		$guest_data = $this->_guest($userid);

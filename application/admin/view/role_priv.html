@@ -1,9 +1,18 @@
 <?php include $this->admin_tpl('meta');?>
 <title>权限管理 - YzmCMS内容管理系统</title>
+<style>
+	.parentid{cursor:pointer;font-size:14px;transition:all 0.3s}
+	.myrotate{transform:rotate(90deg);display:inline-block;transition:all 0.3s}
+</style>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 角色管理 <span class="c-gray en">&gt;</span> 权限管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
-<div class="page-container">
+<div class="page-container footer_padding">
+	<div class="cl pd-5 bg-1 bk-gray"> 
+		<span class="l"> 
+		<a href="javascript:;" onclick="tree_toggle(this)" isshow="1" class="btn btn-secondary radius tree_toggle"><i class="Hui-iconfont">&#xe631;</i> 收起子项</a>
+		</span> 
+	</div>
 	<form action="" method="post">
 	<table class="table table-border table-bordered table-bg table-hover permission">
 		<thead>
@@ -16,24 +25,27 @@
 		</tbody>
 	</table>
 	<input type="hidden" name="roleid" value="<?php echo $roleid?>"></input>
-	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><input class="orderbutton btn-primary radius" name="dosubmit" value="提交" type="submit"></span></div>
+	<div class="footer_btn"> 
+		<input class="btn btn-primary radius mr-10" name="dosubmit" value="确 定" type="submit">
+		<input type="button" class="btn btn-default radius" value="返 回" onclick="javascript:history.go(-1)">
+	</div>
 	</form>
 </div>
 <?php include $this->admin_tpl('footer');?>
 <script type="text/javascript">
-  function checknode(obj){
-      var chk = $("input[type='checkbox']");
-      var count = chk.length;
-      var num = chk.index(obj);
-      var level_top = level_bottom =  chk.eq(num).attr('level')
-      for (var i=num; i>=0; i--){
+	function checknode(obj){
+		var chk = $("input[type='checkbox']");
+		var count = chk.length;
+		var num = chk.index(obj);
+		var level_top = level_bottom =  chk.eq(num).attr('level')
+		for (var i=num; i>=0; i--){
 		  var le = chk.eq(i).attr('level');
 		  if(eval(le) < eval(level_top)) {
 			  chk.eq(i).attr("checked",'checked');
 			  var level_top = level_top-1;
 		  }
-      }
-      for (var j=num+1; j<count; j++){
+		}
+		for (var j=num+1; j<count; j++){
 		  var le = chk.eq(j).attr('level');
 		  if(chk.eq(num).attr("checked")=='checked') {
 			  if(eval(le) > eval(level_bottom)) chk.eq(j).attr("checked",'checked');
@@ -42,8 +54,39 @@
 			  if(eval(le) > eval(level_bottom)) chk.eq(j).attr("checked",false);
 			  else if(eval(le) == eval(level_bottom)) break;
 		  }
-      }
-  }
+		}
+	}
+
+  	function tree_toggle(obj) {
+		$(".parentid").each(function () {
+            $(this).trigger('click');
+        })
+		var isshow = $(obj).attr("isshow");
+		if(isshow == "0"){
+			$(obj).attr("isshow", "1");
+			$(obj).html('<i class="Hui-iconfont">&#xe631;</i> 收起子项');
+		}else{
+			$(obj).attr("isshow", "0");
+			$(obj).html('<i class="Hui-iconfont">&#xe716;</i> 展开子项');
+		}
+    }
+
+    $(".parentid").click(function () {
+        var action = parseInt($(this).attr("action"));
+        var tr = $(this).parents('tr').eq(0);
+        switch (action) {
+            case 1://展示
+                $(tr).nextUntil('.top').show();
+                $(this).attr('action', 2).removeClass('myrotate');
+                break;
+            case 2://收缩
+                $(tr).nextUntil('.top').hide();
+                $(this).attr('action', 1).addClass('myrotate');
+                break;
+        }
+    })
+
+    $(".tree_toggle").trigger('click');
 </script>
 </body>
 </html>

@@ -88,6 +88,7 @@ class update_urls extends common {
 		$modelid = $modelid_arr[$autoid];
 		$tablename = get_model($modelid);
 		$db = D($tablename);
+		$all_content = D('all_content');
 		$offset = $pagesize*($page-1);
 		$order = 'id ASC';
 		
@@ -99,6 +100,7 @@ class update_urls extends common {
 			if(strstr($val['flag'], '7')) continue;
 			$url = get_content_url($val['catid'], $val['id']);	
 			$db->update(array('url' => $url), array('id' => $val['id']));
+			$all_content->update(array('url' => $url), array('modelid' => $modelid, 'id' => $val['id']));
 		}
 		$rate = $num ? floor(100 * ($page / $num)) : 100;
 		$message = '【'.get_model($modelid, 'name').'】 正在更新，进度： '.$rate.'%';

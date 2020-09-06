@@ -4,7 +4,7 @@
     <head>
         <meta charset="UTF-8" />
         <title><?php echo $Title; ?> - <?php echo $Powered; ?></title>
-        <link rel="stylesheet" href="./css/install.css?v=9.0" />
+        <link rel="stylesheet" href="./css/install.css?v=yzmcms" />
     </head>
     <body>
         <div class="wrap">

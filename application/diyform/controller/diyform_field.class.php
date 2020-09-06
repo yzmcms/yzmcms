@@ -51,7 +51,7 @@ class diyform_field extends common{
 		   if(in_array($_POST['fieldtype'], array('select','radio','checkbox'))){
 			   $_POST['setting'] = array2string(explode('|', rtrim($_POST['setting'], '|')));
 		   }elseif($_POST['fieldtype']=='datetime'){
-			   $_POST['setting'] = $_POST['dateset'];
+			   $_POST['setting'] = $_POST['dateset'] ? '{"0":"1"}' : '';
 		   }else{
 			   unset($_POST['setting']);
 		   }
@@ -89,7 +89,7 @@ class diyform_field extends common{
 			if(in_array($_POST['fieldtype'], array('select','radio','checkbox'))){
 			   $_POST['setting'] = array2string(explode('|', rtrim($_POST['setting'], '|')));
 			}elseif($_POST['fieldtype']=='datetime'){
-			   $_POST['setting'] = $_POST['dateset'];
+			   $_POST['setting'] = $_POST['dateset'] ? '{"0":"1"}' : '';
 			}else{
 			   unset($_POST['setting']);
 			}

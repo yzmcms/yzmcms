@@ -27,12 +27,12 @@
 			<tr class="text-c">
 				<td><?php echo $val['adminid'];?></td>
 				<td><?php echo $val['adminname'];?></td>
-				<td><?php echo $val['realname'];?></td>
-				<td><?php echo $val['email'];?></td>
+				<td><?php echo $val['realname'] ? $val['realname'] : '暂无';;?></td>
+				<td><?php echo $val['email'] ? $val['email'] : '暂无';?></td>
 				<td><?php echo $val['rolename'];?></td>
 				<td><?php echo date('Y-m-d H:i:s',$val['addtime']);?></td>
 				<td><?php echo $val['logintime'] ? date('Y-m-d H:i:s',$val['logintime']) : '从未登录';?></td>
-				<td><?php echo $val['loginip'];?></td>
+				<td><?php echo $val['loginip'] ? $val['loginip'] : '从未登录';?></td>
 				<td><?php echo $val['addpeople'];?></td>
 				<td class="td-manage">
 					<a title="编辑" href="javascript:;" onclick="yzm_open('管理员编辑','<?php echo U('edit',array('adminid'=>$val['adminid']));?>','600','410')" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 

@@ -21,12 +21,13 @@ class content extends common {
 		$of = in_array($of, array('id','catid','click','username','updatetime','status','is_push')) ? $of : 'id';
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$modelinfo = $this->content->modelarr;
-		$content = D('article'); //默认加载文章列表
+		$content_db = D('article'); //默认加载文章列表
 		$modelid = 1; //默认加载文章模型
 		$catid = 0; //默认加载全部分类
-		$total = $content->total();
+		$where = $_SESSION['roleid']==1 ? array() : array('userid'=>$_SESSION['adminid']);
+		$total = $content_db->where($where)->total();
 		$page = new page($total, 15);
-		$data = $content->order("$of $or")->limit($page->limit())->select();	
+		$data = $content_db->where($where)->order("$of $or")->limit($page->limit())->select();	
 		include $this->admin_tpl('content_list');
 	}
 
@@ -42,8 +43,8 @@ class content extends common {
 		$modelinfo = $this->content->modelarr;
 		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
-		$content = D($this->content->tabname);
-		$where = '1=1';
+		$content_db = D($this->content->tabname);
+		$where = $_SESSION['roleid']==1 ? '1=1' : 'userid='.$_SESSION['adminid'];
 		if(isset($_GET['dosubmit'])){	
 		
 			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
@@ -74,9 +75,9 @@ class content extends common {
 			
 		}
 		$_GET = array_map('htmlspecialchars', $_GET);
-		$total = $content->where($where)->total();
+		$total = $content_db->where($where)->total();
 		$page = new page($total, 15);
-		$data = $content->where($where)->order("$of $or")->limit($page->limit())->select();		
+		$data = $content_db->where($where)->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('content_list');
 	}
 	
@@ -109,6 +110,11 @@ class content extends common {
 	 */
 	public function edit() {
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		$content_db = D($this->content->tabname);
+		$data = $content_db->where(array('id'=>$id))->find();
+		if($_SESSION['roleid']>1 && $data['userid']!==$_SESSION['adminid']){
+			showmsg(L('illegal_operation'), 'stop');
+		}
 		if(isset($_POST['dosubmit'])) {
 			$r = $this->content->content_edit($_POST, $id);
 			if($r){
@@ -118,8 +124,6 @@ class content extends common {
 			}
 		}else{
 			$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
-			$content = D($this->content->tabname);
-			$data = $content->where(array('id'=>$id))->find();
 			$tags = D('tag_content')->alias('a')->field('tag')->join('yzmcms_tag b ON a.tagid=b.id', 'LEFT')->where(array('modelid'=>$modelid, 'aid'=> $id))->order('id ASC')->select();
 			$content_form = new content_form($_GET['modelid']);
 			$string = $content_form->content_edit($data);
@@ -134,12 +138,12 @@ class content extends common {
 	 */
 	public function del() {
 		if($_POST && is_array($_POST['ids'])){
-			$tag_content = D('tag_content'); 
-			$member_content = D('member_content'); 
 			foreach($_POST['ids'] as $id){
-				$this->content->content_delete($id);
-				$tag_content->delete(array('modelid' => $this->content->modelid, 'aid'=>$id));
-				$member_content->delete(array('checkid' => $this->content->modelid.'_'.$id));  //删除会员内容表
+				if($_SESSION['roleid'] > 1){
+					$userid = D($this->content->tabname)->field('userid')->where(array('id'=>$id))->one();
+					if($userid!==$_SESSION['adminid']) continue;
+				}
+				$this->content->content_delete($id); 
 			}
 		}
 		showmsg(L('operation_success'),'',1);
@@ -172,7 +176,7 @@ class content extends common {
 			$urls = array();
 			foreach ($data as $value) {
 				if($value['is_push']) continue;
-				$urls[] = $value['url'];
+				$urls[] = strpos($value['url'], '://') ? $value['url'] : SERVER_PORT.HTTP_HOST.$value['url'];
 			}
 			if(!empty($urls)){
 				$baidu_push_token = get_config('baidu_push_token');
@@ -214,13 +218,9 @@ class content extends common {
 			$catid = intval($_POST['catid']);
 			$db = D($this->content->tabname);
 			foreach ($ids_arr as $id) {
-				$id = intval($id);
-				$system = $db->field('`system`')->where(array('id'=>$id))->one();
-				$affected = $db->update(array('catid' => $catid), array('id'=>$id));
-				if($affected && !$system){
-					//更新会员稿件分类
-					D('member_content')->update(array('catid' => $catid), array('checkid'=>$this->content->modelid.'_'.$id));
-				}
+				$url = get_content_url($catid, $id);
+				$db->update(array('catid' => $catid, 'url' => $url), array('id'=>$id));
+				D('all_content')->update(array('catid' => $catid, 'url' => $url), array('modelid'=>$this->content->modelid, 'id'=>$id));
 			}
 			return_json(array('status' => 1, 'message' => '操作成功'));
 		}else{
@@ -244,13 +244,21 @@ class content extends common {
 			if(!$target_modelid) return_json(array('status' => 0, 'message' => '模型错误，请检查！'));
 			$db = D($this->content->tabname);
 			$target_db = D(get_model($target_modelid));
+			$all_content = D('all_content');
 			foreach ($ids_arr as $id) {
 				$id = intval($id);
 				$res = $db->where(array('id' => $id))->find();
+				if(!$res) continue;
 				$res['catid'] = $catid;
+				$res['is_push'] = 0;
 				$target_id = $target_db->insert($res);
-				if(strstr($res['flag'], '7')) continue;
-				$target_db->update(array('url' => get_content_url($catid, $target_id)), array('id' => $target_id));
+				if(!strstr($res['flag'], '7')){
+					$target_db->update(array('url' => get_content_url($catid, $target_id)), array('id' => $target_id));
+					$res['url'] = get_content_url($catid, $target_id);
+				}
+				$res['modelid'] = $target_modelid;
+				$res['id'] = $target_id;
+				$all_content->insert($res);
 			}
 			return_json(array('status' => 1, 'message' => '操作成功'));
 		}else{

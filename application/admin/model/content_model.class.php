@@ -29,7 +29,7 @@ class content_model {
 			}
 		}
 
-		$data['system']  = $isimport ? 0 : 1;
+		$data['issystem']  = $isimport ? 0 : 1;
 		$data['inputtime'] = strtotime($data['inputtime']);
 		$data['updatetime'] = SYS_TIME;
 		$data['description'] = empty($data['description']) ? str_cut(strip_tags($data['content']),200) : $data['description'];
@@ -63,6 +63,12 @@ class content_model {
 			$this->tag_dispose($data['catid'], explode(',', $data['tag']), $id);
 		}
 		
+		//写入全部模型表
+		$data['modelid'] = $this->modelid;
+		$data['id'] = $id;
+		$data['url'] = isset($url) ? $url : $data['url'];
+		D('all_content')->insert($data);
+		
 		//记录catid
 		set_cookie('catid', $data['catid']);
 		
@@ -80,13 +86,13 @@ class content_model {
 	 */	
  	public function content_edit($data, $id, $isimport = 0) {
 		$content_tabname = D($this->tabname);
-		$r = $content_tabname->field('`username`,`system`')->where(array('id'=>$id))->find();
+		$r = $content_tabname->field('`username`,`issystem`')->where(array('id'=>$id))->find();
 		if($isimport){
 			$username = safe_replace(get_cookie('_username'));
-			if(!$r || $r['username']!=$username || $r['system']==1) return false;
+			if(!$r || $r['username']!=$username || $r['issystem']==1) return false;
 		}
 		
-		unset($data['system'], $_POST['username'], $_POST['userid']);
+		unset($data['issystem'], $_POST['username'], $_POST['userid']);
 		
 		$notfilter_field = $this->get_notfilter_field();
 		foreach($data as $_k=>$_v) {
@@ -127,12 +133,8 @@ class content_model {
 			$data['url'] = get_content_url($data['catid'], $id);
 		}
 		
-		//如果是会员发布的内容，则修改会员内容表的title
-		if(!$r['system']){
-			$where = array('title' => $data['title']);
-			$where['status'] = $data['status'] ? 1 : 0;
-			D('member_content')->update($where, array('checkid' => $this->modelid.'_'.$id));
-		}
+		//修改全部模型表
+		D('all_content')->update($data, array('modelid' => $this->modelid, 'id' => $id));
 		
 		$affected = $content_tabname->update($data, array('id' => $id));
 		return $affected;
@@ -150,10 +152,12 @@ class content_model {
 		$content_tabname = D($this->tabname);
 		if($isimport){
 			$username = safe_replace(get_cookie('_username'));
-			$r = $content_tabname->field('`username`,`system`')->where(array('id'=>$id))->find();
-			if(!$r || $r['username']!=$username || $r['system']==1) return false;
+			$r = $content_tabname->field('`username`,`issystem`')->where(array('id'=>$id))->find();
+			if(!$r || $r['username']!=$username || $r['issystem']==1) return false;
 		}
-		$affected = $content_tabname->delete(array('id'=>$id));
+		$affected = $content_tabname->delete(array('id'=>$id)); //删除内容
+		D('all_content')->delete(array('modelid' => $this->modelid, 'id'=>$id));  //删除所有模型内容表
+		D('tag_content')->delete(array('modelid' => $this->modelid, 'aid'=>$id)); //删除TAG表		
 		return $affected;
 	}
 	
@@ -213,7 +217,7 @@ class content_model {
 				$total = $tag_content->where(array('tagid' => $tagid))->total();
 				$tag->update(array('total' => $total+1), array('id' => $tagid));
 			}else{
-				$tagid = $tag->insert(array('tag'=>$val, 'total'=>1, 'inputtime'=>SYS_TIME));
+				$tagid = $tag->insert(array('catid'=>$catid, 'tag'=>$val, 'total'=>1, 'inputtime'=>SYS_TIME));
 			}
 			
 			$tag_content->insert(array('modelid' => $this->modelid, 'catid' => $catid, 'tagid' => $tagid, 'aid' => $aid), false, false);

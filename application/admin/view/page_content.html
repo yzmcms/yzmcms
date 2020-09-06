@@ -10,10 +10,9 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label><span class="c-red">*</span>标题：</label><input type="text" class="input" name="title" value="<?php echo $data['title'];?>"></li>
-			 <li><label>栏目关键字：</label><input type="text" class="input" name="keywords" value="<?php echo $data['keywords'];?>" style="width:400px"></li>
-			 <li><label>栏目描述：</label><span class="span_input"><textarea name="description" class="textarea" style="width:85%"><?php echo $data['description'];?></textarea></span></li>			
-			 <li><label>内容：</label><span class="span_input"><?php echo form::editor('content', $data['content']);?></span></li>			
+			 <li><label><span class="c-red">*</span>单页标题：</label><input type="text" class="input" name="title" value="<?php echo $data['title'];?>" placeholder="请输入单页标题"></li>
+			 <li><label>单页简介：</label><span class="span_input"><textarea name="description" class="textarea" style="width:85%" placeholder="可以简单的描述一下这个栏目"><?php echo $data['description'];?></textarea></span></li>			
+			 <li><label>单页内容：</label><span class="span_input"><?php echo form::editor('content', $data['content']);?></span></li>			
 			 <li><input type="hidden" name="catid" value="<?php echo $data['catid'];?>"><input type="hidden" name="dosubmit" value="1">
 			 <input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
 			 <input class="btn w_120 btn-default radius h35" type="button" value="后退" onclick="window.history.go(-1)">
@@ -26,7 +25,7 @@
 <script type="text/javascript">
 	function dosub(obj){
 		 if(obj.title.value==''){
-			 layer.msg('标题不能为空！');
+			 layer.msg('单页标题不能为空！', {icon:2});
 			 return false;
 		 }			 
 	}

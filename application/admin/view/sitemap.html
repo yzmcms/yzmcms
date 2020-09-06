@@ -8,16 +8,19 @@
        <p>网站地图可方便网站管理员通知搜索引擎他们网站上有哪些可供抓取的网页，能够有效提升整站的收录率。</p>
   </div>
 	<div class="pd-5 mt-20 formdoby_normal">
-		<form method="post" action="<?php echo U('make_sitemap');?>" onsubmit="return check_all()">
+		<form method="post" action="<?php echo U('make_sitemap');?>" id="myform" onsubmit="return do_submit()">
 		<ul>
 			<li><label>选择模型：</label>
-			<?php 
-			foreach($modelinfo as $val){
-				$str = $val['modelid']==1 ? 'checked' : '';
-				echo '<label><input type="checkbox" name="model[]" '.$str.' value="'.$val['modelid'].'"> '.$val['name'].'</label>';
-			}
-			?>
-			</li>
+				<select name="model" class="select" style="width:200px">
+				<option value="0">所有模型</option>
+				<?php 
+				foreach($modelinfo as $val){
+					echo '<option value="'.$val['modelid'].'">'.$val['name'].'</option>';
+				}
+				?>
+				</select>		
+				<span style="margin-left:15px;font-size:12px;color:#888">选择要生成地图的模型</span>	
+			</li> 
 			<li><label>优先权：</label>
 				<select name="priority" class="select" style="width:200px">
 				<option value="1">1</option>
@@ -45,24 +48,28 @@
 				</select>	
 				<span style="margin-left:15px;font-size:12px;color:#888">您的网站内容的更新频率</span>		
 			</li> 
-			<li><label>生成数量：</label>
-			<input type="text" class="input" style="width:200px" name="limit" value="100"> 
-			<span style="margin-left:15px;font-size:12px;color:#888">每个模型的数量，最大值为1000</span>
+			<li><label>限制数量：</label>
+			 	<label><input name="limit_total" type="radio" value="0" checked > 不限制</label>
+			 	<label><input name="limit_total" type="radio" value="10000" > 一万条</label>
+			 	<label><input name="limit_total" type="radio" value="50000" > 五万条</label>
+			 	<label><input name="limit_total" type="radio" value="100000" > 十万条</label>
 			</li>
 			<li><label>文件格式：</label>
-			<label><input type="radio" name="type" value="0" checked>XML格式</label> &nbsp; 
-			<label><input type="radio" name="type" value="1"> TXT格式</label>
+				<label><input type="radio" name="type" value="0" checked >XML格式</label>
+				<label><input type="radio" name="type" value="1" > TXT格式</label>
 			</li>
 			<?php if($is_make_xml){ ?>
 			<li><label>sitemap.xml：</label>
 			<span>更新时间：<?php echo $make_xml_time;?></span>
-			<a href="<?php echo SITE_URL.'sitemap.xml';?>" target="_blank" style="margin-left:10px;color:blue">点击查看</a>
+			<a href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('type'=>0));?>')" class="btn btn-danger size-MINI radius ml-5" >删除文件</a>
+			<a href="<?php echo SITE_URL.'sitemap.xml';?>" target="_blank" class="btn btn-success size-MINI radius ml-5" >点击查看</a>
 			</li>
 			<?php } ?>
 			<?php if($is_make_txt){ ?>
 			<li><label>sitemap.txt：</label>
 			<span>更新时间：<?php echo $make_txt_time;?></span>
-			<a href="<?php echo SITE_URL.'sitemap.txt';?>" target="_blank" style="margin-left:10px;color:blue">点击查看</a>
+			<a href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('type'=>1));?>')" class="btn btn-danger size-MINI radius ml-5" >删除文件</a>
+			<a href="<?php echo SITE_URL.'sitemap.txt';?>" target="_blank" class="btn btn-success size-MINI radius ml-5" >点击查看</a>
 			</li>
 			<?php } ?>
 			<li><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="开始生成"></li>
@@ -71,19 +78,32 @@
 	</div>
 </div>
 <script type="text/javascript">
-function check_all(){
-	
-	var v = $("input[name='limit']").val();
-	if(v=='' || isNaN(v)){
-		layer.msg('单个模型生成数量只能为数字！', {icon:2});
-		return false;
+	function do_submit(){
+		layer.msg('正在生成中……', {icon:16, shade:0.21, shadeClose:true, time:false});
+	    do_request(1, 0);		 
+		return false;			
 	}
-	if(v<1 || v>1000){
-		layer.msg('单个模型生成数量取值范围是1到1000！', {icon:2});
-		return false;
+
+	function do_request(page, total) {
+		$.ajax({
+	        type: 'POST',
+	        url: '<?php echo U('make_sitemap');?>', 
+	        data: $("#myform").serialize()+'&page='+page+'&total='+total,
+		    dataType: "json", 
+	        success: function (msg) {
+				if(msg.status == 1){
+					layer.msg(msg.message, {icon:1, time:1500}, function(){
+						location.reload();
+					});
+			    }else if(msg.status == 2){
+					do_request(msg.page, msg.total);
+				}else{
+					layer.msg(msg.message, {icon:2});
+				}
+	        }
+	    })
+	    return false;	
 	}
-	return true;			
-}
 </script>
 <?php include $this->admin_tpl('footer');?>
 </body>

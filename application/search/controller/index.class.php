@@ -2,7 +2,7 @@
 /**
  * YzmCMS内容搜索模块 - 商业用途请购买官方授权
  * @license          http://www.yzmcms.com
- * @lastmodify       2020-03-15
+ * @lastmodify       2020-07-28
  */
 
 defined('IN_YZMPHP') or exit('Access Denied'); 
@@ -31,23 +31,33 @@ class index{
 		if(strlen($q) < 2 || strlen($q) > 30){
 			showmsg('你输入的字符长度需要是 2 到 30 个字符！', 'stop');
 		}
-		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
-		$modelinfo = get_modelinfo();
-		$modelarr = array();
-		foreach($modelinfo as $val){
-			$modelarr[$val['modelid']] = $val['tablename'];
+		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 0;
+		$where = "`status` = 1 AND `title` LIKE '%$q%'";
+
+		if($modelid){
+			$dbname = get_model($modelid);
+			if(!$dbname) showmsg('模型不存在！', 'stop');
+			$db = D($dbname);
+			$total = $db->where($where)->total();
+			$page = new page($total, $this->offset);
+			$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid,flag,color')->where($where)->order('id DESC')->limit($page->limit())->select();
+		}else{
+			$db = D('all_content');
+			$total = $db->where($where)->total();
+			$page = new page($total, $this->offset);
+			$data = $db->field('modelid,id')->where($where)->order('allid DESC')->limit($page->limit())->select();
+			$search_data = array();
+			foreach ($data as $value) {
+				$res = D(get_model($value['modelid']))->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid,flag,color')->where(array('id'=>$value['id']))->find();
+				if(!$res) continue;
+				$search_data[] = $res;
+			}
+
 		}
-		if(!isset($modelarr[$modelid])) showmsg('模型不存在！', 'stop');
-		
+
 		$seo_title = '‘'.$q.'’的搜索结果_'.$site['site_name'];
 		$keywords = $q.','.$site['site_keyword'];
 		$description = $site['site_description'];
-		
-		$where = "`title` LIKE '%$q%' AND `status` = 1";
-		$db = D($modelarr[$modelid]);
-		$total = $db->where($where)->total();
-		$page = new page($total, $this->offset);
-		$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid,flag,color')->where($where)->order('id DESC')->limit($page->limit())->select();
 		
 		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
 		include template($this->module, 'search');	
@@ -60,14 +70,14 @@ class index{
 	public function tag(){	
 		$site = get_config();
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;	
-		$data = D('tag')->field('tag')->where(array('id'=>$id))->find();
+		$data = D('tag')->field('tag,remarks')->where(array('id'=>$id))->find();
 		if(!$data) showmsg('TAG标签不存在！', 'stop');
 		$q = $data['tag'];	
 			
 		$tag_content = D('tag_content');
 		$seo_title = $q.'_'.$site['site_name'];
 		$keywords = $q.','.$site['site_keyword'];
-		$description = $site['site_description'];		
+		$description = $data['remarks'] ? $data['remarks'] : $site['site_description'];		
 	
 		$total = $tag_content->where(array('tagid'=>$id))->total();
 		$page = new page($total, $this->offset);
@@ -103,7 +113,7 @@ class index{
 		
 		//文章归档暂时只调用文章模型的
 		$db = D('article');
-		$where = 'inputtime BETWEEN '.$starttime.' AND '.$endtime.' AND `status` = 1';
+		$where = '`status` = 1 AND inputtime BETWEEN '.$starttime.' AND '.$endtime;
 		$total = $db->where($where)->total();
 		$page = new page($total, $this->offset);
 		$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid,flag,color')->where($where)->order('id DESC')->limit($page->limit())->select();

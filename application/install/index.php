@@ -1,6 +1,6 @@
 <?php
 /**
- * YzmCMS 安装向导
+ * YzmCMS内容管理系统 安装向导
  *
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
@@ -16,7 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 define('APPDIR', _dir_path(substr(dirname(__FILE__), 0, -8)));
 define('SITEDIR', dirname(APPDIR).DIRECTORY_SEPARATOR);
-define("VERSION", 'YzmCMS 5.7');
+define("VERSION", 'YzmCMS 5.8');
 
 if(is_file(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock')){
     exit("YzmCMS程序已运行安装，如果你确定要重新安装，请先从FTP中删除 cache/install.lock！");
@@ -211,7 +211,7 @@ switch ($step) {
             //插入管理员
             $password = md5(substr(md5(trim($password)), 3, 26));
             $time = time();
-            $query = "INSERT INTO `{$dbPrefix}admin` VALUES ('1', '{$adminname}', '{$password}', '1', '超级管理员', '', '', '', '0', '', '{$time}', '系统')";
+            $query = "INSERT INTO `{$dbPrefix}admin` (`adminid`, `adminname`, `password`, `roleid`, `rolename`, `addtime`, `addpeople`) VALUES ('1', '{$adminname}', '{$password}', '1', '超级管理员', '{$time}', '创始人')";
             $ret = mysqli_query($conn, $query);
 			if($ret){
 				$message = '添加管理员成功';

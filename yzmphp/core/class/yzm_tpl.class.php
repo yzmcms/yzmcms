@@ -72,12 +72,21 @@ class yzm_tpl {
 		foreach ($matches as $v) {
 			$datas[$v[1]] = $v[2];
 		}
+		$cache = isset($datas['cache']) ? intval($datas['cache']) : 0;
 		$return = isset($datas['return']) && trim($datas['return']) ? trim($datas['return']) : 'data';
-		$str = '$tag = yzm_base::load_sys_class(\'yzm_tag\');';
+		$str = '';
+		if ($cache && !isset($datas['page'])) {
+			$str = '$tag_cache_name = \'tag_cache_\'.md5(implode(\'&\','.self::arr_to_html($datas).'));if(!$'.$return.' = getcache($tag_cache_name)){';
+		}
+		$str .= '$tag = yzm_base::load_sys_class(\'yzm_tag\');';
 		$str .= 'if(method_exists($tag, \''.$action.'\')) {';
 		$str .= '$'.$return.' = $tag->'.$action.'('.self::arr_to_html($datas).');';
 		if(isset($datas['page'])) $str .= '$pages = $tag->pages();';		
 		$str .= '}';
+		if ($cache && !isset($datas['page'])) {
+			$str .= 'if(!empty($'.$return.')){setcache($tag_cache_name, $'.$return.', '.$cache.');}';
+			$str .= '}';
+		}
 		return '<?php '.$str.'?>';
 	}
 	

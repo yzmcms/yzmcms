@@ -45,12 +45,6 @@ class index{
 		//外部链接
 		if($type == 2) showmsg(L('is_jump'), $pclink, 1);
 		
-		//SEO相关设置
-		$site = get_config();
-		$seo_title = $seo_title ? $seo_title : $catname.'_'.$site['site_name'];
-		$keywords = $seo_keywords ? $seo_keywords : $site['site_keyword'];
-		$description = $seo_description ? $seo_description : $site['site_description'];
-		
 		//手机模板暂时就做这一个，不要问我为什么，因为没时间~~
 		$template = 'category_article';
 		
@@ -60,6 +54,12 @@ class index{
 			extract($r);
 			$template = 'category_page';
 		}
+
+		//SEO相关设置
+		$site = get_config();
+		$seo_title = $seo_title ? $seo_title : $catname.'_'.$site['site_name'];
+		$keywords = $seo_keywords ? $seo_keywords : $site['site_keyword'];
+		$description = $seo_description ? $seo_description : $site['site_description'];
 		
 		include template('mobile', $template);
 	}
@@ -81,7 +81,10 @@ class index{
 		if(!$tablename)  showmsg(L('model_not_existent'),'stop');
 		$db = D($tablename);
 		$data = $db->where(array('id'=>$id))->find();
-		if(!$data || $data['status'] != 1) showmsg(L('content_not_existent'),'stop');
+		if(!$data || $data['status'] != 1 || $data['catid'] != $catid){
+			if(!APP_DEBUG) send_http_status(404);
+			showmsg(L('content_not_existent'),'stop');
+		}
 		extract($data);
 		
 		//会员组权限和阅读收费检测，手机端直接提示用PC打开浏览

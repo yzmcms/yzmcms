@@ -93,11 +93,13 @@ textarea{width:615px;height:80px;padding:2px 3px;border-radius:2px;border:1px so
 .w370{width:370px;}
 .w660{width:660px;}
 .fieldset_list{border:1px solid #d8d8d8;margin-bottom:8px;border-radius:2px}
-.fieldset_list legend{font-size:14px;color:#666;background-color:#f9f9f9;border:1px solid #d8d8d8;padding:0 15px;height:30px;line-height:30px;width:56px;font-weight:bold;margin-bottom:0px;}
+.fieldset_list legend{font-size:13px;color:#666;background-color:#f9f9f9;border:1px solid #d8d8d8;padding:0 15px;height:30px;line-height:30px;width:56px;font-weight:bold;margin-bottom:0px;}
 .fieldset_tip{text-align:center;font-size:13px;margin-top:5px;margin-bottom:10px;}
 .file_ul li{margin-bottom:5px;margin-left:10px}
-.file_ul li input{margin-right:10px;height:23px;line-height:23px;width:255px;padding:3px 5px;border:1px solid #ddd;margin-bottom:8px;border-radius:3px}
-.file_ul li a{color:#06c}
+.file_ul li .input-text{margin-right:10px;height:23px;line-height:23px;width:230px;padding:3px 5px;border:1px solid #ddd;margin-bottom:8px;border-radius:3px}
+.file_ul li .yzm-input-alt{width:180px;}
+.file_ul li a{color:#fff;font-size:12px;padding:4px 6px;background:#2196f3;border-radius:2px;}
+.file_ul li a:hover{text-decoration:none;opacity:0.8}
 .textarea{width:666px;height:100px;padding:2px 3px;border-radius:3px;border:1px solid #e3eaef;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;font-size:13px;line-height:20px}
 .input:focus,.textarea:focus{border-color:#75a1f0;box-shadow: 0 0 12px #75a1f0;outline:medium none;transition:all 0.218s ease 0s;}
 .submit{padding:8px 20px;display:inline-block;box-sizing:border-box;cursor:pointer;text-align:center;font-weight:400;white-space:nowrap;vertical-align:middle;border:none;background-color:#2196f3;width:auto;overflow:visible;transition:background-color .1s linear;color:#fff;border-radius:3px;min-width:100px}
