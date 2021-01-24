@@ -11,20 +11,23 @@ class update{
 	public static function notice_url($action = 'notice') {	
 		$pars = array('action'=>$action,'siteurl'=>urlencode(SITE_URL),'sitename'=>urlencode(get_config('site_name')),'version'=>YZMCMS_VERSION,'software'=>urlencode($_SERVER['SERVER_SOFTWARE']),'os'=>PHP_OS,'php'=>phpversion(),'mysql'=>self::mysql_varsion(),'browser'=>urlencode($_SERVER['HTTP_USER_AGENT']),'username'=>urlencode($_SESSION['adminname']),);
 		$data = http_build_query($pars);
-        return base64_decode('aHR0cDovL3d3dy55em1jbXMuY29tL25vdGljZS91cGRhdGUucGhwPw==').$data;     
+        return base64_decode('aHR0cDovL2FwaS55em1jbXMuY29tL25vdGljZS91cGRhdGUucGhwPw==').$data;     
     }
 
     public static function check(){
-    	$curl = curl_init(update::notice_url());
-		curl_setopt($curl, CURLOPT_NOSIGNAL, 1);
-		curl_setopt($curl, CURLOPT_TIMEOUT_MS, 1500);	
-		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);	
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		$s = curl_exec($curl);
-		curl_close($curl);
-		echo $s;exit();
+		if(!$official_info = getcache('official_info')){
+			$curl = curl_init(update::notice_url());
+			curl_setopt($curl, CURLOPT_NOSIGNAL, 1);
+			curl_setopt($curl, CURLOPT_TIMEOUT_MS, 2500);	
+			curl_setopt($curl, CURLOPT_FOLLOWLOCATION, TRUE);	
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
+			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+			curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+			$official_info = curl_exec($curl);
+			curl_close($curl);
+			setcache('official_info', $official_info, 691200);
+		}		
+		echo $official_info;exit();
     }
 }
 

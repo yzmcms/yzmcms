@@ -54,6 +54,10 @@ class page{
 	 * 生成链接URL
 	 */
     private function make_url($page){
+    	// 兼容PHP5.2写法，已不推荐
+    	// if($page == 1 && $this->url_rule) return substr($this->url, 0, strpos($this->url, $this->page_prefix.'_PAGE'));
+
+    	if($page == 1 && $this->url_rule) return strstr($this->url, $this->page_prefix.'_PAGE', true);
         return str_replace('PAGE', $page, $this->url);
     }
 
@@ -159,15 +163,23 @@ class page{
 			}
 		}
 		return $str;
+	}
+
+
+	/**
+	 * 跳转到指定页
+	 */
+	public function getjump(){
+		return '<span class="jumpbox">'.L('jump_to').'<input type="text" name="page" placeholder="'.L('page_number').'" onkeypress="return yzm_page_jump(this)" class="input-text jumppage" data-url="'.$this->url.'">页</span>';
 	}	
 	
 	
 	/**
 	 * 获取全部列表---首页上页[1][2][3][4][5]下页尾页
 	 */
-	public function getfull(){
+	public function getfull($show_jump = true){
 		if($this->total_rows == 0) return '';
-	    return ($this->gethome()).($this->getpre()).($this->getlist()).($this->getnext()).($this->getend());
+	    return $this->gethome().$this->getpre().$this->getlist().$this->getnext().$this->getend().($show_jump ? $this->getjump() : '');
 	}
 
 

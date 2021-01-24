@@ -31,8 +31,8 @@ class application {
 	private function init() {
 		$controller = $this->load_controller();
 		if (method_exists($controller, ROUTE_A)) {
-			if (preg_match('/^[_]/i', ROUTE_A)) {
-				self::halt('You are visiting the action is to protect the private action');
+			if (substr(ROUTE_A, 0, 1) == '_') {
+				self::halt('This action is inaccessible.');
 			} else {
 				call_user_func(array($controller, ROUTE_A));
 				if(APP_DEBUG){

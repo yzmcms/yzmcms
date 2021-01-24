@@ -13,6 +13,8 @@ return array(
 	'end_page' => '尾页',
 	'pre_page' => '上页',
 	'next_page' => '下页',
+	'jump_to' => '跳到',
+	'page_number' => '页码',
 	'lose_parameters' => '缺少参数！',
 	'password_error' => '密码错误！',
 	'code_error' => '验证码不正确！',

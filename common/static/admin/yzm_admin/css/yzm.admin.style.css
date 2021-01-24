@@ -84,6 +84,8 @@ em,i{font-style:normal;}
 #page .page_right .nopage:hover{background:#fff;border: 1px solid #e2e2e2;color:#d0c4c4;}
 #page .page_right .homepage{border-radius: 2px 0 0 2px}
 #page .page_right .endpage{border-radius: 0 2px 2px 0}
+#page .jumpbox{margin-left:5px;}
+#page .jumppage{width:60px;margin:0 5px;}
 
 .yzmcms_small{margin-left:10px}
 .thumb{height:120px;width:180px;float:right;position:relative;right:0px;top:-80px;}
@@ -100,6 +102,17 @@ em,i{font-style:normal;}
 .footer_padding{padding-bottom:60px}
 .footer_btn{position:fixed;z-index:999;left:0px;bottom:0px;background:#fff;padding:10px 20px;width:100%;overflow:hidden;border-top:1px solid #d8d8d8;}
 .footer_btn input{padding:0 20px;}
+
+.lock-desktop{height:100%;width:100%;position:absolute;top:0;left:0;z-index:9000;background-color:#001d47;background-image:url("../images/yzm-background.jpg");background-size:100% 100%;background-repeat:no-repeat;background-position:50% 50%;text-align:center;}
+.lockuser{height:135px;width:135px;margin:10px auto;overflow:hidden;}
+.lockuser img{border-radius:100%;margin-top:5px;border:6px solid #fff;}
+.lock-desktop .lock-box{font-size:14px;height:300px;left:50%;margin:-250px 0 0 -250px;padding:30px;position:absolute;top:50%;width:500px;color:#fff;}
+.lock-box h5{font-size:14px;font-weight:normal;text-shadow:0 1px 3px #333333}
+.input-box{margin-top:35px;overflow:hidden;box-shadow:0 0 3px 1px #fdf8f8;border-radius:6px}
+.lock-user{font-size:25px;color:#e8e4e4;text-shadow:1px 1px 3px #333333;}
+.lock-text{float:left;background:#c3c3c3;background:rgba(255,255,255,0);height:50px;line-height:48px;width:84%;padding:0 5%;border:none;border-right:none;border-top-left-radius:6px;border-bottom-left-radius:6px;font-size:16px;color:#fff;box-sizing:border-box;}
+.lock-submit{float:left;width:16%;height:52px;line-height:52px;text-align:center;border:none;outline:none;background:#386adb;color:#fff;border-top-right-radius:6px;border-bottom-right-radius:6px;cursor:pointer;transition:all 0.3s;font-size:26px;}
+.lock-submit:hover{background:#1c5ff4}
 
 #yzmcms_notice{width:300px;line-height:50px;color:#fff;background-color:rgba(0,0,0,0.6);font-size:14px;text-align:center;position:fixed;top:50%;left:50%;margin-top:-30px;margin-left:-150px;overflow:hidden;display:none;border-radius:3px}
 #yzmcms_notice a{color:red;font-size:12px}

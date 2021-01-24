@@ -16,7 +16,7 @@
                         <td>安全问题：</td>
                         <td>
                             <select name="problem" onchange="change_problem()">
-                                <option value="0">没有安全问题</option>
+                                <option value="">没有安全问题</option>
                                 {loop $problemarr $v}
                                 {php $str = $problem == $v ? 'selected="selected"' : '';}
                                 <option value="{$v}" {$str}>{$v}</option>
@@ -50,7 +50,7 @@
 </div>
 <script type="text/javascript">
 function change_problem() {
-    if ($("select[name='problem']").val() != '0') {
+    if ($("select[name='problem']").val() != '') {
         $("#answer").removeAttr("style");
     } else {
         $("#answer").css('display', 'none');

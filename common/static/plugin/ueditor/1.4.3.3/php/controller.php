@@ -35,6 +35,7 @@ if(version_compare(PHP_VERSION,'5.4.0','<')) {
 }else{
     define('MAGIC_QUOTES_GPC', false);
 }
+define('SITE_PATH', $web_path);
 define('YZMPHP_PATH', $document_root.$web_path);
 define('EXT', '.class.php'); 
 

@@ -75,10 +75,18 @@ class system_manage extends common {
 	 * 测试邮件配置
 	 */
 	public function public_test_mail() {
+		$config = D('config');
+		foreach($_POST as $key => $value){
+			if(in_array($key, array('mail_server','mail_port','mail_from','mail_auth','mail_user','mail_pass'))) {
+				$config->update(array('value'=>trim($value)), array('name'=>$key), true);
+			}
+		}
+		delcache('configs');
+
 		if(sendmail($_POST['mail_to'], 'YzmCMS邮件测试', '这是一封测试邮件，如果您成功接收此邮件，说明您的邮件配置正确！')){
-			exit('发送邮件成功！');
+			return_json(array('status'=>1, 'message'=>'发送邮件成功！'));
 		}else{
-			exit('发送邮件失败！');
+			return_json(array('status'=>0, 'message'=>'发送邮件失败！'));
 		}	
 	}
 	

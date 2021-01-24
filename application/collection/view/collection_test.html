@@ -10,7 +10,7 @@
 			<li><label>节点名称：</label><?php echo $data['name'];?></li> 
 			<li>列表测试信息：</li>  			
 			<li><textarea class="textarea" style="height:200px"><?php
-			 if($content['title']) foreach($content['title'] as $k => $v){
+			 if($content && is_array($content['title'])) foreach($content['title'] as $k => $v){
 			   echo $v.'&nbsp;'.$content['url'][$k]."\n";
 			 }
 		   ?></textarea></li> 

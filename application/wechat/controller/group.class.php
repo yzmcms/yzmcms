@@ -35,7 +35,7 @@ class group extends wechat_common{
 			$url = 'https://api.weixin.qq.com/cgi-bin/groups/create?access_token='.$this->get_access_token();
 			$str = '{"group":{"name":"'.$groupname.'"}}';
 
-			$json_arr = $this->https_request($url, $str);
+			$json_arr = https_request($url, $str);
 
 			if(isset($json_arr['errcode'])){
 				return_json(array('status'=>0,'message'=>'操作失败：'.$json_arr['errmsg']));
@@ -61,7 +61,7 @@ class group extends wechat_common{
 			$url = 'https://api.weixin.qq.com/cgi-bin/groups/update?access_token='.$this->get_access_token();
 
 			$str = '{"group":{"id":'.$groupid.',"name":"'.$groupname.'"}}';
-			$json_arr = $this->https_request($url, $str);
+			$json_arr = https_request($url, $str);
 
 			if($json_arr['errcode'] == 0){
 				D('wechat_group')->update(array('name' => $groupname), array('id' => $groupid), true);
@@ -88,7 +88,7 @@ class group extends wechat_common{
         $url = 'https://api.weixin.qq.com/cgi-bin/groups/delete?access_token='.$this->get_access_token();
         $str = '{"group":{"id":'.$groupid.'}}';
 
-        $json_arr = $this->https_request($url, $str);
+        $json_arr = https_request($url, $str);
 
 		if($json_arr['errcode'] == 0){
 			//查询该分组的人数
@@ -114,7 +114,7 @@ class group extends wechat_common{
 	public function select_group(){
 		
         $url = 'https://api.weixin.qq.com/cgi-bin/groups/get?access_token='.$this->get_access_token();
-        $json_arr = $this->https_request($url);
+        $json_arr = https_request($url);
 
 		if(isset($json_arr['errcode'])){
 			showmsg('查询分组失败！'.$json_arr['errmsg'], 'stop');

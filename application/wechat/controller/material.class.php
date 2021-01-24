@@ -89,7 +89,7 @@ class material extends wechat_common{
 				$url = 'http://file.api.weixin.qq.com/cgi-bin/media/upload?access_token='.$this->get_access_token().'&type='.$type;
 			}
 			
-			$json_arr = $this->https_request($url, $data);
+			$json_arr = https_request($url, $data);
 			
 			if(!isset($json_arr['errcode'])){
 
@@ -136,7 +136,7 @@ class material extends wechat_common{
 				$url = 'https://api.weixin.qq.com/cgi-bin/media/uploadnews?access_token='.$this->get_access_token();
 			}
 			
-			$json_arr = $this->https_request($url, $data);
+			$json_arr = https_request($url, $data);
 			
 			if(!isset($json_arr['errcode'])){
 				D('wechat_media')->insert(array('type'=>'news', 'url'=>$_POST['title_0'], 'media_type'=>$_POST['media_type'], 'created_at'=>SYS_TIME, 'media_id'=>$json_arr['media_id']));
@@ -165,7 +165,7 @@ class material extends wechat_common{
 		if($media_type){
 			$url = 'https://api.weixin.qq.com/cgi-bin/material/del_material?access_token='.$this->get_access_token();
 			$data = '{"media_id":"'.$info['media_id'].'"}';
-			$json_arr = $this->https_request($url, $data);	
+			$json_arr = https_request($url, $data);	
 			if($json_arr['errcode'] != 0) showmsg('操作失败！errcode：'.$json_arr['errcode'].'，errmsg：'.$json_arr['errmsg'], 'stop');				
 		}
 
@@ -202,7 +202,7 @@ class material extends wechat_common{
 		$type = 'image';  //图片: image 视频: video 语音: voice 图文: news
 		$url = 'https://api.weixin.qq.com/cgi-bin/material/batchget_material?access_token='.$this->get_access_token();
 		$data = '{"type":"'.$type.'","offset":"0","count":"20"}';
-		$json_arr = $this->https_request($url, $data);
+		$json_arr = https_request($url, $data);
 		P($json_arr);
 	}
 

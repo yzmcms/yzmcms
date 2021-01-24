@@ -35,7 +35,7 @@ class wechat_common extends common{
 		if(!$access_token = getcache('wechat_access_token')){
 			$url = 'https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid='.$this->appid.'&secret='.$this->secret;
 
-			$access_token = $this->https_request($url);
+			$access_token = https_request($url);
 			
 			if(isset($access_token['errcode'])) showmsg('获取access_token失败！errmsg：'.$access_token['errmsg'], 'stop');
 			
@@ -65,25 +65,5 @@ class wechat_common extends common{
 		}	
 		return $jsonstr;
 	}
-
-
-
-    /**
-     *  https请求，支持get与post
-     */
-	protected function https_request($url, $data = '', $array = true){
-		$curl = curl_init($url);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-		curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
-		if($data){
-			curl_setopt($curl, CURLOPT_POST, 1);
-			curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
-		}
-		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-		$output = curl_exec($curl);
-		curl_close($curl);
-		return $array ? json_decode($output, true) : $output;
-	}
-
 
 }

@@ -33,7 +33,7 @@ class myhome{
 		$total = $all_content->where(array('userid' =>$userid,'status' =>1,'issystem'=>0))->total();
 		$page = new page($total, 10);
 		$data = $all_content->field('modelid,catid,id,thumb,title,url,inputtime')->where(array('userid' =>$userid,'status' =>1,'issystem'=>0))->order('id DESC')->limit($page->limit())->select();
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 		
 		$guest_data = $this->_guest($userid);
 		

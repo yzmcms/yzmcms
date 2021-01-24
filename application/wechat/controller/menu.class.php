@@ -120,7 +120,7 @@ class menu extends wechat_common{
 		
 		$str = $this->my_json_encode($arr);
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/create?access_token='.$this->get_access_token();
-        $json_arr = $this->https_request($url, $str);
+        $json_arr = https_request($url, $str);
 
 		if($json_arr['errcode'] == 0){
 			showmsg('操作成功，请清除微信端缓存后查看！', 'stop');
@@ -137,7 +137,7 @@ class menu extends wechat_common{
 	public function select_menu(){
  
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/get?access_token='.$this->get_access_token();
-        $json_arr = $this->https_request($url);
+        $json_arr = https_request($url);
 		
 		P($json_arr);
     }
@@ -150,7 +150,7 @@ class menu extends wechat_common{
 	public function delete_menu(){
  
         $url = 'https://api.weixin.qq.com/cgi-bin/menu/delete?access_token='.$this->get_access_token();
-        $json_arr = $this->https_request($url);
+        $json_arr = https_request($url);
 		
 		if($json_arr['errcode'] == 0){
 			D('wechat_menu')->delete(array('1' => 1));

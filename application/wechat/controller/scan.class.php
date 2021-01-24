@@ -34,7 +34,7 @@ class scan extends wechat_common{
 				$json_str = '{"action_name": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": "'.$scan.'"}}}';
 			}
 			
-			$json_arr = $this->https_request($url, $json_str);
+			$json_arr = https_request($url, $json_str);
 			if(!isset($json_arr['errcode'])){
 				$_POST['ticket'] = $json_arr['ticket'];
 				D('wechat_scan')->insert($_POST, true);
@@ -65,7 +65,7 @@ class scan extends wechat_common{
 				$json_str = '{"action_name": "QR_LIMIT_STR_SCENE", "action_info": {"scene": {"scene_str": "'.$scan.'"}}}';
 			}
 			
-			$json_arr = $this->https_request($url, $json_str);
+			$json_arr = https_request($url, $json_str);
 			if(!isset($json_arr['errcode'])){
 				$_POST['ticket'] = $json_arr['ticket'];
 				D('wechat_scan')->update($_POST, array('id' => $id), true);

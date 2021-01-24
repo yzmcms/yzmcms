@@ -20,7 +20,7 @@ class debug {
 				E_USER_ERROR => '自定义错误',
 				E_USER_WARNING => '自定义警告',
 				E_USER_NOTICE => '自定义提醒',
-				'Unkown ' => '未知错误'
+				'Unknown' => '未知错误'
 	        );
 	
 
@@ -46,7 +46,7 @@ class debug {
 	public static function catcher($errno, $errstr, $errfile, $errline){
 		if(APP_DEBUG && !defined('DEBUG_HIDDEN')){
 			if(!isset(self::$msg[$errno])) 
-				$errno='Unkown';
+				$errno='Unknown';
 
 			if($errno==E_NOTICE || $errno==E_USER_NOTICE)
 				$color="#151515";

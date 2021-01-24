@@ -59,7 +59,7 @@ class index{
 		$keywords = $q.','.$site['site_keyword'];
 		$description = $site['site_description'];
 		
-		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull(false);
 		include template($this->module, 'search');	
 	}
 	
@@ -89,7 +89,7 @@ class index{
 			$search_data[] = $res;
 		}
 		
-		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull(false);
 		include template($this->module, 'search');	
 	}
 	
@@ -118,7 +118,7 @@ class index{
 		$page = new page($total, $this->offset);
 		$search_data = $db->field('id,title,description,inputtime,updatetime,click,thumb,nickname,url,catid,flag,color')->where($where)->order('id DESC')->limit($page->limit())->select();
 		
-		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共<strong>'.$page->total().'</strong>页<strong>'.$total.'</strong>条记录</span>'.$page->getfull(false);
 		include template($this->module, 'search');	
 	}
 

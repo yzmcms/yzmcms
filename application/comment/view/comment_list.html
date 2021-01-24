@@ -36,7 +36,7 @@
 		 <input type="text" name="searinfo"  class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 		 </form>	
   </div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6a7;</i> 通过审核</a></span></div>
+	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6a7;</i> 通过审核</a> <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span></div>
 	<form method="post" action="<?php echo U('del');?>" id="myform">
 	<table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
 		<thead>

@@ -1,4 +1,4 @@
-YzmCMS V5.8 正式版
+YzmCMS V6.0 正式版
 ===============
 YzmCMS是一款轻量级开源内容管理系统，它采用自主研发的框架YZMPHP开发。基于PHP+Mysql架构，并采用MVC框架式开发的一款开源高效的内容管理系统，可运行在Linux、Windows、MacOSX、Solaris等各种平台上。
 
@@ -6,6 +6,9 @@ YzmCMS是一款轻量级开源内容管理系统，它采用自主研发的框�
 
 ## 官网网站
 www.yzmcms.com
+
+## 官网交流
+www.yzmask.com
 
 ## 系统预览
 <img src="https://www.yzmcms.com/doc/images/1.png">
@@ -16,8 +19,11 @@ www.yzmcms.com
 ### 自主研发
 YzmCMS系统采用自主研发的YZMPHP框架开发，不依赖其他任何框架，就是这么任性！
 
-### 源码简洁
-无论是YZMPHP还是YzmCMS，所有源码风格全部统一，源码非常干净、简洁、无冗余代码！
+### 小巧强大
+YzmCMS系统在保持强大的功能前提下，系统压缩包却不足4MB，可见系统的优化程度！
+
+### 简洁快速
+YzmCMS系统源码干净、简洁、无冗余代码，保证了系统极快的运行速度！
 
 ### 开发灵活
 YzmCMS系统采用MVC模块式开发，增加了系统的维护性、可扩展性，使二次开发变得简单、容易。
@@ -25,11 +31,10 @@ YzmCMS系统采用MVC模块式开发，增加了系统的维护性、可扩展�
 ### 100%开源
 YzmCMS系统是100%开源的PHP程序，保证系统的代码更健壮和更安全。
 
-### 轻量级
-YzmCMS系统在保持强大的功能前提下，整体压缩包仅不到5MB，使您可以快速了解和研究它！
+
 
 ## 版权信息
 
-版权所有Copyright © 2014-2020 by 袁志蒙工作室 (https://www.yzmcms.com)
+版权所有Copyright © 2014-2021 by 袁志蒙工作室 (https://www.yzmcms.com)
 
 All rights reserved。

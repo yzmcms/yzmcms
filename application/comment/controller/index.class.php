@@ -101,7 +101,7 @@ class index{
 		$seo_title = $content_data['title'].'_内容评论';
 		$keywords = $content_data['keywords'];
 		$description = $site['site_description'];
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 
 		include template('index', 'comment_more');
 	}

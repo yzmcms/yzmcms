@@ -58,7 +58,8 @@ class role extends common {
 			$roleid = isset($_POST['roleid']) ? intval($_POST['roleid']) : 0;
 			unset($_POST["system"]);
 		
-			if($admin_role->update($_POST, array('roleid' => $roleid), true)){
+			if($admin_role->update($_POST, array('roleid'=>$roleid), true)){
+				D('admin')->update(array('rolename'=>$_POST['rolename']), array('roleid'=>$roleid), true);
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();

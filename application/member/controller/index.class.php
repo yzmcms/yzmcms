@@ -36,11 +36,7 @@ class index extends common{
 			
 			//检查是否开启验证码
 			if(get_config('member_yzm')){
-				if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
-					$_SESSION['code'] = '';
-					showmsg(L('code_error'));
-				}
-				$_SESSION['code'] = '';
+				$this->_check_code($_POST['code']);
 			}
 			$member = D('member');
 			$username = isset($_POST['username']) ? trim($_POST['username']) : showmsg(L('lose_parameters'), 'stop');
@@ -101,11 +97,7 @@ class index extends common{
 			
 		if(isset($_POST['dosubmit'])){
 			
-			if(empty($_SESSION['code']) || strtolower($_POST['code']) != $_SESSION['code']){
-				$_SESSION['code'] = '';
-				showmsg(L('code_error'), '', 1);
-			}
-			$_SESSION['code'] = '';
+			$this->_check_code($_POST['code']);
 			
 			$member = D('member');
 			$data = array();
@@ -216,7 +208,7 @@ class index extends common{
 	public function account(){
 		
 		if(isset($_POST['dosubmit'])){
-			if(!is_mobile($_POST['mobile'])) showmsg('手机号不正确！');
+			if(!is_mobile($_POST['mobile'])) showmsg('手机号格式不正确！');
 			unset($_POST['userpic'], $_POST['guest'], $_POST['fans']);
 			$res = D('member_detail')->update($_POST, array('userid'=>$this->userid), true);
 			if($res){ 
@@ -270,21 +262,21 @@ class index extends common{
 	 * 用户修改密码
 	 */	
 	public function password(){
+		$memberinfo = $this->memberinfo;
+		extract($memberinfo);
 
 		if(isset($_POST['dosubmit'])){
-			if(strtolower($_POST['code']) != $_SESSION['code']) showmsg(L('code_error'));
-			if($_POST['oldpass'] == '') showmsg("原密码不能为空！");
-			if(!$this->db->where(array('userid'=>$this->userid, 'password'=>password($_POST['oldpass'])))->find()) showmsg('原密码错误!');
-			if(!is_password($_POST['password'])) showmsg('新密码不符合规范!');
+			$this->_check_code($_POST['code']);
+
+			if(password($_POST['oldpass']) != $password) showmsg('原密码不正确！');
+			if(!is_password($_POST['password'])) showmsg(L('password_format_error'));
 			if($this->db->update(array('password'=>password($_POST['password'])), array('userid'=>$this->userid))){
 				showmsg(L('operation_success'),'',1);
 			}else{
 				showmsg(L('operation_failure'));
 			}
 		}
-		
-		$memberinfo = $this->memberinfo;
-		extract($memberinfo);	
+			
 		include template('member', 'password');
 	}
 	
@@ -297,20 +289,25 @@ class index extends common{
 		extract($memberinfo);
 		
 		if(isset($_POST['dosubmit'])){
-			if(strtolower($_POST['code']) != $_SESSION['code']) showmsg(L('code_error'));
-			if(!$this->db->where(array('userid'=>$this->userid, 'password'=>password($_POST['password'])))->find()) showmsg(L('password_error'));
+			$this->_check_code($_POST['code']);
+			if(password($_POST['password']) != $password) showmsg(L('password_error'));
 			
 			$data = array();
 			if(!$email_status){
-				if(!isset($_POST['email']) || !is_email($_POST['email'])) showmsg(L('mail_format_error'));
+				if(!isset($_POST['email']) || !is_email($_POST['email'])) showmsg(L('mail_format_error'), 'stop');
+				if($_POST['email'] != $email){
+					$res = $this->db->field('userid')->where(array('email'=>$_POST['email']))->one();
+					if($res) showmsg('该邮箱地址已存在！', 'stop');
+				}
 				$data['email'] = $_POST['email'];
 			}
 			
 			$problem = new_html_special_chars(strip_tags(trim($_POST['problem'])));
 			$answer = new_html_special_chars(strip_tags(trim($_POST['answer'])));
-			if($problem != '0' && $answer != ''){ 
-				$data['problem'] = $problem;  //安全问题
-				$data['answer'] = $answer;  //安全答案
+			// 修改安全问题与答案
+			if($problem && $answer){ 
+				$data['problem'] = $problem; 
+				$data['answer'] = $answer; 
 			}	
 				
 			if(!empty($data) && $this->db->update($data, array('userid'=>$this->userid))){
@@ -375,7 +372,7 @@ class index extends common{
 		$total = $member_follow->where(array('userid'=>$userid))->total();
 		$page = new page($total, 9);
 		$data = $member_follow->where(array('userid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 		include template('member', 'follow');
 	}
 	
@@ -397,7 +394,7 @@ class index extends common{
 			$val['event'] = $val['username'].' 发布了《<a href="'.$val['url'].'" target="_blank">'.$val['title'].'</a>》';
 			$data[] = $val;
 		}
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 		include template('member', 'follow_dynamic');
 	}
 
@@ -415,8 +412,8 @@ class index extends common{
 		$total = $member_follow->where(array('followid'=>$userid))->total();
 		$page = new page($total, 9);
 		$data = $member_follow->alias('f')->field('m.userid,m.username')->join('yzmcms_member m ON f.userid=m.userid')->where(array('followid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 		include template('member', 'fans');
 	}
-	
+
 }

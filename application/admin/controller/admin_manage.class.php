@@ -152,6 +152,9 @@ class admin_manage extends common {
 			if(!is_password($_POST["password"])) return_json(array('status'=>0,'message'=>L('password_format_error')));
 
 			if($admin->update(array('password' => password($_POST['password'])), array('adminid' => $adminid))){
+				if(!get_config('admin_log')){
+					D('admin_log')->insert(array('module'=>ROUTE_M,'action'=>ROUTE_C,'adminname'=>$_SESSION['adminname'],'adminid'=>$_SESSION['adminid'],'querystring'=>'修改密码','logtime'=>SYS_TIME,'ip'=>self::$ip));
+				}				
 				session_destroy();
 				del_cookie('adminid');
 				del_cookie('adminname');

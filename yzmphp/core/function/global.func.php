@@ -18,8 +18,8 @@
  */
 function https_request($url, $data = '', $array = true, $timeout = 2000){
     $curl = curl_init($url);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, FALSE);
-    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, FALSE);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt($curl, CURLOPT_NOSIGNAL, true); 
     curl_setopt($curl, CURLOPT_TIMEOUT_MS, $timeout); 
 
@@ -29,6 +29,7 @@ function https_request($url, $data = '', $array = true, $timeout = 2000){
     }
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     $output = curl_exec($curl);
+	if($output === false) $output = curl_error($curl);
     curl_close($curl);
 	debug::addmsg(array('url'=>$url, 'data'=>$data), 2);
     return $array ? json_decode($output, true) : $output;
@@ -136,6 +137,7 @@ function remove_xss($string) {
  * @return string
  */
 function safe_replace($string) {
+	$string = trim($string);
 	$string = str_replace('%20','',$string);
 	$string = str_replace('%27','',$string);
 	$string = str_replace('%2527','',$string);
@@ -190,7 +192,7 @@ function getip(){
  */
 function get_address($ip, $is_array = false){
 	if($ip == '127.0.0.1') return '本地地址';
-	$content = @file_get_contents('https://www.yzmcms.com/api/ip/?ip='.$ip);
+	$content = @file_get_contents('http://api.yzmcms.com/api/ip/?ip='.$ip);
 	$arr = json_decode($content, true);
 	if(is_array($arr) && !isset($arr['error'])){
 		return $is_array ? $arr : $arr['country'].'-'.$arr['province'].'-'.$arr['city'];
@@ -264,12 +266,15 @@ function new_stripslashes($string) {
 
 /**
  * 返回经htmlspecialchars处理过的字符串或数组
- * @param $obj 需要处理的字符串或数组
+ * @param $string 需要处理的字符串或数组
+ * @param $filter 需要排除的字段，格式为数组
  * @return mixed
  */
-function new_html_special_chars($string) {
+function new_html_special_chars($string, $filter = array()) {
 	if(!is_array($string)) return htmlspecialchars($string,ENT_QUOTES,'utf-8');
-	foreach($string as $key => $val) $string[$key] = new_html_special_chars($val);
+	foreach($string as $key => $val){
+		$string[$key] = $filter&&in_array($key, $filter) ? $val : new_html_special_chars($val);
+	}
 	return $string;
 }
 
@@ -1073,15 +1078,16 @@ function delcache($name, $flush = false) {
 
 /**
  * 模板调用
- *
- * @param $module
- * @param $template
- * @return unknown_type
+ * @param  string $module   模块名
+ * @param  string $template 模板名称
+ * @param  string $theme    强制模板风格
+ * @return void           
  */
-function template($module = '', $template = 'index'){
+function template($module = '', $template = 'index', $theme = ''){
 	if(!$module) $module = 'index';
 	$template_c = YZMPHP_PATH.'cache'.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR;
-	$template_path = !defined('MODULE_THEME') ? APP_PATH.$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.C('site_theme').DIRECTORY_SEPARATOR : APP_PATH.$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.MODULE_THEME.DIRECTORY_SEPARATOR;;
+	$theme = !$theme ? (!defined('MODULE_THEME') ? C('site_theme') : MODULE_THEME) : $theme;
+	$template_path = APP_PATH.$module.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.$theme.DIRECTORY_SEPARATOR;
     $filename = $template.'.html';
 	$tplfile = $template_path.$filename;   
 	if(!is_file($tplfile)) {
@@ -1091,7 +1097,7 @@ function template($module = '', $template = 'index'){
 	if(!is_dir(YZMPHP_PATH.'cache'.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR)){
 		@mkdir(YZMPHP_PATH.'cache'.DIRECTORY_SEPARATOR.$module.DIRECTORY_SEPARATOR, 0777, true);
 	}
-	$template = md5($template_path.$template);	
+	$template = basename($template).'_'.md5($template_path.$template);	
 	$template_c = $template_c.$template.'.tpl.php'; 		
 	if(!is_file($template_c) || filemtime($template_c) < filemtime($tplfile)) {
 		$yzm_tpl = yzm_base::load_sys_class('yzm_tpl');
@@ -1200,6 +1206,7 @@ function make_auth_key($prefix) {
  * @return string
  */
 function return_json($arr = array(), $show_debug = false){
+	header("X-Powered-By: YZMPHP/YzmCMS.");
     header('Content-Type:application/json; charset=utf-8');
     if(!$arr) $arr = array('status'=>0,'message'=>L('data_not_modified'));
 	if(APP_DEBUG || $show_debug) $arr = array_merge($arr, debug::get_debug());
@@ -1326,7 +1333,16 @@ function is_get(){
  */
 function is_put(){
 	return 'PUT' == $_SERVER['REQUEST_METHOD'];
-}	
+}
+
+
+/**
+ * 判断是否为AJAX请求
+ * @return bool
+ */
+function is_ajax(){
+	return isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH'])=='xmlhttprequest' ? true : false;
+}
 
 
 /**

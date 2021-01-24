@@ -45,20 +45,21 @@ class sitemap extends common {
 			$pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : 500;
 
 			if($type) $this->filename = 'sitemap.txt';
+			$site_url = get_config('site_url');
 
 			if($page == 1){
 
 				// 第一次写入时
-				@file_put_contents($this->filename, $type ? '' : $this->header);
+				@file_put_contents(YZMPHP_PATH.$this->filename, $type ? '' : $this->header);
 
 				// 生成网站地址链接
-				$item = $this->_sitemap_item(SITE_URL, SYS_TIME, 'daily', '1.0');
+				$item = $this->_sitemap_item($site_url, SYS_TIME, 'daily', '1.0');
 				$this->_add_data($item);
 				
 				// 生成栏目链接
 				$data = D('category')->field('pclink')->order('listorder ASC,catid ASC')->select();
 				foreach($data as $val){
-					if(!strpos($val['pclink'], '://')) $val['pclink'] = SITE_URL.ltrim($val['pclink'], '/');
+					if(!strpos($val['pclink'], '://')) $val['pclink'] = $site_url.ltrim($val['pclink'], '/');
 					$item = $this->_sitemap_item($val['pclink'], SYS_TIME, $changefreq, $priority);
 					$this->_add_data($item);
 				}
@@ -79,7 +80,7 @@ class sitemap extends common {
 			$data = D($table)->field('updatetime,url')->where(array('status'=>'1'))->order($order)->limit($limit)->select();
 
 			foreach($data as $val){
-				if(!strpos($val['url'], '://')) $val['url'] = SITE_URL.ltrim($val['url'], '/');
+				if(!strpos($val['url'], '://')) $val['url'] = $site_url.ltrim($val['url'], '/');
 				$item = $this->_sitemap_item($val['url'], $val['updatetime'], $changefreq, $priority);
 				// 在兼容模式下，需要加上 htmlspecialchars 函数进行URL转义
 				// $item = $this->_sitemap_item(htmlspecialchars($val['url']), $val['updatetime'], $changefreq, $priority);
@@ -91,7 +92,7 @@ class sitemap extends common {
 			if(!$strlen) return_json(array('status'=>0,'message'=>'生成文件 '.$this->filename.' 失败，请检查是否有写入权限！'));
 
 			if($num<=$page || ($limit_total && ($page*$pagesize>=$limit_total))){
-				if(!$type) @file_put_contents($this->filename, $this->footer, FILE_APPEND | LOCK_EX);
+				if(!$type) @file_put_contents(YZMPHP_PATH.$this->filename, $this->footer, FILE_APPEND | LOCK_EX);
 				return_json(array('status'=>1,'message'=>'生成文件 '.$this->filename.' 成功！'));
 			}
 
@@ -106,8 +107,8 @@ class sitemap extends common {
 	public function delete(){
 		$type = isset($_GET['type']) ? intval($_GET['type']) : 0;
 		if($type) $this->filename = 'sitemap.txt';
-		if(is_file($this->filename)){
-			if(!@unlink($this->filename)) showmsg(L('operation_failure'));
+		if(is_file(YZMPHP_PATH.$this->filename)){
+			if(!@unlink(YZMPHP_PATH.$this->filename)) showmsg(L('operation_failure'));
 		}
 		showmsg(L('operation_success'), U('init'), 1);
 	}

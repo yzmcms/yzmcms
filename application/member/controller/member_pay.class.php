@@ -27,7 +27,7 @@ class member_pay extends common{
 		$total = $pay->where(array('userid'=>$userid))->total();
 		$page = new page($total, 15);
 		$data = $pay->where(array('userid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 		include template('member', 'pay');
 	}
 	
@@ -49,11 +49,7 @@ class member_pay extends common{
 	 */	
 	public function create_order(){
 		if(isset($_POST['dosubmit'])){
-			if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
-				$_SESSION['code'] = '';
-				showmsg(L('code_error'));
-			}
-			$_SESSION['code'] = '';
+			$this->_check_code($_POST['code']);
 				
 			$paytype = intval($_POST['paytype']);
 			if(!$paytype) showmsg('请选择支付方式！', 'stop');
@@ -98,7 +94,7 @@ class member_pay extends common{
 		$total = $order->where(array('userid'=>$userid))->total();
 		$page = new page($total, 15);
 		$data = $order->where(array('userid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 		include template('member', 'order_list');
 	}
 	
@@ -126,7 +122,7 @@ class member_pay extends common{
 		$total = $pay_spend->where(array('userid'=>$userid))->total();
 		$page = new page($total, 15);
 		$data = $pay_spend->where(array('userid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 		include template('member', 'spend_record');
 	}
 	

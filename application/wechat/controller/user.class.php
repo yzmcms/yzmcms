@@ -90,7 +90,7 @@ class user extends wechat_common{
 	public function synchronization(){
 		$next_openid = '';
         $url = 'https://api.weixin.qq.com/cgi-bin/user/get?access_token='.$this->get_access_token().'&next_openid='.$next_openid;
-        $json_arr = $this->https_request($url);
+        $json_arr = https_request($url);
 
 		if(isset($json_arr['errcode'])){
 			showmsg('获取关注者列表失败！'.$json_arr['errmsg'], 'stop');
@@ -126,14 +126,14 @@ class user extends wechat_common{
 			$str = '"'.join('","', $arr).'"';
 			$url = 'https://api.weixin.qq.com/cgi-bin/groups/members/batchupdate?access_token='.$this->get_access_token();
 			$str = '{"openid_list":['.$str.'],"to_groupid":'.$to_groupid.'}';
-			$json_arr = $this->https_request($url, $str);
+			$json_arr = https_request($url, $str);
 
 			if($json_arr['errcode'] == 0){
 				D('wechat_user')->update(array('groupid' => $to_groupid), 'wechatid IN ('.$_POST['ids'].')');
 				$wechat_group = D('wechat_group');
 				$wechat_group->delete(array('1' => 1));
 				$url = 'https://api.weixin.qq.com/cgi-bin/groups/get?access_token='.$this->get_access_token();
-				$json_arr = $this->https_request($url);
+				$json_arr = https_request($url);
 				foreach($json_arr['groups'] as $val){
 					$wechat_group->insert($val, false, false);
 				}				
@@ -162,7 +162,7 @@ class user extends wechat_common{
 			$url = 'https://api.weixin.qq.com/cgi-bin/user/info/updateremark?access_token='.$this->get_access_token();
 			$arr = array('openid' => $openid, 'remark' => $remark);
 			$json_str = $this->my_json_encode($arr);
-			$json_arr = $this->https_request($url, $json_str);
+			$json_arr = https_request($url, $json_str);
 
 			if($json_arr['errcode'] == 0){
 				D('wechat_user')->update(array('remark' => $remark), array('openid' => $openid));
@@ -190,7 +190,7 @@ class user extends wechat_common{
         $url = 'https://api.weixin.qq.com/cgi-bin/groups/getid?access_token='.$this->get_access_token();
 
         $str = '{"openid":"'.$openid.'"}';
-        $json_arr = $this->https_request($url, $str);
+        $json_arr = https_request($url, $str);
 
 		if(isset($json_arr['errcode'])){
 			showmsg('查询用户所在组失败！'.$json_arr['errmsg'], 'stop');
@@ -207,7 +207,7 @@ class user extends wechat_common{
 	private function get_userinfo($openid){
 		
         $url = 'https://api.weixin.qq.com/cgi-bin/user/info?access_token='.$this->get_access_token().'&openid='.$openid.'&lang=zh_CN';
-        $json_arr = $this->https_request($url);
+        $json_arr = https_request($url);
 
 		if(isset($json_arr['errcode'])){
 			showmsg('获取用户信息失败！'.$json_arr['errmsg'], 'stop');

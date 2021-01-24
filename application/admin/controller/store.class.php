@@ -19,7 +19,7 @@ class store extends common {
 	 * init
 	 */
 	public function init(){
-		$api_url = base64_decode('aHR0cHM6Ly93d3cueXptY21zLmNvbS9hcGkvc3RvcmUvaW5pdA==');
+		$api_url = base64_decode('aHR0cDovL2FwaS55em1jbXMuY29tL2FwaS9zdG9yZS9pbml0');
 		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$data = array('auth_key'=>C('auth_key'), 'page'=>$page);
 		if(isset($_GET['dosubmit'])){

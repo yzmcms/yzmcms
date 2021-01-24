@@ -91,7 +91,7 @@ class mass extends wechat_common{
 				$url = 'https://api.weixin.qq.com/cgi-bin/message/mass/send?access_token='.$this->get_access_token();  //按openid列表群发
 			}
 			
-			$json_arr = $this->https_request($url, $jsondata);
+			$json_arr = https_request($url, $jsondata);
 
 			if($json_arr['errcode'] == 0){
 
@@ -127,7 +127,7 @@ class mass extends wechat_common{
 			$url = 'https://api.weixin.qq.com/cgi-bin/message/mass/get?access_token='.$this->get_access_token();  
 			$data = '{"msg_id": "'.$msg_id.'"}';
 			
-			$json_arr = $this->https_request($url, $data);
+			$json_arr = https_request($url, $data);
 			if(!isset($json_arr['errcode'])){
 
 				showmsg('msg_id：'.$json_arr['msg_id'].'，status：'.$json_arr['msg_status'], 'stop');
@@ -149,7 +149,7 @@ class mass extends wechat_common{
 		$url = 'https://api.weixin.qq.com/cgi-bin/message/mass/delete?access_token='.$this->get_access_token();  
 		$data = '{"msg_id":'.$msg_id.'}';
 		
-		$json_arr = $this->https_request($url, $data);
+		$json_arr = https_request($url, $data);
 		if($json_arr['errcode'] == 0){
 			D('wechat_mass')->delete(array('id' => $id));
 			showmsg('删除成功！', U('init'));

@@ -242,11 +242,11 @@ class db_pdo{
 	 * @return int/boolean  成功：返回首个自动增长的ID，失败：false
 	 */
 	public function insert_all($datas, $filter = false, $replace = false){
-		if(!is_array($datas) || empty($datas[0])) {
+		if(!is_array($datas) || !current($datas)) {
 		    $this->geterr('insert all function First parameter Must be array!'); 
 			return false;
 		}
-		$fields = array_keys($datas[0]);
+		$fields = array_keys(current($datas));
 		$values = array();
 		foreach ($datas as $data){
 			$value = array();

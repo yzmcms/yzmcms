@@ -34,7 +34,7 @@ class index{
 		$seo_title = '自定义表单列表_'.$site['site_name'];
 		$keywords = $site['site_keyword'];
 		$description = $site['site_description'];
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 		include template('index', 'list_diyform');	
 	}
 	

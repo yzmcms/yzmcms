@@ -174,8 +174,9 @@ class category extends common {
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
 		if(isset($_POST['dosubmit'])) { 
 			$type = isset($_POST['type']) ? intval($_POST['type']) : 0;
-			$catnames = explode(PHP_EOL, $_POST['catnames']);	
+			$catnames = explode("\r\n", $_POST['catnames']);	
 			foreach ($catnames as $key => $val) {
+				if(!$val) continue;
 				if(strpos($val, '|')){
 					list($_POST['catname'], $_POST['catdir']) = explode('|', $val);
 				}

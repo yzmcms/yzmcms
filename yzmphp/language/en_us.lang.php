@@ -13,6 +13,8 @@ return array(
 	'end_page' => 'Tail page',
 	'pre_page' => 'Pre page',
 	'next_page' => 'Next page',
+	'jump_to' => 'Jump to',
+	'page_number' => 'Page number',
 	'lose_parameters' => 'Lose parameters',
 	'password_error' => 'Password error',
 	'code_error' => 'Code error',

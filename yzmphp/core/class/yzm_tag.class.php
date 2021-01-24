@@ -68,7 +68,7 @@ class yzm_tag{
 	public function pages() {
 		if(!is_object($this->page)) return '';
 		//当前页：$this->page->getpage();
-		return '<span class="pageinfo">共<strong>'.$this->page->total().'</strong>页<strong>'.$this->total.'</strong>条记录</span>'.$this->page->getfull();
+		return '<span class="pageinfo">共<strong>'.$this->page->total().'</strong>页<strong>'.$this->total.'</strong>条记录</span>'.$this->page->getfull(false);
 	}
 
 

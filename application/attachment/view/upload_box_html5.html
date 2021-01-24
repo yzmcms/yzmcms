@@ -38,6 +38,7 @@
 	</div>
 </div>
 <div id="att_status" class="hidden"></div>
+<div id="att_titles" class="hidden"></div>
 <?php include $this->admin_tpl('footer', 'admin');?>
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/uploadify/3.2.1/jquery.uploadifive.min.js"></script>
 <script type="text/javascript">
@@ -71,6 +72,7 @@ $(function(){
 					var li='<li><a href="javascript:;" class="on" onclick="javascript:album_cancel(this)"><img src="'+att_url+'" class="img_src" path="'+data.msg+'" title="'+data.title+'"/><img src="<?php echo STATIC_URL;?>images/checked.gif" class="checkd"></a></li>';
 					$("#uploadlist ul").prepend(li);
 					$('#att_status').append('|'+data.msg);
+					$('#att_titles').append('|'+data.title);
 				}else{
 					layer.alert(data.msg); 
 				}
@@ -80,11 +82,13 @@ $(function(){
 	var index = parent.layer.getFrameIndex(window.name);
 	$('#determine').on('click', function(){
 		var att_status = $("#att_status").html();
+		var att_titles = $("#att_titles").html();
 		if(att_status == ''){
 			layer.alert('你还没选择附件呢？'); 
 			return false;
 		}
 		att_status = att_status.substr(1);		
+		att_titles = att_titles.substr(1);		
 		<?php
 			if($t == 1) echo 'if(!isimg(att_status)){ layer.alert("选择的类型必须为图片类型!"); return false;}';
 		?>
@@ -96,10 +100,11 @@ $(function(){
 		<?php }else{ ?>
 		
 		var string = '';
-		var strs= new Array(); 
+		var strs, tits; 
 		strs = att_status.split("|");
+		tits = att_titles.split("|");
 		for (i=0;i<strs.length;i++ ){ 
-			string += '<li>文件：<input type="text" name="<?php echo $pid;?>[url][]" value="'+strs[i]+'" id="<?php echo $pid;?>_'+i+'" onMouseOver="yzm_img_preview(\'<?php echo $pid;?>_'+i+'\', this.value)"  onmouseout="layer.closeAll();" class="input-text yzm-input-url"> 描述：<input type="text" name="<?php echo $pid;?>[alt][]" value="" class="input-text yzm-input-alt"><a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 1);">上移</a> <a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 0);">下移</a> <a href="javascript:;" class="danger" onclick="yzm_delete_li(this);">删除</a></li>';
+			string += '<li>文件：<input type="text" name="<?php echo $pid;?>[url][]" value="'+strs[i]+'" id="<?php echo $pid;?>_'+i+'" onMouseOver="yzm_img_preview(\'<?php echo $pid;?>_'+i+'\', this.value)"  onmouseout="layer.closeAll();" class="input-text yzm-input-url"> 描述：<input type="text" name="<?php echo $pid;?>[alt][]" value="'+tits[i]+'" class="input-text yzm-input-alt"><a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 1);">上移</a> <a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 0);">下移</a> <a href="javascript:;" class="danger" onclick="yzm_delete_li(this);">删除</a></li>';
 		} 
 		parent.$("#<?php echo $pid;?>").append(string);	
 		
@@ -119,13 +124,14 @@ function album_cancel(obj){
 	if($(obj).hasClass('on')){
 		$(obj).removeClass("on");
 		$(obj).children(".checkd").addClass("hidden");
-		var imgstr = $("#att_status").html();
 		var length = $("a[class='on']").children(".img_src").length;
-		var strs = '';
+		var strs = '', tits = '';
 		for(var i=0;i<length;i++){
 			strs += '|'+$("a[class='on']").children(".img_src").eq(i).attr('path');
+			tits += '|'+$("a[class='on']").eq(i).attr('title');
 		}
 		$('#att_status').html(strs);
+		$('#att_titles').html(tits);
 		
 	}else{
 		var num = $('#att_status').html().split('|').length;
@@ -134,6 +140,7 @@ function album_cancel(obj){
 		$(obj).addClass("on");
 		$(obj).children(".checkd").removeClass("hidden");
 		$('#att_status').append('|'+path);
+		$('#att_titles').append('|'+$(obj).attr("title"));
 	}
 }
 

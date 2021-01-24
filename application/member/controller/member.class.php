@@ -105,6 +105,10 @@ class member extends common{
 				$data['vip'] = 1;
 				$data['overduedate'] = strtotime($_POST['overduedate']);
 			}
+
+			if(!check_token($_POST['token'])){
+				return_json(array('status'=>0,'message'=>'TOKEN'.L('error')));
+			}
 			
 			$userid = D('member')->insert($data, true);
 			if($userid){

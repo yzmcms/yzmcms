@@ -66,9 +66,19 @@ class common{
 		$this->memberinfo['system_msg'] = $system_totnum - $data['total'];   //系统消息，未读条数
 		
 		//收件箱消息，未读条数
-		$this->memberinfo['inbox_msg'] = D('message')->where(array('send_to' => $this->memberinfo['username'], 'isread' => '0', 'status' => '1'))->total(); 
+		$this->memberinfo['inbox_msg'] = D('message')->where(array('send_to' => $this->memberinfo['username'], 'status' => '1', 'isread' => '0'))->total(); 
 	}
 
 	
+
+	/**
+	 * 检查验证码
+	 */	
+	protected function _check_code($code){
+		if(empty($_SESSION['code']) || strtolower($code)!=$_SESSION['code']){
+			$_SESSION['code'] = '';
+			showmsg(L('code_error'), '', 1);
+		}
+		$_SESSION['code'] = '';
+	}
 }
-?>

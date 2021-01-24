@@ -32,7 +32,7 @@
                     </select>
                 </span>
                 <button name="dosubmit" class="btn btn-success radius" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
-                <a href="https://bbs.yzmcms.com/store/" target="_blank" class="btn btn-secondary radius"><i class="Hui-iconfont">&#xe603;</i> 我要发布</a>
+                <a href="https://www.yzmcms.com/lianxi/" target="_blank" class="btn btn-secondary radius"><i class="Hui-iconfont">&#xe603;</i> 我要发布</a>
             </form>
         </div>
         <table class="table table-border table-bordered table-bg table-hover mt-20">
@@ -53,7 +53,7 @@
 			 ?>
                 <tr class="text-c">
                     <td class="text-l">
-                        <i class="Hui-iconfont">&#xe67f;</i> <a href="https://bbs.yzmcms.com/store/index/show/id/<?php echo $val['id'];?>.html" target="_blank">
+                        <i class="Hui-iconfont">&#xe67f;</i> <a href="<?php echo $val['url'];?>" target="_blank">
                             <?php echo $val['title'];?></a>
                     </td>
                     <td class="text-l">
@@ -71,7 +71,7 @@
                     <td>
                         <?php echo date('Y-m-d', $val['updatetime']);?>
                     </td>
-                    <td><a href="https://bbs.yzmcms.com/store/index/show/id/<?php echo $val['id'];?>.html" target="_blank" class="btn-mini btn-secondary">查看购买</a></td>
+                    <td><a href="<?php echo $val['url'];?>" target="_blank" class="btn-mini btn-secondary">查看购买</a></td>
                 </tr>
                 <?php 
 			   }

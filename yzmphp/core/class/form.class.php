@@ -211,6 +211,32 @@ class form {
 		return $string;
 	}	
 	
+	
+	/**
+	 * 多文件上传
+	 * 
+	 * @param $name name
+	 * @param $val 默认值
+	 * @param $n 上传数量
+	 */
+	public static function attachments($name, $val = '', $n = 20) {
+		$string = '';
+		$string .= '<fieldset class="fieldset_list"><legend>文件列表</legend><div class="fieldset_tip">您最多可以同时上传 <span style="color:red">'.$n.'</span> 个文件</div>
+					<ul id="'.$name.'" class="file_ul">';
+		if($val){
+			$string .= '<input type="hidden" name="'.$name.'" value="">';
+			$arr = string2array($val);
+			foreach($arr as $key => $val){
+				$string .= '<li>文件：<input type="text" name="'.$name.'[url][]" value="'.$val['url'].'" id="'.$name.'_'.$key.'" class="input-text yzm-input-url"> 描述：<input type="text" name="'.$name.'[alt][]" value="'.$val['alt'].'" class="input-text yzm-input-alt"><a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 1);">上移</a> <a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 0);">下移</a> <a href="javascript:;" class="danger" onclick="yzm_delete_li(this);">删除</a></li>';
+			}
+		}					
+		$string .= 	'</ul></fieldset>
+				<a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name, 'n'=>$n, 't'=>2)).'\')" class="btn btn-primary radius upload-btn mt-5"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a> <a href="javascript:;" onclick="yzm_add_attachment(\''.$name.'\')" class="btn btn-secondary radius upload-btn mt-5"><i class="Hui-iconfont">&#xe6ab;</i> 添加远程地址</a>';
+		
+		return $string;
+	}
+
+	
 	/**
 	 * 编辑器
 	 * 

@@ -39,7 +39,7 @@ class message extends wechat_common{
 				{"content":"'.$content.'"}
 			}';
 			
-			$json_arr = $this->https_request($url, $json_str);
+			$json_arr = https_request($url, $json_str);
 
 			if($json_arr['errcode'] == 0){
 				$arr['openid'] = $openid;

@@ -200,7 +200,7 @@ class collection {
 			}
 		}
 
-		if(substr($url, 0, 4) != 'http') showmsg('链接地址仅允许HTTP和HTTPS协议！', 'stop');
+		if(!in_array(substr($url, 0, 5), array('http:', 'https'))) showmsg('链接地址仅允许HTTP和HTTPS协议！', 'stop');
 		
 		return $url;
 	}

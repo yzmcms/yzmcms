@@ -24,7 +24,8 @@ class collection_content extends common {
 	 */
  	public function add() {
  		if(isset($_POST['dosubmit'])) {
-			if(!$_POST['urlpage']) showmsg('网址配置不能为空！');						
+			if(!$_POST['urlpage']) showmsg('网址配置不能为空！');	
+			$_POST['name']	= htmlspecialchars($_POST['name']);	
 			$res = D('collection_node')->insert($_POST);
 			if($res){
 				showmsg(L('operation_success'), U('init'), 1);
@@ -45,7 +46,8 @@ class collection_content extends common {
 		$collection_node = D('collection_node');
 		if(isset($_POST['dosubmit'])) {
 			$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-		
+			
+			$_POST['name']	= htmlspecialchars($_POST['name']);	
 			if(D('collection_node')->update($_POST, array('nodeid' => $id))){
 				showmsg(L('operation_success'), U('init'), 1);
 			}else{
@@ -118,7 +120,6 @@ class collection_content extends common {
 		}else{
 			$article = '列表规则错误！';
 		}		
-		
 		
 		include $this->admin_tpl('collection_test');
 	}

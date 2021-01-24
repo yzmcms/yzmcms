@@ -58,7 +58,7 @@
 				{php $r = get_childcat($v['catid']);}
 				<ul class="sub_nav">
 					{loop $r $v}
-					<li><a href="{$v[pclink]}">{$v[catname]}</a></li>
+					<li><a href="{$v[pclink]}" target="{$v[target]}">{$v[catname]}</a></li>
 					{/loop}	
 				</ul>
 				{/if}

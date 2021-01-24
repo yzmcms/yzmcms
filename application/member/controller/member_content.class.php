@@ -159,7 +159,6 @@ class member_content extends common{
 			
 			$all_content = D('all_content');
 			$data = $all_content->field('username,status,issystem')->where(array('modelid' => $modelid, 'id' => $id))->find();
-			//只能编辑自己发布的内容
 			if(!$data || $data['username'] != $username || $data['issystem']){
 				showmsg(L('illegal_operation'), 'stop');
 			}
@@ -209,6 +208,9 @@ class member_content extends common{
 		$content_tabname = D(get_model($modelid));
 		
 		$data = $content_tabname->where(array('id' => $id))->find(); 
+		if(!$data || $data['username'] != $username || $data['issystem']){
+			showmsg(L('illegal_operation'), 'stop');
+		}		
 		
 		$fieldstr = $this->_get_model_str($modelid, false, $data);
 		$field_check = $this->_get_model_str($modelid, true);
@@ -226,7 +228,7 @@ class member_content extends common{
 		$total = $all_content->where(array('userid' =>$userid,'issystem' =>0,'status' =>1))->total();
 		$page = new page($total, 15);
 		$data = $all_content->field('modelid,catid,id,title,url,thumb,inputtime,updatetime')->where(array('userid' =>$userid,'issystem' =>0,'status' =>1))->order('updatetime DESC')->limit($page->limit())->select();
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 		include template('member', 'publish_through');
 	}
 
@@ -241,7 +243,7 @@ class member_content extends common{
 		$total = $all_content->where(array('userid' =>$userid,'issystem' =>0,'status' =>0))->total();
 		$page = new page($total, 15);
 		$data = $all_content->field('modelid,catid,id,title,url,thumb,inputtime,updatetime,status')->where(array('userid' =>$userid,'issystem' =>0,'status!=' =>1))->order('updatetime DESC')->limit($page->limit())->select();
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 		include template('member', 'publish_not_through');
 	}
 	
@@ -281,7 +283,7 @@ class member_content extends common{
 		$total = $favorite->where(array('userid' =>$userid))->total();
 		$page = new page($total, 15);
 		$data = $favorite->where(array('userid' =>$userid))->order('id DESC')->limit($page->limit())->select();
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull();
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 		include template('member', 'favorite');
 	}
 	

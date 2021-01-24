@@ -176,3 +176,18 @@ function yzm_win_open(url,name,w,h) {
 		}
 	},1000);
 }
+
+
+//跳转到指定页
+function yzm_page_jump(obj) {
+	var theEvent = window.event;
+	if (theEvent.keyCode != 13)  return true;
+	var url = $(obj).data('url');
+	var page = $(obj).val();
+	if(page == '' || isNaN(page)){
+		alert('请输入正确的页码！');
+		return false;
+	}
+	url = url.replace("PAGE", page);
+	window.location.href = url;
+}

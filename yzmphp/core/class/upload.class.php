@@ -45,18 +45,21 @@ class upload {
 	 * 判断错误信息
 	 */
 	private function geterror(){
-		$str = '上传文件<span style="color:red;margin:0 3px">'.$this->originname.'</span>时出错：';
+		$str = '上传文件'.$this->originname.'时出错：';
 		switch($this->errornum){
-			case 4: $str .= '没有文件被上传'; break;
-			case 3: $str .= '文件只被部分上传'; break;
-			case 2: $str .= '上传文件超过了HTML表单中max_file_size选项指定的值'; break;
-			case 1: $str .= '上传文件超过了php.ini 中upload_max_filesize选项的值'; break;
-			case -1: $str .= '末充许的类型'; break;
-			case -2: $str .= '文件过大，上传文件不能超过'.$this->maxsize.'个字节'; break;
-			case -3: $str .= '上传失败'; break;
-			case -4: $str .= '建立存放上传文件目录失败，请重新指定上传目录'; break;
 			case -5: $str .= '必须指定上传文件的路径'; break;
-			default: $str .= '末知错误';
+			case -4: $str .= '创建上传文件目录失败，请检查权限'; break;
+			case -3: $str .= '文件移动时出错'; break;
+			case -2: $str .= '文件过大，不能超过'.$this->maxsize.'个字节'; break;
+			case -1: $str .= '未充许的类型'; break;
+			case 1: $str .= '上传文件超过了php.ini中upload_max_filesize限制的值'; break;
+			case 2: $str .= '上传文件超过了HTML表单中MAX_FILE_SIZE选项指定的值'; break;
+			case 3: $str .= '文件仅部分被上传'; break;
+			case 4: $str .= '没有文件被上传'; break;
+			case 6: $str .= '找不到临时文件夹'; break;
+			case 7: $str .= '文件写入失败'; break;
+			case 8: $str .= 'PHP扩展停止了文件上传'; break;
+			default: $str .= '未知错误(Error:'.$this->errornum.')';
 		}
 		return $str;
 	}
@@ -86,7 +89,7 @@ class upload {
 	 */
 	private function checkfilesize() {
 		if($this->filesize > $this->maxsize){
-			$this->setoption('errornum', '-2');
+			$this->setoption('errornum', -2);
 			return false;
 		}else{
 			return true;
@@ -158,8 +161,8 @@ class upload {
 	 */
 	private function setfiles($name = '', $tmp_name = '', $size = 0, $error = 0){	
 		$this->setoption('errornum', $error);			
-		if($error) return false;
 		$this->setoption('originname', $name);
+		if($error) return false;
 		$this->setoption('tmpfilename', $tmp_name);
 		$arrstr = explode('.', $name); 
 		$this->setoption('filetype', strtolower($arrstr[count($arrstr)-1]));

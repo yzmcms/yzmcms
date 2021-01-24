@@ -106,7 +106,7 @@
 	            </tbody>
 	        </table>
 	        <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
-  			<span class="page_right"><?php echo $page->getfull();?></span></div>
+  			<span class="page_right"><?php echo $page->getfull(false);?></span></div>
 	    </div>
 	    <input type="hidden" name="modelid" value="<?php echo $modelid;?>">
 	    <input type="hidden" name="tagid" value="<?php echo $id;?>">

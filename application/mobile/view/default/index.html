@@ -58,7 +58,7 @@
                 <h3 class="yzm-title">【小编推荐】</h3>
                 <ul>
                     <!-- 此处为功能演示，调取内容属性为“推荐”的内容 -->
-                    {m:lists field="id,catid,title,color" modelid="1" flag="3" limit="10"}
+                    {m:lists field="id,catid,title,color" modelid="1" flag="4" limit="10"}
                     {loop $data $v}
                     <li><a href="{mobile_url($v['catid'], $v['id'])}" title="{$v[title]}">{title_color($v['title'], $v['color'])}</a></li>
                     {/loop}

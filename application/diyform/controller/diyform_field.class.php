@@ -41,7 +41,7 @@ class diyform_field extends common{
 			
 		   if(!preg_match('/^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/', $_POST['field'])) showmsg('字段名不正确！');
 		   
-		   $files = array('input','textarea','number','datetime','image','images','attachment','select','radio','checkbox');
+		   $files = array('input','textarea','number','datetime','image','images','attachment','attachments','select','radio','checkbox');
 		   if(!in_array($_POST['fieldtype'], $files))  showmsg(L('illegal_parameters'), 'stop');
 		   
 		   $_POST['issystem'] = 0;	

@@ -2,7 +2,7 @@
 /**
  * YzmCMS手机模块 - 商业用途请购买官方授权
  * 手机版如果想实现与PC版一样可自由切换模板方式，查看教程:
- * https://bbs.yzmcms.com/bbs/index/show/id/504.html
+ * https://www.yzmask.com/show/504.html
  * 
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com

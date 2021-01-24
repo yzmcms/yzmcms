@@ -6,6 +6,17 @@
 <body>
 <?php include $this->admin_tpl('header');?>
 <?php include $this->admin_tpl('menu');?>
+<div class="lock-desktop" id="lock_desktop" style="<?php if(!isset($_SESSION['lock_screen']) || $_SESSION['lock_screen']==0) echo 'display:none';?>">
+    <form action="" class="lock-box" onsubmit="return yzm_unlock_screen()">
+    	<div class="lockuser"><img src="<?php echo STATIC_URL;?>admin/yzm_admin/images/lockuser.png" alt="管理员"></div>
+    	<!-- <h5><i class="Hui-iconfont">&#xe60e;</i> 锁屏状态，请输入密码解锁</h5> -->
+    	<p class="lock-user"><?php echo $_SESSION['adminname'];?></p>
+    	<div class="input-box">
+    	    <input type="password" id="lock_password" class="lock-text" placeholder="锁屏状态，请输入密码">
+    	    <button class="lock-submit" type="button" onclick="yzm_unlock_screen()" title="提交"><i class="Hui-iconfont">&#xe67a;</i></button>
+    	</div>
+    </form>
+</div>
 <section class="Hui-article-box">
 	<div id="Hui-tabNav" class="Hui-tabNav hidden-xs">
 		<div class="Hui-tabNav-wp">
@@ -51,6 +62,34 @@
 				}
 			}
 		})
+	}
+
+	function yzm_lock_screen() {
+		$.get("<?php echo U('public_lock_screen');?>");
+		$('#lock_desktop').css('display','');
+	}
+
+	function yzm_unlock_screen() {
+		var lock_password = $("#lock_password").val();
+		if(lock_password == ''){
+			layer.msg('请输入您的密码！', {icon:2});
+			return false;
+		}
+		$.ajax({
+			type: 'POST',
+			url: '<?php echo U('public_unlock_screen');?>',
+			data: "password="+lock_password,
+			dataType: "json",
+			success: function(msg) {
+				if (msg.status == 1) {
+					$('#lock_password').val('');
+					$('#lock_desktop').css('display','none');
+				} else {
+					layer.msg(msg.message, {icon:2});
+				}
+			}
+		})
+		return false;
 	}
 </script>
 </body>
