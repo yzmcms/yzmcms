@@ -6,8 +6,6 @@
  * @license          http://www.yzmcms.com
  * @lastmodify       2016-08-16 
  */
- 
-defined('IN_YZMPHP') or exit('Access Denied');
 
 class db_factory {
 	
@@ -56,4 +54,3 @@ class db_factory {
 		return new self::$class(array('db_host'=>C('db_host'), 'db_user'=>C('db_user'), 'db_pwd'=>C('db_pwd'), 'db_name'=>C('db_name'), 'db_port'=>C('db_port'), 'db_prefix'=>C('db_prefix')), $tabname);
 	}
 }
-?>

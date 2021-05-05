@@ -5,7 +5,7 @@ yzm_base::load_controller('common', 'admin', 0);
 class menu extends common {
 
 	/**
-	 * 菜单管理列表
+	 * 菜单列表
 	 */
 	public function init() {
 		$tree = yzm_base::load_sys_class('tree');
@@ -16,16 +16,16 @@ class menu extends common {
 		$array = array();
 		foreach($data as $v) {
 			$v['style'] = $v['parentid'] ? 'child' : 'top';
-			$v['add'] = !$v['parentid'] ? '<i class="parentid" action="2"></i> ' : '';
-			$v['string'] = '<a title="增加子类" href="javascript:;" onclick="yzm_open(\'增加菜单\',\''.U('add',array('parentid'=>$v['id'])).'\',600,400)" style="text-decoration:none"  class="btn-mini btn-success ml-5">增加子类</a> <a title="编辑菜单" href="javascript:;" onclick="yzm_open(\'编辑菜单\',\''.U('edit',array('id'=>$v['id'])).'\',600,400)" style="text-decoration:none"  class="btn-mini btn-secondary ml-5">编辑</a> <a title="删除" href="javascript:;" onclick="yzm_del(\''.U('delete',array('id'=>$v['id'])).'\')" style="text-decoration:none"  class="btn-mini btn-warning ml-5">删除</a>';
-			$v['display'] = $v['display'] ? '<span class="label label-primary radius">显示</span>' : '<span class="label radius">隐藏</span>';
+			$v['parentoff'] = $v['parentid'] ? '' : '<i class="yzm-iconfont parentid" action="2">&#xe653;</i> ';
+			$v['string'] = '<a title="增加子类" href="javascript:;" onclick="yzm_open(\'增加菜单\',\''.U('add',array('parentid'=>$v['id'])).'\',600,410)" style="text-decoration:none"  class="btn-mini btn-success ml-5">增加子类</a> <a title="编辑菜单" href="javascript:;" onclick="yzm_open(\'编辑菜单\',\''.U('edit',array('id'=>$v['id'])).'\',600,410)" style="text-decoration:none"  class="btn-mini btn-secondary ml-5">编辑</a> <a title="删除" href="javascript:;" onclick="yzm_del(\''.U('delete',array('id'=>$v['id'])).'\')" style="text-decoration:none"  class="btn-mini btn-warning ml-5">删除</a>';
+			$v['display'] = $v['display'] ? '<span class="yzm-status-enable" data-field="status" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe81f;</i>是</span>' : '<span class="yzm-status-disable" data-field="status" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe601;</i>否</span>';
 			$array[] = $v;
 		}	
-		$str  = "<tr class='\$style'>
-					<td>\$add<input name='listorders[\$id]' type='text' value='\$listorder' class='input-text listorder'></td>
+		$str  = "<tr class='text-c \$style'>
+					<td><input name='listorders[\$id]' type='text' value='\$listorder' class='input-text listorder'></td>
 					<td>\$id</td>
-					<td>\$spacer\$name</td>
-					<td  class='text-c'>\$display</td>
+					<td class='text-l'>\$parentoff\$spacer\$name</td>
+					<td class='td-manage'>\$display</td>
 					<td>\$string</td>
 				</tr>";
 		$tree->init($array);
@@ -111,7 +111,7 @@ class menu extends common {
 	/**
 	 * 菜单排序
 	 */
-	function order() {
+	public function order() {
 		if(isset($_POST['dosubmit'])) {
 			$menu = D('menu');
 			foreach($_POST['listorders'] as $id => $listorder) {
@@ -123,5 +123,23 @@ class menu extends common {
 			showmsg(L('operation_failure'));
 		}
 	}	
+
+
+	/**
+	 * 菜单隐藏显示
+	 */
+	public function public_change_status() {
+		if(is_post()){
+			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+			
+			if(D('menu')->update(array('display'=>$value), array('id' => $id))){
+				delcache('menu_string_1');
+				return_json(array('status'=>1,'message'=>L('operation_success')));
+			}else{
+				return_json();
+			}
+		}
+	}
 	
 }

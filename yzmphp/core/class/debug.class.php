@@ -6,7 +6,7 @@
  * @license          http://www.yzmcms.com
  * @lastmodify       2018-07-06
  */
- 
+
 class debug {
 
 	public static $info = array();
@@ -14,29 +14,30 @@ class debug {
 	public static $request = array();
 	public static $stoptime; 
 	public static $msg = array(
-				E_WARNING => '错误警告',
-				E_NOTICE => '错误提醒',
-				E_STRICT => '编码标准化警告',
-				E_USER_ERROR => '自定义错误',
-				E_USER_WARNING => '自定义警告',
-				E_USER_NOTICE => '自定义提醒',
-				'Unknown' => '未知错误'
-	        );
+						2 => '错误警告',
+						8 => '错误通知',
+						256 => '自定义错误',
+						512 => '自定义警告',
+						1024 => '自定义通知',
+						2048 => '编码标准化警告',
+						8192 => '已弃用警告',
+						'Unknown' => '未知错误'
+					);
 	
 
 	/**
-	 *在脚本结束处调用获取脚本结束时间的微秒值
+	 * 在脚本结束处调用获取脚本结束时间的微秒值
 	 */
 	public static function stop(){
-		self::$stoptime= microtime(true);  
+		self::$stoptime = microtime(true);  
 	}
 
 	
 	/**
-	 *返回同一脚本中两次获取时间的差值
+	 * 返回同一脚本中两次获取时间的差值
 	 */
 	public static function spent(){
-		return round((self::$stoptime - SYS_START_TIME) , 4);  //计算后以4舍5入保留4位返回
+		return round((self::$stoptime - SYS_START_TIME) , 4);  
 	}
 
 	
@@ -46,20 +47,20 @@ class debug {
 	public static function catcher($errno, $errstr, $errfile, $errline){
 		if(APP_DEBUG && !defined('DEBUG_HIDDEN')){
 			if(!isset(self::$msg[$errno])) 
-				$errno='Unknown';
+				$errno = 'Unknown';
 
 			if($errno==E_NOTICE || $errno==E_USER_NOTICE)
-				$color="#151515";
+				$color = "#151515";
 			else
-				$color="red";
+				$color = "#b90202";
 
 			$mess = '<span style="color:'.$color.'">';
-			$mess .= '<b>'.self::$msg[$errno].'</b> [文件 '.$errfile.' 中,第 '.$errline.' 行] ：';
+			$mess .= self::$msg[$errno].' [文件 '.$errfile.' 中,第 '.$errline.' 行] ：';
 			$mess .= $errstr;
-			$mess .= '</span>'; 		
+			$mess .= '</span>'; 	
 			self::addmsg($mess);			
 		}else{
-			if($errno==8) return '';
+			if($errno == E_NOTICE) return '';
 			error_log('<?php exit;?> Error : '.date('Y-m-d H:i:s').' | '.$errno.' | '.str_pad($errstr,30).' | '.$errfile.' | '.$errline."\r\n", 3, YZMPHP_PATH.'cache/error_log.php');
 		}
 	}
@@ -71,11 +72,11 @@ class debug {
 	public static function fatalerror(){
 		if ($e = error_get_last()) {
             switch($e['type']){
-              case E_ERROR:
-              case E_PARSE:
-              case E_CORE_ERROR:
-              case E_COMPILE_ERROR:
-              case E_USER_ERROR:  
+				case E_ERROR:
+				case E_PARSE:
+				case E_CORE_ERROR:
+				case E_COMPILE_ERROR:
+				case E_USER_ERROR:  
                 ob_end_clean();
                 if(APP_DEBUG && !defined('DEBUG_HIDDEN')){
                 	application::fatalerror($e['message'], $e['file'].' on line '.$e['line'], 1);	
@@ -95,8 +96,8 @@ class debug {
 	 */ 
 	public static function exception($exception){
 		if(APP_DEBUG && !defined('DEBUG_HIDDEN')){
-			$mess = '<span style="color:red">';
-			$mess .= '<b>系统异常</b> [文件 '.$exception->getFile().' 中,第 '.$exception->getLine().' 行] ：';
+			$mess = '<span style="color:#b90202">';
+			$mess .= '系统异常 [文件 '.$exception->getFile().' 中,第 '.$exception->getLine().' 行] ：';
 			$mess .= $exception->getMessage();
 			$mess .= '</span>'; 		
 			self::addmsg($mess);
@@ -143,6 +144,9 @@ class debug {
 	 * 输出调试消息
 	 */
 	public static function message(){
+		$parameter = $_GET;
+		unset($parameter['m'], $parameter['c'], $parameter['a']);
+		$parameter = $parameter ? http_build_query($parameter) : '无';
 		include(YP_PATH.'core'.DIRECTORY_SEPARATOR.'tpl'.DIRECTORY_SEPARATOR.'debug.tpl');	
 	}
 }

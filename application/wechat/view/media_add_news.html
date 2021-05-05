@@ -20,9 +20,11 @@
 			 </select></li>
 			<li><label>素材类型：</label><label><input class="radio" type="radio" name="media_type" value="0" checked="checked">临时素材</label><label><input class="radio" type="radio" name="media_type" value="1">永久素材</label></li>
 			<?php for($i=0; $i<$num; $i++) { ?>		
-			<li><label><span class="c-red">*</span>缩略图ID：</label>
+			<li class="yzm-explain-box"><label><span class="c-red">*</span>缩略图ID：</label>
 			<input type="text" class="input" style="width:300px" required name="thumb_media_id_<?php echo $i?>" id="thumb_media_id_<?php echo $i?>" value="">&nbsp;&nbsp;
-			<a href="javascript:;" class="btn btn-default radius" onclick="yzm_open('选择缩略图','<?php echo U('select_thumb', array('thumb_media_id'=>'thumb_media_id_'.$i));?>',900,520)">选择缩略图</a> <span style="color:#666">永久素材的图文消息的缩略图ID必须是永久mediaID！</span></li>
+			<a href="javascript:;" class="btn btn-default radius" onclick="yzm_open('选择缩略图','<?php echo U('select_thumb', array('thumb_media_id'=>'thumb_media_id_'.$i));?>',900,520)">选择缩略图</a> 
+			<span class="yzm-explain">永久素材的图文消息的缩略图ID必须是永久mediaID！</span>
+			</li>
 			<li><label><span class="c-red">*</span>标题：</label><input type="text" class="input" required style="width:300px" name="title_<?php echo $i?>" value=""></li>
 			<li><label>作者：</label><input type="text" class="input" style="width:200px" name="author_<?php echo $i?>" value=""></li>
 			<li><label>原文地址：</label><input type="text" class="input" style="width:300px" name="content_source_url_<?php echo $i?>" value=""></li>

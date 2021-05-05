@@ -37,7 +37,12 @@ class wechat_common extends common{
 
 			$access_token = https_request($url);
 			
-			if(isset($access_token['errcode'])) showmsg('获取access_token失败！errmsg：'.$access_token['errmsg'], 'stop');
+			if(isset($access_token['errcode'])) {
+				if(is_ajax()){
+					return_json(array('status'=>0,'message'=>'获取access_token失败！ErrMsg：'.$access_token['errmsg']));
+				}
+				showmsg('获取access_token失败！ErrMsg：'.$access_token['errmsg'], 'stop');
+			}
 			
 			setcache('wechat_access_token', $access_token, 7000);
 		}	

@@ -24,7 +24,7 @@ class smtp{
 	/**
 	 *  初始化邮件配置信息
 	 */	
-	public function __construct($relay_host, $smtp_port = 25, $auth = false, $user, $pass){
+	public function __construct($relay_host, $smtp_port, $auth, $user, $pass){
 		$this->smtp_port = $smtp_port;
 		$this->relay_host = $relay_host;
 		$this->auth = $auth;
@@ -42,7 +42,7 @@ class smtp{
 	 * @param $body       邮件内容
 	 * @param $mailtype    邮件内容类型	 
 	 */	
-	public function sendmail($to, $from, $subject = "", $body = "", $mailtype, $cc = "", $bcc = "", $additional_headers = ""){
+	public function sendmail($to, $from, $subject = "", $body = "", $mailtype = "HTML", $cc = "", $bcc = "", $additional_headers = ""){
 		$mail_from = $this->get_address($this->strip_comment($from));
 		$body = preg_replace("/(^|(\r\n))(\.)/", "\1.\3", $body);
 		$header = "MIME-Version:1.0\r\n";

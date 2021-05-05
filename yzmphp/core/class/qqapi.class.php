@@ -76,4 +76,3 @@ class qqapi{
 		return json_decode($content, true);
 	}
 }
-?>

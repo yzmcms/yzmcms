@@ -28,34 +28,36 @@
 			<td><input type="checkbox" value="<?php echo $val['id']?>" name="ids[]"></td>
 			<td><?php echo $val['id']?></td>
 			<td class="text-l">
+			<?php 
+			if($val['thumb']){
+				echo '<span style="color:#0a6999;margin-right:3px" onmouseover="yzm_img_browse(this, \''.$val['thumb'].'\')" onmouseout="layer.closeAll(\'tips\')"><i class="Hui-iconfont">&#xe646;</i></span>';
+			}
+			?>
 			<a href="<?php echo $val['url'];?>" target="_blank" ><?php echo $val['title'];?></a>
 			<?php
-			if($val['thumb']){
-			 echo '<span style="color:#0a6999;margin:0 3px" title="图片"><i class="Hui-iconfont">&#xe646;</i></span>';
-			}
 			if(strpos($val['flag'], '1') !== false){
-			 echo '<span class="c-red">[置顶]</span>';
+				echo '<span class="yzm-font-style" title="置顶">顶</span>';
 			}
-            if(strpos($val['flag'], '2') !== false){
-			 echo '<span class="c-red">[头条]</span>';
+			if(strpos($val['flag'], '2') !== false){
+				echo '<span class="yzm-font-style" title="头条">头</span>';
 			}
-            if(strpos($val['flag'], '3') !== false){
-			 echo '<span class="c-red">[特荐]</span>';
+			if(strpos($val['flag'], '3') !== false){
+				echo '<span class="yzm-font-style" title="特荐">特</span>';
 			}
-            if(strpos($val['flag'], '4') !== false){
-			 echo '<span class="c-red">[推荐]</span>';
+			if(strpos($val['flag'], '4') !== false){
+				echo '<span class="yzm-font-style" title="推荐">推</span>';
 			}
-            if(strpos($val['flag'], '5') !== false){
-			 echo '<span class="c-red">[热点]</span>';
+			if(strpos($val['flag'], '5') !== false){
+				echo '<span class="yzm-font-style" title="热点">热</span>';
 			}
-            if(strpos($val['flag'], '6') !== false){
-			 echo '<span class="c-red">[幻灯]</span>';
+			if(strpos($val['flag'], '6') !== false){
+				echo '<span class="yzm-font-style" title="幻灯">幻</span>';
 			}
 			if(strpos($val['flag'], '7') !== false){
-			 echo '<span class="c-red">[跳转]</span>';
+				echo '<span class="yzm-font-style" title="跳转">跳</span>';
 			}
 			if($val['readpoint']){
-			 echo '<span class="c-red">[付费]</span>';
+				echo '<span class="yzm-font-style" title="付费">付</span>';
 			}			
 			?>	
 			</td>

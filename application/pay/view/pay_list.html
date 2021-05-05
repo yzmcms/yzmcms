@@ -13,7 +13,7 @@
 		<th>版本</th>
 		<th>描述</th>
 		<th>插件作者</th>
-		<th>状态</th>
+		<th>启用</th>
 		<th>管理操作</th>
       </tr>
     </thead>
@@ -27,8 +27,16 @@
 			<td><?php echo $val['version']?></td>
 			<td><?php echo $val['desc']?></td>
 			<td><?php echo $val['author']?></td>
-			<td><?php echo $val['enabled']==1 ? '<span class="label label-enabled radius">已禁用</span>' : '<span class="label label-success radius">正常</span>';?></td>
-			<td><a href="javascript:;" onclick="yzm_open('<?php echo $val['name']?>配置','<?php echo U('edit', array('id'=>$val['id']));?>','700','500')" style="text-decoration:none">配置</a></td>
+			<td>
+				<?php if(!$val['enabled']){ ?>
+				<span class="yzm-status-enable" data-field="enabled" data-id="<?php echo $val['id']?>" onclick="yzm_change_status(this,'<?php echo U('public_change_status');?>')"><i class="yzm-iconfont">&#xe81f;</i>是</span>
+				<?php }else{ ?>
+				<span class="yzm-status-disable" data-field="enabled" data-id="<?php echo $val['id']?>" onclick="yzm_change_status(this,'<?php echo U('public_change_status');?>')"><i class="yzm-iconfont">&#xe601;</i>否</span>
+				<?php } ?>
+			</td>
+			<td>
+				<a title="<?php echo $val['name']?>配置" href="javascript:;" onclick="yzm_open('<?php echo $val['name']?>配置','<?php echo U('edit', array('id'=>$val['id']));?>','700','500')" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe6df;</i> 配置</a>
+			</td>
 		  </tr>		
 		<?php 
 		}

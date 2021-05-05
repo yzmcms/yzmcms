@@ -20,7 +20,7 @@ define('IN_YZMPHP', true);
 //YZMPHP框架路径
 define('YP_PATH', dirname(__FILE__).DIRECTORY_SEPARATOR);
 //YZMPHP框架版本信息
-define('YZMPHP_VERSION', '2.5');
+define('YZMPHP_VERSION', '2.6');
 //YZMPHP应用目录
 define('APP_PATH', YZMPHP_PATH.'application'.DIRECTORY_SEPARATOR);
 

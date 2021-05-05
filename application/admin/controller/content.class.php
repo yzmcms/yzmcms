@@ -24,7 +24,7 @@ class content extends common {
 		$content_db = D('article'); //默认加载文章列表
 		$modelid = 1; //默认加载文章模型
 		$catid = 0; //默认加载全部分类
-		$where = $_SESSION['roleid']==1 ? array() : array('userid'=>$_SESSION['adminid']);
+		$where = $this->_all_priv() ? array() : array('userid'=>$_SESSION['adminid']);
 		$total = $content_db->where($where)->total();
 		$page = new page($total, 15);
 		$data = $content_db->where($where)->order("$of $or")->limit($page->limit())->select();	
@@ -44,7 +44,7 @@ class content extends common {
 		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
 		$content_db = D($this->content->tabname);
-		$where = $_SESSION['roleid']==1 ? '1=1' : 'userid='.$_SESSION['adminid'];
+		$where = $this->_all_priv() ? '1=1' : 'userid='.$_SESSION['adminid'];
 		if(isset($_GET['dosubmit'])){	
 		
 			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
@@ -87,12 +87,20 @@ class content extends common {
 	 */
 	public function add() {
 
-		if(isset($_POST['dosubmit'])) {
+		if(is_post()) {
 			$r = $this->content->content_add($_POST);
-			if($r){
-				echo '<script type="text/javascript">parent.location.reload();</script>';
+			if(!$r) showmsg(L('operation_failure'), 'stop');
+
+			if(!isset($_POST['page_content'])){
+				if(isset($_POST['continuity'])){
+					showmsg(L('operation_success'), U('content/add',array('modelid'=>$this->content->modelid)), 1);
+				}else{
+					echo '<script type="text/javascript">setTimeout("parent.location.reload()",1000);</script>';
+					showmsg(L('operation_success'), U('content/search',array('modelid'=>$this->content->modelid)), 2);
+				}
 			}else{
-				showmsg(L('data_not_modified'));
+				$url = isset($_POST['continuity']) ? U('content/add',array('modelid'=>$this->content->modelid,'catid'=>$_POST['catid'])) : U('content/search',array('modelid'=>$this->content->modelid));
+				showmsg(L('operation_success'), $url, 1);
 			}
 		}else{
 			$catid = isset($_GET['catid']) ? intval($_GET['catid']) : intval(get_cookie('catid'));
@@ -112,15 +120,17 @@ class content extends common {
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 		$content_db = D($this->content->tabname);
 		$data = $content_db->where(array('id'=>$id))->find();
-		if($_SESSION['roleid']>1 && $data['userid']!==$_SESSION['adminid']){
+		if(!$this->_all_priv() && $data['userid']!==$_SESSION['adminid']){
 			showmsg(L('illegal_operation'), 'stop');
 		}
-		if(isset($_POST['dosubmit'])) {
+		if(is_post()) {
+			if($this->content->modelid != get_category($_POST['catid'], 'modelid')) showmsg('不允许修改为其他模型的栏目！', 'stop');
 			$r = $this->content->content_edit($_POST, $id);
 			if($r){
-				echo '<script type="text/javascript">parent.location.reload();</script>';
+				echo '<script type="text/javascript">setTimeout("parent.location.reload()",1000);</script>';
+				showmsg(L('operation_success'), U('content/search',array('modelid'=>$this->content->modelid)), 2);
 			}else{
-				showmsg(L('data_not_modified'));
+				showmsg(L('operation_failure'), 'stop');
 			}
 		}else{
 			$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
@@ -138,8 +148,9 @@ class content extends common {
 	 */
 	public function del() {
 		if($_POST && is_array($_POST['ids'])){
+			$all_priv = $this->_all_priv();
 			foreach($_POST['ids'] as $id){
-				if($_SESSION['roleid'] > 1){
+				if(!$all_priv){
 					$userid = D($this->content->tabname)->field('userid')->where(array('id'=>$id))->one();
 					if($userid!==$_SESSION['adminid']) continue;
 				}
@@ -303,6 +314,16 @@ class content extends common {
 			$op = isset($_GET['op']) ? intval($_GET['op']) : 1;
 			include $this->admin_tpl('attribute_operation');	
 		}
+	}
+
+
+	/**
+	 * 检查管理员是否具有管理所有内容权限
+	 */
+	private function _all_priv(){
+		if($_SESSION['roleid'] == 1) return true;
+		$res = D('admin_role_priv')->field('roleid')->where(array('roleid'=>$_SESSION['roleid'],'m'=>'admin','c'=>'content','a'=>'all_content'))->find();
+		return $res ? true : false;
 	}
 	
 

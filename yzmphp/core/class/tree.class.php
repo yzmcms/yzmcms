@@ -290,4 +290,3 @@ class tree {
 		return(strpos(',,'.$list.',',','.$item.','));
 	}
 }
-?>

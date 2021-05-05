@@ -112,6 +112,7 @@ class payment {
             'total_fee' => $params['money']*100,  //微信支付单位为 ：分
             'product_id' => $params['order_id']
         );
+        if(!class_exists('native')) showmsg('微信支付模块不存在，请联系官方购买！', 'http://www.yzmcms.com/');
         $img = native::getPayImage($params);
         include template('member', 'wxpay');
 	}	

@@ -59,8 +59,11 @@ class form {
 		$ids = array();
 		if(isset($val)) $ids = explode(',', $val);
 		foreach($array as $value) {
-			$selected = in_array($value, $ids) ? 'selected' : '';
-			$string .= '<option value="'.$value.'" '.$selected.'>'.$value.'</option>';
+			$arr = explode(':', $value);
+			$key = trim($arr[0]);
+			$value = isset($arr[1]) ? $arr[1] : $arr[0];  
+			$selected = in_array($key, $ids) ? 'selected' : '';
+			$string .= '<option value="'.$key.'" '.$selected.'>'.$value.'</option>';
 		}
 		$string .= '</select>';
 		return $string;
@@ -80,10 +83,12 @@ class form {
 		if($val != '') $val = strpos($val, ',') ? explode(',', $val) : array($val);
 		$i = 1;
 		foreach($array as $value) {
-			$value = trim($value);
-			$checked = ($val && in_array($value, $val)) ? 'checked' : '';
+			$arr = explode(':', $value);
+			$key = trim($arr[0]);
+			$value = isset($arr[1]) ? $arr[1] : $arr[0]; 
+			$checked = ($val && in_array($key, $val)) ? 'checked' : '';
 			$string .= '<label class="option_label option_box" >';
-			$string .= '<input type="checkbox" class="yzm-checkbox" name="'.$name.'[]" id="'.$name.'_'.$i.'" '.$checked.' value="'.$value.'">'.$value;
+			$string .= '<input type="checkbox" class="yzm-checkbox" name="'.$name.'[]" id="'.$name.'_'.$i.'" '.$checked.' value="'.$key.'">'.$value;
 			$string .= '</label>';
 			$i++;
 		}
@@ -98,12 +103,15 @@ class form {
 	 * @param $val 默认选中值 如：1
 	 * @param $array 一维数组 如：array('交易成功', '交易失败', '交易结果未知');
 	 */
-	public static function radio($name, $val = '', $array = array()) {
+	public static function radio($name, $val = 0, $array = array()) {
 		$string = '';
 		foreach($array as $value) {
-			$checked = trim($val)==trim($value) ? 'checked' : '';
+			$arr = explode(':', $value);
+			$key = trim($arr[0]);
+			$value = isset($arr[1]) ? $arr[1] : $arr[0]; 
+			$checked = trim($val)==$key ? 'checked' : '';
 			$string .= '<label class="option_label option_radio" >';
-			$string .= '<input type="radio" class="yzm-radio" name="'.$name.'" id="'.$name.'_'.$value.'" '.$checked.' value="'.$value.'">'.$value;
+			$string .= '<input type="radio" class="yzm-radio" name="'.$name.'" id="'.$name.'_'.$key.'" '.$checked.' value="'.$key.'">'.$value;
 			$string .= '</label>';
 		}
 		return $string;
@@ -249,9 +257,9 @@ class form {
 		$style = $style ? $style : 'width:100%;height:400px';
 		$string = '';
 		if($isload) {
-			$string .= '<script type="text/javascript" charset="utf-8" src="'.STATIC_URL.'plugin/ueditor/1.4.3.3/ueditor.config.js"></script>
-			<script type="text/javascript" charset="utf-8" src="'.STATIC_URL.'plugin/ueditor/1.4.3.3/ueditor.all.min.js"> </script>
-			<script type="text/javascript" charset="utf-8" src="'.STATIC_URL.'plugin/ueditor/1.4.3.3/lang/zh-cn/zh-cn.js"></script>';
+			$string .= '<script type="text/javascript" charset="utf-8" src="'.STATIC_URL.'plugin/ueditor/ueditor.config.js"></script>
+			<script type="text/javascript" charset="utf-8" src="'.STATIC_URL.'plugin/ueditor/ueditor.all.min.js"> </script>
+			<script type="text/javascript" charset="utf-8" src="'.STATIC_URL.'plugin/ueditor/lang/zh-cn/zh-cn.js"></script>';
 		}
 		$string .= '<script id="'.$name.'" type="text/plain" style="'.$style.'" name="'.$name.'">'.$val.'</script>
 			<script type="text/javascript"> var ue = UE.getEditor(\''.$name.'\'); </script>';
@@ -272,9 +280,9 @@ class form {
 		$style = $style ? $style : 'width:100%;height:400px';
 		$string = '';
 		if($isload) {
-			$string .= '<script type="text/javascript" charset="utf-8" src="'.STATIC_URL.'plugin/ueditor/1.4.3.3/ueditor.config.js"></script>
-			<script type="text/javascript" charset="utf-8" src="'.STATIC_URL.'plugin/ueditor/1.4.3.3/ueditor.all.min.js"> </script>
-			<script type="text/javascript" charset="utf-8" src="'.STATIC_URL.'plugin/ueditor/1.4.3.3/lang/zh-cn/zh-cn.js"></script>';
+			$string .= '<script type="text/javascript" charset="utf-8" src="'.STATIC_URL.'plugin/ueditor/ueditor.config.js"></script>
+			<script type="text/javascript" charset="utf-8" src="'.STATIC_URL.'plugin/ueditor/ueditor.all.min.js"> </script>
+			<script type="text/javascript" charset="utf-8" src="'.STATIC_URL.'plugin/ueditor/lang/zh-cn/zh-cn.js"></script>';
 		}		
 		$string .= '<script id="'.$name.'" type="text/plain" style="'.$style.'" name="'.$name.'">'.$val.'</script>
 			<script type="text/javascript"> var ue = UE.getEditor("'.$name.'",{

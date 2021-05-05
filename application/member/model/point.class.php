@@ -121,7 +121,7 @@ class point {
 	 * @param integer $experience    当前经验
 	 * @param integer $userid        用户ID
 	 */
-	protected function _check_update_group($add=0, $experience, $userid) {
+	protected function _check_update_group($add, $experience, $userid) {
 		$new_groupid = 1;
 		$groupid = intval(get_cookie('_groupid'));
 		

@@ -18,8 +18,8 @@
 		<th width="135">更新时间<?php echo field_order('updatetime');?></th>
 		<th width="110">内容分类<?php echo field_order('catid');?></th>
 		<th width="70">所属模型</th>
-		<th width="50">状态<?php echo field_order('status');?></th>
-		<th width="55">管理操作</th>
+		<th width="60">状态<?php echo field_order('status');?></th>
+		<th width="60">管理操作</th>
       </tr>
     </thead>
     <tbody>
@@ -30,12 +30,12 @@
 			<td><input type="checkbox" value="<?php echo $val['allid']?>" name="ids[]"></td>
 			<td><?php echo $val['allid'];?></td>
 			<td class="text-l">
-			<a href="<?php echo U('public_preview', array('catid'=>$val['catid'], 'id'=>$val['id']));?>" target="_blank" ><?php echo $val['title'];?></a>	
 			<?php
 			if($val['thumb']){
-			 echo '<span style="color:#0a6999;margin:0 3px" title="含缩略图"><i class="Hui-iconfont">&#xe646;</i></span>';
+			 echo '<span style="color:#0a6999;margin-right:3px" onmouseover="yzm_img_browse(this, \''.$val['thumb'].'\')" onmouseout="layer.closeAll(\'tips\')"><i class="Hui-iconfont">&#xe646;</i></span>';
 			}
-			?>
+			?>	
+			<a href="<?php echo U('public_preview', array('catid'=>$val['catid'], 'id'=>$val['id']));?>" target="_blank" ><?php echo $val['title'];?></a>	
 			</td>
 			<td><?php echo $val['username'];?></td>
 			<td><?php echo date('Y-m-d H:i:s', $val['updatetime'])?></td>
@@ -52,6 +52,7 @@
 		?>
     </tbody>
   </table>
+  <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
   </form>
   <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>

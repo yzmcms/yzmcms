@@ -45,7 +45,7 @@
 				</tr>
 				<tr <?php if(!in_array($data['fieldtype'], array('select','radio','checkbox'))) echo 'style="display:none"';?> id="options">
 					<td>选项列表</td> 
-					<td><textarea style="height:100px;width:400px;" name="setting" id="textarea" class="textarea"><?php if(in_array($data['fieldtype'], array('select','radio','checkbox')) && $data['setting']) echo join('|',string2array($data['setting']));?></textarea><span class="tip">用“|”分开，如“男|女|人妖”</span></td>
+					<td><textarea style="height:100px;width:400px;float:left;margin-right:5px" name="setting" id="textarea" class="textarea"><?php if(in_array($data['fieldtype'], array('select','radio','checkbox')) && $data['setting']) echo join('|',string2array($data['setting']));?></textarea><span style="color:#888">多个选项用 “|” 分开，如：<br>男|女|未知<br><i class="mt-5" style="display:block;">也支持自定义key值，如：<br>0:男|1:女|2:未知</i></span></td>
 				</tr>
 				<tr <?php if($data['fieldtype'] != 'datetime') echo 'style="display:none"';?> id="dates">
 					<td>时间格式</td> 
@@ -60,8 +60,10 @@
 				</tr>				
 				<tr>
 					<td>字符长度取值范围</td> 
-					<td>最小值：<input class="input-text w_120" type="text" value="<?php echo $data['minlength'];?>" name="minlength">
-                        最大值：<input class="input-text w_120" type="text" value="<?php echo $data['maxlength'];?>" name="maxlength"></td>
+					<td class="yzm-explain-box">最小值：<input class="input-text w_120" type="text" value="<?php echo $data['minlength'];?>" name="minlength">
+                        最大值：<input class="input-text w_120" type="text" value="<?php echo $data['maxlength'];?>" name="maxlength">
+                        <span class="yzm-explain">最小值为1则为必填项，为0则非必填项</span>
+                    </td>
 				</tr>	
 				<tr>
 					<td>数据校验未通过的提示信息</td> 

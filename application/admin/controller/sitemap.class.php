@@ -42,7 +42,7 @@ class sitemap extends common {
 			$type = isset($_POST['type']) ? intval($_POST['type']) : 0;
 			$total = isset($_POST['total']) ? intval($_POST['total']) : 0;
 			$page = isset($_POST['page']) ? intval($_POST['page']) : 1;
-			$pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : 500;
+			$pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : 300;
 
 			if($type) $this->filename = 'sitemap.txt';
 			$site_url = get_config('site_url');
@@ -71,13 +71,16 @@ class sitemap extends common {
 			$order = $model ? 'id DESC' : 'allid DESC';
 			if(!$table) return_json(array('status'=>0,'message'=>L('illegal_parameters')));
 
-			if(!$total)  $total = D($table)->where(array('status'=>'1'))->total();
+			if(!$total) {
+				$total = D($table)->where(array('status'=>1))->total();
+				$total = $limit_total ? min($limit_total,$total) : $total;
+			}
 			$num = ceil($total/$pagesize);
 
 			$page = max($page, 1);
 			$offset = $pagesize*($page-1);
 			$limit = $offset.','.$pagesize;
-			$data = D($table)->field('updatetime,url')->where(array('status'=>'1'))->order($order)->limit($limit)->select();
+			$data = D($table)->field('updatetime,url')->where(array('status'=>1))->order($order)->limit($limit)->select();
 
 			foreach($data as $val){
 				if(!strpos($val['url'], '://')) $val['url'] = $site_url.ltrim($val['url'], '/');
@@ -91,12 +94,13 @@ class sitemap extends common {
 			$strlen = @file_put_contents(YZMPHP_PATH.$this->filename, $str, FILE_APPEND | LOCK_EX);
 			if(!$strlen) return_json(array('status'=>0,'message'=>'生成文件 '.$this->filename.' 失败，请检查是否有写入权限！'));
 
-			if($num<=$page || ($limit_total && ($page*$pagesize>=$limit_total))){
+			if($num <= $page){
 				if(!$type) @file_put_contents(YZMPHP_PATH.$this->filename, $this->footer, FILE_APPEND | LOCK_EX);
 				return_json(array('status'=>1,'message'=>'生成文件 '.$this->filename.' 成功！'));
 			}
 
-			return_json(array('status'=>2,'message'=>'生成文件 '.$this->filename.' 成功，等待继续写入！','total'=>$total,'page'=>++$page));
+			$rate = floor(100 * ($page*$pagesize / $total));
+			return_json(array('status'=>2,'message'=>'正在生成中，进度'.$rate.'%……','total'=>$total,'page'=>++$page));
 		}
 	}
 
@@ -110,7 +114,7 @@ class sitemap extends common {
 		if(is_file(YZMPHP_PATH.$this->filename)){
 			if(!@unlink(YZMPHP_PATH.$this->filename)) showmsg(L('operation_failure'));
 		}
-		showmsg(L('operation_success'), U('init'), 1);
+		return_json(array('status'=>1, 'message'=>L('operation_success')));
 	}
 	
 

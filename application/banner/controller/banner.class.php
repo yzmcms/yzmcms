@@ -100,9 +100,26 @@ class banner extends common {
 	public function del() {
 		if($_POST && is_array($_POST['id'])){
 			if(D('banner')->delete($_POST['id'], true)){
-				showmsg(L('operation_success'));
+				showmsg(L('operation_success'), '', 1);
 			}else{
 				showmsg(L('operation_failure'));
+			}
+		}
+	}
+
+
+	/**
+	 * 隐藏显示
+	 */
+	public function public_change_status() {
+		if(is_post()){
+			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+			
+			if(D('banner')->update(array('status'=>$value), array('id' => $id))){
+				return_json(array('status'=>1,'message'=>L('operation_success')));
+			}else{
+				return_json();
 			}
 		}
 	}

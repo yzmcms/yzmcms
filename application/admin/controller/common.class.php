@@ -21,6 +21,7 @@ class common{
 		self::check_admin();
 		self::check_priv();
 		self::check_ip();
+		self::check_token();
 		self::lock_screen();
 		if(ROUTE_A == 'init') $_GET = array_map('htmlspecialchars', $_GET);
 		if(get_config('admin_log')) self::manage_log();
@@ -30,7 +31,7 @@ class common{
 	/**
 	 * 判断用户是否已经登录
 	 */
-	final private function check_admin() {
+	private function check_admin() {
 		if(ROUTE_M =='admin' && ROUTE_C =='index' && ROUTE_A =='login') {
 			return true;
 		} else {
@@ -39,7 +40,6 @@ class common{
 				echo '<script type="text/javascript"> var url="'.U('admin/index/login').'"; if(top.location !== self.location){ top.location=url; }else{ window.location.href=url; } </script>';
 				exit();
 			}	
-			self::check_referer();
 		}
 	}
 
@@ -47,7 +47,7 @@ class common{
 	/**
 	 * 权限判断
 	 */
-	final private function check_priv() {
+	private function check_priv() {
 		if(ROUTE_M =='admin' && ROUTE_C =='index' && in_array(ROUTE_A, array('login', 'init'))) return true;
 		if($_SESSION['roleid'] == 1) return true;
 		if(strpos(ROUTE_A, 'public_') === 0) return true;
@@ -61,7 +61,7 @@ class common{
 	/**
 	 * 记录日志 
 	 */
-	final private function manage_log() {
+	private function manage_log() {
 		if(ROUTE_A == '' || ROUTE_A == 'init' || strpos(ROUTE_A, '_list') || in_array(ROUTE_A, array('login', 'public_home'))) {
 			return false;
 		}else {
@@ -76,7 +76,7 @@ class common{
 	/**
 	 * 后台IP禁止判断
 	 */
-	final private function check_ip(){
+	private function check_ip(){
 		$admin_prohibit_ip = get_config('admin_prohibit_ip');
 		if(!$admin_prohibit_ip) return true;
 		$arr = explode(',', $admin_prohibit_ip);
@@ -95,8 +95,8 @@ class common{
  	/**
  	 * 检查锁屏状态
  	 */
-	final private function lock_screen() {
-		if(isset($_SESSION['lock_screen']) && $_SESSION['lock_screen']==1) {
+	private function lock_screen() {
+		if(isset($_SESSION['yzm_lock_screen']) && $_SESSION['yzm_lock_screen']==1) {
 			if(strpos(ROUTE_A, 'public_') === 0 || ROUTE_A == 'login') return true;
 			include $this->admin_tpl('index');exit();
 		}
@@ -107,13 +107,24 @@ class common{
 	/**
 	 * 检查REFERER
 	 */
-	final private function check_referer(){
+	private function check_referer(){
 		if(strpos(ROUTE_A, 'public_') === 0) return true;
 		if(HTTP_REFERER && strpos(HTTP_REFERER, SERVER_PORT.HTTP_HOST) !== 0){
 			$arr = explode(':', HTTP_HOST);
 			if(strpos(HTTP_REFERER, SERVER_PORT.$arr[0]) !== 0) showmsg('非法来源，拒绝访问！', 'stop');
 		}
 		return true;
+ 	}
+
+
+	/**
+	 * 检查TOKEN
+	 */
+	private function check_token(){
+		if(!is_post()) return true;
+		if(strpos(ROUTE_A, 'public_') === 0 || (ROUTE_C =='index' && ROUTE_A =='login')) return true;
+		if(isset($_POST['yzm_csrf_token']) && $_SESSION['yzm_csrf_token']!='' && ($_SESSION['yzm_csrf_token'] == $_POST['yzm_csrf_token']))  return true;
+		is_ajax() ? return_json(array('status'=>0, 'message'=>L('token_error'))) : showmsg(L('token_error'), 'stop');
  	}
 	
 

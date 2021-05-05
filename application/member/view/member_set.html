@@ -10,17 +10,17 @@
 			<div class="tabCon">
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">是否开启会员注册：</label>
-					<div class="formControls col-xs-8 col-sm-9">
+					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
 						<label class="label_radio"><input name="member_register" type="radio" <?php echo $data["member_register"]? 'checked' : '' ?> value="1"> 开启</label>
 						<label class="label_radio"><input name="member_register" type="radio" <?php echo $data["member_register"]? '' : 'checked' ?> value="0"> 关闭</label>
 					</div>
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">新会员注册邮件验证：</label>
-					<div class="formControls col-xs-8 col-sm-9">
+					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
 						<label class="label_radio"><input name="member_email" type="radio" <?php echo $data["member_email"]? 'checked' : '' ?> value="1"> 开启</label>
 						<label class="label_radio"><input name="member_email" type="radio" <?php echo $data["member_email"]? '' : 'checked' ?> value="0"> 关闭</label>
-						<span style="color:#888"> [需填写邮箱配置，且开启后会员注册审核功能无效]</span>
+						<span class="yzm-explain">需填写邮箱配置，且开启后会员注册审核功能无效</span>
 					</div>		
 				</div>
 				<div class="row cl">
@@ -45,9 +45,9 @@
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">新会员默认积分：</label>
-					<div class="formControls col-xs-8 col-sm-9">
+					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
 						<input type="text" name="member_point" value="<?php echo $data["member_point"];?>" class="input-text w_200">
-						<span style="color:red"> [积分=经验，区别在于积分可以通过消费减少，经验只增不减，下同]</span>
+						<span class="yzm-explain">积分=经验，区别在于积分可以通过消费减少，经验只增不减，下同</span>
 					</div>
 				</div>
 				<div class="row cl">
@@ -64,9 +64,9 @@
 				</div>
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">投稿奖励积分：</label>
-					<div class="formControls col-xs-8 col-sm-9">
+					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
 						<input type="text"  name="publish_point" value="<?php echo $data["publish_point"];?>" class="input-text w_200">
-						<span style="color:#888"> *负数则为扣除积分</span>
+						<span class="yzm-explain">负数则为扣除积分</span>
 					</div>
 				</div>
 			</div>

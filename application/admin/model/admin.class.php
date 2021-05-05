@@ -36,8 +36,9 @@ class admin {
 			$_SESSION['adminid'] = $res['adminid'];
 			$_SESSION['adminname'] = $res['adminname'];
 			$_SESSION['roleid'] = $res['roleid'];
-			$_SESSION['admininfo'] = $res;		
-			$_SESSION['lock_screen'] = 0;			
+			$_SESSION['admininfo'] = $res;	
+			$_SESSION['yzm_csrf_token'] = create_randomstr(8);	
+			$_SESSION['yzm_lock_screen'] = 0;			
 			set_cookie('adminid', $res['adminid'], 0, true);						
 			set_cookie('adminname', $res['adminname'], 0, true);						
 			return array('status'=>1,'message'=>L('login_success'));

@@ -74,13 +74,15 @@ class guestbook extends common {
 		}
 	}
 	
+	
 	/**
 	 * 留言显示/隐藏
 	 */
  	public function toggle() {
 		$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-		$ischeck = isset($_POST['ischeck']) ? intval($_POST['ischeck']) : 0;
-	    D('guestbook')->update(array('ischeck'=>$ischeck), array('id'=>$id));
+		$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+		D('guestbook')->update(array('ischeck'=>$value), array('id'=>$id));
+		return_json(array('status'=>1, 'message'=>L('operation_success')));
 	}
 
 	

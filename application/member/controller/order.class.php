@@ -138,7 +138,7 @@ class order extends common{
 			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 			$money = isset($_POST['money']) ? floatval($_POST['money']) : 0;
 			if($money < 0.01) return_json(array('status'=>0,'message'=>'支付金额不能小于0.01元'));
-				
+			
 			if(D('order')->update(array('money' => $money), array('id' => $id))){
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{

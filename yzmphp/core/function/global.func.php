@@ -718,11 +718,11 @@ function grab_image($content, $targeturl = ''){
  */
 function thumb($imgurl, $width = 300, $height = 200 ,$autocut = 0, $smallpic = 'nopic.jpg') {
 	global $image;
-	$upload_url = SITE_URL.C('upload_file').'/';
+	$upload_url = SITE_PATH.C('upload_file').'/';
 	$upload_path = YZMPHP_PATH.C('upload_file').'/';
 	if(empty($imgurl)) return STATIC_URL.'images/'.$smallpic;
 	if(!strpos($imgurl, '://')) $imgurl = SERVER_PORT.HTTP_HOST.$imgurl;
-	$imgurl_replace= str_replace($upload_url, '', $imgurl); 
+	$imgurl_replace= str_replace(SITE_URL.C('upload_file').'/', '', $imgurl); 
 	if(!extension_loaded('gd') || strpos($imgurl_replace, '://')) return $imgurl;
 	if(!is_file($upload_path.$imgurl_replace)) return STATIC_URL.'images/'.$smallpic;
 
@@ -1224,7 +1224,8 @@ function return_json($arr = array(), $show_debug = false){
 function write_log($message, $filename = '', $path = '') {
 	$message = is_array($message) ? json_encode($message) : $message;
 	$message = date('H:i:s').' '.$message."\r\n";
-	if(!$path) $path = YZMPHP_PATH.'cache';
+	if(!$path) $path = YZMPHP_PATH.'cache/syslog';
+	if(!is_dir($path)) @mkdir($path, 0777, true);
 	
 	if(!$filename) $filename = date('Ymd').'.log';
 	

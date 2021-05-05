@@ -6,7 +6,7 @@
 <body>
 <?php include $this->admin_tpl('header');?>
 <?php include $this->admin_tpl('menu');?>
-<div class="lock-desktop" id="lock_desktop" style="<?php if(!isset($_SESSION['lock_screen']) || $_SESSION['lock_screen']==0) echo 'display:none';?>">
+<div class="lock-desktop" id="lock_desktop" style="<?php if(!isset($_SESSION['yzm_lock_screen']) || $_SESSION['yzm_lock_screen']==0) echo 'display:none';?>">
     <form action="" class="lock-box" onsubmit="return yzm_unlock_screen()">
     	<div class="lockuser"><img src="<?php echo STATIC_URL;?>admin/yzm_admin/images/lockuser.png" alt="管理员"></div>
     	<!-- <h5><i class="Hui-iconfont">&#xe60e;</i> 锁屏状态，请输入密码解锁</h5> -->

@@ -40,10 +40,10 @@
 				<td rowspan="2" style="text-align:center">
 					<?php echo $select;?>
 				</td>
-				<td style="font-size:14px">更新栏目URL &nbsp;&nbsp;<input type="button" value="开始更新" class="btn btn-secondary radius" onclick="update_category_url()"></td>
+				<td style="font-size:14px">更新栏目URL &nbsp;&nbsp;<input type="button" value="开始更新" class="btn btn-secondary radius" onclick="yzm_ajax('<?php echo U('update_category_url')?>')"></td>
 			</tr>
 			<tr> 
-				<td style="font-size:14px">更新内容URL &nbsp;&nbsp;<input type="button" value="开始更新" class="btn btn-secondary radius" onclick="update_content_url()"></td>
+				<td style="font-size:14px">更新内容URL &nbsp;&nbsp;<input type="button" value="开始更新" class="btn btn-secondary radius" onclick="yzm_ajax('<?php echo U('update_content_url')?>')"></td>
 			</tr>
 		</tbody>
 	</form>
@@ -51,25 +51,53 @@
 
 	</div>
 </div>
-<script type="text/javascript">
-	function change_model() {
-		document.getElementById('myform').submit();
-	}
-	
-	function update_category_url(){
-		document.getElementById('myform').action='<?php echo U('update_category_url')?>';
-		document.getElementById('myform').submit();
-	}
-	
-	function update_content_url(){
-		document.getElementById('myform').action='<?php echo U('update_content_url')?>';
-		document.getElementById('myform').submit();
-	}
-</script>
 <?php include $this->admin_tpl('footer');?>
 
 <script type="text/javascript">
 	$("#select option:first").prop("selected", 'selected');  
+
+	function yzm_ajax(url) {
+		layer.msg('<span id="yzm_message">开始请求服务器……</span>', {icon:16, shade:0.21, shadeClose:true, time:false});
+		$.ajax({
+	        type: 'POST',
+	        url: url, 
+	        data: $("#myform").serialize(),
+		    dataType: "json", 
+	        success: function (msg) {
+				if(msg.status == 1){
+					layer.msg(msg.message, {icon:1,time:1500});
+			    }else if(msg.status == 2){
+			    	$("#yzm_message").html(msg.message);
+					yzm_dorequest(url, msg.autoid, msg.total, msg.page);
+				}else{
+					layer.alert(msg.message, {icon:2});
+				}
+	        }
+	    })
+	}
+
+	function yzm_dorequest(url, autoid, total, page) {
+		$.ajax({
+	        type: 'POST',
+	        url: url, 
+	        data: {"autoid":autoid, "total":total, "page":page, "yzm_csrf_token":yzm_csrf_token},
+		    dataType: "json", 
+	        success: function (msg) {
+				if(msg.status == 1){
+					layer.msg(msg.message, {icon:1,time:1500});
+			    }else if(msg.status == 2){
+			    	$("#yzm_message").html(msg.message);
+					yzm_dorequest(url, msg.autoid, msg.total, msg.page);
+				}else{
+					layer.alert(msg.message, {icon:2});
+				}
+	        }
+	    })
+	}
+
+	function change_model() {
+		document.getElementById('myform').submit();
+	}
 </script>
 </body>
 </html>

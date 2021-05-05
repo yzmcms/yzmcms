@@ -105,10 +105,6 @@ class member extends common{
 				$data['vip'] = 1;
 				$data['overduedate'] = strtotime($_POST['overduedate']);
 			}
-
-			if(!check_token($_POST['token'])){
-				return_json(array('status'=>0,'message'=>'TOKEN'.L('error')));
-			}
 			
 			$userid = D('member')->insert($data, true);
 			if($userid){
@@ -132,6 +128,7 @@ class member extends common{
 	public function edit(){ 
 		$userid = isset($_GET['userid']) ? intval($_GET['userid']) : 0;
 		if(isset($_POST['dosubmit'])){
+
 			if($_POST['password'] == ''){
 				unset($_POST['password']);
 			}else{
@@ -230,12 +227,19 @@ class member extends common{
 	 * 通过审核
 	 */	
 	public function adopt(){ 
-		if($_POST && is_array($_POST['ids'])){
+		if(is_ajax()){
+			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+			D('member')->update(array('status'=>$value), array('userid'=>$id));
+			return_json(array('status'=>1, 'message'=>L('operation_success')));
+		}
+
+		if(is_post() && is_array($_POST['ids'])){
 			$member = D('member');
 			foreach($_POST['ids'] as $val){
-				$member->update(array('status' => '1'), array('userid' => $val));
+				$member->update(array('status'=>1), array('userid' => $val));
 			}
-			showmsg(L('operation_success'),'',1);
+			showmsg(L('operation_success'), '', 1);
 		}
 	}
 
@@ -250,7 +254,7 @@ class member extends common{
 			foreach($_POST['ids'] as $val){
 				$member->update(array('status' => '2'), array('userid' => $val));
 			}
-			showmsg('锁定用户成功！');
+			showmsg('锁定用户成功！','',1);
 		}
 	}
 	
@@ -265,7 +269,7 @@ class member extends common{
 			foreach($_POST['ids'] as $val){
 				$member->update(array('status' => '1'), array('userid' => $val));
 			}
-			showmsg('解锁会员成功！');
+			showmsg('解锁会员成功！','',1);
 		}
 	}
 	
@@ -476,6 +480,25 @@ class member extends common{
 		}else{	
 			include $this->admin_tpl('recharge');
 		}
+	}
+
+
+
+	/**
+	 * 登录会员中心
+	 */	
+	public function login_user(){
+		$userid = isset($_GET['userid']) ? intval($_GET['userid']) : showmsg(L('lose_parameters'), 'stop');
+		if(!isset($_GET['yzm_csrf_token']) || $_SESSION['yzm_csrf_token'] != $_GET['yzm_csrf_token']) showmsg(L('token_error'), 'stop');
+		$data = D('member')->field('userid,username,groupid,status')->where(array('userid'=>$userid))->find();
+		if(!$data) showmsg('该用户不存在！', 'stop');
+		$_SESSION['_userid'] = $data['userid'];
+		$_SESSION['_username'] = $data['username'];
+		set_cookie('_userid', $data['userid'], 0, true);
+		set_cookie('_username', $data['username'], 0, true);
+		set_cookie('_groupid', $data['groupid'], 0, true);			
+		set_cookie('_nickname', $data['username']);
+		showmsg(L('login_success'), U('member/index/init'), 1);
 	}
 
 

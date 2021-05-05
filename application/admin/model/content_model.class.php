@@ -39,9 +39,9 @@ class content_model {
 		$data['status'] = isset($data['status']) ? intval($data['status']) : 0;
 		
 		//远程图片本地化
-		if(isset($data['grab_img'])){
-			$data['content'] = grab_image($data['content']);
-		}
+		// if(isset($data['grab_img'])){
+		// 	$data['content'] = grab_image($data['content']);
+		// }
 		
 		//自动提取缩略图
 		if(isset($data['auto_thum']) && $data['thumb'] == '') {
@@ -111,9 +111,9 @@ class content_model {
 		if(!isset($data['flag'])) $data['flag'] = '';
 		
 		//远程图片本地化
-		if(isset($data['grab_img'])){
-			$data['content'] = grab_image($data['content']);
-		}
+		// if(isset($data['grab_img'])){
+		// 	$data['content'] = grab_image($data['content']);
+		// }
 		
 		//自动提取缩略图
 		if(isset($data['auto_thum']) && $data['thumb'] == '') {

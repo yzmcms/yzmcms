@@ -22,7 +22,7 @@
 				<tr>
 					<td>最后登录</td>
 					<td>
-					<?php echo date('Y-m-d H:i:s',$data['lastdate']).' ['.$data['lastip'].']';?>
+					<?php echo $data['lastdate'] ? date('Y-m-d H:i:s',$data['lastdate']).' ['.$data['lastip'].']' : '从未登陆';?>
 					</td>
 				</tr>	
 				<tr>
@@ -39,13 +39,13 @@
 				<tr>
 					<td>密码</td>
 					<td>
-					<input type="text" name="password" value=""  class="input-text w_300"> <span class="c-red">* 不修改请留空</span>
+					<input type="text" name="password" value="" placeholder="不修改请留空" class="input-text w_300">
 					</td>
 				</tr>				
 				<tr>
 					<td>邮箱</td>
 					<td>
-					<input type="email" name="email" value="<?php echo $data['email']; ?>" class="input-text w_300"> <?php if($data['email_status']) echo '<span class="green">[已验证]</span>'; ?>
+					<input type="email" name="email" value="<?php echo $data['email']; ?>" class="input-text w_300"> <?php if($data['email_status']) echo '<i class="Hui-iconfont" title="已验证" style="color:#2cbac1;font-size:16px">&#xe6a9;</i>'; ?>
 					</td>
 				</tr>
 				<tr>
@@ -57,24 +57,25 @@
 				<tr>
 					<td>账户余额</td>
 					<td>
-					<input type="text" name="amount" value="<?php echo $data['amount']; ?>" disabled class="input-text w_120"> *  更改金钱已移动至「<a data-title="在线充值"  _href="<?php echo U('member/recharge');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
+					<input type="text" name="amount" value="<?php echo $data['amount']; ?>" disabled class="input-text w_120"> *  更改金钱已移动至「<a data-title="在线充值" style="color:#3b639f" _href="<?php echo U('member/recharge');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
 					</td>
 				</tr>
 				<tr>
 					<td>积分点数</td>
 					<td>
-					<input type="text" name="point" value="<?php echo $data['point']; ?>" disabled class="input-text w_120"> *  更改积分已移动至「<a data-title="在线充值"  _href="<?php echo U('member/recharge');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
+					<input type="text" name="point" value="<?php echo $data['point']; ?>" disabled class="input-text w_120"> *  更改积分已移动至「<a data-title="在线充值" style="color:#3b639f" _href="<?php echo U('member/recharge');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
 					</td>
 				</tr>
 				<tr>
 					<td>经验</td>
-					<td>
-					<input type="text" name="experience" value="<?php echo $data['experience']; ?>" required class="input-text w_120"> <span class="c-red">*  用户经验将影响会员用户组</span>
+					<td class="yzm-explain-box">
+					<input type="text" name="experience" value="<?php echo $data['experience']; ?>" required class="input-text w_120">
+					<span class="yzm-explain">用户经验将影响会员用户组</span>
 					</td>
 				</tr>				
 				<tr>
 					<td>会员组</td> 
-					<td>
+					<td class="yzm-explain-box">
 					<span class="select-box inline">
 					<select  name="groupid" class="select">
 					  <?php 
@@ -84,14 +85,16 @@
 						}
 					   ?>			
 					 </select>
-					</span> <span class="c-red">* 会员组别与经验绑定</span>
+					</span>
+					<span class="yzm-explain">会员组别与经验绑定</span>
                     </td>
 				</tr>
 				<tr>
 					<td>vip会员</td>
-					<td>
+					<td class="yzm-explain-box">
 					是否为vip会员 <input name="vip" value="1" <?php if($data['vip']) echo 'checked'; ?> type="checkbox">&nbsp;&nbsp;
-					过期时间 <input type="text" class="input-text laydate-icon" style="width:175px;height:30px;" name="overduedate" value="<?php if($data['vip']) echo date('Y-m-d H:i:s',$data['overduedate']); ?>" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">&nbsp;&nbsp;<span class="c-red">vip会员可以免积分查看付费内容</span>
+					过期时间 <input type="text" class="input-text laydate-icon" style="width:175px;height:30px;" name="overduedate" value="<?php if($data['vip']) echo date('Y-m-d H:i:s',$data['overduedate']); ?>" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+					<span class="yzm-explain">vip会员可以免积分查看付费内容</span>
 					</td>
 				</tr>
 				<tr>
@@ -106,7 +109,13 @@
 					 </select>
 					</span>
                     </td>
-				</tr>				
+				</tr>	
+				<tr>
+					<td>高级功能</td>
+					<td>
+					<a href="<?php echo U('login_user', array('userid'=>$userid,'yzm_csrf_token'=>$_SESSION['yzm_csrf_token']));?>" target="_blank" style="color:#3b639f"><i class="Hui-iconfont">&#xe62c;</i> 登录到此用户会员中心</a>
+					</td>
+				</tr>			
 			</table>
 	  </fieldset>
 	  

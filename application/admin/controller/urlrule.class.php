@@ -39,9 +39,6 @@ class urlrule extends common {
 	public function add() {		
 		$urlrule = D('urlrule');
 		if(isset($_POST['dosubmit'])) { 
-			if(!check_token($_POST['token'])){
-				return_json(array('status'=>0,'message'=>'Token错误，请重新添加！'));
-			}
 			if(!preg_match('/^([a-zA-Z0-9]|[\/\(\)\\\+\-~!@_]){0,50}$/', $_POST['urlrule'])) return_json(array('status'=>0,'message'=>'URL规则不符合规范！'));
 			$r = $urlrule->field('urlrule')->where(array('urlrule' => $_POST['urlrule']))->find();
 			if($r) return_json(array('status'=>0,'message'=>'URL规则已存在！'));
@@ -63,9 +60,6 @@ class urlrule extends common {
 	public function edit() {				
 		$urlrule = D('urlrule');
 		if(isset($_POST['dosubmit'])) {
-			if(!check_token($_POST['token'])){
-				return_json(array('status'=>0,'message'=>'Token错误，请重新编辑！'));
-			}
 			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 			if(!preg_match('/^([a-zA-Z0-9]|[\/\(\)\\\+\-~!@_]){0,50}$/', $_POST['urlrule'])) return_json(array('status'=>0,'message'=>'URL规则不符合规范！'));
 			if($urlrule->update($_POST, array('urlruleid' => $id), true)){

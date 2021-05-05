@@ -46,14 +46,20 @@
 			<td><input type="checkbox" value="<?php echo $val['id']?>" name="id[]"></td>
 			<td><?php echo $val['id']?></td>
 			<td><?php echo $val['module']?></td>
-			<td><?php $src = $val['isimage'] ? $val['filepath'].$val['filename'] : (in_array($val['fileext'], array('zip', 'rar')) ? STATIC_URL.'images/ext/rar.png' : STATIC_URL.'images/ext/blank.png'); echo '<a title="'.$val['originname'].'" href="javascript:;" onclick="yzm_open(\'附件预览\',\''.U('public_att_view',array('id'=>$val['id'])).'\',800,500)" style="text-decoration:none"><img src="'.$src.'" height="30" style="max-width:150px"></a>';?></td>
+			<td>
+				<?php 
+				$src = $val['isimage'] ? $val['filepath'].$val['filename'] : (in_array($val['fileext'], array('zip', 'rar')) ? STATIC_URL.'images/ext/rar.png' : STATIC_URL.'images/ext/blank.png'); 
+				$click = $val['isimage'] ? 'onclick="yzm_show_img(\''.$src.'\',800,500)"' : 'onclick="yzm_open(\'附件预览\',\''.U('public_att_view',array('id'=>$val['id'])).'\',800,500)"';
+				?>
+				 <a title="点击预览" href="javascript:;" <?php echo $click;?> style="text-decoration:none"><img src="<?php echo $src;?>" height="30" style="max-width:100px" onmouseover="yzm_img_browse(this, '<?php echo $src;?>')" onmouseout="layer.closeAll('tips')"></a>
+			</td>
 			<td><?php echo !empty($val['originname']) ? $val['originname'] : $val['filename']?></td>
 			<td><?php echo sizecount($val['filesize'])?></td>
 			<td><?php echo date('Y-m-d H:i:s', $val['uploadtime'])?></td>
 			<td><?php echo $val['username']?></td>
 			<td><?php echo $val['uploadip']?></td>
 			<td>
-				<a title="预览大图" href="javascript:;" onclick="yzm_open('附件预览','<?php echo U('public_att_view',array('id'=>$val['id']));?>',800,500)" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe695;</i> 预览</a> 
+				<a title="点击预览" href="javascript:;" <?php echo $click;?> class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe695;</i> 预览</a> 
 				<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('del_one',array('id'=>$val['id']));?>')" class="yzm-box-img btn-warning ml-5"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a>
 			</td>
 		  </tr>		
@@ -62,6 +68,7 @@
 		?>
     </tbody>
   </table>
+  <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
   </form>
   <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>

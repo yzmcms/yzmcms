@@ -17,8 +17,12 @@
 			 </li>
 			 <li id="adver_text"<?php if($data['type'] == 3) echo ' style="display:none"';?>><label><span class="c-red">*</span>广告值</label><textarea name="text" class="textarea" style="width:400px"><?php echo $data['text'];?></textarea></li>
 			 <li id="adver_img"<?php if($data['type'] != 3) echo ' style="display:none"';?>><label><span class="c-red">*</span>选择图像</label><?php echo form::image('img', $data['img']);?></li>
-			 <li><label>开始时间</label><input type="text" class="input-text laydate-icon" id="start" style="width:230px;height:30px;" name="start_time" value="<?php echo $data['start_time'] ? date('Y-m-d', $data['start_time']) : '';?>"> <span style="color:#898989">[留空为不限制]</span></li>
-			 <li><label>结束时间</label><input type="text" class="input-text laydate-icon" id="end" style="width:230px;height:30px;" name="end_time" value="<?php echo $data['end_time'] ? date('Y-m-d', $data['end_time']) : '';?>"> <span style="color:#898989">[留空为不限制]</span></li>
+			 <li class="yzm-explain-box"><label>开始时间</label><input type="text" class="input-text laydate-icon" id="start" style="width:230px;height:30px;" name="start_time" value="<?php echo $data['start_time'] ? date('Y-m-d', $data['start_time']) : '';?>">
+			 	<span class="yzm-explain">留空为不限制</span>
+			 </li>
+			 <li class="yzm-explain-box"><label>结束时间</label><input type="text" class="input-text laydate-icon" id="end" style="width:230px;height:30px;" name="end_time" value="<?php echo $data['end_time'] ? date('Y-m-d', $data['end_time']) : '';?>">
+			 	<span class="yzm-explain">留空为不限制</span>
+			 </li>
 			 <li><label>简洁描述</label><span class="span_input"><input type="text" class="input" name="describe" value="<?php echo $data['describe'];?>" style="width:500px"></span></li>			 
 			 <li><input type="hidden" name="dosubmit" value="1"><input type="hidden" name="id" value="<?php echo $data['id'];?>">
 			 <input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
@@ -72,9 +76,11 @@
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1, time:800}, function(){
+						parent.location.reload();
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

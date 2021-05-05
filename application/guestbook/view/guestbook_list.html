@@ -37,14 +37,14 @@
 	<table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
 		<thead>
 			<tr class="text-c">
-				<th width="25"><input type="checkbox"></th>
+				<th width="35"><input type="checkbox"></th>
 				<th width="50">ID<?php echo field_order('id');?></th>
 				<th style="text-align:left">留言主题</th>
 				<th width="200" style="text-align:left">联系人</th>
 				<th width="100">IP地址<?php echo field_order('ip');?></th>
 				<th width="150">留言日期<?php echo field_order('booktime');?></th>
-				<th width="55">状态<?php echo field_order('isread');?></th>
-				<th width="80">审核状态<?php echo field_order('ischeck');?></th>	
+				<th width="70">状态<?php echo field_order('isread');?></th>
+				<th width="70">审核<?php echo field_order('ischeck');?></th>	
 			</tr>
 		</thead>
 		<tbody>
@@ -58,39 +58,25 @@
 				<td style="text-align:left"><?php echo $val['name'];?></td>
 				<td><?php echo $val['ip'];?></td>
 				<td><?php echo date('Y-m-d H:i:s',$val['booktime']);?></td>
-				<td><?php echo $val['isread'] ? "<span style='color:green'>已读</span>" : "<span style='color:red'>未读</span>"; ?></td>
-				<td class="td-manage"><?php echo $val['ischeck'] ? '<a onclick="toggle(this,\''.$val['id'].'\',\'0\')" href="javascript:;">已审核</a>' : '<a class="c-primary" onclick="toggle(this,\''.$val['id'].'\',\'1\')" href="javascript:;">未审核</a>' ?></td>
+				<td><?php echo $val['isread'] ? '已读' : '<span class="c-red">未读</span>'; ?></td>
+				<td>
+					<?php if($val['ischeck']){ ?>
+					<span class="yzm-status-enable" data-field="ischeck" data-id="<?php echo $val['id']?>" onclick="yzm_change_status(this,'<?php echo U('toggle');?>')"><i class="yzm-iconfont">&#xe81f;</i>是</span>
+					<?php }else{ ?>
+					<span class="yzm-status-disable" data-field="ischeck" data-id="<?php echo $val['id']?>" onclick="yzm_change_status(this,'<?php echo U('toggle');?>')"><i class="yzm-iconfont">&#xe601;</i>否</span>
+					<?php } ?>
+				</td>
 			</tr>
 			<?php 
 			   }		 
 			?>	
 		</tbody>
 	</table>
+	<?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
 	</form>
 	<div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>
 </div>
 <?php include $this->admin_tpl('footer','admin');?>
-<script type="text/javascript">
-
-function toggle(obj, id, ischeck){
-	$.ajax({
-		type: 'POST',
-		url: '<?php echo U('toggle');?>', 
-		data: 'id='+id+'&ischeck='+ischeck,
-	})
-	if(ischeck == '1'){
-		$(obj).parents("tr").find(".td-manage").html('<a onclick="toggle(this,\''+id+'\',\'0\')" href="javascript:;">已审核</a>');
-		layer.msg('留言已审核！',{icon: 6,time:1000});
-	}else{
-		$(obj).parents("tr").find(".td-manage").html('<a class="c-primary" onclick="toggle(this,\''+id+'\',\'1\')" href="javascript:;">未审核</a>');
-		layer.msg('留言已取消审核！',{icon: 5,time:1000});
-	}
-	
-}
-
-
-
-</script> 
 </body>
 </html>

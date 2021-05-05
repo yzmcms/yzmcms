@@ -364,7 +364,7 @@ class db_mysqli{
 		
 		
 	/**
-	 * 链接查询
+	 * 连接查询
 	 * @param $join 	string SQL语句，如yzmcms_admin ON yzmcms_admintype.id=yzmcms_admin.id
 	 * @param $type 	可选参数,默认是inner
 	 * @return object

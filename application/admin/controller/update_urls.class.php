@@ -53,7 +53,7 @@ class update_urls extends common {
 			}
 			
 			delcache('categoryinfo');
-			showmsg('更新完成！', '', 2);
+			return_json(array('status'=>1, 'message'=>'更新栏目URL完成！'));
 		}
 	}
 	
@@ -63,10 +63,10 @@ class update_urls extends common {
 	 */
  	public function update_content_url() {
 
-		$modelid = isset($_POST['modelid']) ? intval($_POST['modelid']) : (isset($_GET['modelid']) ? intval($_GET['modelid']) : 0);
-		$autoid = isset($_GET['autoid']) ? intval($_GET['autoid']) : 0;
-		$page = isset($_GET['page']) ? intval($_GET['page']) : 1;
-		$total = isset($_GET['total']) ? intval($_GET['total']) : 0;
+		$modelid = isset($_POST['modelid']) ? intval($_POST['modelid']) : 0;
+		$autoid = isset($_POST['autoid']) ? intval($_POST['autoid']) : 0;
+		$page = isset($_POST['page']) ? intval($_POST['page']) : 1;
+		$total = isset($_POST['total']) ? intval($_POST['total']) : 0;
 		$pagesize = 50;
 
 		$modelid_arr = getcache('update_content_url_'.$_SESSION['adminid']);
@@ -83,7 +83,7 @@ class update_urls extends common {
 		}
 		if(!isset($modelid_arr[$autoid])) {
 			delcache('update_content_url_'.$_SESSION['adminid']);
-			showmsg('更新完成！', U('init'), 2);
+			return_json(array('status'=>1, 'message'=>'更新内容URL完成！'));
 		}
 		$modelid = $modelid_arr[$autoid];
 		$tablename = get_model($modelid);
@@ -105,9 +105,9 @@ class update_urls extends common {
 		$rate = $num ? floor(100 * ($page / $num)) : 100;
 		$message = '【'.get_model($modelid, 'name').'】 正在更新，进度： '.$rate.'%';
 		if($num > $page) {
-			showmsg($message, U(ROUTE_A, array('autoid'=>$autoid, 'total'=>$total, 'page'=>++$page)), 0.1);
+			return_json(array('status'=>2, 'message'=>$message, 'autoid'=>$autoid, 'total'=>$total, 'page'=>++$page));
 		} else {
-			showmsg($message, U(ROUTE_A, array('autoid'=>++$autoid)), 0.1);
+			return_json(array('status'=>2, 'message'=>$message, 'autoid'=>++$autoid, 'total'=>0, 'page'=>1));
 		}		
 
 	}

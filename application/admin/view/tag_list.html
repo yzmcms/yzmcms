@@ -48,7 +48,7 @@
 				<td><?php echo $val['remarks'] ? $val['remarks'] : '无';?></td>
 				<td><?php echo date('Y-m-d H:i:s',$val['inputtime']);?></td>
 				<td class="td-manage">
-					<a title="编辑TAG" href="javascript:;" onclick="yzm_open('编辑TAG','<?php echo U('edit',array('id'=>$val['id']));?>',600,350)" class="yzm-box-img btn-secondary">编辑TAG</a> 
+					<a title="编辑TAG" href="javascript:;" onclick="yzm_open('编辑TAG','<?php echo U('edit',array('id'=>$val['id']));?>',600,350)" class="btn-mini btn-secondary">编辑TAG</a> 
 					<a title="管理内容" href="javascript:;" onclick="yzm_open('Tag - <?php echo $val['tag'];?>','<?php echo U('content',array('id'=>$val['id']));?>', 850, 550)" class="btn-mini btn-success ml-5" style="text-decoration:none">管理内容</a> 
 				</td>
 			</tr>
@@ -57,6 +57,7 @@
 			?>	
 		</tbody>
 	</table>
+	<?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
 	</form>
 	<div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>

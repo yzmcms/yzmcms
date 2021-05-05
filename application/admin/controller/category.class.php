@@ -35,8 +35,8 @@ class category extends common {
 			} 
 			$v['cattype'] = $v['type']=="0" ? '普通栏目' : ($v['type']=="1" ? '<span style="color:green">单页面</span>' : '<span style="color:red">外部链接</span>');
 			$v['catmodel'] = $v['modelid'] ? $modelarr[$v['modelid']] : '无';
-			$v['display'] = $v['display'] ? '是' : '<span style="color:red">否</span>';
-			$v['member_publish'] = $v['member_publish'] ? '<span style="color:red">是</span>' : '否';
+			$v['display'] = $v['display'] ? '<span class="yzm-status-enable" data-field="display" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe81f;</i>是</span>' : '<span class="yzm-status-disable" data-field="display" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe601;</i>否</span>';
+			$v['member_publish'] = $v['member_publish'] ? '<span class="yzm-status-enable" data-field="member_publish" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe81f;</i>是</span>' : '<span class="yzm-status-disable" data-field="member_publish" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe601;</i>否</span>';
 			$v['string'] = '<a title="增加子类" href="javascript:;" onclick="yzm_open(\'增加栏目\',\''.U('add',array('modelid'=>$v['modelid'],'type'=>$v['type'],'catid'=>$v['id'])).'\',800,500)" class="btn-mini btn-secondary ml-5" style="text-decoration:none">增加子类</a> 
 			<a title="编辑栏目" href="javascript:;" onclick="yzm_open(\'编辑栏目\',\''.U('edit',array('type'=>$v['type'],'catid'=>$v['id'])).'\',800,500)" class="btn-mini btn-success ml-5" style="text-decoration:none">编辑</a> 
 			<a title="删除" href="javascript:;" onclick="yzm_del(\''.U('delete',array('type'=>$v['type'],'catid'=>$v['id'])).'\')" class="btn-mini btn-warning ml-5" style="text-decoration:none">删除</a>';
@@ -46,7 +46,7 @@ class category extends common {
 		$str  = "<tr class='text-c'>
 					<td><input type='text' class='input-text listorder' name='listorder[]' value='\$listorder'><input type='hidden' name='catid[]' value='\$id'></td>
 					<td>\$id</td>
-					<td class='text-l'>\$spacer<a href='\$catlink'>\$name</a></td>
+					<td class='text-l'>\$spacer<a href='\$catlink' class='yzm_text_link'>\$name</a></td>
 					<td>\$cattype</td>
 					<td>\$catmodel</td>
 					<td><a href='\$pclink' target='_blank'> <i class='Hui-iconfont'>&#xe6f1;</i> 访问</a></td>
@@ -310,6 +310,27 @@ class category extends common {
 		$data = D('page')->where(array('catid' => $catid))->find();
 		yzm_base::load_sys_class('form','',0);
 		include $this->admin_tpl('page_content');
+	}
+
+
+	/**
+	 * ajax修改字段
+	 */
+	public function public_change_status() {
+		if(is_post()){
+			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$field = isset($_POST['field']) ? trim($_POST['field']) : '';
+			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+
+			if(!in_array($field, array('display','member_publish'))) return_json(array('status'=>0,'message'=>L('illegal_parameters')));
+			if($this->db->update(array($field => $value), array('catid' => $id))){
+				delcache('categoryinfo');
+				delcache('site_mapping_index');
+				return_json(array('status'=>1,'message'=>L('operation_success')));
+			}else{
+				return_json();
+			}
+		}
 	}
 
 	

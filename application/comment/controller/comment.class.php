@@ -79,12 +79,19 @@ class comment extends common {
 	 * 通过审核
 	 */
 	public function adopt() {
-		if($_POST && is_array($_POST['id'])){
+		if(is_ajax()){
+			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+			D('comment')->update(array('status'=>$value), array('id'=>$id));
+			return_json(array('status'=>1, 'message'=>L('operation_success')));
+		}
+
+		if(is_post() && is_array($_POST['id'])){
 			$comment = D('comment');
 			foreach($_POST['id'] as $val){
-				$comment->update(array('status' => '1'), array('id' => $val));
+				$comment->update(array('status'=>1), array('id' => $val));
 			}
-			showmsg(L('operation_success'));
+			showmsg(L('operation_success'), '', 1);
 		}
 	}
 	

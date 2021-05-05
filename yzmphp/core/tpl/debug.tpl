@@ -26,6 +26,7 @@
 		}		
 		echo '<div style="margin-top:5px;">［其他信息］</div>';
 		echo '<div style="padding-left:20px">服务器信息：'.$_SERVER['SERVER_SOFTWARE'].'</div>';
+		echo '<div style="padding-left:20px">路由信息：模块( '.ROUTE_M.' )，控制器( '.ROUTE_C.' )，方法( '.ROUTE_A.' )，参数( '.$parameter.' )</div>';
 		echo '<div style="padding-left:20px">会话ID：'.session_id().'</div>';
 		echo '<div style="padding-left:20px">框架版本：'.YZMPHP_VERSION.' <a href="http://www.yzmphp.com" target="_blank" style="color:#888">查看新版</a></div>';
 	?>

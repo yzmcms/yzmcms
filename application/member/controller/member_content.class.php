@@ -49,7 +49,7 @@ class member_content extends common{
 		$groupinfo = $this->_check_group_auth($groupid);	
 		
 		//会员中心可发布的字段
-		$fields = array('title','copyfrom','catid','thumb','description','content');
+		$fields = array('title','keywords','copyfrom','catid','thumb','description','content');
 	
 		if(isset($_POST['dosubmit'])) {
 			
@@ -136,7 +136,7 @@ class member_content extends common{
 		yzm_base::load_sys_class('form','',0);
 		
 		//会员中心可发布的字段
-		$fields = array('title','copyfrom','catid','thumb','description','content');
+		$fields = array('title','keywords','copyfrom','catid','thumb','description','content');
 		
 		//可以根据catid获取model模型，来加载不同模板
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : showmsg(L('lose_parameters'), 'stop');  

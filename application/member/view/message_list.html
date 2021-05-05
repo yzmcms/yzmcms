@@ -50,7 +50,7 @@
 		?>
 		  <tr class="text-c">
 			<td><input type="checkbox" value="<?php echo $val['messageid']?>" name="ids[]"></td>
-			<td><?php echo $val['subject']?>&nbsp;&nbsp;<?php echo $val['isread'] ? '<span style="color:green">[已读]</span>' : '<span class="c-red">[未读]</span>';?></td>
+			<td><?php echo $val['subject']?>&nbsp;&nbsp;<?php echo $val['isread'] ? '<span class="c-blue">[已读]</span>' : '<span class="c-red">[未读]</span>';?></td>
 			<td><?php echo $val['content']?></td>
 			<td><?php echo $val['send_from']?></td>
 			<td><?php echo $val['send_to']?></td>
@@ -61,6 +61,7 @@
 		?>
     </tbody>
   </table>
+  <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
   </form>
   <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>

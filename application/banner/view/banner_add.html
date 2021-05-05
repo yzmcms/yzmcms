@@ -23,7 +23,9 @@
 				<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M));?>')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
 			 </li>
 			 <li><label>简介：</label><textarea name="introduce" class="textarea" style="width:500px"></textarea></li>
-			 <li><label>排序：</label><input type="text" class="input"  value="1" name="listorder" style="width:120px"> <span style="color:#999">[由小到大排列]</span></li>	
+			 <li class="yzm-explain-box"><label>排序：</label><input type="text" class="input"  value="1" name="listorder" style="width:120px">
+			  <span class="yzm-explain">由小到大排列</span>
+			 </li>	
 			 <li><label>状态：</label>
 			 	<label class="label_radio"><input name="status" type="radio" value="1" checked> 显示</label>
 			 	<label class="label_radio"><input name="status" type="radio" value="0" > 隐藏</label>

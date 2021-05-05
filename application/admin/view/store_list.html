@@ -48,9 +48,9 @@
                 </tr>
             </thead>
             <tbody>
-                <?php 
+            <?php 
 			   foreach($data as $val){
-			 ?>
+			?>
                 <tr class="text-c">
                     <td class="text-l">
                         <i class="Hui-iconfont">&#xe67f;</i> <a href="<?php echo $val['url'];?>" target="_blank">
@@ -74,19 +74,19 @@
                     <td><a href="<?php echo $val['url'];?>" target="_blank" class="btn-mini btn-secondary">查看购买</a></td>
                 </tr>
                 <?php 
-			   }
-			   if(!$data){
-			   		echo '<td colspan="7" class="text-c">暂无数据~</td>';
-			   }	 
-			?>
+			     }	 
+			    ?>
             </tbody>
         </table>
-        <div id="page"><span class="page_left">共
+        <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
+        <div id="page">
+            <span class="page_left">共
                 <?php echo $total?>条记录，共
                 <?php echo $page->total()?>页，当前显示第
-                <?php echo $page->getpage()?>页</span>
-            <span class="page_right">
-                <?php echo $page->getfull();?></span></div>
+                <?php echo $page->getpage()?>页
+            </span>
+            <span class="page_right"><?php echo $page->getfull();?></span>
+        </div>
     </div>
     <?php include $this->admin_tpl('footer');?>
 </body>

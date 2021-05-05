@@ -51,8 +51,8 @@
       <tr class="text-c">
         <th width="25"><input type="checkbox"></th>
 		<th>用户ID<?php echo field_order('userid');?></th>
-		<th>用户名<?php echo field_order('username');?></th>
-		<th>邮箱<?php echo field_order('email');?></th>
+		<th class="text-l">用户名<?php echo field_order('username');?></th>
+		<th class="text-l">邮箱<?php echo field_order('email');?></th>
 		<th>用户组<?php echo field_order('groupid');?></th>
 		<th>最后登录时间<?php echo field_order('lastdate');?></th>
 		<th>登录次数<?php echo field_order('loginnum');?></th>
@@ -64,12 +64,13 @@
     <tbody>
 		<?php 
 		foreach($data as $val){
+			$avatar = get_memberavatar($val['userid']);
 		?>
 		  <tr class="text-c">
 			<td><input type="checkbox" value="<?php echo $val['userid']?>" name="ids[]"></td>
 			<td><?php echo $val['userid']?></td>
-			<td><?php if($val['vip']) echo '<img src="'.STATIC_URL.'images/vip.gif" title="vip会员"> ';?><?php if($val['status'] == 2) echo '<img src="'.STATIC_URL.'images/icon_padlock.gif" title="用户已锁定"> '; echo '<a href="'.U('edit',array('userid'=>$val['userid'])).'" style="text-decoration:none"><img src="'.get_memberavatar($val['userid']).'" height="25" class="radius"> '.$val['username'];?></a> <?php if($val['status'] == 0) echo '<span style="color:#c7254e;text-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);" title="待审核">「审」</span>'; ?></td>
-			<td><?php echo $val['email_status'] ? $val['email'].' <span style="color:green;text-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);" title="已验证">「验」</span>' : $val['email'];?></td>
+			<td class="text-l"><?php if($val['vip']) echo '<img src="'.STATIC_URL.'images/vip.gif" title="vip会员"> ';?><?php if($val['status'] == 2) echo '<img src="'.STATIC_URL.'images/icon_padlock.gif" title="用户已锁定"> '; echo '<a href="'.U('edit',array('userid'=>$val['userid'])).'" style="text-decoration:none"><img src="'.$avatar.'" height="25" class="radius" onmouseover="yzm_img_browse(this, \''.$avatar.'\')" onmouseout="layer.closeAll(\'tips\')"> '.$val['username'];?></a> <?php if($val['status'] == 0) echo '<span style="color:#c7254e;text-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);" title="待审核">「审」</span>'; ?></td>
+			<td class="text-l"><?php echo $val['email_status'] ? $val['email'].' <span style="color:green;text-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);" title="已验证">「验」</span>' : $val['email'];?></td>
 			<td><?php echo get_groupname($val['groupid']);?></td>
 			<td><?php echo $val['lastdate'] ? date("Y-m-d H:i:s",$val['lastdate']) : '从未登录';?></td>
 			<td><?php echo $val['loginnum']?></td>
@@ -86,6 +87,7 @@
 		?>
     </tbody>
   </table>
+  <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
   </form>
   <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>

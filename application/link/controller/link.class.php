@@ -108,11 +108,15 @@ class link extends common{
 	 * 审核
 	 */
 	public function adopt() {
-		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-		if(D('link')->update(array('status'=>1), array('id' => $id))){
-			showmsg(L('operation_success'), '', 1);
-		}else{
-			showmsg(L('operation_failure'));
+		if(is_post()){
+			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+			
+			if(D('link')->update(array('status'=>$value), array('id' => $id))){
+				return_json(array('status'=>1,'message'=>L('operation_success')));
+			}else{
+				return_json();
+			}
 		}
 	}
 

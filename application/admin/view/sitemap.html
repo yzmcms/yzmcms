@@ -10,7 +10,7 @@
 	<div class="pd-5 mt-20 formdoby_normal">
 		<form method="post" action="<?php echo U('make_sitemap');?>" id="myform" onsubmit="return do_submit()">
 		<ul>
-			<li><label>选择模型：</label>
+			<li class="yzm-explain-box"><label>选择模型：</label>
 				<select name="model" class="select" style="width:200px">
 				<option value="0">所有模型</option>
 				<?php 
@@ -19,9 +19,9 @@
 				}
 				?>
 				</select>		
-				<span style="margin-left:15px;font-size:12px;color:#888">选择要生成地图的模型</span>	
+				<span class="yzm-explain">选择要生成地图的模型</span>
 			</li> 
-			<li><label>优先权：</label>
+			<li class="yzm-explain-box"><label>优先权：</label>
 				<select name="priority" class="select" style="width:200px">
 				<option value="1">1</option>
 				<option value="0.9">0.9</option>
@@ -34,9 +34,9 @@
 				<option value="0.2">0.2</option>
 				<option value="0.1">0.1</option>
 				</select>		
-				<span style="margin-left:15px;font-size:12px;color:#888">搜索引擎抓取的优先级。数字越大，优先级越高</span>	
+				<span class="yzm-explain">搜索引擎抓取的优先级。数字越大，优先级越高</span>
 			</li> 
-			<li><label>更新频率：</label>
+			<li class="yzm-explain-box"><label>更新频率：</label>
 				<select name="changefreq" class="select" style="width:200px">
 				<option value="always">一直更新</option>
 				<option value="hourly">小时</option>
@@ -46,7 +46,7 @@
 				<option value="yearly">年</option>
 				<option value="never">从不更新</option>
 				</select>	
-				<span style="margin-left:15px;font-size:12px;color:#888">您的网站内容的更新频率</span>		
+				<span class="yzm-explain">您的网站内容的更新频率</span>
 			</li> 
 			<li><label>限制数量：</label>
 			 	<label><input name="limit_total" type="radio" value="0" checked > 不限制</label>
@@ -61,14 +61,14 @@
 			<?php if($is_make_xml){ ?>
 			<li><label>sitemap.xml：</label>
 			<span>更新时间：<?php echo $make_xml_time;?></span>
-			<a href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('type'=>0));?>')" class="btn btn-danger size-MINI radius ml-5" >删除文件</a>
+			<a href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('type'=>0));?>', 1)" class="btn btn-danger size-MINI radius ml-5" >删除文件</a>
 			<a href="<?php echo SITE_URL.'sitemap.xml';?>" target="_blank" class="btn btn-success size-MINI radius ml-5" >点击查看</a>
 			</li>
 			<?php } ?>
 			<?php if($is_make_txt){ ?>
 			<li><label>sitemap.txt：</label>
 			<span>更新时间：<?php echo $make_txt_time;?></span>
-			<a href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('type'=>1));?>')" class="btn btn-danger size-MINI radius ml-5" >删除文件</a>
+			<a href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('type'=>1));?>', 1)" class="btn btn-danger size-MINI radius ml-5" >删除文件</a>
 			<a href="<?php echo SITE_URL.'sitemap.txt';?>" target="_blank" class="btn btn-success size-MINI radius ml-5" >点击查看</a>
 			</li>
 			<?php } ?>
@@ -79,7 +79,7 @@
 </div>
 <script type="text/javascript">
 	function do_submit(){
-		layer.msg('正在生成中……', {icon:16, shade:0.21, shadeClose:true, time:false});
+		layer.msg('<span id="yzm_message">正在生成中……</span>', {icon:16, shade:0.21, shadeClose:true, time:false});
 	    do_request(1, 0);		 
 		return false;			
 	}
@@ -96,6 +96,7 @@
 						location.reload();
 					});
 			    }else if(msg.status == 2){
+			    	$("#yzm_message").html(msg.message);
 					do_request(msg.page, msg.total);
 				}else{
 					layer.msg(msg.message, {icon:2});

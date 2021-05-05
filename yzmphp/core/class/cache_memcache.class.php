@@ -88,4 +88,3 @@ class cache_memcache {
 		return $this->link->flush();
 	}
 }
-?>

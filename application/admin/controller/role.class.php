@@ -111,7 +111,7 @@ class role extends common {
 			$priv_data = D('admin_role_priv')->field('roleid,m,c,a')->where(array('roleid'=>$roleid))->select();
 			foreach($data as $k=>$v) {
 				$data[$k]['style'] = $v['parentid'] ? 'child' : 'top';
-				$data[$k]['add'] = !$v['parentid'] ? '<i class="Hui-iconfont parentid" action="2">&#xe67e;</i> ' : '';
+				$data[$k]['add'] = $v['parentid'] ? '' : '<i class="yzm-iconfont parentid" action="2">&#xe653;</i> ';
 				$data[$k]['level'] = $this->get_level($v['id'],$data);
 				$data[$k]['checked'] = ($this->is_checked($v,$roleid,$priv_data))? ' checked' : '';
 			}		

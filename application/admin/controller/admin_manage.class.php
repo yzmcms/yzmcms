@@ -50,10 +50,6 @@ class admin_manage extends common {
 			$res = $admin->where(array('adminname'=>$_POST["adminname"]))->find();
 			if($res) return_json(array('status'=>0,'message'=>L('user_already_exists')));
 			
-			if(!check_token($_POST['token'])){
-				return_json(array('status'=>0,'message'=>'TOKEN'.L('error')));
-			}
-			
 			$_POST['password'] = password($_POST['password']);
 			$r = $admin_role->field('rolename')->where(array('roleid' => $_POST['roleid']))->find();
 			$_POST['rolename'] = $r['rolename'];	
@@ -92,10 +88,6 @@ class admin_manage extends common {
 			
 			if($_POST["email"]!=''){
 				if(!is_email($_POST["email"])) return_json(array('status'=>0,'message'=>L('mail_format_error')));
-			}
-			
-			if(!check_token($_POST['token'])){
-				return_json(array('status'=>0,'message'=>'TOKEN'.L('error')));
 			}
 
 			$r = $admin_role->field('rolename')->where(array('roleid' => $_POST['roleid']))->find();

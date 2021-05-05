@@ -11,22 +11,25 @@
 			 <li><label>昵称：</label><input type="text" class="input" name="nickname" value="" placeholder="长度为30个字符以内"></li>
 			 <li><label><span class="c-red">*</span>邮箱：</label><input type="email" class="input" name="email" value="" placeholder="@"></li>
 			 <li><label><span class="c-red">*</span>会员组：</label>
-			 <span class="span_input"><select  name="groupid" style="margin-left:0px;">
+			 <span class="span_input yzm-explain-box"><select  name="groupid" style="margin-left:0px;">
 			  <?php 
 				foreach($member_group as $val){
 					echo '<option value="'.$val['groupid'].'">'.$val['name'].'</option>';
 				}
 			   ?>			
-			 </select> <span class="c-red">*会员组别影响到经验</span></span>
+			 </select>
+			 <span class="yzm-explain">会员组别影响到经验</span>
+			</span>
 			 </li>
 			 <li><label><span class="c-red">*</span>积分：</label><input type="text" class="input" name="point" value="0" placeholder="请输入积分"></li>
 			 <li><label>vip会员：</label>
 			 <span class="span_input" title="vip会员可以免积分查看付费内容">是否为vip会员 <input name="vip" value="1" type="checkbox">&nbsp;
 			 过期时间 <input type="text" class="input-text laydate-icon" style="width:175px;height:30px;" name="overduedate" value="" onclick="laydate({istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"></span>
 			 </li>
-			 <li><?php echo creat_token();?><input type="hidden" name="dosubmit" value="1">
-			 <input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
-			 <input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			 <li>
+			 	<input type="hidden" name="dosubmit" value="1">
+			 	<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
+			 	<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
 			 </li>
 		</ul>
 	</form>

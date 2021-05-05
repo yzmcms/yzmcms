@@ -16,8 +16,25 @@
 <link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL;?>admin/yzm_admin/css/H-ui.admin.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL;?>plugin/Hui-iconfont/iconfont.min.css" />
 <link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL;?>admin/yzm_admin/skin/default/skin.css" id="skin" />
-<link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL;?>admin/yzm_admin/css/yzm.admin.style.css?v=yzmcms2021" />
+<link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL;?>iconfont/iconfont.css?v=<?php echo YZMCMS_VERSION;?>" />
+<link rel="stylesheet" type="text/css" href="<?php echo STATIC_URL;?>admin/yzm_admin/css/yzm.admin.style.css?v=<?php echo YZMCMS_VERSION;?>" />
 <!--[if IE 6]>
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/DD_belatedPNG_0.0.8a-min.js" ></script>
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
+<script type="text/javascript">
+	var yzm_csrf_token = '<?php echo $_SESSION['yzm_csrf_token'];?>';
+	<?php if($_SESSION['yzm_csrf_token']) { ?>
+	window.onload = function() {
+		var html_form = document.forms;
+		var num = html_form.length;
+		for (var i = 0; i < num; i++) {
+			var newNode = document.createElement("input");
+			newNode.name = 'yzm_csrf_token';
+			newNode.type = 'hidden';
+			newNode.value = yzm_csrf_token;
+			html_form[i].appendChild(newNode);
+		}
+	}
+	<?php } ?>
+</script>

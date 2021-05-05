@@ -1,9 +1,9 @@
 {m:include "member","header"}
 <link rel="stylesheet" type="text/css" href="{STATIC_URL}plugin/Hui-iconfont/iconfont.min.css" />
 <script type="text/javascript" src="{STATIC_URL}js/yzm_common.js"></script>
-<script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/1.4.3.3/ueditor.config.js"></script>
-<script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/1.4.3.3/ueditor.all.min.js"> </script>
-<script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/1.4.3.3/lang/zh-cn/zh-cn.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/ueditor.config.js"></script>
+<script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/ueditor.all.min.js"> </script>
+<script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/lang/zh-cn/zh-cn.js"></script>
 <div class="yzm_member_container main">
     {m:include "member","left"}
     <div class="main_right">
@@ -22,8 +22,8 @@
                         <td><input type="text" name="title" value="{$data['title']}" required class="input w370"><span class="red">*</span></td>
                     </tr>
                     <tr>
-                        <td>来源：</td>
-                        <td><input type="text" name="copyfrom" value="{$data['copyfrom']}" class="input w370"></td>
+                        <td>关键字：</td>
+                        <td><input type="text" name="keywords" value="{$data['keywords']}" class="input w370"></td>
                     </tr>
                     <tr>
                         <td>缩略图：</td>

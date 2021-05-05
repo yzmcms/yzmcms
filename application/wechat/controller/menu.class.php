@@ -123,9 +123,9 @@ class menu extends wechat_common{
         $json_arr = https_request($url, $str);
 
 		if($json_arr['errcode'] == 0){
-			showmsg('操作成功，请清除微信端缓存后查看！', 'stop');
+			return_json(array('status'=>1,'message'=>'操作成功，请清除微信端缓存后查看！'));
 		}else{
-			showmsg(L('operation_failure').$json_arr['errmsg'], 'stop');
+			return_json(array('status'=>0,'message'=>L('operation_failure').$json_arr['errmsg']));
 		}
     }
 
@@ -154,9 +154,9 @@ class menu extends wechat_common{
 		
 		if($json_arr['errcode'] == 0){
 			D('wechat_menu')->delete(array('1' => 1));
-			showmsg(L('operation_success'), U('init'), 1);
+			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}else{
-			showmsg(L('operation_failure').$json_arr['errmsg'], 'stop');
+			return_json(array('status'=>0,'message'=>L('operation_failure').$json_arr['errmsg']));
 		}
 		
     }

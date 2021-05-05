@@ -1,5 +1,5 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
-<link rel="stylesheet" href="<?php echo STATIC_URL;?>plugin/uploadify/3.2.1/uploadify.css"/>
+<link rel="stylesheet" href="<?php echo STATIC_URL;?>plugin/webuploader/webuploader.css"/>
 <title>附件上传 - YzmCMS内容管理系统</title>
 </head>
 <body>
@@ -7,17 +7,19 @@
 	<div id="tab_system" class="HuiTab">
 		<div class="tabBar cl"><span>上传文件</span><span>站内文件</span></div>
 		<div class="tabCon">
-			<span class="yzmcms_notice">类型:  <?php echo $type;?></span>
-			<span class="yzmcms_notice">单文件最大: <span class="c-red"><?php echo $s;?></span> ，数量: <span class="c-red"><?php echo $n;?></span>个</span>
-			<input id="file_upload" name="file_upload" type="file" multiple="true">
-			<div id="uploadlist" class="imagelist">
+			<span class="yzm-notice">类型:  <?php echo $type;?></span>
+			<span class="yzm-notice">单文件最大: <span class="c-red"><?php echo $s;?></span> ，数量: <span class="c-red"><?php echo $n;?></span>个</span>
+			<div id="fileList" class="yzm-uploader-list">
+			</div>
+			<div id="filePicker" class="yzm-upload-button">选择文件</div>
+			<div id="uploadlist" class="yzm-imagelist">
 				<ul>
 				</ul>
 			</div>
 		</div>
 
 		<div class="tabCon">
-			<div class="imagelist">
+			<div class="yzm-imagelist">
 				<ul>
 					<?php
 					foreach($data as $val){
@@ -31,7 +33,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="bottom_button">
+	<div class="yzm-bottom-button">
 		<input type="button" class="btn btn-primary radius" id="determine" value="&nbsp;&nbsp;确定&nbsp;&nbsp;">
 		<input type="button" class="btn btn-default radius" id="cancel" value="&nbsp;&nbsp;取消&nbsp;&nbsp;">
 	</div>
@@ -39,42 +41,32 @@
 <div id="att_status" class="hidden"></div>
 <div id="att_titles" class="hidden"></div>
 <?php include $this->admin_tpl('footer', 'admin');?>
-<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/uploadify/3.2.1/jquery.uploadify.min.js"></script>
 <script type="text/javascript">
+	var STATIC_URL = '<?php echo STATIC_URL;?>';
+	var $ = jQuery, $list = $('#fileList'), uploader;
+	var yzm_uploader_config = {
+	    auto: true,
+	    swf: STATIC_URL + 'plugin/ueditor/third-party/webuploader/Uploader.swf',
+	    server: '<?php echo U('upload');?>',
+	    pick: '#filePicker',
+	    fileNumLimit : <?php echo $n;?>,
+	    fileSingleSizeLimit : <?php echo 1024*get_config('upload_maxsize');?>,
+	    accept: {
+	    	<?php if($t==1){ ?>
+	        title: '图片',
+	        extensions: '<?php echo $type;?>',
+	        mimeTypes: 'image/*'
+	    	<?php }else{ ?>
+	    	extensions: '<?php echo $type;?>'
+	    	<?php } ?>
+	    },
+	    formData : {
+	        'filetype' : '<?php echo $t;?>',
+	        'module' : '<?php echo $module;?>',
+	    }
+	};
+
 $(function(){
-	$('#file_upload').uploadify({
-		'width': 65,
-		'height': 25,
-		'uploadLimit' : <?php echo $n;?>, 
-		'buttonText': '选择文件',
-		'fileSizeLimit': '<?php echo $s;?>',
-		'fileTypeExts' : '<?php echo $type;?>',
-		'swf'      : '<?php echo STATIC_URL;?>plugin/uploadify/3.2.1/uploadify.swf',
-		'uploader' : '<?php echo U('upload');?>',
-		'successTimeout': 10,  
-		'removeTimeout' : 0.2, 
-		'onFallback':function(){
-			layer.alert('您未安装FLASH控件，无法上传图片！请安装FLASH控件后再试。');
-		},
-		'formData' : { 
-			'<?php echo session_name();?>' : '<?php echo session_id();?>',
-            'type' : '<?php echo $t;?>',
-            'module' : '<?php echo $module;?>',
-        },
-		'onUploadSuccess' : function(file, data, response) {
-			data = $.parseJSON(data);
-			
-			if(data.status == 1){
-				var att_url = data.filetype == 'jpg' || data.filetype == 'png' || data.filetype == 'gif' || data.filetype == 'jpeg' ? data.msg : (data.filetype == 'zip' || data.filetype == 'rar' ? '<?php echo STATIC_URL;?>images/ext/rar.png' : '<?php echo STATIC_URL;?>images/ext/blank.png');
-				var li='<li><a href="javascript:;" class="on" onclick="javascript:album_cancel(this)"><img src="'+att_url+'" class="img_src" path="'+data.msg+'" title="'+data.title+'"/><img src="<?php echo STATIC_URL;?>images/checked.gif" class="checkd"></a></li>';
-				$("#uploadlist ul").prepend(li);
-				$('#att_status').append('|'+data.msg);
-				$('#att_titles').append('|'+data.title);
-			}else{
-				layer.alert(data.msg); 
-			}
-		}
-	});
 	
 	var index = parent.layer.getFrameIndex(window.name);
 	$('#determine').on('click', function(){
@@ -116,48 +108,9 @@ $(function(){
 	$.Huitab("#tab_system .tabBar span","#tab_system .tabCon","current","click","<?php echo isset($_GET['tab']) ? intval($_GET['tab']) : '0'?>");
 });
 
-function album_cancel(obj){
-	var path = $(obj).children(".img_src").attr("path");
-	if($(obj).hasClass('on')){
-		$(obj).removeClass("on");
-		$(obj).children(".checkd").addClass("hidden");
-		var length = $("a[class='on']").children(".img_src").length;
-		var strs = '', tits = '';
-		for(var i=0;i<length;i++){
-			strs += '|'+$("a[class='on']").children(".img_src").eq(i).attr('path');
-			tits += '|'+$("a[class='on']").eq(i).attr('title');
-		}
-		$('#att_status').html(strs);
-		$('#att_titles').html(tits);
-		
-	}else{
-		var num = $('#att_status').html().split('|').length;
-		var file_upload_limit = '<?php echo $n;?>';
-		if(num > file_upload_limit) {layer.alert('不能选择超过'+file_upload_limit+'个附件'); return false;}
-		$(obj).addClass("on");
-		$(obj).children(".checkd").removeClass("hidden");
-		$('#att_status').append('|'+path);
-		$('#att_titles').append('|'+$(obj).attr("title"));
-	}
-}
-
-function isimg(url){
-	var sTemp;
-	var b = false;
-	var opt = "jpg|gif|png|jpeg";
-	var s=opt.toUpperCase().split("|");
-	for (var i=0;i<s.length ;i++ ){
-	sTemp = url.substr(url.length-s[i].length-1);
-	sTemp = sTemp.toUpperCase();
-	s[i] = "."+s[i];
-	if (s[i]==sTemp){
-		b = true;
-		break;
-	}
-	}
-	return b;
-}
 </script>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/webuploader/webuploader.nolog.min.js"></script>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/webuploader/yzm.upload.js"></script>
 
 </body>
 </html>

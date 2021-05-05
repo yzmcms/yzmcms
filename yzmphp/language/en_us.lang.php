@@ -16,6 +16,7 @@ return array(
 	'jump_to' => 'Jump to',
 	'page_number' => 'Page number',
 	'lose_parameters' => 'Lose parameters',
+	'token_error' => 'Token error',
 	'password_error' => 'Password error',
 	'code_error' => 'Code error',
 	'login_website' => 'Login website',

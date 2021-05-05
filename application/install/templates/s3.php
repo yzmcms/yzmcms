@@ -35,7 +35,7 @@
 									<!-- <option value="mysql" >MYSQL</option> -->
 								</select>
 								</td>
-                                <td><div id="J_install_tip_dbhost"><span class="gray">推荐使用PDO驱动</span></div></td>
+                                <td><div id="J_install_tip_dbhost"><span class="gray">均支持MySql数据库，推荐使用PDO驱动</span></div></td>
                             </tr>
                             <tr>
                                 <td class="tar">数据库服务器：</td>
@@ -65,7 +65,7 @@
                             <tr>
                                 <td class="tar">数据库表前缀：</td>
                                 <td><input type="text" name="dbprefix" id="dbprefix" value="yzm_" class="input"></td>
-                                <td><div id="J_install_tip_dbprefix"><span class="gray">如无特殊需要,请不要修改</span></div></td>
+                                <td><div id="J_install_tip_dbprefix"><span class="gray">如无特殊需要，请不要修改</span></div></td>
                             </tr>
                         </table>
                         <table width="100%">

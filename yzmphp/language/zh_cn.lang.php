@@ -16,6 +16,7 @@ return array(
 	'jump_to' => '跳到',
 	'page_number' => '页码',
 	'lose_parameters' => '缺少参数！',
+	'token_error' => 'Token验证失败！',
 	'password_error' => '密码错误！',
 	'code_error' => '验证码不正确！',
 	'login_website' => '请先登录！',

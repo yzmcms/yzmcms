@@ -5,7 +5,7 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span> 自定义配置 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
   <div class="explain"> 
-       <p>自定义配置：用户可以根据需要自己添加配置，所添加的配置信息与系统配置信息等效，如添加的配置名为“qq”，则前台调用方法为{$site[qq]}。</p>
+       <p>自定义配置：用户可以根据需要自己添加配置，所添加的配置信息与系统配置信息等效.</p>
   </div>
   <div class="cl pd-5 bg-1 bk-gray mt-20"> 
 	  <span class="l">
@@ -20,13 +20,13 @@
   <table class="table table-border table-bordered table-bg table-hover table-sort">
     <thead>
       <tr class="text-c">
-	    <th width="25"><input type="checkbox"></th>
+	    <th width="30"><input type="checkbox"></th>
 		<th>配置名称</th>
         <th>配置类型</th>
         <th>配置值</th>
 		<th>简洁说明</th>
-        <th>状态</th>
-        <th width="50">操作</th>
+        <th>启用</th>
+        <th width="200">操作</th>
       </tr>
     </thead>
     <tbody>
@@ -38,19 +38,41 @@
 			<td><?php echo $val['name']?></td>
 			<td><?php echo $val['fieldtype']?></td>
 			<td><?php echo str_cut(htmlspecialchars($val['value']),80); ?></td>
-			<td><?php echo htmlspecialchars($val['title'])?></td>
-			<td><?php echo !$val['status'] ? '<span class="label radius">已禁用</span>' : '<span class="label label-success radius">已启用</span>';?></td>
-			<td><a style="text-decoration:none" onclick="yzm_open('配置编辑','<?php echo U('user_config_edit',array('id'=>$val['id']));?>','700','500')" href="javascript:;" title="编辑"><i class="Hui-iconfont">&#xe6df;</i></a></td>
+			<td><?php echo $val['title'] ? htmlspecialchars($val['title']) : '无';?></td>
+			<td>
+				<?php if($val['status']){ ?>
+				<span class="yzm-status-enable" data-field="status" data-id="<?php echo $val['id']?>" onclick="yzm_change_status(this,'<?php echo U('public_change_status');?>')"><i class="yzm-iconfont">&#xe81f;</i>是</span>
+				<?php }else{ ?>
+				<span class="yzm-status-disable" data-field="status" data-id="<?php echo $val['id']?>" onclick="yzm_change_status(this,'<?php echo U('public_change_status');?>')"><i class="yzm-iconfont">&#xe601;</i>否</span>
+				<?php } ?>
+			</td>
+			<td>
+				<a title="编辑配置" href="javascript:;" onclick="yzm_open('编辑配置','<?php echo U('user_config_edit',array('id'=>$val['id']));?>','700','500')" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe6df;</i> 编辑配置</a> 
+				<a title="复制标签" href="javascript:;" onclick="yzm_copy('{$site[<?php echo $val['name']?>]}')" class="yzm-box-img btn-success"><i class="Hui-iconfont">&#xe6ea;</i> 复制标签</a>
+			</td>
 		  </tr>		
 		<?php 
 		}
 		?>
     </tbody>
   </table>
+  <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
   </form>
   <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>
 </div>
+<input id="copytext" type="text" style="width:1px;height:1px;opacity:0">
 <?php include $this->admin_tpl('footer');?>
+<script type="text/javascript">
+	function yzm_copy(val) {
+		$("#copytext").val(val).select();
+        try { var state = document.execCommand("copy"); } catch (err) { var state = false; }
+        if (state) {
+            layer.msg('复制成功！', {icon:1,time:1000});
+        } else {
+            layer.msg('复制失败，请更换浏览器重试！', {icon:2});
+        }
+	}
+</script>
 </body>
 </html>

@@ -1,9 +1,13 @@
 <?php
+/**
+ * 系统附件上传管理
+ *
+ * @author           袁志蒙  
+ * @license          http://www.yzmcms.com
+ * @lastmodify       2021-03-29 
+ */
+
 defined('IN_YZMPHP') or exit('Access Denied');
-		
-//此处为解决Uploadify在火狐下出现http 302错误,重新设置SESSION
-$session_name = session_name();
-if(isset($_POST[$session_name])) session_id($_POST[$session_name]);
 
 new_session_start();
 yzm_base::load_sys_class('page','',0);
@@ -23,15 +27,9 @@ class api{
 		$this->groupid = get_cookie('_groupid') ? intval(get_cookie('groupid')) : 0;
 
 		//判断是否登录
-		if($this->userid==0){
-			showmsg(L('login_website'),U('member/index/login'),1);
+		if(!$this->userid){
+			showmsg(L('login_website'), U('member/index/login'), 1);
 		}
-		
-		//判断是否有权限
-		//if($this->isadmin==0 && !$grouplist[$this->groupid]['allowattachment']){
-		//if($this->userid==0){
-			//showmsg(L('no_permission_to_access'),U('admin/index/login'),1);
-		//}
 		
 	}	
 	
@@ -48,12 +46,12 @@ class api{
 	 */	
 	public function upload(){ 
 
-		//$filename = isset($_POST['filename']) ? $_POST['filename'] : 'Filedata';
-		$filename = 'Filedata';
-		$type = isset($_POST['type']) ? intval($_POST['type']) : 1;
+		//$filename = isset($_POST['filename']) ? $_POST['filename'] : 'file';
+		$filename = 'file';
+		$filetype = isset($_POST['filetype']) ? intval($_POST['filetype']) : 1;
 		$module = isset($_POST['module']) ? htmlspecialchars($_POST['module']) : '';
 		$option = array();
-		if($type == 1){
+		if($filetype == 1){
 			$option['allowtype'] = array('gif', 'jpg', 'png', 'jpeg');
 		}else{
 			$option['allowtype'] = $this->_get_upload_types();
@@ -97,9 +95,9 @@ class api{
 		$s = round(get_config('upload_maxsize')/1024, 2).'MB';  //允许上传附件大小
 		
 		if($t == 1){
-			$type = '*.jpg; *.jpeg; *.png; *.gif;';
+			$type = 'png,gif,jpg,jpeg';
 		}else{
-			$type = '*.'.join(',*.', $this->_get_upload_types());
+			$type = join(',', $this->_get_upload_types());
 		}
 		
 		//如果不是管理员，只列出自己上传的附件
@@ -111,7 +109,7 @@ class api{
 		$parameter['tab'] = 1;
 		$page = new page($total, 8, $parameter);
 		$data = $attachment->field('isimage,originname,filename,filepath,fileext')->where($where)->order('id DESC')->limit($page->limit())->select();
-		include get_config('ishtml5') ? $this->admin_tpl('upload_box_html5') : $this->admin_tpl('upload_box'); 
+		include $this->admin_tpl('upload_box'); 
 	}
 		
 

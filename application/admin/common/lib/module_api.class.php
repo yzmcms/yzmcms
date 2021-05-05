@@ -1,4 +1,11 @@
 <?php
+/**
+ * YzmCMS内容管理系统
+ * 商业用途务必到官方购买正版授权, 以免引起不必要的法律纠纷.
+ * 功能定制QQ: 21423830
+ * 版权所有 WWW.YZMCMS.COM
+ */
+
 defined('IN_YZMPHP') or exit('Access Denied'); 
 
 class module_api {

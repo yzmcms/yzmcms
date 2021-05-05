@@ -27,10 +27,10 @@ class admin_content extends common {
 	public function public_preview() {
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-		if(!$catid || !$id) showmsg('参数错误！','stop');
+		if(!$catid || !$id) showmsg(L('lose_parameters'),'stop');
 		
 		$category = get_category($catid);
-		if(!$category) showmsg('内容不存在！','stop');
+		if(!$category) showmsg('栏目不存在！','stop');
 		$modelid = $category['modelid'];
 		$template = $category['show_template'];
 		
@@ -107,7 +107,7 @@ class admin_content extends common {
 					$pay->insert(array('trade_sn'=>create_tradenum(), 'userid'=>$data['userid'], 'username'=>$data['username'], 'money'=>$publish_point, 'creat_time'=>SYS_TIME, 'msg'=>'投稿奖励','remarks'=>$catid.'_'.$id, 'type'=>'1', 'status'=>'1', 'ip'=>$ip));		
 				}
 			}
-			showmsg(L('operation_success'));			
+			showmsg(L('operation_success'), '', 1);
 		}
 	}
 	

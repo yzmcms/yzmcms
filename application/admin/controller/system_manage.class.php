@@ -164,7 +164,7 @@ class system_manage extends common {
 		if($_POST && is_array($_POST['id'])){
 			if(D('config')->delete($_POST['id'], true)){
 				delcache('configs');
-				showmsg(L('operation_success'));
+				showmsg(L('operation_success'), '', 1);
 			}else{
 				showmsg(L('operation_failure'));
 			}
@@ -220,6 +220,24 @@ class system_manage extends common {
 			include $this->admin_tpl('data_import');	
 		}
 	}
+
+
+	/**
+	 * 启用禁用
+	 */
+	public function public_change_status() {
+		if(is_post()){
+			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+			
+			if(D('config')->update(array('status'=>$value), array('id' => $id))){
+				delcache('configs');
+				return_json(array('status'=>1,'message'=>L('operation_success')));
+			}else{
+				return_json();
+			}
+		}
+	}
 	
 	
 	/*
@@ -237,7 +255,7 @@ class system_manage extends common {
 				if($val){
 				echo form::$fieldtype('value', $val, string2array($setting));
 				}else{
-				echo '<textarea name="setting" class="textarea w_300"  placeholder="选项用“|”分开，如“男|女|人妖”"></textarea> &nbsp;<input type="text" name="value" class="input" style="width:180px" placeholder="默认值">';
+				echo '<textarea name="setting" class="textarea w_300"  placeholder="多个选项用“|”分开，如“男|女|未知”"></textarea> &nbsp;<input type="text" name="value" class="input" style="width:180px" placeholder="默认值">';
 				}
 		}elseif($fieldtype == 'image' || $fieldtype == 'attachment'){
 				echo form::$fieldtype('value', $val);

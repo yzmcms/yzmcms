@@ -7,7 +7,7 @@
  * @lastmodify       2018-05-05
  */
 
-final class cache_factory {
+class cache_factory {
 	
 	public static $instances = null;
 	public static $class = null;
@@ -65,4 +65,3 @@ final class cache_factory {
 	}
 
 }
-?>

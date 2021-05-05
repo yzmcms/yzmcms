@@ -12,7 +12,7 @@
             <div class="section">
                 <div class="main cc">
 		<div class="pact">
-				  <p>安装环境：PHP5+MYSQL5以上</p>
+				  <p>安装环境：PHP5.2+，推荐PHP7+，支持PHP8。</p>
 				  <p style="color:red;margin:5px 0;">为了使你正确并合法的使用本软件，请你在使用前务必阅读清楚下面的协议条款：</p>
 				  <p><strong>一、本授权协议适用于 YzmCMS内容管理系统所有版本，YzmCMS内容管理系统 官方拥有对本授权协议的最终解释权。</strong></p>
 				  <br>

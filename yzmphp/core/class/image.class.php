@@ -155,7 +155,7 @@ class image {
      * @param   integer $x      裁剪区域x坐标
      * @param   integer $y      裁剪区域y坐标
      */
-    public function crop($image, $filename = '', $w, $h, $x = 0, $y = 0 ){
+    public function crop($image, $filename, $w, $h, $x = 0, $y = 0 ){
 		if(!$this->check($image)) return false;
 		$filename = $filename ? $filename : $image;
 		$filepath = rtrim(dirname($filename), '/').'/';

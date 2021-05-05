@@ -36,7 +36,6 @@ class pay extends common {
 			$data['enabled'] = intval($_POST['enabled']);
 			$data['config'] = array2string($_POST['config']);
 			if(D('pay_mode')->update($data, array('id'=>$id))){
-				delcache('',true);
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();
@@ -46,6 +45,24 @@ class pay extends common {
 			$data = D('pay_mode')->where(array('id'=>$id))->find();
 			$config = string2array($data['config']);
 			include $this->admin_tpl($data['template']);			
+		}
+	}
+
+
+	/**
+	 * 禁用启用
+	 */
+	public function public_change_status() {
+		if(is_post()){
+			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+			$value = $value ? 0 : 1;
+			
+			if(D('pay_mode')->update(array('enabled'=>$value), array('id' => $id))){
+				return_json(array('status'=>1,'message'=>L('operation_success')));
+			}else{
+				return_json();
+			}
 		}
 	}
 

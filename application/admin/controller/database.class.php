@@ -31,7 +31,7 @@ class database extends common {
 	/**
 	 * 数据库备份列表
 	 */
-	public function databack_list() { 
+	public function databack_list() {
 		$data = array();
 		$list = glob($this->config['path'].'*');
 		foreach($list as $name){
@@ -45,6 +45,7 @@ class database extends common {
                 $info['part'] = $name[7];
 				$info['time'] = strtotime($info['backtime']);
                 $data[] = $info;
+
             } 
 		}
 
@@ -56,11 +57,11 @@ class database extends common {
 	 * 优化表
 	 */
 	public function public_optimize() {
-		$tables = isset($_POST['tables']) ? $_POST['tables'] : trim($_GET['tables']);
-		if(!$tables) showmsg('请指定要优化的表!');
+		$tables = input('post.tables');
+		if(!$tables) return_json(array('status'=>0, 'message'=>L('lose_parameters')));
 		$tables = is_array($tables) ? implode(',',$tables) : $tables;
 		D('admin')->query('OPTIMIZE TABLE '.$this->_safe_replace($tables));
-		showmsg(L('operation_success'));
+		return_json(array('status'=>1, 'message'=>L('operation_success')));
 	}
 	
 	
@@ -68,11 +69,11 @@ class database extends common {
 	 * 修复表
 	 */
 	public function public_repair() {
-		$tables = isset($_POST['tables']) ? $_POST['tables'] : trim($_GET['tables']);
-		if(!$tables) showmsg('请指定要修复的表!');
+		$tables = input('post.tables');
+		if(!$tables) return_json(array('status'=>0, 'message'=>L('lose_parameters')));
 		$tables = is_array($tables) ? implode(',',$tables) : $tables;
 		D('admin')->query('REPAIR TABLE '.$this->_safe_replace($tables));
-		showmsg(L('operation_success'));
+		return_json(array('status'=>1, 'message'=>L('operation_success')));
 	}
 	
 	
@@ -82,7 +83,7 @@ class database extends common {
 	 */
 	public function public_datatable_structure() {
 		$table = isset($_GET['table']) ? trim($_GET['table']) : '';
-		if(!$table) showmsg('请选择表!');
+		if(!$table) showmsg(L('lose_parameters'), 'stop');
 		$admin = D('admin');
 		$data = $admin->fetch_array($admin->query('SHOW CREATE TABLE '.$this->_safe_replace($table)));
 		include $this->admin_tpl('datatable_structure');
@@ -94,15 +95,15 @@ class database extends common {
 	 * 备份文件删除
 	 */
 	public function databack_del() {
-		if(!isset($_GET['random']) || !isset($_GET['time'])) showmsg('请指定要删除的文件!');
+		if(!isset($_GET['random']) || !isset($_GET['time'])) return_json(array('status'=>0, 'message'=>'请指定要删除的文件'));
 
 		$filename  = $_GET['random'].'-'.date('Ymd-His', intval($_GET['time'])) . '-*.sql*';
 		$path  = $this->config['path'].$filename;
 		array_map('unlink', glob($path));
 		if(count(glob($path))){
-			showmsg('备份文件删除失败，请检查权限！');
+			return_json(array('status'=>0, 'message'=>'备份文件删除失败，请检查权限！'));
 		} else {
-			showmsg('备份文件删除成功！','',1);
+			return_json(array('status'=>1, 'message'=>'备份文件删除成功！'));
 		}
 	}
 	
@@ -111,7 +112,7 @@ class database extends common {
 	 * 备份文件下载
 	 */
 	public function databack_down() {
-		if(!isset($_GET['random']) || !isset($_GET['time']) || !isset($_GET['part'])) showmsg('请指定要下载的文件!');
+		if(!isset($_GET['random']) || !isset($_GET['time']) || !isset($_GET['part'])) showmsg('请指定要下载的文件!', 'stop');
 
 		$filename = $_GET['random'].'-'.date('Ymd-His', intval($_GET['time'])).'-'.intval($_GET['part']).'.sql';
 		if($this->config['compress']) $filename .= '.gz';
@@ -125,9 +126,10 @@ class database extends common {
 	 * 数据库导出(此方法名不能更改export_list，因为在记录系统日志情况下会报错:1062)
 	 */
 	public function export_list() {
+		function_exists('set_time_limit') && set_time_limit(0);
         if(isset($_POST['dosubmit'])){ 
 			$tables = isset($_POST['tables']) ? $_POST['tables'] : '';
-			if(!$tables) showmsg('请指定要备份的表!');
+			if(!$tables) return_json(array('status'=>0, 'message'=>'请指定要备份的表！'));
 			
 			//备份目录不存在，先创建目录
 			if(!is_dir($this->config['path'])){
@@ -139,13 +141,13 @@ class database extends common {
             $lock = $this->config['path'].'backup.lock';
             if(is_file($lock)){
             	if((SYS_TIME - filemtime($lock)) < 600){
-            		showmsg('检测到有一个备份任务正在执行，请稍后再试！', 'stop');
+            		return_json(array('status'=>0, 'message'=>'检测到有一个备份任务正在执行，请稍后再试！'));
             	}
             	@unlink($lock);
             }
 
             $len = @file_put_contents($lock, SYS_TIME); //创建锁文件
-            if(!$len) showmsg($this->config['path'].'目录不存在或不可写，请检查！', 'stop');
+            if(!$len) return_json(array('status'=>0, 'message'=>$this->config['path'].'目录不存在或不可写，请检查！'));
 			
             $backup_cache['backup_config'] = $this->config;
 
@@ -158,46 +160,46 @@ class database extends common {
 
             //缓存要备份的表
             $backup_cache['backup_tables'] = array_map(array($this, '_safe_replace'), $tables);
-			setcache('backup_cache', $backup_cache);
+            setcache('backup_cache', $backup_cache);
 
             //创建备份文件
             $database = new databack($file, $this->config);
             if(false !== $database->create()){
                 $tab = array('id' => 0, 'start' => 0);
-                showmsg('初始化成功！', U('export_list', $tab), 1);
+                return_json(array('status'=>1, 'message'=>'初始化成功！', 'tab'=>$tab));
             } else {
-                showmsg('初始化失败，备份文件创建失败！');
+                return_json(array('status'=>0, 'message'=>'初始化失败，备份文件创建失败！'));
             }
 
-        } elseif (isset($_GET['id']) && isset($_GET['start'])) {
-			
-            $backup_cache = getcache('backup_cache');
-        	if(!is_array($backup_cache)) showmsg(L('illegal_operation'), 'stop');
+        } elseif (isset($_POST['id']) && isset($_POST['start'])) {
+
+        	$backup_cache = getcache('backup_cache');
+        	if(!is_array($backup_cache)) return_json(array('status'=>0, 'message'=>L('illegal_operation')));
         	
             $tables = $backup_cache['backup_tables'];
-			$id = intval($_GET['id']);
-			$start = intval($_GET['start']);
+			$id = intval($_POST['id']);
+			$start = intval($_POST['start']);
             $database = new databack($backup_cache['backup_file'], $backup_cache['backup_config']);
             $start  = $database->backup($tables[$id], $start);
             if(false === $start){  //出错
-                showmsg('备份出错！', 'stop');
+                return_json(array('status'=>0, 'message'=>'备份出错！'));
             } elseif (0 === $start) { //下一表
                 if(isset($tables[++$id])){
                     $tab = array('id' => $id, 'start' => 0);
-                    showmsg('表'.$tables[$id].'备份完成！', U('export_list', $tab), 0.1);
+                    return_json(array('status'=>2, 'message'=>'表'.$tables[$id].'备份完成！', 'tab'=>$tab));
                 } else {   //备份完成，清空缓存
                     @unlink($backup_cache['backup_config']['path'].'backup.lock');
-					delcache('backup_cache');
-                    showmsg('备份全部完成！', U('databack_list'), 2);
+                    delcache('backup_cache');
+                    return_json(array('status'=>1, 'message'=>'备份全部完成！', 'url'=>U('databack_list')));
                 }
             } else {
                 $tab  = array('id' => $id, 'start' => $start[0]);
                 $rate = floor(100 * ($start[0] / $start[1]));
-                showmsg('表'.$tables[$id].'正在备份...('.$rate.'%)', U('export_list', $tab), 0.1);
+                return_json(array('status'=>2, 'message'=>'表'.$tables[$id].'正在备份...('.$rate.'%)', 'tab'=>$tab));
             }
 
         } else {
-            showmsg(L('lose_parameters'), 'stop');
+            return_json(array('status'=>0, 'message'=>L('lose_parameters')));
         }
 	}
 	
@@ -206,6 +208,7 @@ class database extends common {
 	 * 数据库导入
 	 */
 	public function import() {
+		function_exists('set_time_limit') && set_time_limit(0);
 		if(isset($_GET['time'])) {
             $filename  = $_GET['random'].'-'.date('Ymd-His', intval($_GET['time'])) . '-*.sql*';
 			$path  = $this->config['path'].$filename;
@@ -225,43 +228,43 @@ class database extends common {
             if(count($list) === $last[0]){ 
                 //缓存备份列表
 				setcache('backup_list', $list);
-                showmsg('初始化成功！', U('import', array('part' => 1, 'start' => 0)), 1);
+                $data = array('part' => 1, 'start' => 0);
+                return_json(array('status'=>1, 'message'=>'初始化成功！', 'data'=>$data));
             } else {
-                showmsg('备份文件可能已经损坏，请检查！', 'stop');
+                return_json(array('status'=>0, 'message'=>'备份文件可能已经损坏，请检查！'));
             }
-		} elseif(isset($_GET['part']) && isset($_GET['start'])) {
-			$part = intval($_GET['part']);
-			$start = intval($_GET['start']);
+		} elseif(isset($_POST['part']) && isset($_POST['start'])) {
+			$part = intval($_POST['part']);
+			$start = intval($_POST['start']);
             $list  = getcache('backup_list');
-			if(!is_array($list)) showmsg(L('illegal_operation'), 'stop');
+			if(!is_array($list)) return_json(array('status'=>0, 'message'=>L('illegal_operation')));
 				
             $databack = new databack($list[$part], array('path' => $this->config['path'],'compress' => $list[$part][2]));
 
             $start = $databack->import($start);
 
             if(false === $start){
-                showmsg('还原数据出错！', 'stop');
+                return_json(array('status'=>0, 'message'=>'还原数据出错！'));
             } elseif(0 === $start) { //下一卷
                 if(isset($list[++$part])){
                     $data = array('part' => $part, 'start' => 0);
-                    showmsg('正在还原：卷'.$part.'...', U('import', $data), 1);
+                    return_json(array('status'=>2, 'message'=>'正在还原：卷'.$part.'...', 'data'=>$data));
                 } else {
                     delcache('backup_list');
-                    showmsg('还原完成！', U('databack_list'), 2);
+                    return_json(array('status'=>1, 'message'=>'数据还原完成！'));
                 }
             } else {
                 $data = array('part' => $part, 'start' => $start[0]);
                 if($start[1]){
                     $rate = floor(100 * ($start[0] / $start[1]));
-					showmsg('正在还原：卷'.$part.'...('.$rate.'%)', U('import', $data), 1);
+					return_json(array('status'=>2, 'message'=>'正在还原：卷'.$part.'...('.$rate.'%)', 'data'=>$data));
                 } else {
-                    $data['gz'] = 1;
-					showmsg('正在还原：卷'.$part.'...', U('import', $data), 1);
+					return_json(array('status'=>2, 'message'=>'正在还原：卷'.$part.'...', 'data'=>$data));
                 }
             }
 
         } else {
-            showmsg(L('lose_parameters'), 'stop');
+            return_json(array('status'=>0, 'message'=>L('lose_parameters')));
         }
 	}
 

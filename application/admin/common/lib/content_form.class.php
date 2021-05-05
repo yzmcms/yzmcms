@@ -1,4 +1,11 @@
 <?php
+/**
+ * YzmCMS内容管理系统
+ * 商业用途务必到官方购买正版授权, 以免引起不必要的法律纠纷.
+ * 功能定制QQ: 21423830
+ * 版权所有 WWW.YZMCMS.COM
+ */
+
 defined('IN_YZMPHP') or exit('Access Denied'); 
 yzm_base::load_sys_class('form','',0);
 
@@ -6,7 +13,7 @@ class content_form {
 	
 	public $modelid;
 
-    function __construct($modelid) {
+    public function __construct($modelid) {
 		$this->modelid = $modelid;
     }
 
@@ -26,7 +33,7 @@ class content_form {
 						$required = $val['isrequired'] ? ' required" errortips="'.$errortips : '';
 						$string .= $this->tag_start($val['name'], $val['isrequired']).'<textarea name="'.$val['field'].'" class="textarea'.$required.'"  placeholder="'.$val['tips'].'" >'.$val['defaultvalue'].'</textarea>'.$this->tag_end();
 				}elseif($fieldtype == 'select'){
-						$string .= $this->tag_start($val['name'], $val['isrequired']).'<span class="select-box">'.form::select($val['field'],'',string2array($val['setting'])).'</span>'.$this->tag_end();
+						$string .= $this->tag_start($val['name'], $val['isrequired']).'<span class="select-box">'.form::select($val['field'],$val['defaultvalue'],string2array($val['setting'])).'</span>'.$this->tag_end();
 				}elseif($fieldtype == 'radio' || $fieldtype == 'checkbox'){
 						$string .= $this->tag_start($val['name'], $val['isrequired']).form::$fieldtype($val['field'],$val['defaultvalue'],string2array($val['setting'])).$this->tag_end();
 				}elseif($fieldtype == 'datetime'){
