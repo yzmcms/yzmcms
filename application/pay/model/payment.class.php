@@ -15,7 +15,7 @@ class payment {
      */
 	public function pay($paytype, $params){
 		$data = D('pay_mode')->field('enabled,action')->where(array('id'=>$paytype))->find();
-		if(!$data || $data['enabled']==1) showmsg('支付方式不存在或已禁用！', 'stop');
+		if(!$data || !$data['enabled']) showmsg('支付方式不存在或已禁用！', 'stop');
 		$action = $data['action'];
 		if(!$action || !method_exists($this, $action)) showmsg('支付方法不存在！', 'stop');
 		$this->$action($params);

@@ -25,6 +25,24 @@ class form {
 		$string .= ' type="text" value="'.$value.'">';
 		return $string;
 	}
+
+
+	/**
+	 * number 
+	 * @param $name name
+	 * @param $value 默认值 如：0
+	 * @param $required  是否为必填项 默认false
+	 * @param $width  宽度 如：100
+	 * @param $attribute 外加属性
+	 */
+	public static function number($name = '', $value = '', $required=false, $width = 0, $attribute='') {
+		$string = '<input class="yzm-input-text" ';
+		if($width) $string .= ' style="width:'.$width.'px" ';
+		if($required) $string .= ' required="required" ';
+		$string .= ' name="'.$name.'" id="'.$name.'" '.$attribute;
+		$string .= ' type="number" value="'.$value.'">';
+		return $string;
+	}
 		
 
 	/**
@@ -175,6 +193,7 @@ class form {
 	 * @param $n 上传数量
 	 */
 	public static function images($name, $val = '', $n = 20) {
+		$n = $n ? $n : 20;
 		$string = '';
 		$string .= '<fieldset class="fieldset_list"><legend>图片列表</legend><div class="fieldset_tip">您最多可以同时上传 <span style="color:red">'.$n.'</span> 个文件</div>
 					<ul id="'.$name.'" class="file_ul">';
@@ -228,6 +247,7 @@ class form {
 	 * @param $n 上传数量
 	 */
 	public static function attachments($name, $val = '', $n = 20) {
+		$n = $n ? $n : 20;
 		$string = '';
 		$string .= '<fieldset class="fieldset_list"><legend>文件列表</legend><div class="fieldset_tip">您最多可以同时上传 <span style="color:red">'.$n.'</span> 个文件</div>
 					<ul id="'.$name.'" class="file_ul">';
@@ -286,8 +306,8 @@ class form {
 		}		
 		$string .= '<script id="'.$name.'" type="text/plain" style="'.$style.'" name="'.$name.'">'.$val.'</script>
 			<script type="text/javascript"> var ue = UE.getEditor("'.$name.'",{
-            toolbars:[[ "fullscreen","source","|","undo","redo","|",
-            "bold","italic","underline","blockquote","forecolor","|","paragraph","fontsize","|","simpleupload","link","unlink","emotion","date","time","drafts"]],
+            toolbars:[[ "fullscreen","source","|","undo","redo","|", "removeformat", "formatmatch", "pasteplain",
+            "bold","italic","underline","blockquote","forecolor","|","paragraph","fontsize","fontfamily","|","simpleupload","link","unlink","emotion","insertcode","date","time","drafts"]],
             //关闭字数统计
             wordCount:false,
             //关闭elementPath

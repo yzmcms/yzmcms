@@ -64,7 +64,6 @@ class diyform_field extends common{
 			   sql::sql_add_field_mediumtext($this->modeltable, $_POST['field']);  
 		   }else if($_POST['fieldtype'] == 'number'){
 			   sql::sql_add_field_int($this->modeltable, $_POST['field'], intval($_POST['defaultvalue']));  
-			   $_POST['fieldtype'] = 'input';
 		   }else{
 			   sql::sql_add_field($this->modeltable, $_POST['field'], $_POST['defaultvalue'], $_POST['maxlength']);  
 		   }

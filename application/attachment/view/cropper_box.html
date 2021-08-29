@@ -67,7 +67,7 @@
     }
 
     function dosbumit(){
-		layer.msg('正在处理中……', {icon:16,shade:0.21,shadeClose:true,time:999999});
+		layer.msg('正在处理中……', {icon:16,shade:0.21,time:false});
         $.ajax({
             type: 'POST',
             url: '<?php echo U('img_cropper');?>', 

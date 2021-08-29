@@ -38,7 +38,7 @@ return array(
     'cache_type'         => 'file',     	// 缓存类型【暂支持 file , redis , memcache 】
     //缓存类型为file缓存时的配置项
     'file_config'        => array (
-		'cache_dir'      => YZMPHP_PATH.'cache/chche_file/',    //缓存文件目录
+		'cache_dir'      => YZMPHP_PATH.'cache/cache_file/',    //缓存文件目录
 		'suffix'         => '.cache.php',  //缓存文件后缀
 		'mode'           => '2',           //缓存格式：mode 1 为serialize序列化, mode 2 为保存为可执行文件array
     ), 

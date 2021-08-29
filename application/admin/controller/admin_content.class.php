@@ -1,4 +1,14 @@
 <?php
+// +----------------------------------------------------------------------
+// | Site:  [ http://www.yzmcms.com]
+// +----------------------------------------------------------------------
+// | Copyright: 袁志蒙工作室，并保留所有权利
+// +----------------------------------------------------------------------
+// | Author: YuanZhiMeng <214243830@qq.com>
+// +---------------------------------------------------------------------- 
+// | Explain: 这不是一个自由软件,您只能在不用于商业目的的前提下对程序代码进行修改和使用，不允许对程序代码以任何形式任何目的的再发布！
+// +----------------------------------------------------------------------
+
 defined('IN_YZMPHP') or exit('Access Denied'); 
 yzm_base::load_controller('common', 'admin', 0);
 
@@ -137,7 +147,7 @@ class admin_content extends common {
 				if(!$r) showmsg('内容不存在！', 'stop');
 				$all_content->update(array('status' => '2'), array('allid' => $val)); 
 				$data['send_to'] = $r['username'];  //收件人
-				$data['content'] = '您发送的投稿不满足我们的要求，请重新编辑投稿！<br>标题：'.$r['title'].'<br><a href="'.U('member/member_content/edit_through',array('catid'=>$r['catid'], 'id'=>$r['id'])).'" style="color:red">点击这里修改</a><br>'.$data['content_c'];
+				$data['content'] = '您发送的投稿不满足我们的要求，请重新编辑投稿！<br>标题：'.$r['title'].'<br><a href="'.U('member/member_content/edit_through',array('catid'=>$r['catid'], 'id'=>$r['id']), false).'" style="color:red">点击这里修改</a><br>'.$data['content_c'];
 				$message->insert($data);
 			}
 			showmsg(L('operation_success'));			

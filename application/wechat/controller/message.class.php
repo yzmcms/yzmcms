@@ -1,4 +1,14 @@
 <?php
+// +----------------------------------------------------------------------
+// | Site:  [ http://www.yzmcms.com]
+// +----------------------------------------------------------------------
+// | Copyright: 袁志蒙工作室，并保留所有权利
+// +----------------------------------------------------------------------
+// | Author: YuanZhiMeng <214243830@qq.com>
+// +---------------------------------------------------------------------- 
+// | Explain: 这不是一个自由软件,您只能在不用于商业目的的前提下对程序代码进行修改和使用，不允许对程序代码以任何形式任何目的的再发布！
+// +----------------------------------------------------------------------
+
 defined('IN_YZMPHP') or exit('Access Denied'); 
 yzm_base::load_controller('wechat_common', 'wechat', 0);
 yzm_base::load_sys_class('page','',0);
@@ -50,7 +60,7 @@ class message extends wechat_common{
 				$arr['issystem'] = 1;
 				
 				D('wechat_message')->insert($arr);
-				showmsg('操作成功！', U('init'), 1);
+				showmsg(L('operation_success'), U('init'), 1);
 			}else{
 				showmsg('操作失败！'.$json_arr['errmsg'], 'stop');
 			}

@@ -174,7 +174,7 @@
 				  	</td>
 				  </tr>
 				  <?php } ?>
-				  <?php if(!is_file(YZMPHP_PATH.'cache/install.lock')){?>
+				  <?php if(!is_file(YZMPHP_PATH.'cache/install.lock') && is_dir(YZMPHP_PATH.'application/install')){?>
 				  <tr>
 				  	<td>安全提示</td>
 				  	<td>程序安装锁（/cache/install.lock）未存在！ <span class="c-red">可能会导致程序重装，请检查！</span></td>

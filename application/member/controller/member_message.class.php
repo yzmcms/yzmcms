@@ -12,7 +12,7 @@ yzm_base::load_sys_class('page','',0);
 
 class member_message extends common{
 	
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 

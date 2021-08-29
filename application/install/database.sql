@@ -162,8 +162,8 @@ CREATE TABLE `yzm_all_content` (
 -- ----------------------------
 -- Records of yzm_all_content
 -- ----------------------------
-INSERT INTO `yzm_all_content` VALUES ('1', '1', '2', '1', '1', 'yzmcms', 'YZMPHP轻量级开源框架 V2.0', '1526387722', '1526387996', 'guanfangxinwen/1.html', '', '1', '1');
-INSERT INTO `yzm_all_content` VALUES ('2', '1', '2', '2', '1', 'yzmcms', 'YzmCMS v6.1正式版发布', '1611504021', '1611504021', 'guanfangxinwen/2.html', '', '1', '1');
+INSERT INTO `yzm_all_content` VALUES ('1', '1', '2', '1', '1', 'yzmcms', 'YZMPHP轻量级开源框架 V2.0', '1526387722', '1526387996', '/guanfangxinwen/1.html', '', '1', '1');
+INSERT INTO `yzm_all_content` VALUES ('2', '1', '2', '2', '1', 'yzmcms', 'YzmCMS v6.2正式版发布', '1630166943', '1630166943', '/guanfangxinwen/2.html', '', '1', '1');
 
 -- ----------------------------
 -- Table structure for yzm_article
@@ -204,8 +204,8 @@ CREATE TABLE `yzm_article` (
 -- ----------------------------
 -- Records of yzm_article
 -- ----------------------------
-INSERT INTO `yzm_article` VALUES ('1', '2', '1', 'yzmcms', '袁志蒙', 'YZMPHP轻量级开源框架 V2.0', 'YZMPHP轻量级开源框架 V2.0_YzmCMS - 演示站', '', '1526387722', '1526387996', 'yzmphp,php框架,轻量级框架,mvc框架', '简介：YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效...', '100', '<p><strong>简介:</strong></p><p>YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效率高、速度快，扩展性和可维护性都很好等特点。</p><p>2016年12月19日完成框架的1.0版本，经过近两年的磨炼与成长，今日发布YZMPHP 2.0版本，该框架已经被多家公司企业采用和认可，是一款简单强大的PHP框架。上手快、框架源码简单明了结构清析，使得项目开发更加容易和方便，使用YZMPHP框架适合开发BBS、电子商城、SNS、CMS、Blog、企业门户等任何的中小型系统！</p><p><br/></p><p><strong>特点：</strong></p><p>简洁、高效、轻量级、高性能</p><p>软件环境：Apache/Nginx/IIS</p><p>PHP：支持PHP5.2以上的所有版本</p><p><br/></p><p><strong>YZMPHP  V2.0更新日志：</strong></p><p>1.新增：框架命令模式,可自定义或新增命令;</p><p>2.新增：缓存类型配置，支持类型:file/redis/memcache;</p><p>3.新增：系统URL路由映射重写;</p><p>4.新增：DB类库事务处理;</p><p>5.新增：支持切换和链接其他数据库;</p><p>6.新增：DB类库多种操作数据库方法;</p><p>7.新增：Nginx支持PATHINFO模式配置;</p><p>8.新增：系统函数库多种方法;</p><p>9.新增：支持捕捉致命错误;</p><p>10.优化：数据对象单例模式;</p><p>11.优化：支持join多表链接查询;</p><p>12.修复：框架漏洞一枚;</p><p>本次更新优化内容包括但不限于以上所列举的项！</p><p><br/></p>', '原创', '', 'guanfangxinwen/1.html', '4', '1', '1', '10', '0', '0', '1', '0');
-INSERT INTO `yzm_article` VALUES ('2', '2', '1', 'yzmcms', '袁志蒙', 'YzmCMS v6.1正式版发布', 'YzmCMS v6.1正式版发布_YzmCMS - 演示站', '#ff0000', '1620155900', '1620155900', 'cms系统,yzmcms最新版,yzmcms下载,php建站系统,轻量级开源', '产品说明：YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一...', '100', '<p><strong style=\"color: red;\">产品说明：</strong></p><p>YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一款高效开源的内容管理系统，可运行在Linux、Windows、MacOSX、Solaris等各种平台上。</p><p>它可以让您不需要任何专业技术轻松搭建您需要的网站，操作简单，很容易上手，快捷方便的后台操作让您10分钟就会建立自己的爱站。在同类产品的比较中，YzmCMS更是凸显出了体积轻巧、功能强大、源码简洁、系统安全等特点，无论你是做企业网站、新闻网站、个人博客、门户网站、行业网站、电子商城等，它都能完全胜任，而且还提供了非常方便的二次开发体系，是一款全能型的建站系统！</p><p><br/></p><p>下载地址：<a href=\"http://www.yzmcms.com/xiazai/\" target=\"_blank\" style=\"color:blue\">官方下载</a></p>', '原创', '', 'guanfangxinwen/2.html', '1,4', '1', '1', '1', '0', '0', '1', '0');
+INSERT INTO `yzm_article` VALUES ('1', '2', '1', 'yzmcms', '袁志蒙', 'YZMPHP轻量级开源框架 V2.0', 'YZMPHP轻量级开源框架 V2.0_YzmCMS - 演示站', '', '1526387722', '1526387996', 'yzmphp,php框架,轻量级框架,mvc框架', '简介：YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效...', '100', '<p><strong>简介:</strong></p><p>YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效率高、速度快，扩展性和可维护性都很好等特点。</p><p>2016年12月19日完成框架的1.0版本，经过近两年的磨炼与成长，今日发布YZMPHP 2.0版本，该框架已经被多家公司企业采用和认可，是一款简单强大的PHP框架。上手快、框架源码简单明了结构清析，使得项目开发更加容易和方便，使用YZMPHP框架适合开发BBS、电子商城、SNS、CMS、Blog、企业门户等任何的中小型系统！</p><p><br/></p><p><strong>特点：</strong></p><p>简洁、高效、轻量级、高性能</p><p>软件环境：Apache/Nginx/IIS</p><p>PHP：支持PHP5.2以上的所有版本</p><p><br/></p><p><strong>YZMPHP  V2.0更新日志：</strong></p><p>1.新增：框架命令模式,可自定义或新增命令;</p><p>2.新增：缓存类型配置，支持类型:file/redis/memcache;</p><p>3.新增：系统URL路由映射重写;</p><p>4.新增：DB类库事务处理;</p><p>5.新增：支持切换和链接其他数据库;</p><p>6.新增：DB类库多种操作数据库方法;</p><p>7.新增：Nginx支持PATHINFO模式配置;</p><p>8.新增：系统函数库多种方法;</p><p>9.新增：支持捕捉致命错误;</p><p>10.优化：数据对象单例模式;</p><p>11.优化：支持join多表链接查询;</p><p>12.修复：框架漏洞一枚;</p><p>本次更新优化内容包括但不限于以上所列举的项！</p><p><br/></p>', '原创', '', '/guanfangxinwen/1.html', '4', '1', '1', '10', '0', '0', '1', '0');
+INSERT INTO `yzm_article` VALUES ('2', '2', '1', 'yzmcms', '袁志蒙', 'YzmCMS v6.2正式版发布', 'YzmCMS v6.2正式版发布_YzmCMS - 演示站', '#ff0000', '1630166943', '1630166943', 'cms系统,yzmcms最新版,yzmcms下载,php建站系统,轻量级开源', '产品说明：YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一...', '100', '<p><strong style=\"color: red;\">产品说明：</strong></p><p>YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一款高效开源的内容管理系统，可运行在Linux、Windows、MacOSX、Solaris等各种平台上。</p><p>它可以让您不需要任何专业技术轻松搭建您需要的网站，操作简单，很容易上手，快捷方便的后台操作让您10分钟就会建立自己的爱站。在同类产品的比较中，YzmCMS更是凸显出了体积轻巧、功能强大、源码简洁、系统安全等特点，无论你是做企业网站、新闻网站、个人博客、门户网站、行业网站、电子商城等，它都能完全胜任，而且还提供了非常方便的二次开发体系，是一款全能型的建站系统！</p><p><br/></p><p>下载地址：<a href=\"http://www.yzmcms.com/xiazai/\" target=\"_blank\" style=\"color:blue\">官方下载</a></p>', '原创', '', '/guanfangxinwen/2.html', '1,4', '1', '1', '1', '0', '0', '1', '0');
 
 -- ----------------------------
 -- Table structure for yzm_attachment
@@ -382,7 +382,8 @@ CREATE TABLE `yzm_comment` (
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '评论状态{0:未审核,1:通过审核}',
   `reply` mediumint(8) unsigned NOT NULL DEFAULT '0' COMMENT '是否为回复',
   PRIMARY KEY (`id`),
-  KEY `commentid` (`commentid`,`status`)
+  KEY `commentid` (`commentid`,`status`),
+  KEY `userid` (`userid`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -423,7 +424,7 @@ CREATE TABLE `yzm_config` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`),
   KEY `type` (`type`)
-) ENGINE=MyISAM AUTO_INCREMENT=58 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=59 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of yzm_config
@@ -482,9 +483,10 @@ INSERT INTO `yzm_config` VALUES ('51', 'thumb_height', '2', '缩略图默认高�
 INSERT INTO `yzm_config` VALUES ('52', 'search_page', '3', '前端搜索每页展示条数', '10', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('53', 'keyword_link', '2', '是否启用关键字替换', '0', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('54', 'keyword_replacenum', '2', '关键字替换次数', '1', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('55', 'site_wap_theme', '0', 'WAP端模板风格', 'default', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('56', 'is_words_chinese', '3', '前端留言须包含为中文内容', '1', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('57', 'advertise', '99', '首页广告位', '免费又好用的CMS建站系统，就选YzmCMS!', 'textarea', '', '1');
+INSERT INTO `yzm_config` VALUES ('55', 'comment_code', '2', '是否开启评论验证码', '0', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('56', 'site_wap_theme', '0', 'WAP端模板风格', 'default', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('57', 'is_words_chinese', '3', '前端留言须包含为中文内容', '1', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('58', 'advertise', '99', '首页广告位', '免费又好用的CMS建站系统，就选YzmCMS!', 'textarea', '', '1');
 
 -- ----------------------------
 -- Table structure for yzm_download
@@ -811,8 +813,8 @@ INSERT INTO `yzm_menu` VALUES ('18', '管理员管理', '4', 'admin', 'admin_man
 INSERT INTO `yzm_menu` VALUES ('19', '删除管理员', '18', 'admin', 'admin_manage', 'delete', '', '0', '0');
 INSERT INTO `yzm_menu` VALUES ('20', '添加管理员', '18', 'admin', 'admin_manage', 'add', '', '0', '0');
 INSERT INTO `yzm_menu` VALUES ('21', '编辑管理员', '18', 'admin', 'admin_manage', 'edit', '', '0', '0');
-INSERT INTO `yzm_menu` VALUES ('22', '修改个人信息', '18', 'admin', 'admin_manage', 'public_edit_info', '', '0', '1');
-INSERT INTO `yzm_menu` VALUES ('23', '修改个人密码', '18', 'admin', 'admin_manage', 'public_edit_pwd', '', '0', '1');
+INSERT INTO `yzm_menu` VALUES ('22', '修改资料', '18', 'admin', 'admin_manage', 'public_edit_info', '', '0', '1');
+INSERT INTO `yzm_menu` VALUES ('23', '修改密码', '18', 'admin', 'admin_manage', 'public_edit_pwd', '', '0', '1');
 INSERT INTO `yzm_menu` VALUES ('24', '栏目管理', '1', 'admin', 'category', 'init', '', '11', '1');
 INSERT INTO `yzm_menu` VALUES ('25', '排序栏目', '24', 'admin', 'category', 'order', '', '0', '0');
 INSERT INTO `yzm_menu` VALUES ('26', '删除栏目', '24', 'admin', 'category', 'delete', '', '0', '0');
@@ -906,7 +908,7 @@ INSERT INTO `yzm_menu` VALUES ('118', '添加菜单', '116', 'admin', 'menu', 'a
 INSERT INTO `yzm_menu` VALUES ('119', '编辑菜单', '116', 'admin', 'menu', 'edit', '', '0', '0');
 INSERT INTO `yzm_menu` VALUES ('120', '菜单排序', '116', 'admin', 'menu', 'order', '', '0', '0');
 INSERT INTO `yzm_menu` VALUES ('121', '邮箱配置', '6', 'admin', 'system_manage', 'init', 'tab=3', '61', '1');
-INSERT INTO `yzm_menu` VALUES ('122', '修改个人信息', '5', 'admin', 'admin_manage', 'public_edit_info', '', '51', '1');
+INSERT INTO `yzm_menu` VALUES ('122', '修改资料', '5', 'admin', 'admin_manage', 'public_edit_info', '', '51', '1');
 INSERT INTO `yzm_menu` VALUES ('123', '修改密码', '5', 'admin', 'admin_manage', 'public_edit_pwd', '', '52', '1');
 INSERT INTO `yzm_menu` VALUES ('134', '友情链接管理', '3', 'link', 'link', 'init', '', '6', '1');
 INSERT INTO `yzm_menu` VALUES ('135', '添加友情链接', '134', 'link', 'link', 'add', '', '0', '0');
@@ -1115,6 +1117,7 @@ CREATE TABLE `yzm_model` (
   `type` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `sort` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `issystem` tinyint(1) unsigned NOT NULL DEFAULT '0',
+  `isdefault` tinyint(1) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`modelid`),
   KEY `type` (`type`)
 ) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
@@ -1122,9 +1125,9 @@ CREATE TABLE `yzm_model` (
 -- ----------------------------
 -- Records of yzm_model
 -- ----------------------------
-INSERT INTO `yzm_model` VALUES ('1', '文章模型', 'article', '文章模型', '', '1466393786', '0', '0', '0', '0', '1');
-INSERT INTO `yzm_model` VALUES ('2', '产品模型', 'product', '产品模型', '', '1466393786', '0', '0', '0', '0', '1');
-INSERT INTO `yzm_model` VALUES ('3', '下载模型', 'download', '下载模型', '', '1466393786', '0', '0', '0', '0', '1');
+INSERT INTO `yzm_model` VALUES ('1', '文章模型', 'article', '文章模型', '', '1466393786', '0', '0', '0', '0', '1', '1');
+INSERT INTO `yzm_model` VALUES ('2', '产品模型', 'product', '产品模型', '', '1466393786', '0', '0', '0', '0', '1', '0');
+INSERT INTO `yzm_model` VALUES ('3', '下载模型', 'download', '下载模型', '', '1466393786', '0', '0', '0', '0', '1', '0');
 
 -- ----------------------------
 -- Table structure for yzm_model_field
@@ -1332,8 +1335,8 @@ CREATE TABLE `yzm_pay_mode` (
 -- ----------------------------
 -- Records of yzm_pay_mode
 -- ----------------------------
-INSERT INTO `yzm_pay_mode` VALUES ('1', '支付宝', 'alipay.png', '支付宝新版在线支付插件，要求PHP版本>=5.5', '{\"app_id\":\"\",\"merchant_private_key\":\"\",\"alipay_public_key\":\"\"}', '0', '袁志蒙', '1.0', 'alipay', 'alipay');
-INSERT INTO `yzm_pay_mode` VALUES ('2', '微信', 'wechat.png', '微信支付提供公众号支付、APP支付、扫码支付、刷卡支付等支付方式。', '{\\\"app_id\\\":\\\"\\\",\\\"app_secret\\\":\\\"\\\",\\\"mch_id\\\":\\\"\\\",\\\"key\\\":\\\"\\\"}', '1', '袁志蒙', '1.0', 'wechat', 'wechat');
+INSERT INTO `yzm_pay_mode` VALUES ('1', '支付宝', 'alipay.png', '支付宝新版在线支付插件，要求PHP版本>=5.5', '{\"app_id\":\"\",\"merchant_private_key\":\"\",\"alipay_public_key\":\"\"}', '1', '袁志蒙', '1.0', 'alipay', 'alipay');
+INSERT INTO `yzm_pay_mode` VALUES ('2', '微信', 'wechat.png', '微信支付提供公众号支付、APP支付、扫码支付、刷卡支付等支付方式。', '{\\\"app_id\\\":\\\"\\\",\\\"app_secret\\\":\\\"\\\",\\\"mch_id\\\":\\\"\\\",\\\"key\\\":\\\"\\\"}', '0', '袁志蒙', '1.0', 'wechat', 'wechat');
 
 -- ----------------------------
 -- Table structure for yzm_pay_spend
@@ -1415,6 +1418,7 @@ CREATE TABLE `yzm_tag` (
   `catid` smallint(5) unsigned NOT NULL DEFAULT '0',
   `tag` varchar(30) NOT NULL DEFAULT '',
   `total` mediumint(9) unsigned NOT NULL DEFAULT '0',
+  `click` mediumint(8) unsigned NOT NULL DEFAULT '0',
   `remarks` varchar(255) NOT NULL DEFAULT '',
   `inputtime` int(10) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),

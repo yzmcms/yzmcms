@@ -41,6 +41,7 @@ $(function(){
 
 function toreply(obj){
     if($("#rep_" + obj).css("display") == "none"){
+        $("#rep_" + obj + " .yzm-comment-reply-code img").attr('src', $("#rep_" + obj + " .yzm-comment-reply-code img").attr("src") + "?");
         $("#rep_" + obj).css("display", "block");
     }else{
         $("#rep_" + obj).css("display", "none");

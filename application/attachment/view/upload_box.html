@@ -1,5 +1,5 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
-<link rel="stylesheet" href="<?php echo STATIC_URL;?>plugin/webuploader/webuploader.css"/>
+<link rel="stylesheet" href="<?php echo STATIC_URL;?>plugin/webuploader/webuploader.css?v=<?php echo YZMCMS_VERSION;?>"/>
 <title>附件上传 - YzmCMS内容管理系统</title>
 </head>
 <body>
@@ -19,6 +19,17 @@
 		</div>
 
 		<div class="tabCon">
+			<div class="yzm-attachment-search">
+				<form action="" method="get">
+					<input type="hidden" name="m" value="<?php echo ROUTE_M;?>" >
+					<input type="hidden" name="c" value="<?php echo ROUTE_C;?>" >
+					<input type="hidden" name="a" value="<?php echo ROUTE_A;?>" >
+					<input type="hidden" name="tab" value="1">
+					名称：<input type="text" class="input-text" name="originname" value="<?php echo $originname;?>" placeholder="附件名称" > &nbsp;
+					日期：<input type="text" class="input-text" name="uploadtime" value="<?php echo $uploadtime;?>" placeholder="上传日期" onclick="laydate({format:'YYYY-MM-DD'})">
+					<button name="dosubmit" class="yzm-search-btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+				</form>
+			</div>
 			<div class="yzm-imagelist">
 				<ul>
 					<?php
@@ -41,6 +52,7 @@
 <div id="att_status" class="hidden"></div>
 <div id="att_titles" class="hidden"></div>
 <?php include $this->admin_tpl('footer', 'admin');?>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
 <script type="text/javascript">
 	var STATIC_URL = '<?php echo STATIC_URL;?>';
 	var $ = jQuery, $list = $('#fileList'), uploader;
@@ -52,13 +64,8 @@
 	    fileNumLimit : <?php echo $n;?>,
 	    fileSingleSizeLimit : <?php echo 1024*get_config('upload_maxsize');?>,
 	    accept: {
-	    	<?php if($t==1){ ?>
-	        title: '图片',
-	        extensions: '<?php echo $type;?>',
-	        mimeTypes: 'image/*'
-	    	<?php }else{ ?>
-	    	extensions: '<?php echo $type;?>'
-	    	<?php } ?>
+	    	title: '文件上传',
+	        extensions: '<?php echo $type;?>'
 	    },
 	    formData : {
 	        'filetype' : '<?php echo $t;?>',

@@ -19,7 +19,7 @@ class api{
 	private $userid;
 	private $username;
 	
-	function __construct() {
+	public function __construct() {
 		
 		$this->userid = isset($_SESSION['adminid']) ? $_SESSION['adminid'] : (isset($_SESSION['_userid']) ? $_SESSION['_userid'] : 0);
 		$this->username = isset($_SESSION['adminname']) ? $_SESSION['adminname'] : (isset($_SESSION['_username']) ? $_SESSION['_username'] : '');
@@ -93,6 +93,8 @@ class api{
 		$t = isset($_GET['t']) ? intval($_GET['t']) : 1; //上传类型，1为图片类型
 		$n = isset($_GET['n']) ? 20 : 1;  //上传数量
 		$s = round(get_config('upload_maxsize')/1024, 2).'MB';  //允许上传附件大小
+		$originname = isset($_GET['originname']) ? safe_replace(trim($_GET['originname'])) : '';
+		$uploadtime = isset($_GET['uploadtime']) ? htmlspecialchars($_GET['uploadtime']) : '';
 		
 		if($t == 1){
 			$type = 'png,gif,jpg,jpeg';
@@ -100,9 +102,17 @@ class api{
 			$type = join(',', $this->_get_upload_types());
 		}
 		
-		//如果不是管理员，只列出自己上传的附件
 		$where = array();
 		if(!$this->isadmin) $where['userid'] = $this->userid;
+		if(isset($_GET['dosubmit'])){
+			if($originname) $where['originname'] = '%'.$originname.'%';
+			if($uploadtime) {
+				$start_time = strtotime($uploadtime.' 00:00:00');
+				$end_time = strtotime($uploadtime.' 23:59:59');
+				$where['uploadtime>='] = $start_time;
+				$where['uploadtime<='] = $end_time;
+			}
+		}
 		$attachment = D('attachment');
 		$total = $attachment->where($where)->total();
 		$parameter = $_GET;

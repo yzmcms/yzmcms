@@ -12,7 +12,7 @@ yzm_base::load_sys_class('page','',0);
 
 class member_content extends common{
 	
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 
@@ -66,7 +66,9 @@ class member_content extends common{
 			$field_check = $this->_get_model_str($modelid, true);
 			foreach($field_check as $k => $v){
 				if($v['isrequired']){
-					if(empty($_POST[$k])) showmsg($v['errortips']);
+					if(!isset($_POST[$k])) showmsg(L('lose_parameters'), 'stop');
+					$length = is_array($_POST[$k]) ? (empty($_POST[$k]) ? 0 : 1) : strlen($_POST[$k]);
+					if(!$length) showmsg($v['errortips']);
 				}
 			}
 
@@ -166,7 +168,9 @@ class member_content extends common{
 			$field_check = $this->_get_model_str($modelid, true);
 			foreach($field_check as $k => $v){
 				if($v['isrequired']){
-					if(empty($_POST[$k])) showmsg($v['errortips']);
+					if(!isset($_POST[$k])) showmsg(L('lose_parameters'), 'stop');
+					$length = is_array($_POST[$k]) ? (empty($_POST[$k]) ? 0 : 1) : strlen($_POST[$k]);
+					if(!$length) showmsg($v['errortips']);
 				}
 			}
 			$fields = array_merge($fields, array_keys($field_check));

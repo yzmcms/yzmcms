@@ -84,7 +84,7 @@
 		   layer.alert('请先勾选表！');
 		   return false;
 		}
-		layer.msg('<span id="yzm_message">开始请求服务器……</span>', {icon:16, shade:0.21, shadeClose:true, time:false});
+		layer.msg('<span id="yzm_message">开始请求服务器……</span>', {icon:16, shade:0.21, time:false});
 		$.ajax({
 			type: 'POST',
 			url: '<?php echo U('export_list');?>', 

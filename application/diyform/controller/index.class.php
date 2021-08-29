@@ -12,7 +12,7 @@ defined('IN_YZMPHP') or exit('Access Denied');
 class index{
 	
 	public $modelid, $modelinfo;
-	function __construct() {
+	public function __construct() {
 		
 		$this->modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : (isset($_POST['modelid']) ? intval($_POST['modelid']) : 0);
 		if(ROUTE_A != 'init')	$this->_check_model();
@@ -81,7 +81,9 @@ class index{
 			$field_check = $this->_get_model_str($this->modelid, true);
 			foreach($field_check as $k => $v){
 				if($v['isrequired']){
-					if(empty($_POST[$k])) showmsg($v['errortips']);
+					if(!isset($_POST[$k])) showmsg(L('lose_parameters'), 'stop');
+					$length = is_array($_POST[$k]) ? (empty($_POST[$k]) ? 0 : 1) : strlen($_POST[$k]);
+					if(!$length) showmsg($v['errortips']);
 				}
 			}
 

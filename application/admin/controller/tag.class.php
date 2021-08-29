@@ -1,4 +1,14 @@
 <?php
+// +----------------------------------------------------------------------
+// | Site:  [ http://www.yzmcms.com]
+// +----------------------------------------------------------------------
+// | Copyright: 袁志蒙工作室，并保留所有权利
+// +----------------------------------------------------------------------
+// | Author: YuanZhiMeng <214243830@qq.com>
+// +---------------------------------------------------------------------- 
+// | Explain: 这不是一个自由软件,您只能在不用于商业目的的前提下对程序代码进行修改和使用，不允许对程序代码以任何形式任何目的的再发布！
+// +----------------------------------------------------------------------
+
 defined('IN_YZMPHP') or exit('Access Denied'); 
 yzm_base::load_controller('common', 'admin', 0);
 yzm_base::load_sys_class('page','',0);
@@ -11,7 +21,7 @@ class tag extends common {
 	public function init() {
 		$of = input('get.of');
 		$or = input('get.or');
-		$of = in_array($of, array('id','catid','total','inputtime')) ? $of : 'id';
+		$of = in_array($of, array('id','catid','total','click','inputtime')) ? $of : 'id';
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$tag = D('tag');
 		$where = array();
@@ -109,7 +119,7 @@ class tag extends common {
 	public function content() {
 		$id = input('get.id', 0, 'intval');
 		$modelinfo = get_modelinfo();
-		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
+		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : get_default_model('modelid');
 		$tabname = get_model($modelid);
         $catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
         $content = D($tabname);

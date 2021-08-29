@@ -28,7 +28,7 @@
 			<td><?php echo $val['desc']?></td>
 			<td><?php echo $val['author']?></td>
 			<td>
-				<?php if(!$val['enabled']){ ?>
+				<?php if($val['enabled']){ ?>
 				<span class="yzm-status-enable" data-field="enabled" data-id="<?php echo $val['id']?>" onclick="yzm_change_status(this,'<?php echo U('public_change_status');?>')"><i class="yzm-iconfont">&#xe81f;</i>是</span>
 				<?php }else{ ?>
 				<span class="yzm-status-disable" data-field="enabled" data-id="<?php echo $val['id']?>" onclick="yzm_change_status(this,'<?php echo U('public_change_status');?>')"><i class="yzm-iconfont">&#xe601;</i>否</span>

@@ -24,7 +24,7 @@
 <?php include $this->admin_tpl('footer');?>
 <script type="text/javascript">
 	function dosub(obj){
-		layer.msg('正在安装中……', { icon: 16, shade: 0.21,shadeClose:true,time:100000 });
+		layer.msg('正在安装中……', { icon: 16, shade: 0.21, time:false });
 		$.ajax({
 		 type: 'POST',
 		 url: '<?php echo U(ROUTE_A);?>', 

@@ -105,7 +105,7 @@
 					<label class="form-label col-xs-4 col-sm-2">百度推送token：</label>
 					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
 						<input type="text" name="baidu_push_token" placeholder="例如：66XJXYDfMKfeeIRM" value="<?php echo $data["baidu_push_token"];?>"  class="input-text w_420">
-						<span class="yzm-explain">百度主动推送token，请到百度申请</span>
+						<span class="yzm-explain">百度主动推送token，请到百度平台申请</span>
 					</div>
 				</div>
 				<div class="row cl">
@@ -115,7 +115,7 @@
 						<label class="label_radio"><input name="keyword_link" type="radio" <?php echo $data["keyword_link"]? '' : 'checked' ?> value="0"> 关闭</label>
 						<input type="text" name="keyword_replacenum" value="<?php echo $data["keyword_replacenum"];?>"  class="input-text w_120"> 
 						替换次数
-						<span class="yzm-explain">0为不限,效率高</span>
+						<span class="yzm-explain">0为不限，效率高</span>
 					</div>
 				</div>					
 				<div class="row cl">
@@ -125,14 +125,14 @@
 					</div>
 				</div>							
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>允许上传附件大小（KB）</label>
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>允许上传附件大小：</label>
 					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
-						<input type="text" name="upload_maxsize" value="<?php echo $data["upload_maxsize"];?>"  class="input-text w_120">
+						<input type="text" name="upload_maxsize" value="<?php echo $data["upload_maxsize"];?>"  class="input-text w_120"> KB
 						<span class="yzm-explain">最大限制不能超过服务器“upload_max_filesize”配置</span>
 					</div>
 				</div>		
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>允许上传附件类型</label>
+					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>允许上传附件类型：</label>
 					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
 						<input type="text" name="upload_types" value="<?php echo $data["upload_types"];?>"  class="input-text w_420">
 						<span class="yzm-explain">多个类型直接用“|”分开</span>
@@ -141,9 +141,10 @@
 				</div>		
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>是否开启图片水印：</label>
-					<div class="formControls col-xs-8 col-sm-9">
+					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
 						<label class="label_radio"><input name="watermark_enable" type="radio" <?php echo $data["watermark_enable"]? 'checked' : '' ?> value="1"> 开启</label>
 						<label class="label_radio"><input name="watermark_enable" type="radio" <?php echo $data["watermark_enable"]? '' : 'checked' ?> value="0"> 关闭</label>
+						<span class="yzm-explain">发布内容时，如有图片自动添加水印</span>
 					</div>
 				</div>	
 				<div class="row cl">
@@ -171,7 +172,7 @@
 			</div>
 			<div class="tabCon">
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2">禁止登录后台的IP列表：<br><span style="color:#888">匹配IP段用“*”占位<br>多个IP用“,”分隔</span></label>
+					<label class="form-label col-xs-4 col-sm-2">禁止登录后台的IP列表：<br><span style="color:#888;font-size:12px;margin-right:10px;display:inline-block;">匹配IP段用“*”占位<br>多个IP用“,”分隔</span><br><span style="color:#ff0202;font-size:12px;margin-top:5px;margin-right:10px;display:inline-block;">您的IP：<?php echo self::$ip;?></span></label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<textarea class="textarea" name="admin_prohibit_ip" placeholder="匹配IP段用“*”占位，如192.168.*.*，多个IP地址请用英文逗号“,”分隔"><?php echo $data["admin_prohibit_ip"];?></textarea>
 					</div>
@@ -202,6 +203,13 @@
 					<div class="formControls col-xs-8 col-sm-9">
 						<label class="label_radio"><input name="is_link" type="radio" <?php echo $data["is_link"]? 'checked' : '' ?> value="1"> 开启</label>
 						<label class="label_radio"><input name="is_link" type="radio" <?php echo $data["is_link"]? '' : 'checked' ?> value="0"> 关闭</label>
+					</div>
+				</div>
+				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">是否开启评论验证码：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<label class="label_radio"><input name="comment_code" type="radio" <?php echo $data["comment_code"]? 'checked' : '' ?> value="1"> 开启</label>
+						<label class="label_radio"><input name="comment_code" type="radio" <?php echo $data["comment_code"]? '' : 'checked' ?> value="0"> 关闭</label>
 					</div>
 				</div>
 				<div class="row cl">
@@ -338,7 +346,7 @@ function test_mail() {
 		layer.msg('请输入邮件测试地址！', {icon:2});
 		return false;
 	}
-	layer.msg('正在测试发送……', { icon: 16, shade: 0.21, shadeClose:true, time:0 });
+	layer.msg('正在测试发送……', { icon: 16, shade: 0.21, time:false });
 	$.ajax({
 		type: 'POST',
 		url: '<?php echo U('public_test_mail');?>', 

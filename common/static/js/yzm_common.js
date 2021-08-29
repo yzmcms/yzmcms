@@ -248,13 +248,6 @@ function yzm_change_status(obj, url) {
 	var id = $(obj).data('id');
 	var field = $(obj).data('field');
 	var value = $(obj).hasClass('yzm-status-disable') ? 1 : 0;
-	if(value){
-		$(obj).removeClass('yzm-status-disable').addClass('yzm-status-enable');
-		$(obj).html('<i class="yzm-iconfont">&#xe81f;</i>是');
-	}else{
-		$(obj).removeClass('yzm-status-enable').addClass('yzm-status-disable');
-		$(obj).html('<i class="yzm-iconfont">&#xe601;</i>否');
-	}
 
 	$.ajax({
         type: "POST",
@@ -264,6 +257,13 @@ function yzm_change_status(obj, url) {
         success: function (msg) {
         	if(msg.status == 1){
         		layer.msg(msg.message, {icon:1,time:800});
+        		if(value){
+        			$(obj).removeClass('yzm-status-disable').addClass('yzm-status-enable');
+        			$(obj).html('<i class="yzm-iconfont">&#xe81f;</i>是');
+        		}else{
+        			$(obj).removeClass('yzm-status-enable').addClass('yzm-status-disable');
+        			$(obj).html('<i class="yzm-iconfont">&#xe601;</i>否');
+        		}
         	}else{
         		layer.msg(msg.message, {icon:2,time:2500});
         	}
@@ -291,7 +291,8 @@ function yzm_show_img(src, max_width, max_height) {
 			type: 1,
 			title: false,
 			area: [width, height],
-			content: string
+			content: string,
+			shadeClose: true
 		});
 	})
 }

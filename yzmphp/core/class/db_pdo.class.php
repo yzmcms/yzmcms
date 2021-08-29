@@ -447,6 +447,7 @@ class db_pdo{
 	 */		
 	private function geterr($msg, $sql=''){
 		if(APP_DEBUG){
+			if(PHP_SAPI == 'cli') exit('MySQL Error: '.$msg.' | '.$sql);
 			application::fatalerror($msg, $sql, 2);	
 		}else{
 			error_log('<?php exit;?> MySQL Error: '.date('Y-m-d H:i:s').' | Error: '.$msg.' | SQL: '.$sql."\r\n", 3, YZMPHP_PATH.'cache/error_log.php');

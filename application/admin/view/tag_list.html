@@ -29,6 +29,7 @@
 				<th>ID<?php echo field_order('id');?></th>
 				<th>TAG名称</th>
 				<th>文档数<?php echo field_order('total');?></th>
+				<th>点击量<?php echo field_order('click');?></th>
 				<th>绑定栏目<?php echo field_order('catid');?></th>
 				<th>描述</th>
 				<th>添加时间<?php echo field_order('inputtime');?></th>		
@@ -44,8 +45,9 @@
 				<td><?php echo $val['id'];?></td>
 				<td><a href="<?php echo tag_url($val['id']);?>" target="_blank"><?php echo $val['tag'];?></a></td>
 				<td><a href="<?php echo tag_url($val['id']);?>" target="_blank"><?php echo $val['total'];?></a></td>
+				<td><?php echo $val['click'];?></td>
 				<td><?php echo $val['catid'] ? get_catname($val['catid']) : '无';?></td>
-				<td><?php echo $val['remarks'] ? $val['remarks'] : '无';?></td>
+				<td><?php echo $val['remarks'] ? str_cut($val['remarks'], 90) : '无';?></td>
 				<td><?php echo date('Y-m-d H:i:s',$val['inputtime']);?></td>
 				<td class="td-manage">
 					<a title="编辑TAG" href="javascript:;" onclick="yzm_open('编辑TAG','<?php echo U('edit',array('id'=>$val['id']));?>',600,350)" class="btn-mini btn-secondary">编辑TAG</a> 

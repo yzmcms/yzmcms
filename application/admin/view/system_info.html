@@ -1,0 +1,36 @@
+<?php include $this->admin_tpl('meta');?>
+<title>关于系统 - YzmCMS内容管理系统</title>
+<style>
+	.system_info{margin:0 10px;}
+	.system_info li{border-bottom:1px dashed #d7d7d7;padding:10px 0;}
+</style>
+</head>
+<body>
+<article class="page-container">
+	<ul class="system_info">
+		<li>
+			<label><i class="Hui-iconfont">&#xe67e;</i> 系统版本：</label><a href="http://www.yzmcms.com" target="_blank"><?php echo YZMCMS_SOFTNAME;?></a> <?php echo YZMCMS_VERSION;?>(<?php echo YZMCMS_UPDATE;?>)
+		</li>
+		<li>
+			<label><i class="Hui-iconfont">&#xe67e;</i> 系统框架：</label><a href="http://www.yzmphp.com" target="_blank">YZMPHP V<?php echo YZMPHP_VERSION;?></a>
+		</li>
+		<li>
+			<label><i class="Hui-iconfont">&#xe67e;</i> 官方网站：</label><a href="http://www.yzmcms.com" target="_blank">www.yzmcms.com</a></a>
+		</li>
+		<li>
+			<label><i class="Hui-iconfont">&#xe67e;</i> 官方社区：</label><a href="http://www.yzmask.com" target="_blank">www.yzmask.com</a></a>
+		</li>
+		<li>
+			<label><i class="Hui-iconfont">&#xe67e;</i> 作者QQ：</label>214243830 (支持功能定制)</a>
+		</li>
+		<li>
+			<label><i class="Hui-iconfont">&#xe67e;</i> 系统特色：</label>开源免费、速度快、轻量级、系统简洁、安全稳定... </a>
+		</li>
+		<li>
+			<label><i class="Hui-iconfont">&#xe67e;</i> 版权信息：</label>Powered By <a href="http://www.yzmcms.com" target="_blank">YzmCMS内容管理系统</a> © 2014-<?php echo date('Y')?> 袁志蒙工作室</a>
+		</li>
+	</ul>
+</article>
+<?php include $this->admin_tpl('footer');?>
+</body>
+</html>

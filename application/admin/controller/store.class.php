@@ -40,6 +40,15 @@ class store extends common {
 		$page = new page($total, 15);
 		include $this->admin_tpl('store_list');
 	}
+
+
+	/**
+	 * 系统信息
+	 */
+	public function public_system_info(){
+
+		include $this->admin_tpl('system_info');
+	}
 	
 
 }

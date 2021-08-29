@@ -12,7 +12,7 @@ yzm_base::load_sys_class('page','',0);
 
 class member_pay extends common{
 	
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 
@@ -39,7 +39,7 @@ class member_pay extends common{
 	public function pay(){
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
-		$data = D('pay_mode')->field('`id`,`name`,`logo`,`desc`,`version`')->where(array('enabled'=>0))->order('id ASC')->select();
+		$data = D('pay_mode')->field('`id`,`name`,`logo`,`desc`,`version`')->where(array('enabled'=>1))->order('id ASC')->select();
 		include template('member', 'point_pay');
 	}	
 	

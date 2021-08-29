@@ -1,4 +1,14 @@
 <?php
+// +----------------------------------------------------------------------
+// | Site:  [ http://www.yzmcms.com]
+// +----------------------------------------------------------------------
+// | Copyright: 袁志蒙工作室，并保留所有权利
+// +----------------------------------------------------------------------
+// | Author: YuanZhiMeng <214243830@qq.com>
+// +---------------------------------------------------------------------- 
+// | Explain: 这不是一个自由软件,您只能在不用于商业目的的前提下对程序代码进行修改和使用，不允许对程序代码以任何形式任何目的的再发布！
+// +----------------------------------------------------------------------
+
 defined('IN_YZMPHP') or exit('Access Denied'); 
 yzm_base::load_controller('common', 'admin', 0);
 yzm_base::load_common('lib/sql'.EXT, 'admin');
@@ -45,6 +55,9 @@ class sitemodel extends common {
 			if($model->table_exists(C('db_prefix').$tablename)) return_json(array('status'=>0,'message'=>'表名已存在！'));	
 			$_POST['issystem'] = $_POST['type'] = 0;
 			$_POST['inputtime'] = SYS_TIME;
+			if($_POST['isdefault']){
+				$model->update(array('isdefault' => 0), array('1' => 1));
+			}
 			$model->insert($_POST, true);
 			sql::sql_create($tablename);
 			delcache('modelinfo');
@@ -62,7 +75,12 @@ class sitemodel extends common {
 		$model = D('model');
 		if(isset($_POST['dosubmit'])) {
 			$modelid = isset($_POST['modelid']) ? intval($_POST['modelid']) : 0;
-			if($model->update(array('name'=>$_POST["name"],'description'=>$_POST["description"],'disabled'=>$_POST["disabled"]), array('modelid' => $modelid), true)){
+			$data = array('name'=>$_POST['name'],'description'=>$_POST['description'],'isdefault'=>$_POST['isdefault']);
+			if($_POST['isdefault']){
+				$data['disabled'] = 0;
+				$model->update(array('isdefault' => 0), array('1' => 1));
+			}
+			if($model->update($data, array('modelid'=>$modelid), true)){
 				delcache('modelinfo');
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
@@ -118,6 +136,7 @@ class sitemodel extends common {
 			$model_arr['type'] = intval($model_data['type']);
 			$model_arr['sort'] = intval($model_data['sort']);
 			$model_arr['issystem'] = intval($model_data['issystem']);	
+			$model_arr['isdefault'] = 0;	
 
 			//更新模型
 			if($modelid){
@@ -167,6 +186,28 @@ class sitemodel extends common {
 			$title = '导入模型';
 			$url = U('import');
 			include $this->admin_tpl('data_import');	
+		}
+	}
+
+
+	/**
+	 * 禁用启用
+	 */
+	public function public_change_status() {
+		if(is_post()){
+			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+			$value = $value ? 0 : 1;
+
+			$isdefault = D('model')->field('isdefault')->where(array('modelid' => $id))->one();
+			if($value && $isdefault) return_json(array('status'=>0,'message'=>'默认模型不可以禁用！'));
+			
+			if(D('model')->update(array('disabled'=>$value), array('modelid' => $id))){
+				delcache('modelinfo');
+				return_json(array('status'=>1,'message'=>L('operation_success')));
+			}else{
+				return_json();
+			}
 		}
 	}
 	

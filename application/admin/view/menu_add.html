@@ -19,11 +19,11 @@
 			 </li>	
 			 <li>
 			 	<label><span class="c-red">*</span>模块名：</label>
-			 	<input type="text" class="input" placeholder="模块名" name="m" value="">
+			 	<input type="text" class="input" placeholder="模块名" name="m" value="<?php if(isset($parent)) echo $parent['m'];?>">
 			 </li>	
 			 <li>
 			 	<label><span class="c-red">*</span>类名：</label>
-			 	<input type="text" class="input" placeholder="类名" name="c" value="">
+			 	<input type="text" class="input" placeholder="类名" name="c" value="<?php if(isset($parent)) echo $parent['c'];?>">
 			 </li>	
 			 <li>
 			 	<label><span class="c-red">*</span>方法名：</label>
@@ -36,8 +36,8 @@
 			 </li>
 			 <li><label>显示菜单：</label>
 			 <span class="span_input">
-			 	<label class="label_radio"><input name="display" type="radio" value="1" checked> 是</label>
-			 	<label class="label_radio"><input name="display" type="radio" value="0" > 否</label>
+			 	<label class="label_radio"><input name="display" type="radio" value="1" <?php echo isset($parent) ? ($parent['display'] ? 'checked' : '') : 'checked';?>> 是</label>
+			 	<label class="label_radio"><input name="display" type="radio" value="0" <?php echo isset($parent)&&!$parent['display'] ? 'checked' : '';?>> 否</label>
 			 </span>
 			 </li>
 			<li>

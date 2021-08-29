@@ -73,7 +73,7 @@ function wechat_menu_del(){
 }
 
 function create_menu(){
-	layer.msg('正在处理中……', { icon: 16, shade: 0.21, shadeClose:true, time:0 });
+	layer.msg('正在处理中……', { icon: 16, shade: 0.21, time:false });
 	$.ajax({
 	    type: 'GET',
 	    url: '<?php echo U('create_menu');?>', 

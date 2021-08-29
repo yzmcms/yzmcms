@@ -1,4 +1,13 @@
 <?php
+// +----------------------------------------------------------------------
+// | Site:  [ http://www.yzmcms.com]
+// +----------------------------------------------------------------------
+// | Copyright: 袁志蒙工作室，并保留所有权利
+// +----------------------------------------------------------------------
+// | Author: YuanZhiMeng <214243830@qq.com>
+// +---------------------------------------------------------------------- 
+// | Explain: 这不是一个自由软件,您只能在不用于商业目的的前提下对程序代码进行修改和使用，不允许对程序代码以任何形式任何目的的再发布！
+// +----------------------------------------------------------------------
 
 defined('IN_YZMPHP') or exit('Access Denied');
 new_session_start();
@@ -10,9 +19,16 @@ class index{
 	 */
 	public function init(){	
  		if(isset($_POST['dosubmit'])) {
-			if(trim($_POST['content']) == '') showmsg('你不打算说点什么吗？', 'stop');
+			if(empty($_POST['content'])) showmsg('评论内容不能为空！', 'stop');
 			
 			$site = get_config();
+			if($site['comment_code']){
+				if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
+					$_SESSION['code'] = '';
+					showmsg(L('code_error'), '', 1);
+				}
+				$_SESSION['code'] = '';
+			}
 			
 			$userid = $_POST['userid'] = isset($_SESSION['_userid']) ? $_SESSION['_userid']  : 0;
 			$username = $_POST['username'] = isset($_SESSION['_username']) ? $_SESSION['_username'] : '网友';

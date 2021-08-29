@@ -426,6 +426,7 @@ class db_mysql{
 	 */		
 	private function geterr($msg = ''){
 		if(APP_DEBUG){
+			if(PHP_SAPI == 'cli') exit('MySQL Error: '.mysql_error().' | '.$msg);
 			application::fatalerror($msg, mysql_error(), 2);	
 		}else{
 			error_log('<?php exit;?> MySQL Error: '.date('Y-m-d H:i:s').' | Errno: '.mysql_errno().' | Error: '.mysql_error().' | SQL: '.$msg."\r\n", 3, YZMPHP_PATH.'cache/error_log.php');

@@ -45,7 +45,9 @@ class reset{
 			if(empty($data['email'])) showmsg('您没有绑定邮箱，请选择其他方式找回密码！', 'stop');
 		   
 			$email_code = $_SESSION['email_code'] = create_randomstr();
-			$message = '您正通过此邮件找回密码，如非本人操作，请忽略！<br>本次验证码为：'.$email_code;
+			$email_tpl = APP_PATH.ROUTE_M.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.(defined('MODULE_THEME') ? MODULE_THEME : C('site_theme')).DIRECTORY_SEPARATOR.'email_repassword_message.html' ;
+			$message = is_file($email_tpl) ? file_get_contents($email_tpl) : showmsg('邮件模板不存在！', 'stop');
+			$message = str_replace(array('{site_name}','{email_code}'), array(get_config('site_name'),$email_code), $message);
 			$res = sendmail($data['email'], '邮箱找回密码验证', $message);
 			if(!$res) showmsg('邮件发送失败，请联系网站管理员！');
 			

@@ -54,7 +54,7 @@ jQuery(function() {
     uploader.on( 'fileQueued', function( file ) {
         var $li = $(
                 '<div id="' + file.id + '" class="yzm-file-item">' +
-                    '<div class="yzm-file-name">' + file.name + '</div>' +
+                    '<div class="yzm-file-name">' + file.name + '<span class="yzm-per"></span></div>' +
                 '</div>'
                 );
         $list.append( $li );
@@ -71,6 +71,7 @@ jQuery(function() {
                     .find('span');
         }
 
+        $li.find(".yzm-per").text( ' - ' + (percentage * 100).toFixed(2) + '%' );
         $percent.css( 'width', percentage * 100 + '%' );
     });
 

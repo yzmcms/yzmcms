@@ -18,7 +18,7 @@ class cache_file{
     public function __construct($config = array()){
 		//缓存默认配置
         $this->config = array(
-			'cache_dir'   => YZMPHP_PATH.'cache/chche_file/',    //缓存文件目录
+			'cache_dir'   => YZMPHP_PATH.'cache/cache_file/',    //缓存文件目录
 			'suffix'      => '.cache.php',  //缓存文件后缀
 			'mode'        => '1',           //缓存格式：mode 1 为serialize序列化, mode 2 为保存为可执行文件array
 		);

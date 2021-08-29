@@ -11,7 +11,7 @@ yzm_base::load_controller('common', 'member', 0);
 
 class index extends common{
 	
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 
@@ -119,7 +119,7 @@ class index extends common{
 			$data['point'] = $data['experience'] = $config['member_point'];	 //经验和积分
 			$data['status'] = ($config['member_check'] || $config['member_email']) ? 0 : 1;		
 			$data['userid'] = $member->insert($data, true);		
-			if(!$data['userid']) showmsg("注册失败！");
+			if(!$data['userid']) showmsg('注册失败！', 'stop');
 			
 			D('member_detail')->insert($data, true, false); //插入附表
 			
@@ -127,7 +127,9 @@ class index extends common{
 				//需要邮件验证
 				$mail_code = string_auth($data['userid'].'|'.SYS_TIME, 'ENCODE', make_auth_key('email'));
 				$url = U('member/index/register', array('mail_code'=>$mail_code, 'verify'=>1));
-				$message = '<p>您正在注册'.get_config('site_name').'网站会员：</p><p>请点击如下链接进行邮箱验证：<a href="'. $url .'" target="_blank">'. $url .'</a></p><p>验证有效期为30分钟！</p>';
+				$email_tpl = APP_PATH.ROUTE_M.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.(defined('MODULE_THEME') ? MODULE_THEME : C('site_theme')).DIRECTORY_SEPARATOR.'email_register_message.html' ;
+				$message = is_file($email_tpl) ? file_get_contents($email_tpl) : showmsg('邮件模板不存在！', 'stop');
+				$message = str_replace(array('{site_name}','{url}','{username}','{email}'), array(get_config('site_name'),$url,$data['username'],$data['email']), $message);
 				$res = sendmail($data['email'], '会员注册邮箱验证', $message);
 				if(!$res) showmsg('邮件发送失败，请联系网站管理员！', 'stop');
 				showmsg('我们已将邮件发送到您的邮箱，请尽快完成验证！');
@@ -245,8 +247,9 @@ class index extends common{
 				$fileinfo = $upload->getnewfileinfo();
 				$picname = $fileinfo['filepath'].$fileinfo['filename'];
 				D('member_detail')->update(array('userpic'=>$picname),array('userid'=>$this->userid));
+				D('comment')->update(array('userpic'=>$picname),array('userid'=>$this->userid));
 				$userpic = YZMPHP_PATH.ltrim($userpic, SITE_PATH);
-				if(is_file($userpic)) @unlink($userpic);    //删除原来的头像
+				if(is_file($userpic)) @unlink($userpic); 
 				showmsg('更新头像成功！','',1);
 			}else{
 				showmsg($upload->geterrormsg());
@@ -337,9 +340,9 @@ class index extends common{
 		if(!$memberinfo)  exit('-1');
 	
 		$member_follow = D('member_follow');
-		$r = $member_follow->where(array('userid'=>$this->userid, 'followid'=>$userid))->find();
-		if($r){
-			$member_follow->delete(array('userid'=>$this->userid, 'followid'=>$userid));
+		$id = $member_follow->field('id')->where(array('userid'=>$this->userid, 'followid'=>$userid))->one();
+		if($id){
+			$member_follow->delete(array('id'=>$id));
 			D('member_detail')->update('`fans`=`fans`-1', array('userid'=>$userid));  //减少粉丝数
 			exit('2');
 		}else{

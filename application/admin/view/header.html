@@ -15,8 +15,9 @@
 					<li><?php echo $_SESSION['admininfo']['rolename'];?></li>
 					<li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A"><?php echo $_SESSION['adminname'];?> <i class="Hui-iconfont">&#xe6d5;</i></a>
 						<ul class="dropDown-menu menu radius box-shadow">
-							<li><a href="javascript:;" onclick="yzm_open('修改个人信息','<?php echo U('admin_manage/public_edit_info');?>','700','450')" title="修改个人信息">个人信息</a></li>
-							<li><a href="javascript:;" onclick="yzm_open('修改密码','<?php echo U('admin_manage/public_edit_pwd');?>','700','450')" title="修改密码">修改密码</a></li>
+							<li><a href="javascript:;" onclick="yzm_open('修改资料','<?php echo U('admin_manage/public_edit_info');?>','650','450')" title="修改资料">修改资料</a></li>
+							<li><a href="javascript:;" onclick="yzm_open('修改密码','<?php echo U('admin_manage/public_edit_pwd');?>','650','450')" title="修改密码">修改密码</a></li>
+							<li><a href="javascript:;" onclick="yzm_open('关于系统','<?php echo U('store/public_system_info');?>','650','450')" title="关于系统">关于系统</a></li>
 							<li><a href="<?php echo U('public_logout');?>" title="退出">退出</a></li>
 						</ul>
 					</li>

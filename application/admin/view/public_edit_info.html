@@ -1,5 +1,5 @@
 <?php include $this->admin_tpl('meta');?>
-<title>修改个人信息 - YzmCMS内容管理系统</title>
+<title>修改资料 - YzmCMS内容管理系统</title>
 </head>
 <body>
 <article class="page-container">
@@ -10,7 +10,7 @@
 			 <li><label>所属角色：</label><?php echo $data['rolename'];?></li>
 			 <li><label>最后登录IP：</label><?php echo $data['loginip'];?></li>
 			 <li><label>最后登录时间：</label><?php echo date('Y-m-d H:i:s',$data['logintime']);?></li>
-			 <li><label>昵称：</label><input type="text" class="input" placeholder="发布内容时显示" name="nickname" value="<?php echo $data['nickname'];?>"></li>
+			 <li class="yzm-explain-box"><label>昵称：</label><input type="text" class="input" placeholder="发布内容时显示" name="nickname" value="<?php echo $data['nickname'];?>"> <span class="yzm-explain">发布内容时显示，<br>修改后重新登录生效.</span></li>
 			 <li><label>邮箱：</label><input type="text" class="input" placeholder="邮箱" name="email" value="<?php echo $data['email'];?>"></li>
 			 <li><label>真实姓名：</label><input type="text" class="input" placeholder="真实姓名" name="realname" value="<?php echo $data['realname'];?>"></li>
 			 <input type="hidden" name="dosubmit" value="1">

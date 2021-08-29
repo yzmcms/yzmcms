@@ -164,7 +164,7 @@ class yzm_tag{
 	 * @param $data
 	 */
 	public function tag($data) {
-		$field = isset($data['field']) ? $data['field'] : 'id,tag,total,remarks';
+		$field = isset($data['field']) ? $data['field'] : 'id,tag,click,total,remarks';
 		$catid = isset($data['catid']) ? intval($data['catid']) : 0;
 		$order = isset($data['order']) ? $data['order'] : 'id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';

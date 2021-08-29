@@ -35,7 +35,6 @@ class common{
 		} else {
 			$this->userid = $userid = intval(get_cookie('_userid'));
 			if(!isset($_SESSION['_userid']) || !$_SESSION['_userid'] || $userid != $_SESSION['_userid']){
-				
 				showmsg(L('login_website'), U('member/index/login'), 1);
 			}
 

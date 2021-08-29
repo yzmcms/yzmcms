@@ -16,7 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 define('APPDIR', _dir_path(substr(dirname(__FILE__), 0, -8)));
 define('SITEDIR', dirname(APPDIR).DIRECTORY_SEPARATOR);
-define("VERSION", 'YzmCMS 6.1');
+define("VERSION", 'YzmCMS 6.2');
 
 if(is_file(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock')){
     exit("YzmCMS程序已运行安装，如果你确定要重新安装，请先从FTP中删除 cache/install.lock！");
@@ -44,13 +44,9 @@ $steps = array(
 $step = isset($_GET['step']) ? intval($_GET['step']) : 1;
 
 //地址
-$scriptName = !empty($_SERVER["REQUEST_URI"]) ? $scriptName = $_SERVER["REQUEST_URI"] : $scriptName = $_SERVER["PHP_SELF"];
-$rootpath = @preg_replace("/\/application\/(I|i)nstall\/index\.php(.*)$/", "", $scriptName);
-$domain = empty($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : $_SERVER['SERVER_NAME'];
-if ((int) $_SERVER['SERVER_PORT'] != 80) {
-    $domain .= ":" . $_SERVER['SERVER_PORT'];
-}
-$domain = $domain . $rootpath;
+$scriptName = !empty($_SERVER["REQUEST_URI"]) ? $_SERVER["REQUEST_URI"] : $_SERVER["PHP_SELF"];
+$rootpath = @preg_replace("/\/application\/(I|i)nstall\/index\.php(.*)$/", '/', $scriptName);
+$domain = (is_ssl() ? 'https://' : 'http://') . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') . $rootpath;
 
 switch ($step) {
 
@@ -314,4 +310,12 @@ function random($length, $chars = '1294567890abcdefghigklmnopqrstuvwxyzABCDEFGHI
 	}
 	return $hash;
 }
-?>
+
+function is_ssl() {
+    if(isset($_SERVER['HTTPS']) && ('1' == $_SERVER['HTTPS'] || 'on' == strtolower($_SERVER['HTTPS']))){
+        return true;
+    }elseif(isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'] )) {
+        return true;
+    }
+    return false;
+}

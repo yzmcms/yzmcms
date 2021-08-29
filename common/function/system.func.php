@@ -394,6 +394,24 @@ function get_model($modelid, $parameter = 'tablename'){
 
 
 /**
+ * 获取默认模型
+ * @param   $key 获取的key
+ */
+function get_default_model($key = false){
+	$default_model = array('modelid'=>1, 'tablename'=>'article', 'name'=>'文章模型');
+	foreach (get_modelinfo() as $value) {
+		if($value['isdefault']){
+			$default_model['modelid'] = $value['modelid'];
+			$default_model['tablename'] = $value['tablename'];
+			$default_model['name'] = $value['name'];
+			break;
+		}
+	}
+	return $key ? (isset($default_model[$key]) ? $default_model[$key] : $default_model) : $default_model;
+}
+
+
+/**
  * 获取内容关键字
  *
  * @param  int $catid

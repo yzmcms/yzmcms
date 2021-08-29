@@ -1,11 +1,21 @@
 <?php
+// +----------------------------------------------------------------------
+// | Site:  [ http://www.yzmcms.com]
+// +----------------------------------------------------------------------
+// | Copyright: 袁志蒙工作室，并保留所有权利
+// +----------------------------------------------------------------------
+// | Author: YuanZhiMeng <214243830@qq.com>
+// +---------------------------------------------------------------------- 
+// | Explain: 这不是一个自由软件,您只能在不用于商业目的的前提下对程序代码进行修改和使用，不允许对程序代码以任何形式任何目的的再发布！
+// +----------------------------------------------------------------------
+
 defined('IN_YZMPHP') or exit('Access Denied'); 
 yzm_base::load_controller('common', 'admin', 0);
 
 class category extends common {
 	
 	private $db;
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 		$this->db = D('category');
 	}
@@ -102,7 +112,7 @@ class category extends common {
 	 * 添加栏目
 	 */
 	public function add() {	
-		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
+		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : get_default_model('modelid');
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
 		$type = isset($_GET['type']) ? intval($_GET['type']) : intval($_POST['type']);
 
@@ -170,7 +180,7 @@ class category extends common {
 	 * 批量添加
 	 */
 	public function adds() {
-		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
+		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : get_default_model('modelid');
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
 		if(isset($_POST['dosubmit'])) { 
 			$type = isset($_POST['type']) ? intval($_POST['type']) : 0;

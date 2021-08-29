@@ -858,12 +858,13 @@ function del_cookie($name = '') {
 
 
 /**
- * 用于实例化一个model对象  如：M('article');
- * @param $classname	 model类名称 如 article.class.php，只传入article即可
+ * 用于实例化一个model对象
+ * @param string $classname 模型名
+ * @param string $m 模块
  * @return object
  */	
-function M($classname){
-	return yzm_base::load_model($classname);
+function M($classname, $m = ''){
+	return yzm_base::load_model($classname, $m);
 }
 
 
@@ -886,12 +887,13 @@ function D($tabname){
 
 /**
  * URL组装 支持不同URL模式
- * @param string $url URL表达式，格式：'[模块/控制器/操作]'
+ * @param string $url URL表达式，格式：'[模块/控制器/方法]'
  * @param string|array $vars 传入的参数，支持字符串和数组
- * @param boolean $domain 是否显示域名
+ * @param boolean $domain 是否显示域名，默认根据URL模式自动展示
+ * @param string|boolean $suffix 伪静态后缀，默认为true表示获取配置值
  * @return string
  */
-function U($url='', $vars='', $domain=false) {	
+function U($url='', $vars='', $domain=null, $suffix=true) {	
 	$url = trim($url, '/');
 	$arr = explode('/', $url);
 	$num = count($arr);
@@ -925,16 +927,14 @@ function U($url='', $vars='', $domain=false) {
 		if($vars){
 			if(!is_array($vars)) parse_str($vars, $vars);			
             foreach ($vars as $var => $val){
-            	if(is_array($val)) continue;
                 if(trim($val) !== '') $string .= '/'.urlencode($var).'/'.urlencode($val);
             } 
 		}
-        $string .= C('url_html_suffix');		
+        $string .= $suffix === true ? C('url_html_suffix') : $suffix;		
 	}
 
-	if(URL_MODEL == 3 || $domain){
-		$string = SERVER_PORT.HTTP_HOST.$string;
-	}	
+	$string = $domain===null&&URL_MODEL==3 ? SERVER_PORT.HTTP_HOST.$string : ($domain ? SERVER_PORT.HTTP_HOST.$string : $string);
+	
 	return $string;
 }
 
@@ -1222,7 +1222,7 @@ function return_json($arr = array(), $show_debug = false){
  * @return bool
  */
 function write_log($message, $filename = '', $path = '') {
-	$message = is_array($message) ? json_encode($message) : $message;
+	$message = is_array($message) ? json_encode($message, JSON_UNESCAPED_UNICODE) : $message;
 	$message = date('H:i:s').' '.$message."\r\n";
 	if(!$path) $path = YZMPHP_PATH.'cache/syslog';
 	if(!is_dir($path)) @mkdir($path, 0777, true);

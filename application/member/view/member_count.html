@@ -1,10 +1,14 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
 <title>会员统计 - YzmCMS内容管理系统</title>
+<style>
+	html,body{height:100%;}
+	.page-container{height:80%;}
+</style>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 会员统计 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <article class="page-container">
-	<div id="main" style="min-width:700px;height:400px"></div>
+	<div id="main" style="width:100%;height:100%"></div>
 </article>
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/echarts/echarts.common.min.js"></script>
 <script type="text/javascript">
@@ -29,6 +33,7 @@
 	    },
 	    series: [{
 		    data: res.num,
+		    smooth: true,
 		    type: 'line'
 	    }]
 	};

@@ -3,9 +3,10 @@
   <head>
       <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	  <title>{$username}_个人主页</title>
-	  <link href="{STATIC_URL}css/yzm-member-myhome.css" rel="stylesheet" type="text/css" />
+	  <meta name="author" content="YzmCMS内容管理系统/QQ:214243830">
 	  <meta name="keywords" content="{$username},{$username}个人主页,YzmCMS会员个人主页" />
 	  <meta name="description" content="{get_config('site_description')}" />
+	  <link href="{STATIC_URL}css/yzm-member-myhome.css" rel="stylesheet" type="text/css" />
 	  <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
 	  <script type="text/javascript" src="{STATIC_URL}plugin/layer/layer.js"></script>
   </head>
@@ -46,13 +47,18 @@
 			</div>			
 		    <div class="jianjie">
 			 <h2 class="right_title">其他操作</h2>
-			 <p><a href="{U('member/messages/new_messages')}">发信息</a> | <a href="javascript:;" id="follow" onclick="follow('{$userid}');">加关注</a></p>
+			 <p><a href="{U('member/messages/new_messages', array('username'=>$username))}">发信息</a> | <a href="javascript:;" id="follow" onclick="follow('{$userid}');">加关注</a></p>
 			</div>	
 		    <div class="laifang">
 			 <h2 class="right_title">最近访客</h2>
 			 <ul>
 			 {loop $guest_data $val}
-			 <li><a href="{U('myhome/init', array('userid'=>$val['guest_id']))}"><img src="{if $val['guest_pic']}{$val['guest_pic']}{else}{STATIC_URL}images/default.gif{/if}" alt="{$val[guest_name]}" title="{$val[guest_name]}"/></a><p>{date('m月d日',$val['inputtime'])}</p></li>
+			 <li>
+			 	<a href="{U('myhome/init', array('userid'=>$val['guest_id']))}">
+			 		<img src="{get_memberavatar($val['guest_id'])}" alt="{$val[guest_name]}" title="{$val[guest_name]}"/>
+			 	</a>
+			 	<p>{date('m月d日',$val['inputtime'])}</p>
+			 </li>
 			 {/loop}			 
 			 </ul>
 			</div>			
@@ -61,6 +67,7 @@
     </div>	
   </body>
 	<script type="text/javascript">
+	check_follow();
 	function follow(userid) {
 		$.ajax({
 			type: 'POST',
@@ -83,6 +90,19 @@
 					layer.msg('非法操作！', {icon:2});
 				}
 			}
+		});
+	}
+
+	function check_follow() {
+		$.ajax({
+			type: 'GET',
+			url: "{U('api/index/check_follow', array('userid'=>$userid))}", 
+			dataType: "json", 
+            success: function (msg) {
+				if(msg.status == 1){
+					$("#follow").html(msg.message);       
+			    }
+            }
 		});
 	}
 	</script>

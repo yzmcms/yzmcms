@@ -56,7 +56,6 @@ class pay extends common {
 		if(is_post()){
 			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
-			$value = $value ? 0 : 1;
 			
 			if(D('pay_mode')->update(array('enabled'=>$value), array('id' => $id))){
 				return_json(array('status'=>1,'message'=>L('operation_success')));

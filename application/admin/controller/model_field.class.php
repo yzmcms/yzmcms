@@ -1,4 +1,14 @@
 <?php
+// +----------------------------------------------------------------------
+// | Site:  [ http://www.yzmcms.com]
+// +----------------------------------------------------------------------
+// | Copyright: 袁志蒙工作室，并保留所有权利
+// +----------------------------------------------------------------------
+// | Author: YuanZhiMeng <214243830@qq.com>
+// +---------------------------------------------------------------------- 
+// | Explain: 这不是一个自由软件,您只能在不用于商业目的的前提下对程序代码进行修改和使用，不允许对程序代码以任何形式任何目的的再发布！
+// +----------------------------------------------------------------------
+
 defined('IN_YZMPHP') or exit('Access Denied'); 
 yzm_base::load_controller('common', 'admin', 0);
 yzm_base::load_common('lib/sql'.EXT, 'admin');
@@ -10,7 +20,7 @@ class model_field extends common {
 	public $modelname;
 	public function __construct() {
 		parent::__construct();
-		$this->modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
+		$this->modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : showmsg(L('lose_parameters'), 'stop');
 		$this->public_set_modelinfo();
 	}
 
@@ -58,7 +68,6 @@ class model_field extends common {
 			   sql::sql_add_field_text($this->modeltable, $_POST['field']);  
 		   }else if($_POST['fieldtype'] == 'number'){
 			   sql::sql_add_field_int($this->modeltable, $_POST['field'], intval($_POST['defaultvalue'])); 
-			   $_POST['fieldtype'] = 'input';
 		   }else{
 			   sql::sql_add_field($this->modeltable, $_POST['field'], $_POST['defaultvalue'], $_POST['maxlength']);  
 		   }
@@ -146,7 +155,7 @@ class model_field extends common {
 			$this->modelname = $data['name'];
 			$this->modeltable = $data['tablename'];
 		}else{
-			showmsg('模型不存在！');
+			showmsg('模型不存在！', 'stop');
 		}
 	}
 

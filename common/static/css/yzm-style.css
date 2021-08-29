@@ -131,6 +131,10 @@
 .qqFace table td img:hover{border: 1px #0066cc solid;}
 .yzm-comment-submit{background-color: #e6e6e6; background-image: linear-gradient(#fcfcfc, #fcfcfc 25%, #e6e6e6); background-repeat: no-repeat; border-bottom-right-radius: 3px; border-color: #ddd #ddd #aaa; border-style: solid; border-width: 1px; box-shadow: 0 0 1px #fff inset; color: #555; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px; height: 32px; position: absolute; right: 0; text-align: center; text-shadow: 0 1px 0 #fff; top: 0; transition: all 0.15s linear 0s; width: 100px; cursor: pointer; border-radius: 2px; margin-top: 5px; outline: none;}
 .yzm-comment-submit:hover{background-position: 0 -15px; color: #121212}
+.yzm-comment-code{position:absolute;right:115px;top:5px;}
+.yzm-comment-reply-code{display:inline-block;margin-top:5px}
+.yzm-comment-code img,.yzm-comment-reply-code img{cursor:pointer;margin-right:10px;vertical-align:top;}
+.yzm-comment-code input,.yzm-comment-reply-code input{width:85px;height:25px;line-height:25px;border:1px solid #d9d9d9;outline:none;padding:3px 5px;border-radius:2px}
 .static{position: static; float: right;}
 .yzm-comment-list-box{border: 1px solid #ddd; margin: 25px 0 15px; overflow: hidden;}
 .yzm-comment-list-top{background: #fbfbfb; color: #555; font-size: 14px; padding: 0 12px; height: 30px; line-height: 30px; border-bottom: 1px dotted #ddd;}

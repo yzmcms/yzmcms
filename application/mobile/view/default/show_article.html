@@ -43,7 +43,12 @@
                     <input type="hidden" name="title" value="{$title}">
                     <input type="hidden" name="url" value="{$url}">
                     <textarea class="textarea" id="content" name="content" placeholder="我来说两句~"></textarea>
-                    <p><input type="submit" class="yzm-comment-submit" name="dosubmit" value="提交"></p>
+                    <p>
+                        {if $site['comment_code']}
+                        <span class="yzm-comment-code"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" title="看不清？点击更换"><input type="text" name="code" placeholder="请输入验证码" required="required"></span>
+                        {/if}
+                        <input type="submit" class="yzm-comment-submit" name="dosubmit" value="提交">
+                    </p>
                     </form>
                     </div>
                 </div>
@@ -69,6 +74,9 @@
                                 <input type="hidden" name="reply" value="{$v[id]}">
                                 <input type="hidden" name="reply_to" value="{$v[username]}">
                                 <textarea name="content" class="textarea textarea2" placeholder="我来说两句~"></textarea>
+                                {if $site['comment_code']}
+                                <span class="yzm-comment-reply-code"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" title="看不清？点击更换"><input type="text" name="code" placeholder="请输入验证码" required="required"></span>
+                                {/if}
                                 <input type="submit" class="yzm-comment-submit static" name="dosubmit" value="提交">
                                 </form>
                                 </div>
@@ -102,6 +110,7 @@
         <script type="text/javascript">
             function toreply(obj) {
                 if ($("#rep_" + obj).css("display") == "none") {
+                    $("#rep_" + obj + " .yzm-comment-reply-code img").attr('src', $("#rep_" + obj + " .yzm-comment-reply-code img").attr("src") + "?");
                     $("#rep_" + obj).css("display", "block");
                 } else {
                     $("#rep_" + obj).css("display", "none");

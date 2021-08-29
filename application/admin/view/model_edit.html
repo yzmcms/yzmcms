@@ -9,10 +9,11 @@
 			 <li><label><span class="c-red">*</span>模型名称：</label><input type="text" class="input" name="name" value="<?php echo $data['name'];?>"></li>
 			 <li><label><span class="c-red">*</span>模型表名：</label><input type="text" class="input" value="<?php echo $data['tablename'];?>" name="tablename" disabled="disabled"></li>	
 			 <li><label>模型简介：</label><span class="span_input"><textarea name="description" class="textarea" style="width:70%"><?php echo $data['description'];?></textarea></span></li>	
-			 <li><label>禁用：</label>
-			 <span class="span_input">
-			 	<label class="label_radio"><input name="disabled" type="radio" value="1" <?php echo $data['disabled']==1 ? ' checked="checked" ' : '';?>> 是</label>
-			 	<label class="label_radio"><input name="disabled" type="radio" value="0" <?php echo $data['disabled']==0 ? ' checked="checked" ' : '';?>> 否</label>
+			 <li><label>默认模型：</label>
+			 <span class="span_input yzm-explain-box">
+			 	<label class="label_radio"><input name="isdefault" type="radio" value="1" <?php echo $data['isdefault']==1 ? ' checked="checked" ' : '';?>> 是</label>
+			 	<label class="label_radio"><input name="isdefault" type="radio" value="0" <?php echo $data['isdefault']==0 ? ' checked="checked" ' : '';?>> 否</label>
+			 	<span class="yzm-explain">设为默认模型后，内容管理默认展示该模型下的数据</span>
 			 </span>
 			 </li>				 
 			<li>
@@ -40,9 +41,11 @@
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1, time:800}, function(){
+						parent.location.reload();
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

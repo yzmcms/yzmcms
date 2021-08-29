@@ -23,8 +23,8 @@
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
 <script type="text/javascript">
+	<?php if(isset($_SESSION['yzm_csrf_token'])) { ?>
 	var yzm_csrf_token = '<?php echo $_SESSION['yzm_csrf_token'];?>';
-	<?php if($_SESSION['yzm_csrf_token']) { ?>
 	window.onload = function() {
 		var html_form = document.forms;
 		var num = html_form.length;

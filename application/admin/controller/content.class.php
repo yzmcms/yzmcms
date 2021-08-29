@@ -1,4 +1,14 @@
 <?php
+// +----------------------------------------------------------------------
+// | Site:  [ http://www.yzmcms.com]
+// +----------------------------------------------------------------------
+// | Copyright: 袁志蒙工作室，并保留所有权利
+// +----------------------------------------------------------------------
+// | Author: YuanZhiMeng <214243830@qq.com>
+// +---------------------------------------------------------------------- 
+// | Explain: 这不是一个自由软件,您只能在不用于商业目的的前提下对程序代码进行修改和使用，不允许对程序代码以任何形式任何目的的再发布！
+// +----------------------------------------------------------------------
+
 defined('IN_YZMPHP') or exit('Access Denied'); 
 yzm_base::load_controller('common', 'admin', 0);
 yzm_base::load_common('lib/content_form'.EXT, 'admin');
@@ -21,9 +31,10 @@ class content extends common {
 		$of = in_array($of, array('id','catid','click','username','updatetime','status','is_push')) ? $of : 'id';
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$modelinfo = $this->content->modelarr;
-		$content_db = D('article'); //默认加载文章列表
-		$modelid = 1; //默认加载文章模型
-		$catid = 0; //默认加载全部分类
+		$default_model = get_default_model();
+		$content_db = D($default_model['tablename']);
+		$modelid = $default_model['modelid'];
+		$catid = 0; 
 		$where = $this->_all_priv() ? array() : array('userid'=>$_SESSION['adminid']);
 		$total = $content_db->where($where)->total();
 		$page = new page($total, 15);
@@ -185,14 +196,17 @@ class content extends common {
 			$content = D($this->content->tabname);
 			$data = $content->field('url,is_push')->where('id IN ('.$ids.')')->select();
 			$urls = array();
+			$site_url = get_config('site_url');
 			foreach ($data as $value) {
 				if($value['is_push']) continue;
-				$urls[] = strpos($value['url'], '://') ? $value['url'] : SERVER_PORT.HTTP_HOST.$value['url'];
+				$urls[] = strpos($value['url'], '://') ? $value['url'] : $site_url.$value['url'];
 			}
 			if(!empty($urls)){
 				$baidu_push_token = get_config('baidu_push_token');
 				if(!$baidu_push_token) showmsg('token值为空，请到系统设置中配置！', 'stop');
-				$api_url = 'http://data.zz.baidu.com/urls?site='.HTTP_HOST.'&token='.$baidu_push_token;
+				$length = strpos(HTTP_HOST, ':');
+				$http_host = $length ? substr(HTTP_HOST, 0, $length) : HTTP_HOST;
+				$api_url = 'http://data.zz.baidu.com/urls?site='.$http_host.'&token='.$baidu_push_token;
 				$ch = curl_init();
 				$options =  array(
 				    CURLOPT_URL => $api_url,
@@ -213,7 +227,7 @@ class content extends common {
 				}
 			}
 
-			showmsg('没有数据被推送！');
+			showmsg('没有数据被推送！', '', 2);
 		}
 	}
 

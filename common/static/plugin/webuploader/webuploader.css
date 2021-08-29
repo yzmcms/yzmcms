@@ -11,6 +11,9 @@
 .webuploader-pick-disable{opacity:.6;pointer-events:none;cursor:not-allowed}
 
 .tabCon{padding:3px 0px;}
+.yzm-attachment-search{margin-top:8px;font-size:12px}
+.yzm-attachment-search .input-text{width:150px;}
+.yzm-search-btn{display:inline-block;cursor:pointer;border:none;height:30px;width:65px;border-radius:1px;text-align:center;font-weight:400;white-space:nowrap;vertical-align:middle;transition:background-color .1s linear}
 .yzm-imagelist ul{background:#fff}
 .yzm-imagelist ul li{float:left;width:25%;text-align:center;margin:10px 0;position:relative;}
 .yzm-imagelist ul li a{width:100px;height:70px;border:1px solid #eee;text-align:center;vertical-align:middle;display:table-cell;position:relative;}
@@ -20,9 +23,9 @@
 .yzm-imagelist ul li a .checkd{width:25px;height:25px;position:absolute;right:0;bottom:0;z-index:10;}
 .yzm-file-item{margin:6px 0;background:#f5f5f5;font-size:12px;padding:6px 15px;border-bottom:1px dotted #d5d5d5}
 .yzm-upload-button{margin-top:10px}
-.yzm-progress{width:100%;background:#ddcfcc;height:10px;margin-top:3px}
-.yzm-progress span{display:block;background:#33c84a;height:10px}
+.yzm-progress{width:100%;background:#ddcfcc;height:6px;margin-top:3px}
+.yzm-progress span{display:block;background:#33c84a;height:6px}
 .yzm-upload-done{display:none}
 .yzm-upload-error{color:#ff0202;margin-top:5px}
 .yzm-notice{display:block;margin:5px 0}
-.yzm-bottom-button{position:fixed;bottom:20px;right:10px;z-index:99;}
+.yzm-bottom-button{position:fixed;bottom:10px;right:10px;z-index:99;}

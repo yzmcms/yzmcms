@@ -89,48 +89,27 @@
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
 <script type="text/javascript">
 
-function member_remove(){
-	if ($(".checkbox:checked").length<1){
-	   layer.alert('请勾选信息！');
-	   return false;
-	}	
-	document.getElementById('myform').action='<?php echo U('move_user_group');?>';
-	document.getElementById('myform').submit();
+	function member_remove(){
+		if ($(".checkbox:checked").length<1){
+		   layer.alert('请勾选信息！');
+		   return false;
+		}	
+		document.getElementById('myform').action='<?php echo U('move_user_group');?>';
+		document.getElementById('myform').submit();
 
-}
-
-function synchronization(){
-	layer.confirm('第一次同步数据后，本地数据会自动和微信同步（已认证的公众号），不建议频繁使用！',function(index){
-		yzm_open('同步微信服务器用户','<?php echo U('synchronization');?>',600,300);
-	});
-}
-
-var start = {
-	elem: '#start',
-	format: 'YYYY-MM-DD',
-	min: '1999-01-01', //设定最小日期
-	max: '2099-01-01', //最大日期
-	istime: false,
-	istoday: false,
-	choose: function(datas){
-		 end.min = datas; //开始日选好后，重置结束日的最小日期
-		 end.start = datas //将结束日的初始值设定为开始日
 	}
-};
 
-var end = {
-	elem: '#end',
-	format: 'YYYY-MM-DD',
-	min: '1999-01-01',
-	max: '2099-01-01',
-	istime: false,
-	istoday: false,
-	choose: function(datas){
-		start.max = datas; //结束日选好后，充值开始日的最大日期
+	function synchronization(){
+		layer.confirm('第一次同步数据后，本地数据会自动和微信同步（已认证的公众号），不建议频繁使用！',function(index){
+			yzm_open('同步微信服务器用户','<?php echo U('synchronization');?>',600,300);
+		});
 	}
-};
-laydate(start);
-laydate(end);
+
+	var start = {elem:'#start',format:'YYYY-MM-DD',min:'1999-01-01',max:'2099-01-01',istime:false,istoday:false,choose:function(datas){end.min = datas;end.start = datas}
+	};
+	var end = {elem:'#end',format:'YYYY-MM-DD',min:'1999-01-01',max:'2099-01-01',istime:false,istoday:false,choose:function(datas){start.max = datas;}};
+	laydate(start);
+	laydate(end);
 
 </script>
 </body>

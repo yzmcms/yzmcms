@@ -12,7 +12,7 @@ class index{
 
 	private $offset,$module;
 
-	function __construct() {
+	public function __construct() {
 		$this->offset = get_config('search_page') ? intval(get_config('search_page')) : 10;
 		$this->module = 'index';
 		if(isset($_GET['is_wap'])){
@@ -26,7 +26,8 @@ class index{
 	 */
 	public function init(){	
 		$site = get_config();
-	
+		
+		if(!is_string($_GET['q'])) showmsg(L('illegal_parameters'), 'stop');
 		$q = str_replace('%', '', new_html_special_chars(strip_tags(trim($_GET['q']))));
 		if(strlen($q) < 2 || strlen($q) > 30){
 			showmsg('你输入的字符长度需要是 2 到 30 个字符！', 'stop');
@@ -72,6 +73,7 @@ class index{
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;	
 		$data = D('tag')->field('tag,remarks')->where(array('id'=>$id))->find();
 		if(!$data) showmsg('TAG标签不存在！', 'stop');
+		D('tag')->update('`click` = `click`+1', array('id' => $id));
 		$q = $data['tag'];	
 			
 		$tag_content = D('tag_content');

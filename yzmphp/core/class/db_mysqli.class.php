@@ -432,6 +432,7 @@ class db_mysqli{
 	 */		
 	private function geterr($msg = ''){
 		if(APP_DEBUG){
+			if(PHP_SAPI == 'cli') exit('MySQL Error: '.self::$link->error.' | '.$msg);
 			application::fatalerror($msg, self::$link->error, 2);	
 		}else{
 			error_log('<?php exit;?> MySQL Error: '.date('Y-m-d H:i:s').' | Errno: '.self::$link->errno.' | Error: '.self::$link->error.' | SQL: '.$msg."\r\n", 3, YZMPHP_PATH.'cache/error_log.php');

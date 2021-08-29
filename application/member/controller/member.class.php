@@ -129,17 +129,17 @@ class member extends common{
 		$userid = isset($_GET['userid']) ? intval($_GET['userid']) : 0;
 		if(isset($_POST['dosubmit'])){
 
-			if($_POST['password'] == ''){
-				unset($_POST['password']);
-			}else{
+			if($_POST['password']){
 				$_POST['password'] = password($_POST['password']);
+			}else{
+				unset($_POST['password']);
 			}
-			if(isset($_POST['del_userpic']) && $_POST['del_userpic'] == '1'){		
-				if($_POST['userpic'] != ''){					
-					$userpic = YZMPHP_PATH.ltrim($_POST['userpic'], SITE_PATH);
-					if(in_array(fileext($userpic), array('jpg', 'jpeg', 'png', 'gif')) && is_file($userpic)) @unlink($userpic); 
-					$_POST['userpic'] = '';					
-				}
+			
+			if(isset($_POST['del_userpic']) && $_POST['del_userpic'] == '1' && $_POST['userpic']){		
+				$userpic = YZMPHP_PATH.ltrim($_POST['userpic'], SITE_PATH);
+				if(in_array(fileext($userpic), array('jpg', 'jpeg', 'png', 'gif')) && is_file($userpic)) @unlink($userpic); 
+				$_POST['userpic'] = '';	
+				D('comment')->update(array('userpic'=>''),array('userid'=>$userid));
 			}
 			
 			if(isset($_POST['vip']) && $_POST['overduedate']!=''){

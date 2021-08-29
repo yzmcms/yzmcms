@@ -4,6 +4,7 @@
  * 商业用途务必到官方购买正版授权, 以免引起不必要的法律纠纷.
  * 功能定制QQ: 21423830
  */   
+
 class update{
 	
 	public static function mysql_varsion() {

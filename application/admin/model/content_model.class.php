@@ -1,4 +1,14 @@
 <?php
+// +----------------------------------------------------------------------
+// | Site:  [ http://www.yzmcms.com]
+// +----------------------------------------------------------------------
+// | Copyright: 袁志蒙工作室，并保留所有权利
+// +----------------------------------------------------------------------
+// | Author: YuanZhiMeng <214243830@qq.com>
+// +---------------------------------------------------------------------- 
+// | Explain: 这不是一个自由软件,您只能在不用于商业目的的前提下对程序代码进行修改和使用，不允许对程序代码以任何形式任何目的的再发布！
+// +----------------------------------------------------------------------
+
 class content_model {
 	public $modelarr;
 	public $modelid;
@@ -10,10 +20,11 @@ class content_model {
 		foreach($modelinfo as $val){
 			$this->modelarr[$val['modelid']] = $val;
 		}
-		$this->modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : (isset($_POST['modelid']) ? intval($_POST['modelid']) : 1);
-		if(!isset($this->modelarr[$this->modelid])) showmsg('模型不存在！');
+		$this->modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : (isset($_POST['modelid']) ? intval($_POST['modelid']) : get_default_model('modelid'));
+		if(!isset($this->modelarr[$this->modelid])) showmsg('模型不存在！', 'stop');
 		$this->tabname = $this->modelarr[$this->modelid]['tablename'];
 	}
+
 
 	/**
 	 * 添加内容

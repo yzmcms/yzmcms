@@ -1,7 +1,7 @@
 <?php include $this->admin_tpl('meta');?>
 <title>管理中心 - YzmCMS内容管理系统</title>
 <meta name="keywords" content="YzmCMS,YzmPHP,YzmCMS内容管理系统">
-<meta name="description" content="YzmCMS内容管理系统。">
+<meta name="description" content="YzmCMS是一款基于YZMPHP开发的一套轻量级开源内容管理系统，YzmCMS简洁、安全、开源、免费，专注为公司企业、个人站长快速建站提供解决方案。">
 </head>
 <body>
 <?php include $this->admin_tpl('header');?>
@@ -12,7 +12,7 @@
     	<!-- <h5><i class="Hui-iconfont">&#xe60e;</i> 锁屏状态，请输入密码解锁</h5> -->
     	<p class="lock-user"><?php echo $_SESSION['adminname'];?></p>
     	<div class="input-box">
-    	    <input type="password" id="lock_password" class="lock-text" placeholder="锁屏状态，请输入密码">
+    	    <input type="password" name="password" id="lock_password" class="lock-text" placeholder="锁屏状态，请输入密码">
     	    <button class="lock-submit" type="button" onclick="yzm_unlock_screen()" title="提交"><i class="Hui-iconfont">&#xe67a;</i></button>
     	</div>
     </form>
@@ -70,15 +70,14 @@
 	}
 
 	function yzm_unlock_screen() {
-		var lock_password = $("#lock_password").val();
-		if(lock_password == ''){
+		if($("#lock_password").val() == ''){
 			layer.msg('请输入您的密码！', {icon:2});
 			return false;
 		}
 		$.ajax({
 			type: 'POST',
 			url: '<?php echo U('public_unlock_screen');?>',
-			data: "password="+lock_password,
+			data: $(".lock-box").serialize(),
 			dataType: "json",
 			success: function(msg) {
 				if (msg.status == 1) {

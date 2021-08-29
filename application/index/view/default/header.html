@@ -52,7 +52,7 @@
 		{m:nav field="catid,catname,arrchildid,pclink,target" where="parentid=0" limit="20"}
 		{loop $data $v}
 		    <li>
-				<a {if isset($catid) && $v['catid']==$catid} class="current" {/if} href="{$v[pclink]}" target="{$v[target]}">{$v[catname]}</a>
+				<a {if isset($catid) && in_array($catid, explode(',', $v['arrchildid']))} class="current" {/if} href="{$v[pclink]}" target="{$v[target]}">{$v[catname]}</a>
 				<!-- 这里是二级栏目的循环，不需要的可以删除，代码开始 -->
 				{if $v['arrchildid']!=$v['catid']} 
 				{php $r = get_childcat($v['catid']);}

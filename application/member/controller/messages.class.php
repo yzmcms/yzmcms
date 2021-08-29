@@ -12,7 +12,7 @@ yzm_base::load_sys_class('page','',0);
 
 class messages extends common{
 	
-	function __construct() {
+	public function __construct() {
 		parent::__construct();
 	}
 
@@ -50,9 +50,9 @@ class messages extends common{
 			$_POST['replyid'] = $messageid;
 			$_POST['isread'] = '0';
 			if(D('message')->insert($_POST, true)){
-				showmsg(L('operation_success'), U('outbox'));
+				showmsg(L('operation_success'), U('outbox'), 1);
 			}else{
-				showmsg("操作失败！");
+				showmsg(L('operation_failure'));
 			}
 			
 		}else{
@@ -61,6 +61,7 @@ class messages extends common{
 				$data = D('message')->where(array('messageid' => $messageid, 'send_to' => $username, 'status' => '1'))->find();
 				$data['subject'] = !empty($data['subject']) ? '回复：'.$data['subject'] : '';	
 			}
+			if(isset($_GET['username'])) $data['send_from'] = safe_replace($_GET['username']);
 		}		
 		include template('member', 'new_messages');
 	}
@@ -89,7 +90,7 @@ class messages extends common{
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
 		if(!isset($_POST['fx'])) showmsg('您没有选择项目！');
-		if(!is_array($_POST['fx'])) showmsg('非法操作！');
+		if(!is_array($_POST['fx'])) showmsg(L('illegal_operation'), 'stop');
 		$message = D('message');
 		foreach($_POST['fx'] as $v){
 			$message->delete(array('messageid' => intval($v), 'send_from' => $username));
@@ -154,7 +155,7 @@ class messages extends common{
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
 		if(!isset($_POST['fx'])) showmsg('您没有选择项目！');
-		if(!is_array($_POST['fx'])) showmsg('非法操作！');
+		if(!is_array($_POST['fx'])) showmsg(L('illegal_operation'), 'stop');
 		$message = D('message');
 		foreach($_POST['fx'] as $v){
 			$message->update(array('status' => 0), array('send_to' => $username, 'messageid' => intval($v))); //只是隐藏，不执行删除操作	
@@ -172,7 +173,7 @@ class messages extends common{
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
 		
-		$messageid = isset($_GET['messageid']) ? intval($_GET['messageid']) : showmsg('非法操作！');
+		$messageid = isset($_GET['messageid']) ? intval($_GET['messageid']) : showmsg(L('illegal_operation'), 'stop');
 
 		$data = D('message')->where(array('messageid' => $messageid, 'send_from' => $username))->find(); 
 		if(!$data) showmsg('你查看的信息不存在！');
@@ -189,7 +190,7 @@ class messages extends common{
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
 		
-		$messageid = isset($_GET['messageid']) ? intval($_GET['messageid']) : showmsg('非法操作！');
+		$messageid = isset($_GET['messageid']) ? intval($_GET['messageid']) : showmsg(L('illegal_operation'), 'stop');
 		$message = D('message');
 		$data = $message->where(array('messageid' => $messageid, 'send_to' => $username))->find(); 
 		if(!$data || $data['status']==0) showmsg('你查看的信息不存在！');   //信息不存在或者已经删除
@@ -206,7 +207,7 @@ class messages extends common{
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
 		
-		$id = isset($_GET['id']) ? intval($_GET['id']) : showmsg('非法操作！'); //系统[群发]消息
+		$id = isset($_GET['id']) ? intval($_GET['id']) : showmsg(L('illegal_operation'), 'stop'); //系统[群发]消息
 		$message_group = D('message_group');
 		$data = $message_group->where(array('id' => $id))->find(); 
 		if(!$data || $data['groupid']!=$groupid || $data['status']!=1) showmsg('你查看的信息不存在！');

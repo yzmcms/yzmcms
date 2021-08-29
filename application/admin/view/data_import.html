@@ -31,7 +31,7 @@
 		layer.msg('请上传文件！');
 		return false;
 		}
-		layer.msg('正在上传中……', { icon: 16, shade: 0.21, shadeClose:true, time:0 });
+		layer.msg('正在上传中……', { icon: 16, shade: 0.21, time:false });
 		var form = document.getElementById("myform");
 		var data = new FormData(form);
         $.ajax({
