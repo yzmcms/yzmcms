@@ -60,7 +60,7 @@ class diyform_field extends common{
 
 		   if($_POST['fieldtype'] == 'input' || $_POST['fieldtype'] == 'datetime'){
 			   sql::sql_add_field($this->modeltable, $_POST['field']);  
-		   }else if($_POST['fieldtype'] == 'textarea' || $_POST['fieldtype'] == 'images'){
+		   }else if($_POST['fieldtype'] == 'textarea' || $_POST['fieldtype'] == 'images' || $_POST['fieldtype'] == 'attachments'){
 			   sql::sql_add_field_mediumtext($this->modeltable, $_POST['field']);  
 		   }else if($_POST['fieldtype'] == 'number'){
 			   sql::sql_add_field_int($this->modeltable, $_POST['field'], intval($_POST['defaultvalue']));  

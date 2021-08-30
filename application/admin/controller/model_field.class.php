@@ -62,7 +62,7 @@ class model_field extends common {
 		   		   
 		   if($_POST['minlength']) $_POST['isrequired'] = 1;
 
-		   if($_POST['fieldtype'] == 'textarea' || $_POST['fieldtype'] == 'images'){
+		   if($_POST['fieldtype'] == 'textarea' || $_POST['fieldtype'] == 'images' || $_POST['fieldtype'] == 'attachments'){
 			   sql::sql_add_field_mediumtext($this->modeltable, $_POST['field']);  
 		   }else if($_POST['fieldtype'] == 'editor' || $_POST['fieldtype'] == 'editor_mini'){
 			   sql::sql_add_field_text($this->modeltable, $_POST['field']);  
