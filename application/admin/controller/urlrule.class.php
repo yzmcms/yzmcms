@@ -33,9 +33,10 @@ class urlrule extends common {
 	public function del() {
 		if($_POST && is_array($_POST['id'])){
 			if(D('urlrule')->delete($_POST['id'], true)){
-				delcache('urlrule');	
-				delcache('site_mapping_index');	
-				showmsg(L('operation_success'));
+				$site_mapping = self::$siteid ? 'site_mapping_site_'.self::$siteid : 'site_mapping_index_'.self::$siteid;
+				delcache($site_mapping);
+				delcache('urlrule');
+				showmsg(L('operation_success'), '', 1);
 			}else{
 				showmsg(L('operation_failure'));
 			}
@@ -54,8 +55,9 @@ class urlrule extends common {
 			if($r) return_json(array('status'=>0,'message'=>'URL规则已存在！'));
 			
 			$urlrule->insert($_POST, true);
+			$site_mapping = self::$siteid ? 'site_mapping_site_'.self::$siteid : 'site_mapping_index_'.self::$siteid;
+			delcache($site_mapping);
 			delcache('urlrule');
-			delcache('site_mapping_index');
 			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}else{
 			include $this->admin_tpl('urlrule_add');
@@ -73,8 +75,9 @@ class urlrule extends common {
 			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 			if(!preg_match('/^([a-zA-Z0-9]|[\/\(\)\\\+\-~!@_]){0,50}$/', $_POST['urlrule'])) return_json(array('status'=>0,'message'=>'URL规则不符合规范！'));
 			if($urlrule->update($_POST, array('urlruleid' => $id), true)){
+				$site_mapping = self::$siteid ? 'site_mapping_site_'.self::$siteid : 'site_mapping_index_'.self::$siteid;
+				delcache($site_mapping);
 				delcache('urlrule');
-				delcache('site_mapping_index');
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();

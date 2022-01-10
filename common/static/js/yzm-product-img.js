@@ -1,5 +1,5 @@
 ﻿/**
- * YZMCMS 内容管理系统
+ * YZMCMS 内容管理系统  (yzm cms轻量级开源CMS)
  * 产品图集js滚动效果
  * @author    袁志蒙  
  * @license   http://www.yzmcms.com

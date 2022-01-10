@@ -201,26 +201,32 @@ class mass extends wechat_common{
 	 */	
 	public function select_user(){
 		$groupid = isset($_GET["groupid"]) ? intval($_GET["groupid"]) : 99;
+		$scan = isset($_GET["scan"]) ? safe_replace($_GET["scan"]) : '';
 		$wechat_user = D('wechat_user');
 		$wechat_group = D('wechat_group')->select();
 		$where = 'subscribe = 1';
 		if(isset($_GET['dosubmit'])){	
 			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
+
+			if($groupid != 99) {
+				$where .= ' AND groupid = '.$groupid;
+			}
+
+			if($scan) {
+				$where .= ' AND scan = \''.$scan.'\'';
+			}	
 			
 			if($searinfo != ''){
 				if($type == '1')
-					$where .= ' AND wechatid = \''.$searinfo.'\'';
+					$where .= ' AND remark LIKE \'%'.$searinfo.'%\'';
 				elseif($type == '2')
-					$where .= ' AND scan = \''.$searinfo.'\'';
+					$where .= ' AND wechatid = \''.$searinfo.'\'';
 				else
 					$where .= ' AND nickname LIKE \'%'.$searinfo.'%\'';
-			}
-			
-			if($groupid != 99) {
-				$where .= ' AND groupid = '.$groupid;
-			}			
+			}		
 		}
+		$scan_arr = D('wechat_scan')->field('id,scan')->order('id DESC')->limit(100)->select();
 		$total = $wechat_user->where($where)->total();
 		$page = new page($total, 7);
 		$data = $wechat_user->where($where)->order('wechatid DESC')->limit($page->limit())->select();

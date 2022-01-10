@@ -24,21 +24,32 @@ class tag extends common {
 		$of = in_array($of, array('id','catid','total','click','inputtime')) ? $of : 'id';
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$tag = D('tag');
-		$where = array();
+		$where = array('siteid'=>self::$siteid);
 		$catid = 0;
+		$site_url = self::$siteid ? rtrim(get_site_url(), '/') : '';
 		if(isset($_GET['dosubmit'])){
 			$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
 			$type = isset($_GET['type']) ? intval($_GET['type']) : 1;
 			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
-			if($searinfo != ''){
-				if($type == 1)
-					$where = array('tag' => '%'.$searinfo.'%');
-				else
-					$where = array('remarks' => '%'.$searinfo.'%');
-			}
+
 			if($catid)	$where['catid'] = $catid;		
+			if(isset($_GET['start']) && isset($_GET['end']) && $_GET['start']) {
+				$where['inputtime>='] = strtotime($_GET['start']);
+				$where['inputtime<='] = strtotime($_GET['end']);
+			}
+			if($searinfo != ''){
+				if($type == 1){
+					$where['tag'] = '%'.$searinfo.'%';
+				}elseif($type == 2){
+					$wheree['seo_title'] = '%'.$searinfo.'%';
+				}elseif($type == 3){
+					$wheree['seo_keywords'] = '%'.$searinfo.'%';
+				}else{
+					$wheree['seo_description'] = '%'.$searinfo.'%';
+				}
+			}
 		}		
-		$_GET = array_map('htmlspecialchars', $_GET);
+
 		$total = $tag->where($where)->total();
 		$page = new page($total, 15);
 		$data = $tag->where($where)->order("$of $or")->limit($page->limit())->select();		
@@ -57,9 +68,9 @@ class tag extends common {
 			$arr = array_unique(explode(',', $_POST['tags']));
 			foreach($arr as $val){
 				$val = trim($val);
-				$tagid = $tag->where(array('tag' => $val))->find();
+				$tagid = $tag->field('id')->where(array('siteid'=>self::$siteid, 'tag'=>$val))->one();
 				if(!$tagid){
-					$tag->insert(array('catid'=>$catid, 'tag'=>$val, 'total'=>0, 'inputtime'=>SYS_TIME), true);
+					$tag->insert(array('siteid'=>self::$siteid, 'catid'=>$catid, 'tag'=>$val, 'total'=>0, 'inputtime'=>SYS_TIME), true);
 				}
 			}
 			return_json(array('status'=>1,'message'=>L('operation_success')));
@@ -79,10 +90,19 @@ class tag extends common {
 			$catid = isset($_POST['catid']) ? intval($_POST['catid']) : 0;
 			// $total = isset($_POST['total']) ? intval($_POST['total']) : 0;
 			$tagv = trim($_POST['tag']);
-			$remarks = trim($_POST['remarks']);
-			$data = $tag->where(array('id!='=>$id, 'tag'=>$tagv))->find();
-			if($data) return_json(array('status'=>0,'message'=>'TAG标签重复，请修改名称！'));
-			if($tag->update(array('catid'=>$catid, 'tag'=>$tagv, 'remarks'=>$remarks), array('id'=>$id), true)){
+			$seo_title = trim($_POST['seo_title']);
+			$seo_keywords = trim($_POST['seo_keywords']);
+			$seo_description = trim($_POST['seo_description']);
+			$tagid = $tag->field('id')->where(array('siteid'=>self::$siteid, 'tag'=>$tagv))->one();
+			if($tagid && $tagid!=$id) return_json(array('status'=>0,'message'=>'TAG标签重复，请修改名称！'));
+			if($tag->update(array(
+				'catid'=>$catid,
+				'tag'=>$tagv,
+				'seo_title'=>$seo_title,
+				'seo_keywords'=>$seo_keywords,
+				'seo_description'=>$seo_description
+				), array('id'=>$id), true)
+			){
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();
@@ -118,7 +138,7 @@ class tag extends common {
 	 */
 	public function content() {
 		$id = input('get.id', 0, 'intval');
-		$modelinfo = get_modelinfo();
+		$modelinfo = get_site_modelinfo();
 		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : get_default_model('modelid');
 		$tabname = get_model($modelid);
         $catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
@@ -191,7 +211,7 @@ class tag extends common {
 	public function public_select() {
 		$catid = isset($_POST['catid']) ? intval($_POST['catid']) : 0;
 		$searinfo = isset($_POST['searinfo']) ? htmlspecialchars($_POST['searinfo']) : '';
-		$where = array();
+		$where = array('siteid'=>self::$siteid);
 		if(isset($_POST['dosubmit'])){
 			if($catid)  $where['catid'] = $catid;
 			if($searinfo)  $where['tag'] = '%'.$searinfo.'%';

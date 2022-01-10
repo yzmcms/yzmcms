@@ -4,9 +4,9 @@
 		<div class="yzm-member-status">
 		{if intval(get_cookie('_userid'))==0}
 		<a href="{U('member/index/register')}" target="_blank">注册</a> 
-		<a href="{url_referer(get_url())}"  target="_blank" class="login">登录</a>
+		<a href="{url_referer(1)}"  target="_blank" class="login">登录</a>
 		{else}
-		你好：{safe_replace(get_cookie('_username'))}，<a href="{U('member/index/init')}">会员中心</a> <a href="{U('member/index/logout')}">退出</a>
+		你好：{safe_replace(get_cookie('_username'))}，<a href="{U('member/index/init')}">会员中心</a> <a href="{url_referer(0)}">退出</a>
 		{/if}
 		</div>
 		<div class="topleft">

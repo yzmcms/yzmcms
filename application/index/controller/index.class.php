@@ -35,7 +35,7 @@ class index{
 		//外部链接
 		if($type == 2) showmsg(L('is_jump'), $pclink, 1);
 		
-		$template = $catid==$arrchildid ? $list_template : $category_template;
+		$template = $catid!=$arrchildid&&$category_template ? $category_template : $list_template;
 		
 		//单页面
 		if($type == 1){
@@ -49,7 +49,11 @@ class index{
 
 		//SEO相关设置
 		$site = get_config();
-		$seo_title = $seo_title ? $seo_title : $catname.'_'.$site['site_name'];
+		if(isset($_GET['page'])){
+			$seo_title = $seo_title ? $seo_title.'_第'.intval($_GET['page']).'页' : $catname.'_第'.intval($_GET['page']).'页'.get_seo_suffix();
+		}else{
+			$seo_title = $seo_title ? $seo_title : $catname.get_seo_suffix();
+		}
 		$keywords = $seo_keywords ? $seo_keywords : $site['site_keyword'];
 		$description = $seo_description ? $seo_description : $site['site_description'];		
 				
@@ -83,17 +87,20 @@ class index{
 		//会员组权限检测
 		if($groupids_view) {
 			$groupid = intval(get_cookie('_groupid'));
-			if(!$groupid){
-				showmsg(L('need_login'), url_referer(get_url()), 2);
-			}
+			if(!$groupid) showmsg(L('need_login'), url_referer(get_url()), 2);
 			if($groupid < $groupids_view) showmsg(L('insufficient_authority'), 'stop');
 		}
 		
 		//阅读收费检测
-		if($readpoint) content::check_readpoint($catid.'_'.$id, $readpoint, $paytype, $url);
+		$allow_read = true;
+		if($readpoint){
+			$allow_read = content::check_readpoint($catid.'_'.$id, $readpoint, $paytype, $url);
+			$pay_url = U('member/member_pay/spend_point', 'par='.string_auth($catid.'_'.$id.'|'.$readpoint.'|'.$paytype));
+		} 
 		
 		//SEO相关设置
 		$site = get_config();
+		$seo_title = $title.get_seo_suffix();
 		
 		//更新点击量
 		$db->update('`click` = `click`+1', array('id' => $id));

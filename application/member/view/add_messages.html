@@ -13,12 +13,18 @@
 					echo '<option value="'.$val['groupid'].'">'.$val['name'].'</option>';
 				}
 			   ?>			
-			 </select></li>
-			 <li><label><span class="c-red">*</span>主题：</label><input type="text" class="input" name="subject" value=""></li>
-			 <li><label><span class="c-red">*</span>内容：</label><span class="span_input"><textarea class="textarea" name="content" style="width:75%"></textarea></span></li>
-			 <li><input type="hidden" name="dosubmit" value="1">
-			 <input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
-			 <input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			 </select>
+			 </li>
+			 <li><label><span class="c-red">*</span>主题：</label>
+			 	<input type="text" class="input" name="subject" value="">
+			 </li>
+			 <li><label><span class="c-red">*</span>内容：</label>
+			 	<textarea class="textarea" name="content" style="width:75%"></textarea>
+			 </li>
+			 <li>
+			 	<input type="hidden" name="dosubmit" value="1">
+			 	<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
+			 	<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
 			 </li>
 		</ul>
 	</form>

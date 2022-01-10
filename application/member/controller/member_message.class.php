@@ -23,7 +23,7 @@ class member_message extends common{
 	public function init(){ 
 		$message = D('message');
 		$total = $message->total();
-		$page = new page($total, 15);
+		$page = new page($total, 10);
 		$data = $message->order('messageid DESC')->limit($page->limit())->select();			
 		include $this->admin_tpl('message_list');
 	}
@@ -38,27 +38,27 @@ class member_message extends common{
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){	
 			$isread = isset($_GET["isread"]) ? intval($_GET["isread"]) : '99';
-			$type = isset($_GET["type"]) ? intval($_GET["type"]) : '0';
+			$type = isset($_GET["type"]) ? intval($_GET["type"]) : 0;
 			$username = isset($_GET["username"]) ? safe_replace($_GET["username"]) : '';
 
 			if($isread < 99){
 				$where .= ' AND isread = '.$isread;
 			}
+
+			if(isset($_GET['start']) && isset($_GET['end']) && $_GET['start']) {
+				$where .= " AND `message_time` >= '".strtotime($_GET["start"])."' AND `message_time` <= '".strtotime($_GET["end"])."' ";
+			}
 			
-			if($username != '' && $type != '0'){
+			if($username && $type){
 				if($type == '1')
 					$where .= ' AND send_to LIKE \'%'.$username.'%\'';
 				else
 					$where .= ' AND send_from LIKE \'%'.$username.'%\'';
-			}
-			
-			if(isset($_GET['start']) && isset($_GET['end']) && $_GET['start']) {
-				$where .= " AND `message_time` >= '".strtotime($_GET["start"])."' AND `message_time` <= '".strtotime($_GET["end"])."' ";
 			}			
 		}
 		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $message->where($where)->total();
-		$page = new page($total, 15);
+		$page = new page($total, 10);
 		$data = $message->where($where)->order('messageid DESC')->limit($page->limit())->select();		
 		include $this->admin_tpl('message_list');
 	}	

@@ -13,6 +13,17 @@ defined('IN_YZMPHP') or exit('Access Denied');
 new_session_start();
 
 class index{
+
+	private $siteid,$siteinfo;
+	
+	public function __construct(){
+		$this->siteid = get_siteid();
+		$this->siteinfo = array();
+		if($this->siteid){
+			$this->siteinfo = get_site($this->siteid);
+			set_module_theme($this->siteinfo['site_theme']);
+		}
+	}
 	
 	/**
 	 * 发布评论
@@ -21,7 +32,7 @@ class index{
  		if(isset($_POST['dosubmit'])) {
 			if(empty($_POST['content'])) showmsg('评论内容不能为空！', 'stop');
 			
-			$site = get_config();
+			$site = array_merge(get_config(), $this->siteinfo);
 			if($site['comment_code']){
 				if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
 					$_SESSION['code'] = '';
@@ -43,6 +54,7 @@ class index{
 			
 			$_POST = new_html_special_chars($_POST);
 			
+			$_POST['siteid'] = $this->siteid;
 			$_POST['content'] = $this->_recontent($_POST['content']);
 			$_POST['userpic'] = $userid ? get_memberavatar($userid) : '';
 			$_POST['inputtime'] = SYS_TIME;
@@ -113,10 +125,9 @@ class index{
 		$page = new page($total, 20);
 		$comment_data = D('comment')->where(array('commentid'=>$commentid,'status'=>1))->order('id DESC')->limit($page->limit())->select();	
 
-		$site = get_config();
-		$seo_title = $content_data['title'].'_内容评论';
-		$keywords = $content_data['keywords'];
-		$description = $site['site_description'];
+		$site = array_merge(get_config(), $this->siteinfo);
+		list($seo_title, $keywords, $description) = get_site_seo($this->siteid, $content_data['title'].'的内容评论', $content_data['keywords']);
+
 		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 
 		include template('index', 'comment_more');
@@ -137,7 +148,7 @@ class index{
 	 * 处理内容
 	 */
 	protected function _recontent($content){
-		$content = preg_replace('[\[em_([0-9]*)\]]', '<img src="'.STATIC_URL.'images/face/$1.gif"/>', $content);
+		$content = preg_replace('[\[em_([0-9]*)\]]', '<img src="'.SITE_PATH.'common/static/images/face/$1.gif"/>', $content);
 		$arr = explode('|', get_config('prohibit_words'));
 		return str_replace($arr, '*', $content);
 		

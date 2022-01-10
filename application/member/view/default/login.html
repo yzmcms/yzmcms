@@ -3,23 +3,26 @@
 
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>会员登录</title>
+    <title>会员登录{get_seo_suffix()}</title>
     <meta name="author" content="YzmCMS内容管理系统/QQ:214243830">
     <meta name="description" content="yzmcms会员登录" />
     <link href="{STATIC_URL}css/yzm-member-login.css" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="{STATIC_URL}plugin/layer/layer.js"></script>
+    <script type="text/javascript" src="{STATIC_URL}js/yzm-member.js"></script>
 </head>
 
 <body>
     <div class="yzm-member-container yzm-login">
         <div class="yzm-title">会员登录</div>
         <div class="yzm-form">
-            <form action="" method="post">
+            <form action="" method="post" onsubmit="return do_login(this, '{U('member/index/login')}')">
                 <input type="hidden" name="referer" value="<?php echo $referer;?>">
                 <ul>
-                    <li><input type="text" class="input" name="username" id="username" placeholder="用户名或邮箱" required value=""></li>
-                    <li><input type="password" class="input" name="password" id="password" placeholder="请输入密码" required value=""></li>
+                    <li><input type="text" class="input" name="username" id="username" placeholder="用户名或邮箱" value=""></li>
+                    <li><input type="password" class="input" name="password" id="password" placeholder="请输入密码" value=""></li>
                     {if get_config('member_yzm')}
-                    <li><input type="text" class="input code" required name="code" placeholder="请输入验证码"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="codeimg" title="看不清，换一张"></li>
+                    <li><input type="text" class="input code" name="code" placeholder="请输入验证码"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" id="codeimg" class="codeimg" title="看不清，换一张"></li>
                     {/if}
                     <li class="last_li"><input type="submit" class="submit" name="dosubmit" value="登 录"></li>
                 </ul>
@@ -34,7 +37,7 @@
     <div class="clearfix"></div>
     <div class="yzm_footer">
         <div class="container">
-            <p>Powered by <a href="http://www.yzmcms.com" target="_blank">{YZMCMS_SOFTNAME}</a> © 2014-2021 版权所有</p>
+            <p>Powered by <a href="http://www.yzmcms.com" target="_blank">{YZMCMS_SOFTNAME}</a> © 2014-2022 版权所有</p>
         </div>
     </div>
 </body>

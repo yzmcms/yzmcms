@@ -10,14 +10,27 @@
 // +----------------------------------------------------------------------
 
 class index{
+
+	private $siteid,$siteinfo;
+	
+	public function __construct(){
+		$this->siteid = get_siteid();
+		$this->siteinfo = array();
+		if($this->siteid){
+			$this->siteinfo = get_site($this->siteid);
+			set_module_theme($this->siteinfo['site_theme']);
+		}
+	}
 	
 	/**
 	 * 站点留言
 	 */
 	public function init(){	
 		new_session_start();
+		if(!get_config('is_words')) showmsg('管理员已关闭留言功能！', 'stop');
+		
  		if(isset($_POST['dosubmit'])) {
-			if(!get_config('is_words')) showmsg("管理员已关闭留言功能！", 'stop');
+			
 			if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
 				$_SESSION['code'] = '';
 				showmsg(L('code_error'), '', 2);
@@ -26,6 +39,7 @@ class index{
 
 			$this->_check($_POST);
 			
+			$_POST['siteid'] = $this->siteid;
 			$_POST['booktime'] = SYS_TIME;
 			$_POST['ip'] = getip();
 			$_POST['ispc'] = ismobile() ? 0 : 1;
@@ -37,10 +51,9 @@ class index{
 			
 			showmsg('留言成功，请耐心等待管理员审核！');
 		}else{
-			$site = get_config();
-			$seo_title = '留言反馈_'.$site['site_name'];
-			$keywords = $site['site_keyword'];
-			$description = $site['site_description'];
+			$site = array_merge(get_config(), $this->siteinfo);
+
+			list($seo_title, $keywords, $description) = get_site_seo($this->siteid, '留言反馈');
 			include template('index','guestbook');			
 		}
 	}

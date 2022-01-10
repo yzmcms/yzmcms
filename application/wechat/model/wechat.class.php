@@ -56,6 +56,8 @@ class wechat {
 			if($data['relation_id']){
 				$wx_relation_model = get_config('wx_relation_model');
 				if(!$wx_relation_model) return false;
+				$model_db = get_model($wx_relation_model);
+				if(!$model_db) return false;
 				$model_db = D($wx_relation_model);
 				$where = strpos($data['relation_id'], ',') ? 'id IN ('.$data['relation_id'].')' : 'id = '.$data['relation_id'];
 				$news = $model_db->field('title, description, thumb AS picurl, url')->where($where)->order('id DESC')->select();
@@ -75,6 +77,8 @@ class wechat {
 				if($data['relation_id']){
 					$wx_relation_model = get_config('wx_relation_model');
 					if(!$wx_relation_model) return false;
+					$model_db = get_model($wx_relation_model);
+					if(!$model_db) return false;
 					$model_db = D($wx_relation_model);
 					$where = strpos($data['relation_id'], ',') ? 'id IN ('.$data['relation_id'].')' : 'id = '.$data['relation_id'];
 					$news = $model_db->field('title, description, thumb AS picurl, url')->where($where)->order('id DESC')->select();

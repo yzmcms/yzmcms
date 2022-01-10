@@ -6,10 +6,12 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label><span class="c-red">*</span>配置名称：</label><input type="text" class="input" placeholder="必须为英文拼音或数字,如：qq" name="name" value=""></li>	
+			 <li><label><span class="c-red">*</span>配置名称：</label>
+			 	<input type="text" class="input" placeholder="必须为英文拼音或数字,如：qq" name="name" value="">
+			 </li>	
 			 <li><label><span class="c-red">*</span>配置类型</label>
 			 <span class="span_input" >
-				<select name="fieldtype" class="select" style="width:230px" onchange="javascript:field_setting(this.value);">		
+				<select name="fieldtype" class="select" style="width:244px" onchange="javascript:field_setting(this.value);">		
 					<option value="textarea" selected>文本类型</option>					
 					<option value="image">图片上传</option>
 					<option value="attachment">附件上传</option>
@@ -18,19 +20,22 @@
 				</select>
 			 </span>
 			 </li>	
-			<li><label><span class="c-red">*</span>配置值：</label><span class="span_input" id="config_show"><textarea name="value" class="textarea w_420"  placeholder="例如：214243830"></textarea></span> </li>	
-			 <li><label>简洁说明：</label><input type="text" class="input" style="width:488px" placeholder="例如：这个是站点QQ" name="title" value=""></li>
+			 <li><label><span class="c-red">*</span>配置值：</label>
+				<span class="span_input" id="config_show"><textarea name="value" class="textarea w_420"  placeholder="例如：214243830"></textarea></span> 
+			 </li>	
+			 <li><label>简洁说明：</label>
+			 	<input type="text" class="input" style="width:488px" placeholder="例如：这个是站点QQ" name="title" value="">
+			 </li>
 			 <li><label>状态</label>
 			 <span class="span_input">
 			 	<label class="label_radio"><input name="status" type="radio" value="1" checked> 启用</label>
 			 	<label class="label_radio"><input name="status" type="radio" value="0"> 禁用</label>
 			 </span>
-			 </li>	
-			 <li>&nbsp;<input type="hidden" name="dosubmit" value="1">
-			 </li>			 
+			 </li>				 
 			<li>
-			<input class="dosubmit w_120 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
-			<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+				<input type="hidden" name="dosubmit" value="1">
+				<input class="dosubmit w_120 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+				<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
 			</li>
 		</ul>
 	</form>
@@ -54,11 +59,19 @@
 
 
 	function dosub(obj){
-		 var reg = /^[A-Za-z0-9]+$/;
-		 if($("input[name='name']").val()=='' || !reg.test($("input[name='name']").val())){
-			 layer.msg('配置名称必须为英文拼音或数字！');
-			 return false;
-		 }
+		var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/;	
+		if(obj.name.value.length<1 || obj.name.value.length>20){
+			layer.msg('配置名称长度必须为1-20位！', {icon:2});
+			return false;
+		}
+		if(!reg.test(obj.name.value)){
+			layer.msg('配置名称必须为英文、数字或下划线！', {icon:2});
+			return false;
+		}
+		if(obj.value.value==''){
+			layer.msg('配置值不能为空！', {icon:2});
+			return false;
+		}
 
         $.ajax({
             type: 'POST',
@@ -67,9 +80,11 @@
 		    dataType: "json", 
             success: function (msg) {		
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1,time:1500}, function(){
+						parent.location.reload();     
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

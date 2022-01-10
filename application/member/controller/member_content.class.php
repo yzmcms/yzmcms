@@ -90,7 +90,6 @@ class member_content extends common{
 			//会员权限-投稿免审核
 			$is_adopt = strpos($groupinfo['authority'], '4') === false ? 0 : 1;
 			
-			$_POST['seo_title'] = $_POST['title'].'_'.get_config('site_name');
 			$_POST['issystem'] = '0';
 			$_POST['status'] = $is_adopt;	
 			$_POST['listorder'] = '10';		//为内容置顶做准备
@@ -107,9 +106,11 @@ class member_content extends common{
 			$id = $content_tabname->insert($_POST);
 			
 			//写入全部模型表
+			$_POST['siteid'] = get_siteid();
 			$_POST['modelid'] = $modelid;
 			$_POST['id'] = $id;
 			$allid = D('all_content')->insert($_POST);
+			update_attachment($modelid, $id);
 
 			//如果设置了扣除积分
 			if(get_config('publish_point') < 0){
@@ -191,13 +192,13 @@ class member_content extends common{
 			//会员权限-投稿免审核
 			$is_adopt = strpos($groupinfo['authority'], '4') === false ? 0 : 1;
 
-			$_POST['seo_title'] = $_POST['title'].'_'.get_config('site_name');
 			$_POST['description'] = empty($_POST['description']) ? str_cut(strip_tags($_POST['content']),200) : $_POST['description'];
 			$_POST['updatetime'] = SYS_TIME;
 			$_POST['status'] = $is_adopt;	
 			
 			if($content_tabname->update($_POST, array('id' => $id))){
 				$all_content->update($_POST, array('modelid' => $modelid, 'id' => $id));
+				update_attachment($modelid, $id);
 				if(!$is_adopt){
 					showmsg('操作成功，等待管理员审核！', U('not_pass'));
 				}else{
@@ -223,7 +224,9 @@ class member_content extends common{
 
 	
 	
-	//已通过的稿件
+	/**
+	 * 已通过的稿件
+	 */
 	public function pass(){
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
@@ -238,7 +241,9 @@ class member_content extends common{
 
 
 
-	//未通过的稿件
+	/**
+	 * 未通过的稿件
+	 */
 	public function not_pass(){
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
@@ -253,7 +258,9 @@ class member_content extends common{
 	
 	
 	
-	//删除未通过的稿件
+	/**
+	 * 删除未通过的稿件
+	 */
 	public function del(){
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
@@ -272,13 +279,62 @@ class member_content extends common{
 		if($data && $data['username'] == $username && $data['status'] != 1 && $data['issystem'] == 0){
 			$all_content->delete(array('modelid' => $modelid, 'id' => $id));
 			$content_tabname->delete(array('id' => $id));
+			delete_attachment($modelid, $id);
+		}
+		showmsg(L('operation_success'), '', 1);
+	}
+
+
+	/**
+	 * 我的评论
+	 */
+	public function comment_list(){
+		$memberinfo = $this->memberinfo;
+		extract($memberinfo);
+		
+		$comment = D('comment');
+		$total = $comment->where(array('userid'=>$userid))->total();
+		$page = new page($total, 10);
+		$data = $comment->alias('a')->field('a.id,a.inputtime,a.ip,a.content,a.status,b.title,b.url')->join('yzmcms_comment_data b ON a.commentid=b.commentid')->where(array('userid' =>$userid))->order('id DESC')->limit($page->limit())->select();
+		foreach ($data as $key => $val) {
+			if(strpos($val['content'], 'original_comment') !==false){
+				$pos = strrpos($val['content'], '</a>');
+				$val['content'] = substr($val['content'], $pos+7);
+			}
+			$data[$key] = $val;
+		}
+		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		include template('member', 'comment_list');
+	}
+	
+	
+	
+	/**
+	 * 删除评论
+	 */
+	public function comment_del(){
+		$memberinfo = $this->memberinfo;
+		extract($memberinfo);
+		
+		if(!isset($_POST['fx'])) showmsg('您没有选择项目！');
+		if(!is_array($_POST['fx'])) showmsg(L('illegal_operation'), 'stop');
+		$comment = D('comment');
+		foreach($_POST['fx'] as $v){
+			$comment_data = $comment ->field('userid,commentid')->where(array('id'=>$v))->find();
+			if(!$comment_data || $comment_data['userid']!=$userid) showmsg('该评论不存在，请返回检查！', 'stop');
+			$commentid = $comment_data['commentid'];
+			$comment->delete(array('id'=>$v));
+			$comment->query("UPDATE yzmcms_comment_data SET `total` = `total`-1 WHERE commentid='$commentid'");
+			$comment->delete(array('reply'=>$v));
 		}
 		showmsg(L('operation_success'), '', 1);
 	}
 	
 	
 	
-	//收藏夹
+	/**
+	 * 收藏夹
+	 */
 	public function favorite(){
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
@@ -293,7 +349,9 @@ class member_content extends common{
 	
 	
 	
-	//删除收藏夹
+	/**
+	 * 删除收藏夹
+	 */
 	public function favorite_del(){
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
@@ -304,11 +362,13 @@ class member_content extends common{
 		foreach($_POST['fx'] as $v){
 			$favorite->delete(array('id' => intval($v), 'userid' => $userid));
 		}
-		showmsg(L('operation_success'));
+		showmsg(L('operation_success'), '', 1);
 	}
 
 	
-	//检查会员组权限
+	/**
+	 * 检查会员组权限
+	 */
 	private function _check_group_auth($groupid, $is_add = true){
 		$memberinfo = $this->memberinfo;
 		$groupinfo = get_groupinfo($groupid);
@@ -333,7 +393,9 @@ class member_content extends common{
 	}
 	
 	
-	//获取不同模型获取HTML表单
+	/**
+	 * 获取不同模型获取HTML表单
+	 */
 	private function _get_model_str($modelid, $field = false, $data = array()) {
 		$modelinfo = getcache($modelid.'_model');
 		if($modelinfo === false){

@@ -1,11 +1,12 @@
 @charset "utf-8";
 /**
- * YZMCMS 内容管理系统
+ * YZMCMS 内容管理系统(yzm-cms轻量级开源CMS)
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
  */
 
 em,i{font-style:normal;}
+select{background:#fff}
 .yzm-menubox{width:200px;overflow:hidden;position:absolute;top:44px;bottom:0;left:0;}
 .yzm-table-box{overflow-y:auto;box-sizing:border-box;}
 .Hui-aside{position:relative;top:0px;overflow-y:auto;overflow-x:hidden;width:218px;height:100%;}
@@ -45,6 +46,8 @@ em,i{font-style:normal;}
 .yzm-explain{display:none}
 .yzm-tips:hover{text-decoration:none;}
 .yzm-tips-icon{color:#999;font-size:16px}
+.yzm-explain-text{font-size:12px;color:#555;margin-top:3px}
+.yzm-explain-text span{color:#056ef4}
 .yzm-font-style{background:#ff5a04;color:#fff;font-size:10px;height:15px;width:15px;display:inline-block;line-height:15px;text-align:center;margin-right:3px}
 .yzm-status-enable{color:#5eb95e;cursor:pointer;user-select:none}
 .yzm-status-disable{color:#9ea3a7;cursor:pointer;user-select:none}
@@ -119,8 +122,8 @@ em,i{font-style:normal;}
 .lock-box h5{font-size:14px;font-weight:normal;text-shadow:0 1px 3px #333333}
 .input-box{margin-top:35px;overflow:hidden;box-shadow:0 0 3px 1px #fdf8f8;border-radius:6px}
 .lock-user{font-size:25px;color:#e8e4e4;text-shadow:1px 1px 3px #333333;}
-.lock-text{float:left;background:#c3c3c3;background:rgba(255,255,255,0);height:50px;line-height:48px;width:84%;padding:0 5%;border:none;border-right:none;border-top-left-radius:6px;border-bottom-left-radius:6px;font-size:16px;color:#fff;box-sizing:border-box;}
-.lock-submit{float:left;width:16%;height:52px;line-height:52px;text-align:center;border:none;outline:none;background:#386adb;color:#fff;border-top-right-radius:6px;border-bottom-right-radius:6px;cursor:pointer;transition:all 0.3s;font-size:26px;}
+.lock-text{float:left;background:#fff;height:50px;line-height:48px;width:84%;padding:0 5%;border:none;border-right:none;border-top-left-radius:6px;border-bottom-left-radius:6px;font-size:16px;color:#333;box-sizing:border-box;}
+.lock-submit{float:left;width:16%;height:50px;line-height:50px;text-align:center;border:none;outline:none;background:#386adb;color:#fff;border-top-right-radius:6px;border-bottom-right-radius:6px;cursor:pointer;transition:all 0.3s;font-size:26px;}
 .lock-submit:hover{background:#1c5ff4}
 .layui-layer-tips{margin-top:-12px !important}
 

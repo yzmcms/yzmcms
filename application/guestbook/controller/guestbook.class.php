@@ -24,9 +24,9 @@ class guestbook extends common {
 		$of = in_array($of, array('id','ip','booktime','isread','ischeck')) ? $of : 'id';
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$guestbook = D('guestbook');
-		$total = $guestbook->where(array('replyid'=>'0'))->total();
+		$total = $guestbook->where(array('siteid'=>self::$siteid, 'replyid'=>'0'))->total();
 		$page = new page($total, 15);
-		$data = $guestbook->where(array('replyid'=>'0'))->order("$of $or")->limit($page->limit())->select();		
+		$data = $guestbook->where(array('siteid'=>self::$siteid, 'replyid'=>'0'))->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('guestbook_list');
 	}
 
@@ -39,7 +39,7 @@ class guestbook extends common {
 		$or = input('get.or');
 		$of = in_array($of, array('id','ip','booktime','isread','ischeck')) ? $of : 'id';
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
-		$where = 'replyid=0';
+		$where = 'siteid='.self::$siteid.' AND replyid=0';
 		if(isset($_GET['dosubmit'])){
 			$ischeck = isset($_GET['ischeck']) ? intval($_GET['ischeck']) : 99;
 			$isread = isset($_GET['isread']) ? intval($_GET['isread']) : 99;
@@ -48,6 +48,9 @@ class guestbook extends common {
 
 			if($ischeck != 99) $where .= ' AND ischeck = '.$ischeck;
 			if($isread != 99) $where .= ' AND isread = '.$isread;
+			if(isset($_GET["start"]) && $_GET["start"] != '' && $_GET["end"]){		
+				$where .= ' AND booktime BETWEEN '.strtotime($_GET["start"]).' AND '.strtotime($_GET["end"]);
+			}
 			if($searinfo != ''){
 				if($type == '1')
 					$where .= ' AND title LIKE \'%'.$searinfo.'%\'';
@@ -95,6 +98,20 @@ class guestbook extends common {
 		return_json(array('status'=>1, 'message'=>L('operation_success')));
 	}
 
+
+	/**
+	 * 设置已读
+	 */
+ 	public function set_read() {
+		if($_POST && is_array($_POST['id'])){
+			$guestbook = D('guestbook');
+			foreach($_POST['id'] as $val){
+				$guestbook->update(array('isread'=>1), array('id'=>$val));
+			}
+			return_json(array('status'=>1,'message'=>L('operation_success')));
+		}
+	}
+
 	
 	/**
 	 * 删除多个留言
@@ -104,9 +121,9 @@ class guestbook extends common {
 			$guestbook = D('guestbook');
 			foreach($_POST['id'] as $val){
 				$guestbook->delete(array('id'=>$val));
-				$guestbook->delete(array('replyid'=>$val));  //删除回复
+				$guestbook->delete(array('replyid'=>$val));
 			}
-			showmsg(L('operation_success'));
+			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}
 	}
 	

@@ -142,10 +142,8 @@ class database extends common {
 			if(!$tables) return_json(array('status'=>0, 'message'=>'请指定要备份的表！'));
 			
 			//备份目录不存在，先创建目录
-			if(!is_dir($this->config['path'])){
-				@mkdir($this->config['path'], 0755, true);
-				@file_put_contents($this->config['path'].'index.html', '');
-			}
+			if(!is_dir($this->config['path'])) @mkdir($this->config['path'], 0755, true);
+			if(!is_file($this->config['path'].'index.html')) @file_put_contents($this->config['path'].'index.html', '');
 
             //检查是否有正在执行的任务，10分钟后自动解除
             $lock = $this->config['path'].'backup.lock';

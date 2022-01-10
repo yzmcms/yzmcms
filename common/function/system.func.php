@@ -48,14 +48,57 @@ function get_config($key = ''){
 
 
 /**
+ * 获取系统SEO后缀
+ * @return string
+ */
+function get_seo_suffix(){
+	$site_seo_division = get_config('site_seo_division');
+	$siteid = get_siteid();
+	$site = $siteid ? get_site($siteid) : get_config();
+	return $site['site_seo_suffix'] ? $site_seo_division.$site['site_seo_suffix'] : $site_seo_division.$site['site_name'];
+}
+
+
+/**
+ * 获取当前站点首页URL
+ * @return string
+ */
+function get_site_url(){
+	$siteid = get_siteid();
+	if(!$siteid) return get_config('site_url');
+	$site_url = get_site($siteid, 'site_url');
+	return $site_url ? $site_url : get_config('site_url');
+}
+
+
+/**
+ * 获取当前站点SEO
+ * @return string
+ */
+function get_site_seo($siteid = null, $title = '', $keyword = '', $site_description = ''){
+	$siteid = $siteid===null ? get_siteid() : $siteid;
+	$siteinfo = $siteid ? get_site($siteid) : get_config();
+	$site_name = ($title ? $title : $siteinfo['site_name']).get_seo_suffix();
+	$site_keyword = $keyword ? $keyword.','.$siteinfo['site_keyword'] : $siteinfo['site_keyword'];
+	$site_description = $site_description ? $site_description : $siteinfo['site_description'];
+	return array(
+		$site_name,
+		$site_keyword,
+		$site_description
+	);
+}
+
+
+/**
  * 获取内容页URL 
  * @param $catid 
  * @param $id 
  */
 function get_content_url($catid, $id){
 	$catinfo = get_category($catid);
-	if(get_config('url_mode')){
-		return get_config('site_url').$catinfo['catdir'].'/'.$id.C('url_html_suffix');
+	$url_mode = get_config('url_mode');
+	if($url_mode==1 || $url_mode==2){
+		return get_site_url().$catinfo['catdir'].'/'.$id.C('url_html_suffix');
 	}
 	return SITE_PATH.$catinfo['catdir'].'/'.$id.C('url_html_suffix');
 }
@@ -65,15 +108,32 @@ function get_content_url($catid, $id){
  * 单页面标签，用于在首页或频道页调取单页的简介...
  * @param $catid
  * @param $limit
+ * @param $strip
  * @param $field
  * @return string
  */
-function page_content($catid = 1, $limit = 300, $field = 'content'){
+function page_content($catid = 1, $limit = 300, $strip = true, $field = 'content'){
 	global $catpage;
 	$catpage = isset($catpage) ? $catpage : D('page');
 	$string = $catpage->where(array('catid'=>$catid))->field($field)->find();
-	$string = $string ? str_cut(strip_tags($string[$field]), $limit) : '';
+	$string = $string ? str_cut(($strip ? strip_tags($string[$field]) : $string[$field]), $limit) : '';
 	return $string;	
+}
+
+
+/**
+ * 获取当前站点模型信息
+ * @return array
+ */
+function get_site_modelinfo(){
+	$siteid = get_siteid();
+	$filename = 'modelinfo_siteid_'.$siteid;
+	
+	if(!$modelinfo = getcache($filename)){
+		$modelinfo = D('model')->where(array('disabled'=>0,'type'=>0,'siteid'=>$siteid))->order('modelid ASC')->select();
+		setcache($filename, $modelinfo);
+	}
+	return $modelinfo;	
 }
 
 
@@ -148,15 +208,16 @@ function file_icon($file){
 
 
 /**
- * 会员登录跳转url
- * @param $referer
+ * 会员登录/退出跳转url
+ * @param $is_login 1登录，0退出
  * @return string
  */
-function url_referer($referer){
+function url_referer($is_login = 1){
 	
-	$referer = urlencode($referer);
-	if(URL_MODEL != 0) return U('member/index/login').'?referer='.$referer;	
-	return U('member/index/login').'&referer='.$referer;
+	$referer = urlencode(get_url());
+	$url = $is_login ? U('member/index/login') : U('member/index/logout');
+	if(URL_MODEL) return $url.'?referer='.$referer;	
+	return $url.'&referer='.$referer;
 }
 
 
@@ -185,10 +246,27 @@ function adver($id){
 /**
  * 生成Tag URL
  * @param $tid
+ * @param $domain
  * @return string
  */
-function tag_url($tid){
-	return U('search/index/tag',array('id'=>$tid));
+function tag_url($tid, $domain=null){
+	return U('search/index/tag',array('id'=>$tid),$domain);
+}
+
+
+/**
+ * 获取内容列表页TAG标签
+ * @param  int $catid 
+ * @param  int $id    
+ * @param  int $limit 
+ * @return array
+ */
+function content_list_tag($catid = 0, $id = 0, $limit = 5){
+	if(!$catid || !$id) return false;
+	$modelid = get_category($catid, 'modelid', true);
+	if(!$modelid) return false;
+	$id = intval($id);
+	return D('tag_content')->alias('a')->field('id,tag')->join('yzmcms_tag AS b ON a.tagid=b.id')->where("modelid=$modelid AND aid=$id")->order('id ASC')->limit($limit)->select();
 }
 
 
@@ -223,7 +301,7 @@ function title_color($title, $color = ''){
  */
 function get_thumb($thumb, $default = ''){
 	if($thumb) return $thumb;
-	return $default ? $default : STATIC_URL.'images/nopic.jpg';
+	return $default ? $default : SITE_PATH.'common/static/images/nopic.jpg';
 }
 
 
@@ -255,7 +333,7 @@ function select_category($name="parentid", $value="0", $root="", $member_publish
 		$arr = array_merge(array_unique(explode(',', join(',', $arr))), array_keys($arr));		
 	}
 
-	$where = array();
+	$where = array('siteid' => get_siteid());
 	if($modelid) $where['modelid'] = $modelid;
 	$tree = yzm_base::load_sys_class('tree');
 	$data = D('category')->field('catid AS id,catname AS name,parentid,arrchildid,type')->where($where)->order('listorder ASC,catid ASC')->select(); 
@@ -284,24 +362,106 @@ function select_category($name="parentid", $value="0", $root="", $member_publish
 
 
 /**
+ * 更新内容附件
+ * @param   $modelid 
+ * @param   $id  
+ */
+function update_attachment($modelid, $id){
+	$attachmentid = isset($_SESSION['roleid'])&&isset($_SESSION['attachmentid']) ? $_SESSION['attachmentid'] : get_cookie('attachmentid');
+	if(!$attachmentid) return false;
+	$attachment = D('attachment');
+	$arr = explode('|', $attachmentid);
+	foreach($arr as $attid){
+		$attachment->update(array('contentid'=>$modelid.'_'.$id), array('id'=>intval($attid)));
+	}
+
+	if(isset($_SESSION['roleid'])){
+		unset($_SESSION['attachmentid']);
+	}else{
+		del_cookie('attachmentid');
+	}
+	return true;
+}
+
+
+/**
+ * 删除内容附件
+ * @param   $modelid 
+ * @param   $id  
+ */
+function delete_attachment($modelid, $id){
+	if(!get_config('att_relation_content')) return false;
+	$attachment = D('attachment');
+	$upload_type = C('upload_type', 'host');
+	yzm_base::load_model($upload_type, 'attachment', 0);
+	if(!class_exists($upload_type)) return false;
+	$res = $attachment->field('id,filepath,filename')->where(array('contentid'=>$modelid.'_'.$id))->select();
+	$upload = new $upload_type();
+	foreach($res as $val){
+		$res = $upload->deletefile($val);
+		if(!$res)  continue;
+		$attachment->delete(array('id' => $val['id']));
+	}
+	return true;
+}
+
+
+/**
+ * 获取当前的站点ID
+ * 兼容站群模块/联系QQ：214243830
+ */
+function get_siteid() {
+
+	return 0;
+}
+
+
+/**
+ * 获取站点信息
+ * 兼容站群模块/联系QQ：214243830
+ * @param  int $siteid
+ * @param  string $parameter
+ * @return array or string     
+ */
+function get_site($siteid = 0, $parameter = ''){
+
+	$siteid = intval($siteid);
+	if($siteid){
+		return $parameter ? '' : array();
+	}else{
+		return  array();
+	}
+}
+
+
+/**
  * 获取栏目信息
  *
  * @param  int $catid
  * @param  string $parameter
+ * @param  bool  $all
  * @return array or string
  */
-function get_category($catid = '', $parameter = ''){
-    if(!$categoryinfo = getcache('categoryinfo')){
-		$categoryinfo = D('category')->order('listorder ASC, catid ASC')->select();
-		setcache('categoryinfo', $categoryinfo);
+function get_category($catid = 0, $parameter = '', $all = false){
+	if($all){
+		$where = array();
+		$filename = 'categoryinfo';
+	}else{
+		$siteid = get_siteid();
+		$where = array('siteid' => $siteid);
+		$filename = 'categoryinfo_siteid_'.$siteid;
+	}
+	
+    if(!$categoryinfo = getcache($filename)){
+		$categoryinfo = D('category')->where($where)->order('listorder ASC, catid ASC')->select();
+		setcache($filename, $categoryinfo);
 	}
 	if($catid){
-		$catid_arr = yzm_array_column($categoryinfo, 'catid');
-        $catid = array_search($catid, $catid_arr);
-        if ($catid === false) {
-            return array();
+		$catid_arr = yzm_array_column($categoryinfo, null, 'catid');
+        if (!isset($catid_arr[$catid])) {
+            return $parameter ? '' : array();
 		}
-		return $parameter ? (isset($categoryinfo[$catid][$parameter]) ? $categoryinfo[$catid][$parameter] : '') : $categoryinfo[$catid];
+		return $parameter ? (isset($catid_arr[$catid][$parameter]) ? $catid_arr[$catid][$parameter] : '') : $catid_arr[$catid];
 
 	}else{
 		return $categoryinfo;	
@@ -318,7 +478,7 @@ function get_category($catid = '', $parameter = ''){
  */
 function get_catname($catid){
 	$catid = intval($catid);
-    $data = get_category($catid);
+    $data = get_category($catid, '', true);
 	if(!$data) return '';
     return $data['catname']; 	
 }
@@ -334,7 +494,7 @@ function get_catname($catid){
  */
 function get_childcat($catid, $is_show = false, $limit = 0){
 	$catid = intval($catid);
-    $data = get_category();
+    $data = get_category(0, '', true);
 	$r = array();
 	foreach($data as $v){
 		if(!$v['display'] && !$is_show) continue;
@@ -374,7 +534,6 @@ function get_location($catid, $is_mobile=false, $self=true, $symbol=' &gt; '){
 }
 
 
-
 /**
  * 根据模型ID获取model信息
  *
@@ -389,17 +548,18 @@ function get_model($modelid, $parameter = 'tablename'){
 		$modelarr[$val['modelid']] = $val;
 	}
 	if(!isset($modelarr[$modelid])) return false;
-	return $modelarr[$modelid][$parameter];
+	return $parameter ? $modelarr[$modelid][$parameter] : $modelarr[$modelid];
 }
 
 
 /**
- * 获取默认模型
+ * 获取当前站点默认模型
  * @param   $key 获取的key
  */
 function get_default_model($key = false){
-	$default_model = array('modelid'=>1, 'tablename'=>'article', 'name'=>'文章模型');
-	foreach (get_modelinfo() as $value) {
+	$default_model = array();
+	$data = get_site_modelinfo();
+	foreach ($data as $value) {
 		if($value['isdefault']){
 			$default_model['modelid'] = $value['modelid'];
 			$default_model['tablename'] = $value['tablename'];
@@ -407,7 +567,9 @@ function get_default_model($key = false){
 			break;
 		}
 	}
-	return $key ? (isset($default_model[$key]) ? $default_model[$key] : $default_model) : $default_model;
+
+	if($data && empty($default_model)) $default_model = array_shift($data);
+	return $key ? (isset($default_model[$key]) ? $default_model[$key] : null) : $default_model;
 }
 
 
@@ -506,9 +668,10 @@ function get_memberavatar($user, $type=1, $default=true) {
  * @param string $m 模块名
  */
 function set_mapping($m) {
-    $site_mapping = 'site_mapping_'.$m;
+	$siteid = get_siteid();
+    $site_mapping = 'site_mapping_'.$m.'_'.$siteid;
     if(!$mapping = getcache($site_mapping)){
-        $data = D('category')->field('catid,`type`,catdir,arrchildid')->where(array('`type`<' => 2))->order('catid ASC')->select();
+        $data = D('category')->field('catid,`type`,catdir,arrchildid')->where(array('siteid'=>$siteid,'`type`<' => 2))->order('catid ASC')->select();
         $mapping = array();
         foreach($data as $val){
             $mapping['^'.str_replace('/', '\/', $val['catdir']).'$'] = $m.'/index/lists/catid/'.$val['catid'];
@@ -561,7 +724,7 @@ function get_memberinfo($userid, $additional=false){
 	if($additional){
 		global $member_detail;
 		$member_detail = isset($member_detail) ? $member_detail : D('member_detail');
-		$data = $member_detail->field('sex,realname,nickname,qq,mobile,phone,userpic,birthday,industry,area,motto,introduce,guest,fans')->where(array('userid' => $userid))->find();
+		$data = $member_detail->where(array('userid' => $userid))->find();
 		$memberinfo = array_merge($memberinfo, $data);
 	}
 	return $memberinfo;

@@ -1,6 +1,6 @@
 @charset "utf-8";
 /**
- * YZMCMS 内容管理系统
+ * YZMCMS 内容管理系统(yzm-cms轻量级开源CMS)
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
  */
@@ -56,13 +56,18 @@ a:hover{color:#2196f3;}
 .yzm-search-title h2 span{margin:0 3px;}
 .yzm-main-article{padding:10px;overflow:hidden;}
 .yzm-main-article h1{font-size:18px;margin-bottom: 20px}
-.yzm-main-article .info{font-size:14px;color:#666;margin-bottom:30px;border-bottom: 1px dashed #ddd;padding-bottom:10px}
+.yzm-info{font-size:14px;color:#666;margin-bottom:20px;border-bottom: 1px dashed #ddd;padding-bottom:10px;}
+.yzm-description{color:#888888;border:1px solid #f3f3f3;padding:10px;background:#f6f6f6;line-height:23px;font-size:13px;margin-bottom:15px}
 .yzm-content h2{font-size: 16px;margin:20px 0;padding-left:10px;border-left:3px solid #2196f3;}
 .yzm-content p{font-size:16px;color:#4c4c4c;line-height:30px;}
 .yzm-content img{max-width:100%;}
 .yzm-content a{color:#2196f3;}
 .yzm-content pre{color: #444;font-family: Monaco,Menlo,Consolas,"Courier New",monospace;display: block;margin:10px 0; padding: 9px;border: 1px solid #ccc;border: 1px solid rgba(0,0,0,.15); border-radius: 3px;background-color: #f5f5f5;white-space: pre-wrap;word-wrap: break-word;font-size: 11px;line-height: 20px;word-break: break-all;}
-.yzm-next{font-size:14px;margin-top:10px;}
+.yzm-content-read-tips{text-align:center;margin:30px 0 !important;border:1px dashed #9d9a9a;padding:15px 0;}
+.yzm-content-read-tips span{color:red;margin:0 3px;}
+.yzm-content-read-tips a{color:#0844f7;}
+.yzm-content-read-tips a:hover{color:red;}
+.yzm-pre-next{font-size:14px;margin-top:10px;}
 
 .yzm-article-img {overflow:hidden;}
 .yzm-article-img ul{padding:15px 8px;}

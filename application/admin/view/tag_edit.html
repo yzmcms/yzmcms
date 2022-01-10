@@ -8,8 +8,10 @@
 		<ul>
 			<li><label><span class="c-red">*</span>TAG：</label><input type="text" class="input" value="<?php echo $data['tag']?>" name="tag" placeholder="请填写TAG名称" ></li>						 
 			<!-- <li><label><span class="c-red">*</span>文档数：</label><input type="text" class="input" value="<?php echo $data['total']?>" name="total" readonly="readonly" placeholder="请填写文档数"></li>	 -->
-			<li><label>绑定栏目：</label><?php echo select_category('catid', $data['catid'], '≡ 全站通用 ≡', 0, 'style="width:auto"'); ?></li>	
-			<li><label>描述：</label><textarea name="remarks" class="textarea" style="width:388px" placeholder="根据Tag搜索时，会展示到网站描述."><?php echo $data['remarks']?></textarea></li>			
+			<li><label>绑定栏目：</label><?php echo select_category('catid', $data['catid'], '≡ 全站通用 ≡', 0, 'style="width:auto"'); ?></li>
+			<li><label>SEO标题：</label><input type="text" class="input" value="<?php echo $data['seo_title']?>" name="seo_title"></li>	
+			<li><label>SEO关键字：</label><input type="text" class="input" value="<?php echo $data['seo_keywords']?>" name="seo_keywords"></li>	
+			<li><label>SEO描述：</label><textarea name="seo_description" class="textarea" style="width:75%"><?php echo $data['seo_description']?></textarea></li>			
 			<li>
 				<input type="hidden" name="id" value="<?php echo $data['id']?>">
 				<input type="hidden" name="dosubmit" value="1">

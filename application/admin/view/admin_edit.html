@@ -6,12 +6,25 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label>用户名：</label><input type="text" class="input" placeholder="用户名" name="adminname" disabled="disabled" value="<?php echo $data['adminname'];?>"></li>
-			 <li><label>密码：</label><input type="password" class="input" autocomplete="off" value="" placeholder="不修改请留空" name="password"></li>	
-			 <li><label>确认密码：</label><input type="password" class="input" autocomplete="off" value=""  placeholder="不修改请留空" id="password2" name="password2"></li>	
-			 <li><label>邮箱：</label><input type="email" class="input" placeholder="@" name="email" value="<?php echo $data['email'];?>"></li>
-			 <li><label>真实姓名：</label><input type="text" class="input" placeholder="真实姓名" name="realname" value="<?php echo $data['realname'];?>"></li>
-			 <li class="yzm-explain-box"><label>用户昵称：</label><input type="text" class="input" placeholder="发布内容时显示" name="nickname" value="<?php echo $data['nickname'];?>"> <span class="yzm-explain">发布内容时显示，<br>修改后重新登录生效.</span></li>
+			 <li><label>用户名：</label>
+			 	<input type="text" class="input" placeholder="用户名" name="adminname" disabled="disabled" value="<?php echo $data['adminname'];?>">
+			 </li>
+			 <li><label>密码：</label>
+			 	<input type="password" class="input" autocomplete="off" value="" placeholder="不修改请留空" name="password">
+			 </li>	
+			 <li><label>确认密码：</label>
+			 	<input type="password" class="input" autocomplete="off" value=""  placeholder="不修改请留空" id="password2" name="password2">
+			 </li>	
+			 <li><label>邮箱：</label>
+			 	<input type="email" class="input" placeholder="@" name="email" value="<?php echo $data['email'];?>">
+			 </li>
+			 <li><label>真实姓名：</label>
+			 	<input type="text" class="input" placeholder="真实姓名" name="realname" value="<?php echo $data['realname'];?>">
+			 </li>
+			 <li class="yzm-explain-box"><label>用户昵称：</label>
+			 	<input type="text" class="input" placeholder="发布内容时显示" name="nickname" value="<?php echo $data['nickname'];?>"> 
+			 	<span class="yzm-explain">发布内容时显示，<br>修改后重新登录生效.</span>
+			 </li>
 			 <li>
 			 <label>角色：</label>
 			 <select  name="roleid" size="1">
@@ -22,7 +35,6 @@
 				 }
 			   ?>			
 			 </select>
-
 			 </li>
 			<li>
 				<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="adminid" value="<?php echo $data['adminid'];?>">

@@ -13,16 +13,16 @@
   <section class="section">
     <div class="step">
       <ul>
-        <li class="on"><em>1</em>检测环境</li>
-        <li class="on"><em>2</em>创建数据</li>
-        <li class="current"><em>3</em>完成安装</li>
+            <li class="first current">检测环境</li>
+            <li class="current">创建数据</li>
+            <li class="current">完成安装</li>
       </ul>
     </div>
     <div class="install" id="log">
       <ul id="loginner">
       </ul>
     </div>
-    <div class="bottom tac"> <a href="javascript:;" class="btn_old"><img src="./images/loading.gif" align="absmiddle" />&nbsp;正在安装...</a> </div>
+    <div class="bottom tac"> <a href="javascript:;" class="btn_old"><img src="./images/loading.gif" class="yzm-loading" align="absmiddle" />&nbsp;正在安装...</a> </div>
   </section>
   <script type="text/javascript">
 var n=0;

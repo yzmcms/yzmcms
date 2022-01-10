@@ -34,26 +34,18 @@ class index{
 	 * 检测内容标题是否存在
 	 * 请求方式：GET
 	 * @param title
-	 * @param modelid 或 catid
+	 * @param modelid 可选
 	 * @return {-1:错误;0存在;1:不存在;}
 	 */	
 	public function check_title(){
 
-		$modelid = 0;
-		if(isset($_GET['modelid'])){
-			$modelid = intval($_GET['modelid']);
-		}else{
-			$catid = isset($_GET['catid']) ? intval($_GET['catid']) : return_json(array('status'=>-1, 'message'=>L('lose_parameters')));
-			$modelid = get_category($catid, 'modelid');
-		}
-		if(!$modelid) return_json(array('status'=>-1, 'message'=>L('illegal_parameters')));
-
+		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 0;
 		$title = isset($_GET['title']) ? htmlspecialchars($_GET['title']) : '';
 		if(!$title) return_json(array('status'=>-1, 'message'=>L('lose_parameters')));
 
 		if(!isset($_SESSION['adminid']) && !isset($_SESSION['_userid'])) return_json(array('status'=>-1, 'message'=>L('login_website')));
 
-		$dbname =  get_model($modelid);
+		$dbname =  $modelid ? get_model($modelid) : 'all_content';
 		if(!$dbname)  return_json(array('status'=>-1, 'message'=>L('illegal_parameters')));
 		$title = D($dbname)->field('id')->where(array('title'=>$title))->one();
 		$title ? return_json(array('status'=>0, 'message'=>'内容标题已存在！')) : return_json(array('status'=>1, 'message'=>'内容标题不存在！'));

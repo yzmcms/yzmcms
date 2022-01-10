@@ -14,7 +14,7 @@ class reset{
 	
 	public function __construct() {
 		//设置会员模块模板风格
-		set_module_theme('default');
+		set_module_theme(get_config('member_theme'));
 	}
 
 	

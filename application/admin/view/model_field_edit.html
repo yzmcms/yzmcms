@@ -103,12 +103,12 @@
 	function check_all(){
 		
 	    if($("input[name='name']").val()==''){
-			layer.msg('字段别名不能为空！');
+			layer.msg('字段别名不能为空！', {icon:2});
 			return false;
 		}
 		
 	    if(isNaN($("input[name='minlength']").val()) || isNaN($("input[name='maxlength']").val())){
-		    layer.msg('字符长度取值范围 只能为数字类型！');
+		    layer.msg('字符长度取值范围 只能为数字类型！', {icon:2});
 		    return false;
 		}		
         return true;			

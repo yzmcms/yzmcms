@@ -11,12 +11,12 @@
 		<form method="post" action="<?php echo U('do_sql');?>" name="myform" id="myform" onsubmit="return check_all()">
 			<ul>
 				 <li>
-				  <textarea class="textarea" name="sqlstr"><?php if(isset($sqlstr)) echo $sqlstr;?></textarea>
-				  <input type="hidden" name="action" value="many" id="action">
+				  	<textarea class="textarea" name="sqlstr"><?php if(isset($sqlstr)) echo $sqlstr;?></textarea>
+				  	<input type="hidden" name="action" value="many" id="action">
 				 </li>
 				 <li>
-				 <input class="dosubmit w_120 btn-primary radius" name="single" onclick="setacton('single')" type="submit" value="执行单条SQL">
-				 <input class="dosubmit w_120 btn-success radius" name="many" onclick="setacton('many')" type="submit" value="执行多条SQL"> 
+					 <input class="dosubmit w_120 btn-primary radius" name="single" onclick="setacton('single')" type="submit" value="执行单条SQL">
+					 <input class="dosubmit w_120 btn-success radius" name="many" onclick="setacton('many')" type="submit" value="执行多条SQL"> 
 				 </li>
 			</ul>
 		</form>

@@ -29,6 +29,7 @@ class pagepay{
 		if(isset($params['body'])) $payRequestBuilder->setBody($params['body']);
 
         $config = payment::alipay_config();
+        self::checkConfig($config);
         $aop = new AlipayTradeService($config);
         $aop->pagePay($payRequestBuilder, $config['return_url'],$config['notify_url']);
     }
@@ -61,4 +62,23 @@ class pagepay{
 
     }
 
+
+    /**
+     * 校检配置
+     */
+    private static function checkConfig($config){
+        
+        if (empty($config['app_id'])) {
+            showmsg('支付宝应用ID未配置，请联系管理员！', 'stop');
+        }
+
+        if (empty($config['merchant_private_key'])) {
+            showmsg('支付宝商户应用私钥未配置，请联系管理员！', 'stop');
+        }
+
+        if (empty($config['alipay_public_key'])) {
+            showmsg('支付宝支付宝公钥未配置，请联系管理员！', 'stop');
+        }
+
+    }
 }

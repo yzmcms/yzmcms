@@ -1,6 +1,6 @@
 @charset "utf-8";
 /**
- * YZMCMS 内容管理系统
+ * YZMCMS 内容管理系统(yzm-cms轻量级开源CMS)
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
  */
@@ -85,8 +85,9 @@
 .yzm-list-advertise:hover{opacity: 0.9; color: #fff;}
 .yzm-content-container{margin: 20px 0;}
 .yzm-content-container h1{font-size: 22px; margin-bottom: 20px;}
-.yzm-content-info{margin-bottom: 20px}
+.yzm-content-info{margin-bottom: 15px}
 .yzm-content-info span{margin-right: 20px; color: #888;}
+.yzm-content-description{color:#888888;border:1px solid #f3f3f3;padding:10px;background:#f6f6f6;line-height:23px;margin-bottom:15px}
 .yzm-content h2{font-size: 16px; margin: 20px 0; padding-left: 10px; border-left: 3px solid #2196f3;}
 .yzm-content img{max-width: 100%;}
 .yzm-content p{margin-bottom: 10px}
@@ -94,6 +95,10 @@
 .yzm-content pre{color: #444;font-family: Monaco,Menlo,Consolas,"Courier New",monospace;display: block;margin:10px 0; padding: 9px;border: 1px solid #ccc;border: 1px solid rgba(0,0,0,.15); border-radius: 3px;background-color: #f5f5f5;white-space: pre-wrap;word-wrap: break-word;font-size: 11px;line-height: 20px;word-break: break-all;}
 .yzm-content-tag a{color: #666; padding: 4px 8px; border-radius: 3px; margin-right: 10px; font-size: 12px; margin-top: 5px; background: #e5e5e5;}
 .yzm-content-tag a:hover{background: #2196f3; color: #fff;}
+.yzm-content-read-tips{text-align:center;margin:50px 0 !important;border:1px dashed #9d9a9a;padding:15px 0;}
+.yzm-content-read-tips span{color:red;margin:0 3px;}
+.yzm-content-read-tips a{color:#0844f7;}
+.yzm-content-read-tips a:hover{color:red;}
 .yzm-operate{margin: 10px 0;}
 .yzm-operate a{margin-right: 10px; background: #2196f3; height:25px;width:70px;display: inline-block;text-align: center; color: #fff; font-size: 12px}
 .yzm-operate a:hover{opacity: 0.8;color:#fff;}

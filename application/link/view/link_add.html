@@ -6,10 +6,18 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label><span class="c-red">*</span>网站名称：</label><input type="text" class="input" name="name" value=""></li>
-			 <li><label><span class="c-red">*</span>网站网址：</label><input type="text" class="input" value="http://" name="url"></li>	
-			 <li><label>站长姓名：</label><input type="text" class="input"  name="username"></li>	
-			 <li><label>站长邮箱：</label><input type="email" class="input" name="email"></li>
+			 <li><label><span class="c-red">*</span>网站名称：</label>
+			 	<input type="text" class="input" name="name" value="">
+			 </li>
+			 <li><label><span class="c-red">*</span>网站网址：</label>
+			 	<input type="text" class="input" value="http://" name="url">
+			 </li>	
+			 <li><label>站长姓名：</label>
+			 	<input type="text" class="input"  name="username">
+			 </li>	
+			 <li><label>站长邮箱：</label>
+			 	<input type="email" class="input" name="email">
+			 </li>
 			 <li><label>链接类型：</label>
 			 <span class="span_input">
 			 	<label class="label_radio"><input name="linktype" type="radio" value="0" checked> 文字链接</label>
@@ -28,10 +36,12 @@
 			   <option value="2">2-列表页</option>			
 			   <option value="3">3-内容页</option>			
 			 </select>
-
 			 </li>
-			 <li><label>网站介绍：</label><span class="span_input"><textarea name="msg" class="textarea w_420"></textarea></span></li>
-			 <li class="yzm-explain-box"><label>排序：</label><span class="span_input"><input type="text" class="input"  value="1" name="listorder" style="margin-left:0;width:120px"></span>
+			 <li><label>网站介绍：</label>
+			 	<span class="span_input"><textarea name="msg" class="textarea w_420"></textarea></span>
+			 </li>
+			 <li class="yzm-explain-box"><label>排序：</label>
+			 	<span class="span_input"><input type="text" class="input"  value="1" name="listorder" style="width:120px"></span>
 			 	<span class="yzm-explain">由小到大排列</span>
 			 </li>	
 			 <li><label>审核：</label>
@@ -42,8 +52,8 @@
 			 </li>			 
 			<li>
 				<input type="hidden" name="dosubmit" value="1">
-			<input class="dosubmit w_120 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
-			<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+				<input class="dosubmit w_120 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+				<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
 			</li>
 		</ul>
 	</form>

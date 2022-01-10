@@ -19,7 +19,7 @@ class sitemodel extends common {
 	 * 模型列表
 	 */
 	public function init() {
-		$data = D('model')->where(array('type' => 0))->order('modelid ASC')->select();
+		$data = D('model')->where(array('siteid'=>self::$siteid, 'type'=>0))->order('modelid ASC')->select();
 		include $this->admin_tpl('model_list');
 	}
 	
@@ -38,8 +38,9 @@ class sitemodel extends common {
 		D('all_content')->delete(array('modelid'=>$modelid)); //删除全部模型表
 		D('tag_content')->delete(array('modelid'=>$modelid)); //删除TAG内容
 		delcache('modelinfo');
+		delcache('modelinfo_siteid_'.self::$siteid);
 	
-		showmsg(L('operation_success'));
+		showmsg(L('operation_success'), '', 1);
 	}
 	
 	/**
@@ -55,12 +56,14 @@ class sitemodel extends common {
 			if($model->table_exists(C('db_prefix').$tablename)) return_json(array('status'=>0,'message'=>'表名已存在！'));	
 			$_POST['issystem'] = $_POST['type'] = 0;
 			$_POST['inputtime'] = SYS_TIME;
+			$_POST['siteid'] = self::$siteid;
 			if($_POST['isdefault']){
-				$model->update(array('isdefault' => 0), array('1' => 1));
+				$model->update(array('isdefault'=>0), array('siteid'=>self::$siteid));
 			}
 			$model->insert($_POST, true);
 			sql::sql_create($tablename);
 			delcache('modelinfo');
+			delcache('modelinfo_siteid_'.self::$siteid);
 			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}else{			
 			include $this->admin_tpl('model_add');
@@ -78,10 +81,11 @@ class sitemodel extends common {
 			$data = array('name'=>$_POST['name'],'description'=>$_POST['description'],'isdefault'=>$_POST['isdefault']);
 			if($_POST['isdefault']){
 				$data['disabled'] = 0;
-				$model->update(array('isdefault' => 0), array('1' => 1));
+				$model->update(array('isdefault'=>0), array('siteid'=>self::$siteid));
 			}
 			if($model->update($data, array('modelid'=>$modelid), true)){
 				delcache('modelinfo');
+				delcache('modelinfo_siteid_'.self::$siteid);
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();
@@ -128,6 +132,7 @@ class sitemodel extends common {
 
 			$modelid = D('model')->field('modelid')->where(array('tablename' => $model_data['tablename']))->one();
 			$model_arr = array();
+			$model_arr['siteid'] = self::$siteid;
 			$model_arr['name'] = htmlspecialchars($model_data['name']);
 			$model_arr['description'] = htmlspecialchars($model_data['description']);
 			$model_arr['setting'] = $model_data['setting'];
@@ -181,6 +186,7 @@ class sitemodel extends common {
 			
 			delcache('modelinfo');
 			delcache($modelid.'_model');
+			delcache('modelinfo_siteid_'.self::$siteid);
 			return_json(array('status'=>1,'message'=>'导入成功！'));
 		}else{
 			$title = '导入模型';
@@ -204,6 +210,7 @@ class sitemodel extends common {
 			
 			if(D('model')->update(array('disabled'=>$value), array('modelid' => $id))){
 				delcache('modelinfo');
+				delcache('modelinfo_siteid_'.self::$siteid);
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();

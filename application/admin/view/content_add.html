@@ -15,15 +15,9 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>标题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value=""  name="title" onblur="get_seotitle()">
+				<input type="text" class="input-text" value=""  name="title" onblur="check_title()">
 				<input type="hidden" name="color" id="color">
 				<img src="<?php echo STATIC_URL;?>images/colors.png" title="设置颜色" id="colors">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>SEO标题：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value=""  name="seo_title">
 			</div>
 		</div>
 		<div class="row cl">
@@ -175,18 +169,6 @@
         $("#url").toggle();
     }
 	
-	function get_seotitle(){
-		var title = $("input[name='title']").val();
-		var seo_title = $("input[name='seo_title']").val();
-		if(title == '') {
-			layer.msg('标题不能为空！', {icon:2,time: 2000});
-			return false;
-		}
-		if(seo_title == ''){
-			$("input[name='seo_title']").val(title+'_<?php echo get_config('site_name');?>');
-		}
-	}
-	
 	function yzm_content_close(){
 		if(UE.getEditor('content').getContent()!=''){
 			layer.confirm('内容未保存，确定要关闭吗？',function(index){
@@ -198,8 +180,8 @@
 	}
 	
 	function checkall(){
-		if($("input[name='title']").val()==''||$("input[name='seo_title']").val()==''){
-			layer.msg('标题或SEO标题不能为空！', {icon:2,time: 2000});
+		if($("input[name='title']").val()==''){
+			layer.msg('标题不能为空！', {icon:2,time: 2000});
 			return false;
 		}
 		if($("select[name='catid']").val()=='0'){
@@ -221,6 +203,25 @@
 			return false;
 		}
 		return true;
+	}
+
+	function check_title() {
+		var title = $("input[name='title']").val();
+		if(title == ''){
+			layer.msg('标题不能为空！', {icon:2,time: 2000});
+			return false;
+		}
+		$.ajax({
+            type: 'GET',
+            url: '<?php echo U('api/index/check_title');?>', 
+            data: {title:title},
+		    dataType: "json", 
+            success: function (msg) {
+				if(!msg.status){
+					layer.msg('标题已重复！', {icon:0,time: 2000});
+			    }
+            }
+        })
 	}
 	
 	function change_keyword() {

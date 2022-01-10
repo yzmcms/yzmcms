@@ -24,9 +24,10 @@ class index extends common{
 		$of = in_array($of, array('id','module','filesize','uploadtime','username','uploadip')) ? $of : 'id';
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$attachment = D('attachment');
-		$total = $attachment->total();
+		$where = array('siteid'=>self::$siteid);
+		$total = $attachment->where($where)->total();
 		$page = new page($total, 15);
-		$data = $attachment->order("$of $or")->limit($page->limit())->select();		
+		$data = $attachment->where($where)->order("$of $or")->limit($page->limit())->select();		
 
 		include $this->admin_tpl('attachment_list');
 	}
@@ -41,7 +42,7 @@ class index extends common{
 		$of = in_array($of, array('id','module','filesize','uploadtime','username','uploadip')) ? $of : 'id';
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$attachment = D('attachment');
-		$where = array();
+		$where = array('siteid' => self::$siteid);
 		if(isset($_GET['dosubmit'])){
 			if(isset($_GET['originname']) && $_GET['originname']){
 				$where['originname'] = '%'.$_GET['originname'].'%';

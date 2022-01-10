@@ -79,7 +79,7 @@ class member_group extends common{
 		if($_POST && is_array($_POST['id'])){
 			if(D('member_group')->delete($_POST['id'], true)){
 				delcache('member_group');
-				showmsg(L('operation_success'));
+				showmsg(L('operation_success'), '', 1);
 			}else{
 				showmsg(L('operation_failure'));
 			}

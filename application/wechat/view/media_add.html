@@ -14,14 +14,18 @@
 <div class="formdoby_normal mt-20"> 
 	<form method="post" action="<?php echo U('add');?>" onsubmit="return dosub(this)" enctype="multipart/form-data">
 		<ul>
-			<li><label>素材类型：</label><label><input class="radio" type="radio" name="media_type" value="0" checked="checked">临时素材</label><label><input class="radio" type="radio" name="media_type" value="1">永久素材</label></li>
+			<li><label>素材类型：</label>
+				<label><input class="radio" type="radio" name="media_type" value="0" checked="checked"> 临时素材 </label>
+				<label><input class="radio" type="radio" name="media_type" value="1"> 永久素材 </label>
+			</li>
 			<li><label>素材类型：</label>
 			 <select  name="type" size="1">
 				<option value="image">图片</option>
 				<option value="voice">语音</option>	
 				<option value="video">视频</option>	
 				<option value="thumb">缩略图</option>			
-			 </select></li>		
+			 </select>
+			</li>		
 			<li><label><span class="c-red">*</span>上传文件：</label>
 			<span class="btn-upload form-group">
 			  <input class="input-text upload-url radius" type="text" name="uploadfile-1" id="uploadfile-1" readonly> <a href="javascript:void();" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>

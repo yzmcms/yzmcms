@@ -42,7 +42,7 @@ class admin {
 		// 验证密码
 		if($password == $res['password']){					
 			$admin->update(array('loginip'=>$loginip,'logintime'=>SYS_TIME,'errnum'=>0), array('adminid'=>$res['adminid']));
-			$admin_login_log->insert(array('adminname'=>$adminname,'logintime'=>SYS_TIME,'loginip'=>$loginip,'password'=>'***','loginresult'=>'1','cause'=>L('login_success')));
+			$admin_login_log->insert(array('adminname'=>$adminname,'logintime'=>SYS_TIME,'loginip'=>$loginip,'password'=>'','loginresult'=>'1','cause'=>L('login_success')));
 			$_SESSION['adminid'] = $res['adminid'];
 			$_SESSION['adminname'] = $res['adminname'];
 			$_SESSION['roleid'] = $res['roleid'];

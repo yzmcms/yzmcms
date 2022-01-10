@@ -6,12 +6,18 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label><span class="c-red">*</span>组别名称：</label><input type="text" class="input" name="name" value="<?php echo $data['name']; ?>"></li>
-			 <li><label><span class="c-red">*</span>经验小于：</label><input type="text" class="input" name="experience" value="<?php echo $data['experience']; ?>"></li>
-			 <li class="yzm-explain-box"><label><span class="c-red">*</span>每日最大投稿量：</label><input type="text" class="input" name="max_amount" value="<?php echo $data['max_amount']; ?>"> 
+			 <li><label><span class="c-red">*</span>组别名称：</label>
+			 	<input type="text" class="input" name="name" value="<?php echo $data['name']; ?>">
+			 </li>
+			 <li><label><span class="c-red">*</span>经验小于：</label>
+			 	<input type="text" class="input" name="experience" value="<?php echo $data['experience']; ?>">
+			 </li>
+			 <li class="yzm-explain-box"><label><span class="c-red">*</span>每日最大投稿量：</label>
+			 	<input type="text" class="input" name="max_amount" value="<?php echo $data['max_amount']; ?>"> 
 			 	<span class="yzm-explain">VIP用户不受限</span>
 			 </li>
-			 <li class="yzm-explain-box"><label>会员组图标：</label><input type="text" class="input" name="icon"  value="<?php echo $data['icon']; ?>"  style="width:450px">
+			 <li class="yzm-explain-box"><label>会员组图标：</label>
+			 	<input type="text" class="input" name="icon"  value="<?php echo $data['icon']; ?>"  style="width:450px">
 			 	<span class="yzm-explain">图标放置在/common/static/images/icon/</span>
 			 </li>
 			 <li><label>组别权限：</label>
@@ -22,10 +28,13 @@
 				<label class="label_box"><input type="checkbox" <?php if(strpos($data['authority'], '4') !== false) echo 'checked="checked"'?> name="authority[]" value="4"> 投稿免审核</label>
 			 </span>
 			 </li>
-			 <li><label>简洁描述：</label><input type="text" class="input" style="width:450px" value="<?php echo $data['description']; ?>"  name="description"></li>
-			<li><input type="hidden" name="dosubmit" value="1"><input type="hidden" name="groupid" value="<?php echo $data['groupid'];?>">
-			 <input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
-			 <input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			 <li><label>简洁描述：</label>
+			 	<input type="text" class="input" style="width:450px" value="<?php echo $data['description']; ?>"  name="description">
+			 </li>
+			 <li>
+			 	<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="groupid" value="<?php echo $data['groupid'];?>">
+			 	<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
+			 	<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
 			 </li>
 		</ul>
 	</form>
@@ -54,9 +63,11 @@
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1,time:1500}, function(){
+						parent.location.reload();     
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

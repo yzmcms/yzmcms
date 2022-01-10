@@ -19,5 +19,4 @@ return array(
 	'can_not_read' => '无法阅读！',
 	'already_is_first' => '已经是第一篇',
 	'already_is_last' => '已经是最后一篇',
-	'insufficient_authority_pc' => '该内容需付费阅读，请在电脑端打开！',
 );

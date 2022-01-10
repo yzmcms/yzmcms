@@ -20,7 +20,7 @@ class model_field extends common {
 	public $modelname;
 	public function __construct() {
 		parent::__construct();
-		$this->modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : showmsg(L('lose_parameters'), 'stop');
+		$this->modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
 		$this->public_set_modelinfo();
 	}
 
@@ -43,7 +43,7 @@ class model_field extends common {
 
 		if(isset($_POST['dosubmit'])) {
 			
-		   if(!preg_match('/^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/', $_POST['field'])) showmsg('字段名不正确！');
+		   if(!preg_match('/^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/', $_POST['field'])) showmsg('字段名格式不正确！');
 		   
 		   $files = array('input','textarea','number','datetime','image','images','attachment','attachments','select','radio','checkbox','editor', 'editor_mini');
 		   if(!in_array($_POST['fieldtype'], $files))  showmsg(L('illegal_parameters'), 'stop');
@@ -145,6 +145,7 @@ class model_field extends common {
 			showmsg(L('operation_success'),'',1);
 		}
 	}
+
 	
 	/**
 	 * 获取模型信息

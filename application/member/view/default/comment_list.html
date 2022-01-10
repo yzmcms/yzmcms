@@ -1,0 +1,50 @@
+{m:include "member","header"}
+<div class="yzm_member_container main">
+    {m:include "member","left"}
+    <div class="main_right">
+        <div class="tit">
+            <h3>我的评论</h3>
+        </div>
+        <div class="main_cont">
+            <form method="post" action="{U('comment_del')}">
+                <table class="tablelist">
+                    <thead>
+                        <tr>
+                            <th><input type="checkbox" onclick="cz(this)" /></th>
+                            <th>评论内容</th>
+                            <th width="180">原文标题</th>
+                            <th width="80">评论时间</th>
+                            <th width="50">状态</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {loop $data $val}
+                        <tr>
+                            <td><input name="fx[]" type="checkbox" value="{$val['id']}" /></td>
+                            <td>{str_cut($val['content'], 180)}</td>
+                            <td><a href="{$val['url']}" target="_blank" title="{$val['title']}">{str_cut($val['title'], 42)}</a></td>
+                            <td>{date('Y-m-d',$val['inputtime'])}<br>{date('H:i:s',$val['inputtime'])}</td>
+                            <td>{if $val['status']}<span style="color:green">通过</span>{else}<span style="color:red">未通过</span>{/if}</td>
+                        </tr>
+                        {/loop}
+                        <tr class="tablast">
+                            <td></td>
+                            <td colspan="4"><input type="submit" class="submit" value="删除选中" onclick="return confirm('你确定要删除所选内容吗？')" name="dosubmit"></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </form>
+            <div id="page">{$pages}</div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+var fx = document.getElementsByName("fx[]");
+
+function cz(obj) {
+    for (var i = 0; i < fx.length; i++) {
+        fx[i].checked = obj.checked;
+    }
+}
+</script>
+{m:include "member","footer"}

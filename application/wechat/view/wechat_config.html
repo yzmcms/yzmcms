@@ -11,45 +11,64 @@
 		    <form action="<?php echo U('save');?>" method="post" onsubmit="return check_all()">
 			<table class="table table-border yzmcms_table">			
 				<tr>
-					<td width="120">微信URL</td> 
-					<td><input type="text" name="field" readonly value="<?php echo U('wechat/index/init');?>" class="input-text w_420"><span class="tip">复制此URL到微信公众号后台开发者中心</span></td>
+					<td width="120"><span class="c-red">*</span> 微信URL</td> 
+					<td class="yzm-explain-box">
+						<input type="text" name="field" readonly value="<?php echo U('wechat/index/init');?>" class="input-text w_420">
+						<span class="yzm-explain">复制此URL到微信公众号后台开发者中心</span>
+					</td>
 				</tr>
 				<tr>
-					<td>微信Token</td> 
-					<td><input type="text" name="wx_token" value="<?php echo $data["wx_token"];?>" class="input-text w_300"><span class="tip">必填，一般不需要修改</span> &nbsp;&nbsp;<a href="javascript:;" class="btn btn-default radius" onclick="rand()">随机生成</a></td>
-				</tr>				
+					<td><span class="c-red">*</span> 微信Token</td> 
+					<td class="yzm-explain-box">
+						<input type="text" name="wx_token" value="<?php echo $data['wx_token'];?>" class="input-text w_300">
+						<span class="yzm-explain">必填，一般不需要修改</span>
+						<a href="javascript:;" class="btn btn-secondary radius ml-5" onclick="wx_rand()">随机生成</a>
+					</td>
+				</tr>								
 				<tr>
-					<td>EncodingAESKey</td> 
-					<td><input type="text" name="wx_encodingaeskey" value="<?php echo $data["wx_encodingaeskey"];?>" class="input-text w_420"><span class="c-red"></span><span class="tip">选填，在开发模式中点随机生成，然后复制到这边</span></td>
-				</tr>				
-				<tr>
-					<td>AppID</td> 
-					<td><input class="input-text w_300" type="text" value="<?php echo $data["wx_appid"];?>" name="wx_appid"><span class="tip">必填，微信开发者ID</span></td>
+					<td><span class="c-red">*</span> AppID</td> 
+					<td class="yzm-explain-box">
+						<input class="input-text w_300" type="text" value="<?php echo $data['wx_appid'];?>" name="wx_appid">
+						<span class="yzm-explain">必填，微信开发者ID</span>
+					</td>
 				</tr>					
 				<tr>
-					<td>AppSecret</td> 
-					<td><input type="password" name="wx_secret" value="<?php echo $data["wx_secret"];?>" id="wx_secret" class="input-text w_420" readonly onfocus="this.removeAttribute('readonly');"><span class="tip">必填，微信开发者密码</span>&nbsp;&nbsp;<a href="javascript:;" class="btn btn-default radius" onclick="show()" id="wx_secret_text">显示密码</a></a></td>
+					<td><span class="c-red">*</span> AppSecret</td> 
+					<td class="yzm-explain-box">
+						<input type="password" name="wx_secret" value="<?php echo $data['wx_secret'];?>" id="wx_secret" class="input-text w_420" readonly onfocus="this.removeAttribute('readonly');">
+						<span class="yzm-explain">必填，微信开发者密码</span>
+						<a href="javascript:;" class="btn btn-secondary radius ml-5" onclick="wx_show()" id="wx_secret_text">显示密码</a>
+					</td>
+				</tr>
+				<tr>
+					<td>EncodingAESKey</td> 
+					<td class="yzm-explain-box">
+						<input type="text" name="wx_encodingaeskey" value="<?php echo $data['wx_encodingaeskey'];?>" class="input-text w_420">
+						<span class="yzm-explain">非必选项，在开发模式中点随机生成，然后复制到这里</span>
+					</td>
 				</tr>
 				<tr>
 					<td>关联模型</td> 
-					<td>
+					<td class="yzm-explain-box">
 					<span class="select-box inline">
 					<select name="wx_relation_model" class="select">
 					<option value="">请选择模型</option>
 					<?php  
 					foreach($modelinfo as $val){
-						$str = $val['tablename'] == $data['wx_relation_model'] ? 'selected' : '';
-						echo '<option value="'.$val['tablename'].'" '.$str.'>'.$val['name'].'</option>';
+						$str = $val['modelid'] == $data['wx_relation_model'] ? 'selected' : '';
+						echo '<option value="'.$val['modelid'].'" '.$str.'>'.$val['name'].'</option>';
 					}
 					?>
 					</select>
 					</span>
+					<span class="yzm-explain">非必选项，用于公众号关键字回复关联的图文回复</span>
                     </td>
 				</tr>				
                 <tr>
 					<td></td>
 					<td>
-					<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
+					<input class="btn w_120 h35 btn-primary radius" name="dosubmit" type="submit" value="提交">
+					<input class="btn w_120 h35 btn-default radius" type="reset" value="重置">
 					</td>
 				</tr>				
 			</table>
@@ -59,12 +78,12 @@
 </article>
 <?php include $this->admin_tpl('footer', 'admin');?>
 <script type="text/javascript">
-function rand(){
+function wx_rand(){
 	var str = Math.random().toString(36).substr(2);
 	$("input[name='wx_token']").val(str);
 }
 
-function show(){
+function wx_show(){
 	var wx_secret = document.getElementById("wx_secret");
 	if(wx_secret.type == "password"){
 		wx_secret.type = "text";
@@ -77,15 +96,15 @@ function show(){
 
 function check_all(){
 	if($("input[name='wx_token']").val()==''){
-		layer.msg('微信Token不能为空！');
+		layer.msg('微信Token不能为空！', {icon:2});
 		return false;
 	}
 	if($("input[name='wx_appid']").val()==''){
-		layer.msg('微信APPID不能为空！');
+		layer.msg('微信APPID不能为空！', {icon:2});
 		return false;
 	}
 	if($("input[name='wx_secret']").val()==''){
-		layer.msg('微信AppSecret不能为空！');
+		layer.msg('微信AppSecret不能为空！', {icon:2});
 		return false;
 	}
 	return true;			

@@ -15,13 +15,13 @@ class content_model {
 	public $tabname;
 	
 	public function __construct() {
-		$modelinfo = get_modelinfo();
+		$modelinfo = get_site_modelinfo();
 		$this->modelarr = array();
 		foreach($modelinfo as $val){
 			$this->modelarr[$val['modelid']] = $val;
 		}
 		$this->modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : (isset($_POST['modelid']) ? intval($_POST['modelid']) : get_default_model('modelid'));
-		if(!isset($this->modelarr[$this->modelid])) showmsg('模型不存在！', 'stop');
+		if(!isset($this->modelarr[$this->modelid])) showmsg('模型不存在，请先添加模型！', U('sitemodel/init'));
 		$this->tabname = $this->modelarr[$this->modelid]['tablename'];
 	}
 
@@ -56,8 +56,9 @@ class content_model {
 		
 		//自动提取缩略图
 		if(isset($data['auto_thum']) && $data['thumb'] == '') {
-			$img = match_img($data['content']);
+			$img = $data['content'] ? match_img($data['content']) : false;
 			$data['thumb'] = $img ? thumb($img, get_config('thumb_width'), get_config('thumb_height')) : '';
+			if(get_siteid() && $data['thumb'] && !strpos($data['thumb'], '://')) $data['thumb'] = get_config('site_url').ltrim($data['thumb'], '/');
 		}
 
 		$content_tabname = D($this->tabname);
@@ -75,6 +76,7 @@ class content_model {
 		}
 		
 		//写入全部模型表
+		$data['siteid'] = get_siteid();
 		$data['modelid'] = $this->modelid;
 		$data['id'] = $id;
 		$data['url'] = isset($url) ? $url : $data['url'];
@@ -82,6 +84,7 @@ class content_model {
 		
 		//记录catid
 		set_cookie('catid', $data['catid']);
+		update_attachment($this->modelid, $id);
 		
 		return $id;
 
@@ -128,8 +131,9 @@ class content_model {
 		
 		//自动提取缩略图
 		if(isset($data['auto_thum']) && $data['thumb'] == '') {
-			$img = match_img($data['content']);
+			$img = $data['content'] ? match_img($data['content']) : false;
 			$data['thumb'] = $img ? thumb($img, get_config('thumb_width'), get_config('thumb_height')) : '';
+			if(get_siteid() && $data['thumb'] && !strpos($data['thumb'], '://')) $data['thumb'] = get_config('site_url').ltrim($data['thumb'], '/');
 		}
 		
 		//TAG标签处理
@@ -148,6 +152,7 @@ class content_model {
 		D('all_content')->update($data, array('modelid' => $this->modelid, 'id' => $id));
 		
 		$affected = $content_tabname->update($data, array('id' => $id));
+		update_attachment($this->modelid, $id);
 		return $affected;
 
 	}  
@@ -161,14 +166,19 @@ class content_model {
 	public function content_delete($id, $isimport = 0) {
 
 		$content_tabname = D($this->tabname);
+		$res = $content_tabname->field('`catid`,`username`,`issystem`')->where(array('id'=>$id))->find();
+		if(!$res) return false;
 		if($isimport){
 			$username = safe_replace(get_cookie('_username'));
-			$r = $content_tabname->field('`username`,`issystem`')->where(array('id'=>$id))->find();
-			if(!$r || $r['username']!=$username || $r['issystem']==1) return false;
+			if($res['username']!=$username || $res['issystem']) return false;
 		}
 		$affected = $content_tabname->delete(array('id'=>$id)); //删除内容
 		D('all_content')->delete(array('modelid' => $this->modelid, 'id'=>$id));  //删除所有模型内容表
-		D('tag_content')->delete(array('modelid' => $this->modelid, 'aid'=>$id)); //删除TAG表		
+		D('tag_content')->delete(array('modelid' => $this->modelid, 'aid'=>$id)); //删除TAG表	
+		$commentid = $this->modelid.'_'.$res['catid'].'_'.$id;	
+		D('comment')->delete(array('commentid' => $commentid));  //删除评论表
+		D('comment_data')->delete(array('commentid' => $commentid));  //删除评论表
+		delete_attachment($this->modelid, $id); //删除关联附件
 		return $affected;
 	}
 	
@@ -217,18 +227,19 @@ class content_model {
 	 * @param $aid 
 	 */	
 	private function tag_dispose($catid, $tags, $aid) {
+		$siteid = get_siteid();
 		$tag = D('tag');
 		$tag_content = D('tag_content');      
         $tag_content->delete(array('modelid' => $this->modelid, 'aid' => $aid));
         $tags = array_unique($tags); 
 		foreach($tags as $val){
 			if(!$val) continue;
-			$tagid = $tag->field('id')->where(array('tag' => $val))->one();
+			$tagid = $tag->field('id')->where(array('siteid'=>$siteid, 'tag'=>$val))->one();
 			if($tagid){
 				$total = $tag_content->where(array('tagid' => $tagid))->total();
 				$tag->update(array('total' => $total+1), array('id' => $tagid));
 			}else{
-				$tagid = $tag->insert(array('catid'=>$catid, 'tag'=>$val, 'total'=>1, 'inputtime'=>SYS_TIME));
+				$tagid = $tag->insert(array('siteid'=>$siteid, 'catid'=>$catid, 'tag'=>$val, 'total'=>1, 'inputtime'=>SYS_TIME));
 			}
 			
 			$tag_content->insert(array('modelid' => $this->modelid, 'catid' => $catid, 'tagid' => $tagid, 'aid' => $aid), false, false);

@@ -15,16 +15,14 @@
 		<ul>
 			 <li><label>用户名：</label><?php echo $data['adminname'];?></li>
 			 <li><label>所属角色：</label><?php echo $data['rolename'];?></li>
-			 <li><label>真实姓名：</label><?php echo $data['realname'];?></li>
-			 <li><label>昵称：</label><?php echo $data['nickname'];?></li>
-			 <li><label>邮箱：</label><?php echo $data['email'];?></li>
+			 <li><label>真实姓名：</label><?php echo $data['realname'] ? $data['realname'] : '暂无';?></li>
+			 <li><label>昵称：</label><?php echo $data['nickname'] ? $data['nickname'] : '暂无';?></li>
+			 <li><label>邮箱：</label><?php echo $data['email'] ? $data['email'] : '暂无';?></li>
 			 <li><label>旧密码：</label><input type="password" class="input" placeholder="请输入旧密码" name="old_password" value=""></li>
-			 <li>
-			 	<label>新密码：</label><input type="password" class="input" placeholder="密码长度为6-20位" name="password" value="" onkeyup="checkpwd(this.value)"> <div class="pwdstrength"><span>弱</span><span>中</span><span>强</span></div>
-			 </li>
+			 <li><label>新密码：</label><input type="password" class="input" placeholder="密码长度为6-20位" name="password" value="" onkeyup="checkpwd(this.value)"> <div class="pwdstrength"><span>弱</span><span>中</span><span>强</span></div></li>
 			 <li><label>确认密码：</label><input type="password" class="input" placeholder="密码长度为6-20位" name="password2" value=""></li>
-			 <input type="hidden" name="dosubmit" value="1">
 			 <li>
+			 	<input type="hidden" name="dosubmit" value="1">
 			 	<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
 			 	<input class="btn w_120 btn-default radius h35" type="button" value="取消" onclick="yzmcms_close()">
 			 </li>

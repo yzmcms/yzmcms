@@ -10,9 +10,11 @@
 <div class="formdoby_normal mt-20"> 
 	<form method="post" action="<?php echo U('add');?>" onsubmit="return dosub(this)">
 		<ul>
-			<li><label>群发模式：</label><label><input class="radio" type="radio" name="type" value="2" checked="checked">全部用户</label>&nbsp;&nbsp;
-	               <label><input class="radio" type="radio" name="type" value="1">按分组群发</label>&nbsp;&nbsp;
-	                <label><input class="radio" type="radio" name="type" value="0" >按openid群发</label></li>
+			<li><label>群发模式：</label>
+				<label><input class="radio" type="radio" name="type" value="2" checked="checked"> 全部用户 </label>
+	            <label><input class="radio" type="radio" name="type" value="1"> 按分组群发 </label>
+	            <label><input class="radio" type="radio" name="type" value="0"> 按openid群发 </label>
+			</li>
 			<li id="groupid"  style="display:none"><label>微信分组：</label>
 			<select  name="groupid" style="width:200px">
 				<?php 
@@ -22,19 +24,27 @@
 				?>
 			 </select>
 			</li>
-			<li id="openid_li" style="display:none"><label>openid：</label><textarea class="textarea" name="openid" id="openid" placeholder="多个openid之间用“,”分隔" style="width:450px"></textarea>&nbsp;&nbsp;<a href="javascript:;" class="btn btn-default radius" onclick="yzm_open('选择用户','<?php echo U('select_user');?>',900,520)">选择用户</a></li>
+			<li id="openid_li" style="display:none"><label>openid：</label>
+			<textarea class="textarea" name="openid" id="openid" placeholder="多个openid之间用“,”分隔" style="width:450px"></textarea>&nbsp;&nbsp;<a href="javascript:;" class="btn btn-default radius" onclick="yzm_open('选择用户','<?php echo U('select_user');?>',900,550)">选择用户</a>
+			</li>
 			<li><label>消息类型：</label>
 			 <select  name="message_type" style="width:200px" onchange="javascript:change_type(this.value);">
 			    <option <?php if($message_type == 'news') echo 'selected';?> value="news">图文</option>
 				<option <?php if($message_type == 'text') echo 'selected';?> value="text">文本</option>	
 				<option <?php if($message_type == 'image') echo 'selected';?> value="image">图片</option>
 				<option <?php if($message_type == 'voice') echo 'selected';?> value="voice">语音</option>						
-			 </select></li>
-			<li id="media_li"><label>media_id：</label><input type="text" class="input" style="width:300px" name="media_id" id="media_id" value="<?php echo $media_id;?>">&nbsp;&nbsp;
-			<a href="javascript:;" class="btn btn-default radius" onclick="yzm_open('选择素材','<?php echo U('select_material');?>',900,520)">选择素材</a></li>
-			<li id="text_li" style="display:none"><label>内容：</label><textarea class="textarea" name="content" id="content_text" style="width:450px"></textarea></li>
-			<li></li>
-			<li><input type="hidden" name="dosubmit" value="1"><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"></li>
+			 </select>
+			</li>
+			<li id="media_li"><label>media_id：</label>
+			<input type="text" class="input" style="width:300px" name="media_id" id="media_id" value="<?php echo $media_id;?>">&nbsp;&nbsp;
+			<a href="javascript:;" class="btn btn-default radius" onclick="yzm_open('选择素材','<?php echo U('select_material');?>',900,550)">选择素材</a>
+			</li>
+			<li id="text_li" style="display:none"><label>内容：</label>
+			<textarea class="textarea" name="content" id="content_text" style="width:450px"></textarea>
+			</li>
+			<li>
+			<input type="hidden" name="dosubmit" value="1"><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
+			</li>
 		</ul>
 	</form>
 </div>

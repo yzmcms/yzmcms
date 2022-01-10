@@ -7,8 +7,12 @@
 <div class="formdoby_normal"> 
 	<form method="post" action="<?php echo U(ROUTE_A);?>" onsubmit="return dosub(this)">
 		<ul>
-			<li><label>任务ID：</label><input type="text" class="input" style="width:300px" name="msg_id" value=""></li>
-			<li><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="查询">
+			<li>
+				<label>任务ID：</label>
+				<input type="text" class="input" style="width:300px" name="msg_id" value="">
+			</li>
+			<li>
+				<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="查询">
 				<input class="btn w_120 btn-default radius h35" type="button" value="后退" onclick="window.history.go(-1)">
 			</li>
 		</ul>

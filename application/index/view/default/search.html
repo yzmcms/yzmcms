@@ -14,11 +14,13 @@
   <body>
 	    {m:include "index","header"} 
 		 <div class="yzm-content-box yzm-main-left yzm-news-list">
-		 		<div class="yzm-title">
-		 			<h2>“{$q}” 的搜索结果，共<span>{$total}</span>条</h2>
-		 		</div>
+		 	    {m:search field="id,catid,title,updatetime,thumb,url,color,flag,description" keyword="$q" siteid="$siteid" modelid="$modelid" limit="10" page="page"}
 
-		 		{loop $search_data $v}
+		 		<div class="yzm-title">
+		 			<h2>“{$q}” 的搜索结果，共{php echo $tag->total}条</h2>
+		 		</div>
+		 		
+		 		{loop $data $v}
 		 		{php $v['color_title'] = str_ireplace($q, "<span style='color:red;'>$q</span>", $v['title']);}
 		 		{php $v['description'] = str_ireplace($q, "<span style='color:red;'>$q</span>", $v['description']);}
 		 		<div class="yzm-news">
@@ -30,8 +32,7 @@
 		 				<a href="{$v[url]}">{$v[color_title]}</a>
 		 				<p>{$v[description]}</p>
 		 				<div class="yzm-news-tags">
-		 					{php $aid = $v['id'];}
- 							{m:get sql="SELECT id,tag FROM yzmcms_tag_content AS a LEFT JOIN yzmcms_tag AS b ON a.tagid=b.id WHERE aid=$aid" limit="5" return="tag_data"}
+		 					{php $tag_data = content_list_tag($v['catid'], $v['id']);}
  							{loop $tag_data $val}	
  							<a href="{tag_url($val['id'])}" target="_blank" >{$val[tag]}</a>
  							{/loop}

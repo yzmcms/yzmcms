@@ -6,11 +6,21 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label>支付方式</label> 微信</li>
-			 <li><label><span class="c-red">*</span>AppID</label><input type="text" class="input" required name="config[app_id]" value="<?php echo $config['app_id'];?>" style="width:200px"></li>
-			 <li><label><span class="c-red">*</span>AppSecret</label><input type="text" class="input" required name="config[app_secret]" value="<?php echo $config['app_secret'];?>" style="width:400px"></li>
-			 <li><label><span class="c-red">*</span>商户ID(MCHID)</label><input type="text" class="input" required name="config[mch_id]" value="<?php echo $config['mch_id'];?>" style="width:200px"></li>
-			 <li><label><span class="c-red">*</span>商户秘钥(KEY)</label><input type="text" class="input" required name="config[key]" value="<?php echo $config['key'];?>" style="width:400px"></li>
+			 <li><label>支付方式</label>
+				微信
+			 </li>
+			 <li><label><span class="c-red">*</span>AppID</label>
+			 	<input type="text" class="input" required name="config[app_id]" value="<?php echo $config['app_id'];?>" style="width:200px">
+			 </li>
+			 <li><label><span class="c-red">*</span>AppSecret</label>
+			 	<input type="text" class="input" required name="config[app_secret]" value="<?php echo $config['app_secret'];?>" style="width:400px">
+			 </li>
+			 <li><label><span class="c-red">*</span>商户ID(MCHID)</label>
+			 	<input type="text" class="input" required name="config[mch_id]" value="<?php echo $config['mch_id'];?>" style="width:200px">
+			 </li>
+			 <li><label><span class="c-red">*</span>商户秘钥(KEY)</label>
+			 	<input type="text" class="input" required name="config[key]" value="<?php echo $config['key'];?>" style="width:400px">
+			 </li>
 			 <li><label><span class="c-red">*</span>状态</label>
 			 <span class="span_input">
 			 	<label class="label_radio"><input name="enabled" type="radio" value="1" <?php if($data['enabled'] == 1) echo 'checked';?>> 启用</label>

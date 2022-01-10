@@ -18,7 +18,7 @@
 		 			<h2>{get_catname($catid)}</h2>
 		 		</div>
 
-		 		{m:lists field="id,title,description,url,flag,color,thumb" catid="$catid" limit="10" page="page"}
+		 		{m:lists field="id,catid,title,description,url,flag,color,thumb" catid="$catid" limit="10" page="page"}
 		 		{loop $data $v}
 		 		<div class="yzm-news">
 		 			<a href="{$v[url]}" class="yzm-news-img">
@@ -29,8 +29,7 @@
 		 				<a href="{$v[url]}">{title_color($v['title'], $v['color'])}</a>
 		 				<p>{$v[description]}</p>
 		 				<div class="yzm-news-tags">
-		 					{php $aid = $v['id'];}
- 							{m:get sql="SELECT id,tag FROM yzmcms_tag_content AS a LEFT JOIN yzmcms_tag AS b ON a.tagid=b.id WHERE aid=$aid" limit="5" return="tag_data"}
+		 					{php $tag_data = content_list_tag($v['catid'], $v['id']);}
  							{loop $tag_data $val}	
  							<a href="{tag_url($val['id'])}" target="_blank" >{$val[tag]}</a>
  							{/loop}
@@ -96,7 +95,7 @@
 	 	 			<h2>热门标签</h2>
 	 	 		</div>
 			    <ul class="yzm-tag-list">
-				{m:tag field="id,tag,total,remarks" catid="$catid" limit="30"}
+				{m:tag field="id,tag,total" catid="$catid" limit="30"}
 				{loop $data $v}
 				   <li><a href="{tag_url($v['id'])}" target="_blank">{$v[tag]}({$v[total]})</a></li>	
 				{/loop}						

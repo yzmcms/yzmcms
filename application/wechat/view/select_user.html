@@ -18,9 +18,20 @@
 		</select>
 	</span>
     <span class="select-box inline">
+		<select name="scan" class="select">
+			<option value="">来源场景</option>
+			<?php 
+				foreach($scan_arr as $val){
+					$str = $val['scan']==$scan ? 'selected' : '';
+					echo '<option value="'.$val['scan'].'" '.$str.'>'.$val['scan'].'</option>';
+				}
+			?>
+		</select>
+	</span>	
+    <span class="select-box inline">
 		<select name="type" class="select">
-		<option <?php if(isset($_GET['type']) && $_GET['type']=='1'){?> selected <?php }?> value="1">OpenID</option>
-		<option <?php if(isset($_GET['type']) && $_GET['type']=='2'){?> selected <?php }?> value="2">来源场景</option>	
+		<option <?php if(isset($_GET['type']) && $_GET['type']=='1'){?> selected <?php }?> value="1">用户备注</option>
+		<option <?php if(isset($_GET['type']) && $_GET['type']=='2'){?> selected <?php }?> value="2">OpenID</option>	
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='3'){?> selected <?php }?> value="3">微信昵称</option>	
 		</select>
 	</span>
@@ -47,7 +58,7 @@
 		?>
 		  <tr class="text-c">
 			<td><input type="checkbox" class="checkbox" value="<?php echo $val['openid']?>" name="ids[]"></td>
-			<td><img src="<?php echo $val['headimgurl'];?>" height="25" class="radius"> <?php echo $val['nickname'];?></td>
+			<td class="text-l"><img src="<?php echo $val['headimgurl'];?>" height="25" class="radius"> <?php echo $val['nickname'];?></td>
 			<td><?php echo $val['remark'];?></td>
 			<td><?php echo $this->get_groupname($wechat_group, $val['groupid']);?></td>
 			<td><?php echo $val['sex']==2 ? '女' : ($val['sex'] ? '男' : '未知');?></td>
@@ -60,6 +71,7 @@
 		?>
     </tbody>
   </table>
+  <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
   <input class="dosubmit w_120 btn-primary radius mt-10" name="dosubmit" type="button" onclick="dosub()" value="确定">
   </form>
   <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>

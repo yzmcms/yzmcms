@@ -1,5 +1,6 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
 <title>入账记录 - YzmCMS内容管理系统</title>
+<link href="<?php echo STATIC_URL;?>plugin/editable/css/jquery-editable.css" rel="stylesheet"/>
 </head>
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 账单管理 <span class="c-gray en">&gt;</span> 入账记录管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
@@ -14,7 +15,7 @@
      至 <input type="text" class="input-text laydate-icon" style="width:170px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d H:i:s'); ?>">
      <span class="select-box inline">
 		<select name="capital_type" class="select">
-		<option value="99">全部</option>
+		<option value="99">类型</option>
 		<option <?php if(isset($_GET['capital_type']) && $_GET['capital_type']=='2'){?> selected <?php }?> value="2">金钱</option>	
 		<option <?php if(isset($_GET['capital_type']) && $_GET['capital_type']=='1'){?> selected <?php }?> value="1">积分</option>
 		</select>
@@ -61,7 +62,7 @@
 			<td><?php echo $val['ip']?></td>
 			<td><?php echo date("Y-m-d H:i:s",$val['creat_time']) ?></td>
 			<td><?php echo $val['msg']?></td>
-			<td><?php echo $val['remarks']?></td>
+			<td><span class="remarks" data-pk="<?php echo $val['id']?>" onmouseover="yzm_tips=layer.tips('点击修改备注', this)" onmouseout="layer.close(yzm_tips);"><?php echo $val['remarks'] ? $val['remarks'] : '无';?></span></td>
 			<td><?php echo $val['type'] == '1' ? '积分' : '<span class="c-red">金钱</span>'; ?></td>
 		  </tr>		
 		<?php 
@@ -76,12 +77,33 @@
 </div>
 <?php include $this->admin_tpl('footer', 'admin');?>
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/editable/js/jquery.poshytip.js"></script>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/editable/js/jquery-editable-poshytip.min.js"></script>
 <script type="text/javascript">
-	var start = {elem:'#start',format:'YYYY-MM-DD',min:'1999-01-01',max:'2099-01-01',istime:false,istoday:false,choose:function(datas){end.min = datas;end.start = datas}
+	var start = {elem:'#start',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){end.min = datas;end.start = datas}
 	};
-	var end = {elem:'#end',format:'YYYY-MM-DD',min:'1999-01-01',max:'2099-01-01',istime:false,istoday:false,choose:function(datas){start.max = datas;}};
+	var end = {elem:'#end',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){start.max = datas;}};
 	laydate(start);
 	laydate(end);
+
+	$('.remarks').editable({
+	    url: '<?php echo U('public_edit_remarks');?>',
+	    name: 'remarks',
+	    title: '修改备注',
+	    type: 'textarea',
+	    params: {"type":"1"},
+	    dataType: "json", 
+	    validate:function (value) {
+	        if(value==''){
+	            return '备注说明不能为空！';
+	        }
+	    },
+	    success: function(msg, newvalue) {
+	        if(!msg.status){
+	        	return msg.message; 
+		    }
+	    }
+	});
 </script>
 
 </body>

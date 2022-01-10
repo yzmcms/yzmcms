@@ -15,12 +15,12 @@
 	</span>
     <span class="select-box inline">
 		<select name="type" class="select">
-		<option value="">所有类型</option>
-		<option <?php if(isset($_GET['type']) && $_GET['type']=='news'){?> selected <?php }?> value="news">图文</option>	
-		<option <?php if(isset($_GET['type']) && $_GET['type']=='image'){?> selected <?php }?> value="image">图片</option>
-		<option <?php if(isset($_GET['type']) && $_GET['type']=='voice'){?> selected <?php }?> value="voice">语音</option>	
-		<option <?php if(isset($_GET['type']) && $_GET['type']=='video'){?> selected <?php }?> value="video">视频</option>	
-		<option <?php if(isset($_GET['type']) && $_GET['type']=='thumb'){?> selected <?php }?> value="thumb">缩略图</option>	
+			<option value="">所有类型</option>
+			<option <?php if(isset($_GET['type']) && $_GET['type']=='news'){?> selected <?php }?> value="news">图文</option>	
+			<option <?php if(isset($_GET['type']) && $_GET['type']=='image'){?> selected <?php }?> value="image">图片</option>
+			<option <?php if(isset($_GET['type']) && $_GET['type']=='voice'){?> selected <?php }?> value="voice">语音</option>	
+			<option <?php if(isset($_GET['type']) && $_GET['type']=='video'){?> selected <?php }?> value="video">视频</option>	
+			<option <?php if(isset($_GET['type']) && $_GET['type']=='thumb'){?> selected <?php }?> value="thumb">缩略图</option>	
 		</select>
 	</span>
     <button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
@@ -53,6 +53,7 @@
 		?>
     </tbody>
   </table>
+  <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
   <input class="dosubmit w_120 btn-primary radius mt-10" name="dosubmit" type="button" onclick="dosub()" value="确定">
   </form>
   <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>

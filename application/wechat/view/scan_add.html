@@ -9,14 +9,33 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			<li><label><span class="c-red">*</span>场景ID：</label><input type="text" class="input" style="width:300px" name="scan" value=""><p class="exp">场景ID为数字或英文字母，建议不要太长。</p></li>
-			<li><label>场景分类：</label><label><input class="radio" type="radio" name="type" value="1" checked="checked">临时二维码</label>&nbsp;&nbsp;
-	                <label><input class="radio" type="radio" name="type" value="0" >永久二维码</label>	</li>
-			<li id="expire_time"><label>过期时间：</label><select  name="expire_time" class="select" style="width:300px">
-				<option value="180">3分钟</option><option value="1800">30分钟</option><option value="3600">1小时</option><option value="10800">3小时</option><option value="21600">6小时</option><option value="43200">12小时</option><option value="86400">24小时</option></select></li>
-			<li><label>备注：</label><textarea class="textarea" name="remarks" style="width:450px"></textarea></li>
-			<li></li>
-			<li><input type="hidden" name="dosubmit" value="1"><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"> <input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()"></li>
+			<li><label><span class="c-red">*</span>场景ID：</label>
+				<input type="text" class="input" style="width:300px" name="scan" value="">
+				<p class="exp">场景ID必须为英文、数字或下划线，且长度为1-20位。</p>
+			</li>
+			<li><label>场景分类：</label>
+				<label><input class="radio" type="radio" name="type" value="1" checked="checked"> 临时二维码</label>
+	            <label><input class="radio" type="radio" name="type" value="0" > 永久二维码</label>	
+	        </li>
+			<li id="expire_time"><label>过期时间：</label>
+				<select  name="expire_time" class="select" style="width:300px">
+					<option value="180">3分钟</option>
+					<option value="1800">30分钟</option>
+					<option value="3600">1小时</option>
+					<option value="10800">3小时</option>
+					<option value="21600">6小时</option>
+					<option value="43200">12小时</option>
+					<option value="86400">24小时</option>
+				</select>
+			</li>
+			<li><label>备注：</label>
+				<textarea class="textarea" name="remarks" style="width:450px"></textarea>
+			</li>
+			<li>
+				<input type="hidden" name="dosubmit" value="1">
+				<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"> 
+				<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			</li>
 		</ul>
 	</form>
 </div>
@@ -35,10 +54,14 @@
 	});
 
 	function dosub(obj){
-		 var reg = /^[A-Za-z0-9]+$/;
-		 if($("input[name='scan']").val()=='' || !reg.test($("input[name='scan']").val())){
-			 layer.msg('场景ID必须为英文拼音或数字！');
-			 return false;
+		 var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/;	
+		 if(obj.scan.value.length<1 || obj.scan.value.length>20){
+		 	layer.msg('场景ID长度必须为1-20位！', {icon:2});
+		 	return false;
+		 }
+		 if(!reg.test(obj.scan.value)){
+		 	layer.msg('场景ID必须为英文、数字或下划线！', {icon:2});
+		 	return false;
 		 }
         $.ajax({
             type: 'POST',
@@ -47,9 +70,11 @@
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1,time:1500}, function(){
+						parent.location.reload();     
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

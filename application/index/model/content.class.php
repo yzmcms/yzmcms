@@ -15,17 +15,15 @@ class content {
 	 */
 	public static function check_readpoint($flag, $readpoint, $paytype, $url) {
 		$userid = intval(get_cookie('_userid'));
-		if(!$userid){
-			showmsg(L('need_login'), url_referer(get_url()), 2);
-		}
+		if(!$userid) return false;
 		
-		//检查24小时内是否支付过
+		//检查一个月内是否支付过
 		$data = D('pay_spend')->field('creat_time')->where(array('userid'=>$userid,'remarks'=>$flag))->order('id DESC')->find();
-		if($data && $data['creat_time']+86400 > SYS_TIME) {
+		if($data && $data['creat_time']+2592000 > SYS_TIME) {
 			return true;
 		}
 		
-		$data = D('member')->field('point,amount,vip,overduedate')->where(array('userid'=>$userid))->find();
+		$data = D('member')->field('vip,overduedate')->where(array('userid'=>$userid))->find();
 		
 		//检查是否为vip会员
 		if($data['vip']){
@@ -33,20 +31,7 @@ class content {
 			D('member')->update(array('vip'=>0), array('userid'=>$userid));
 		}
 		
-		if($paytype==1){
-			$point = $data['point'];
-			$lang = L('point');
-		}else{
-			$point = $data['amount'];
-			$lang = L('money');
-		}
-		if($point < $readpoint){
-			showmsg(L('not_enough').$readpoint.$lang.'，'.L('can_not_read'), 'stop');
-		}else{
-			$parurl = 'par='.string_auth($flag.'|'.$readpoint.'|'.$paytype.'|'.$url);
-			include template('index', 'authority_confirm');
-			exit();
-		}
+		return false;
 	}
 
 

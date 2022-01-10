@@ -6,17 +6,22 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label><span class="c-red">*</span>角色名称：</label><input type="text" class="input" placeholder="角色名称" name="rolename" value="<?php echo $data['rolename'];?>"></li>
+			 <li><label><span class="c-red">*</span>角色名称：</label>
+			 	<input type="text" class="input" placeholder="角色名称" name="rolename" value="<?php echo $data['rolename'];?>">
+			 </li>
 			 <li><label><span class="c-red">*</span>是否启用：</label>
 			 <span class="span_input">
 			 	<label class="label_radio"><input name="disabled" type="radio" value="0" <?php echo $data['disabled']==0 ? ' checked="checked" ' : '';?>> 启用</label>
 			 	<label class="label_radio"><input name="disabled" type="radio" value="1" <?php echo $data['disabled']==1 ? ' checked="checked" ' : '';?>> 禁用</label>
 			 </span>
 			 </li>
-			 <li><label>角色描述：</label><span class="span_input"><textarea name="description" cols="" rows="" class="textarea  w_420"  placeholder="角色描述"><?php echo $data['description'];?></textarea></span></li>
-			 <li><input type="hidden" name="dosubmit" value="1"><input type="hidden" name="roleid" value="<?php echo $data['roleid'];?>">
-			 <input class="dosubmit w_120 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
-			 <input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			 <li><label>角色描述：</label>
+			 	<span class="span_input"><textarea name="description" cols="" rows="" class="textarea  w_420"  placeholder="角色描述"><?php echo $data['description'];?></textarea></span>
+			 </li>
+			 <li>
+			 	<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="roleid" value="<?php echo $data['roleid'];?>">
+			 	<input class="dosubmit w_120 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+			 	<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
 			</li>
 		</ul>
 	</form>

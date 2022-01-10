@@ -31,6 +31,7 @@ class system_manage extends common {
 	 */
 	public function member_set() {
 		$data = get_config();
+		$member_theme_list = get_theme_list('member');
 		include $this->admin_tpl('member_set', 'member');
 	}
 	
@@ -41,29 +42,23 @@ class system_manage extends common {
 	 */
 	public function save() {
 		yzm_base::load_common('function/function.php', 'admin');
-		if(isset($_POST['dosubmit'])){
-			if(isset($_POST['mail_inbox']) && $_POST['mail_inbox']){
-				if(!is_email($_POST['mail_inbox'])) showmsg(L('mail_format_error'));
-			}
-			if(isset($_POST['upload_types'])){
-				if(empty($_POST['upload_types'])) showmsg('允许上传附件类型不能为空！', 'stop');
-			}
+		if(is_ajax()){
 			$arr = array();
 			$config = D('config');
 			foreach($_POST as $key => $value){
-				if(in_array($key, array('site_theme','watermark_enable','watermark_name','watermark_position'))) {
+				if(in_array($key, array('error_log_save','site_theme','watermark_enable','watermark_name','watermark_position'))) {
 					$value = safe_replace(trim($value));
 					$arr[$key] = $value;
 				}else{
 					if($key!='site_code'){
-						$value = htmlspecialchars($value);
+						$value = htmlspecialchars(trim($value));
 					}
 				}
 				$config->update(array('value'=>$value), array('name'=>$key));
 			}
 			set_config($arr);
 			delcache('configs');
-			showmsg(L('operation_success'), '', 1);
+			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}
 	}		
 
@@ -75,7 +70,7 @@ class system_manage extends common {
 		if(isset($_POST['dosubmit'])){
 			D('config')->update(array('value'=>$_POST['prohibit_words']), array('name'=>'prohibit_words'), true);
 			delcache('configs');
-			showmsg(L('operation_success'));
+			showmsg(L('operation_success'), '', 1);
 		}
 		include $this->admin_tpl('prohibit_words');
 	}

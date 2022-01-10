@@ -113,7 +113,7 @@
 
 	function check_name(){ 
 		if($("input[name='name']").val()==''){
-			layer.msg('字段别名不能为空！');
+			layer.msg('字段别名不能为空！', {icon:2});
 			return false;
 		}else{
 			return true;
@@ -121,30 +121,35 @@
 	}
 	
 	function check_field(){ 
-       var res = false;	
-       var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/;	
-       if(!reg.test($("input[name='field']").val())){
-		   layer.msg('字段名不正确！');
+		var res = false;	
+		var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/;	
+		var filed = $("input[name='field']").val();
+		if(filed.length<1 || filed.length>20){
+			layer.msg('字段名长度必须为1-20位！', {icon:2});
+			return false;
+		}
+        if(!reg.test(filed)){
+		   layer.msg('字段名必须为英文、数字或下划线！', {icon:2});
 		   return false;
 		}
 		
 		$.ajax({   
-		type: "get",   
-		url: '<?php echo U('public_check_field');?>',   
-		dataType: "html",
-		async:false,
-		data: "field="+$('#field').val()+"&modelid=<?php echo intval($_GET['modelid']);?>",   
-		success: function(msg){
-		if(msg){
-			if(msg==0){
-				layer.msg('字段名已经存在！');
-			}else if(msg==1){
-				res = true;	
-			}else{
-				layer.alert('Ajax通信失败！');
-			}
-		}  
-		}  
+			type: "get",   
+			url: '<?php echo U('public_check_field');?>',   
+			dataType: "html",
+			async:false,
+			data: "field="+$('#field').val()+"&modelid=<?php echo intval($_GET['modelid']);?>",   
+			success: function(msg){
+			if(msg){
+				if(msg==0){
+					layer.msg('字段名已经存在！', {icon:2});
+				}else if(msg==1){
+					res = true;	
+				}else{
+					layer.alert('Ajax通信失败！');
+				}
+			}  
+			}  
 		});
         return res;		
 	}
@@ -152,11 +157,11 @@
 	function check_all(){
 		var fieldtype = $("select[name='fieldtype']").val();
 	    if(fieldtype =='0'){
-		   layer.msg('请选择字段类型！');
+		   layer.msg('请选择字段类型！', {icon:2});
 		   return false;
 		}else if(fieldtype=='select' || fieldtype=='radio' || fieldtype=='checkbox'){
 			if($('#textarea').val() == ''){
-				layer.msg('选项列表不能为空！');
+				layer.msg('选项列表不能为空！', {icon:2});
 				return false;
 			}
 		}
@@ -166,7 +171,7 @@
 		}
 		
 	    if(isNaN($("input[name='minlength']").val()) || isNaN($("input[name='maxlength']").val())){
-		    layer.msg('字符长度取值范围 只能为数字类型！');
+		    layer.msg('字符长度取值范围 只能为数字类型！', {icon:2});
 		    return false;
 		}		
         return true;			

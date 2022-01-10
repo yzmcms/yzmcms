@@ -53,17 +53,19 @@
 			<div class="tabCon">
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>单页模板：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<span class="select-box">
-						<select name="category_template" class="select">
+					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
+						<span class="select-box" style="width:400px">
+						<select name="category_template" id="category_template" class="select">
 						  <?php 
 						      foreach($category_temp as $key => $val){
 									$str = $parent_temp&&$key==$parent_temp['category_template'] ? ' selected="selected" ' : '';
 									echo '<option value="'.$key.'"'.$str.'>'.$val.'('.$key.')</option>';
 							  }
+							  if(!$category_temp) echo '<option value="">暂无模板</option>';
 						  ?>
 						</select>
 						</span>
+						<span class="yzm-explain">单页模板命名规则：<br>category_<i class="model_table"><?php echo $tablename;?></i>.html<br> 或 category_<i class="model_table"><?php echo $tablename;?></i>_*.html</span>
 					</div>
 				</div>						
 			</div>
@@ -107,6 +109,12 @@
 					</div>
 				</div>
 				<div class="row cl">
+					<label class="form-label col-xs-4 col-sm-2">绑定域名：</label>
+					<div class="formControls col-xs-8 col-sm-9">
+						<input type="text" name="domain" value="" placeholder="域名格式以http开头" class="input-text">
+					</div>
+				</div>
+				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">栏目排序：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input type="text" name="listorder" value="0" class="input-text">
@@ -117,7 +125,8 @@
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="type" value="<?php echo $type;?>">
+				<input type="hidden" name="type" value="<?php echo $type;?>">
+				<input type="hidden" name="dosubmit" value="1">
 				<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
 			 	<input class="btn w_120 btn-default radius h35" type="button" value="取消" onclick="yzmcms_close()">
 			</div>
@@ -127,7 +136,7 @@
 
 <?php include $this->admin_tpl('footer');?>
 
-<script type="text/javascript" src="<?php echo STATIC_URL;?>js/pinyin.js"></script> 
+<script type="text/javascript" src="<?php echo STATIC_URL;?>js/yzm-pinyin.js"></script> 
 
 <script type="text/javascript">
 function yzmcms_pinyin(){
@@ -166,9 +175,15 @@ function dosub(obj){
 		layer.msg('栏目目录只能是拼音或英文字符！', {icon:2});
 		return false;
 	}
-	if($("select[name='category_template']").val()=='0'){
+	if($("select[name='category_template']").val()==''){
 		layer.msg('请选择单页模板！', {icon:2});
 		$.Huitab("#tab_system .tabBar span","#tab_system .tabCon","current","click","1");
+		return false;
+	}
+	var reg = /^http(.+)\/$/;
+	var domain = $("input[name='domain']").val();
+	if(domain!='' && !reg.test(domain)){
+		layer.msg('绑定的栏目域名格式为http://www.yzmcms.com/，请以“/”结尾！', {icon:2});
 		return false;
 	}
 	$.ajax({

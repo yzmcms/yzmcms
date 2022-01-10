@@ -6,8 +6,12 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label><span class="c-red">*</span>表单名称</label><input type="text" class="input" name="name" value="<?php echo $data['name'];?>"></li>
-			 <li><label><span class="c-red">*</span>表名</label><input type="text" class="input" name="tablename" value="<?php echo $data['tablename'];?>" disabled="disabled"></li>
+			 <li><label><span class="c-red">*</span>表单名称</label>
+			 	<input type="text" class="input" name="name" value="<?php echo $data['name'];?>">
+			 </li>
+			 <li><label><span class="c-red">*</span>表名</label>
+			 	<input type="text" class="input" name="tablename" value="<?php echo $data['tablename'];?>" disabled="disabled">
+			 </li>
 			 <li><label>表单状态</label>
 			 <span class="span_input">
 			 	<label class="label_radio"><input name="disabled" type="radio" value="0" <?php if(!$data['disabled']) echo 'checked';?>> 启用</label>
@@ -33,7 +37,9 @@
 			 	<label class="label_radio"><input name="allowvisitor" type="radio" value="1" <?php if($data['allowvisitor']) echo 'checked';?>> 是</label>
 			 </span>
 			 </li>
-			 <li><label>表单简介</label><span class="span_input"><textarea name="description" class="textarea" style="width:400px"><?php echo $data['description'];?></textarea></span></li>
+			 <li><label>表单简介</label>
+			 	<span class="span_input"><textarea name="description" class="textarea" style="width:400px"><?php echo $data['description'];?></textarea></span>
+			 </li>
 			 <li><label>显示页模板</label>
 			 <span class="span_input">
 				<select id="show_template" name="show_template">
@@ -47,9 +53,10 @@
 				</select>
 			 </span>
 			 </li>				 
-			 <li><input type="hidden" name="dosubmit" value="1"><input type="hidden" name="modelid" value="<?php echo $data['modelid'];?>">
-			 <input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
-			 <input class="btn w_120 btn-default radius h35" type="button" value="取消" onclick="yzmcms_close()">
+			 <li>
+			 	<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="modelid" value="<?php echo $data['modelid'];?>">
+			 	<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
+			 	<input class="btn w_120 btn-default radius h35" type="button" value="取消" onclick="yzmcms_close()">
 			</li>
 		</ul>
 	</form>
@@ -88,9 +95,11 @@
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1,time:1500}, function(){
+						parent.location.reload();     
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

@@ -16,6 +16,7 @@ class sitemap extends common {
 	
 	public function __construct() {
 		parent::__construct();
+		$this->root_dir = $this->_get_dir();
 	    $this->data = array();
 	    $this->filename = 'sitemap.xml';
 		$this->header = '<?xml version="1.0" encoding="UTF-8"?>'."\n".'<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'."\n";
@@ -26,16 +27,20 @@ class sitemap extends common {
 	 * init
 	 */
 	public function init() {
-		$is_make_xml =  $is_make_txt = false;
-		if(is_file(YZMPHP_PATH.'sitemap.xml')){
+		$is_make_xml = $is_make_txt = false;
+		if(is_file($this->root_dir.'sitemap.xml')){
 			$is_make_xml = true;
-			$make_xml_time = date('Y-m-d H:i:s', filemtime(YZMPHP_PATH.'sitemap.xml'));
+			$make_xml_time = date('Y-m-d H:i:s', filemtime($this->root_dir.'sitemap.xml'));
 		}
-		if(is_file(YZMPHP_PATH.'sitemap.txt')){
+		if(is_file($this->root_dir.'sitemap.txt')){
 			$is_make_txt = true;
-			$make_txt_time = date('Y-m-d H:i:s', filemtime(YZMPHP_PATH.'sitemap.txt'));
+			$make_txt_time = date('Y-m-d H:i:s', filemtime($this->root_dir.'sitemap.txt'));
 		}
-		$modelinfo = get_modelinfo();
+		$site_url = get_site_url();
+		$modelinfo = get_site_modelinfo();
+		$sitemap = get_cookie('sitemap');
+		$changefreq = $sitemap ? $sitemap['changefreq'] : 'weekly';
+		$priority = $sitemap ? $sitemap['priority'] : '0.8';
 		include $this->admin_tpl('sitemap');
 	}
 
@@ -54,23 +59,32 @@ class sitemap extends common {
 			$page = isset($_POST['page']) ? intval($_POST['page']) : 1;
 			$pagesize = isset($_POST['pagesize']) ? intval($_POST['pagesize']) : 300;
 
+			set_cookie('sitemap', array('changefreq'=>$changefreq, 'priority'=>$priority), 2592000);
+
 			if($type) $this->filename = 'sitemap.txt';
-			$site_url = get_config('site_url');
+			$site_url = get_site_url();
 
 			if($page == 1){
 
 				// 第一次写入时
-				@file_put_contents(YZMPHP_PATH.$this->filename, $type ? '' : $this->header);
+				@file_put_contents($this->root_dir.$this->filename, $type ? '' : $this->header);
 
-				// 生成网站地址链接
+				// 生成首页链接
 				$item = $this->_sitemap_item($site_url, SYS_TIME, 'daily', '1.0');
 				$this->_add_data($item);
 				
 				// 生成栏目链接
-				$data = D('category')->field('pclink')->order('listorder ASC,catid ASC')->select();
+				$data = D('category')->field('pclink')->where(array('siteid'=>self::$siteid))->order('listorder ASC,catid ASC')->select();
 				foreach($data as $val){
 					if(!strpos($val['pclink'], '://')) $val['pclink'] = $site_url.ltrim($val['pclink'], '/');
 					$item = $this->_sitemap_item($val['pclink'], SYS_TIME, $changefreq, $priority);
+					$this->_add_data($item);
+				}
+
+				// 生成TAG链接
+				$data = D('tag')->field('id')->where(array('siteid'=>self::$siteid))->order('id DESC')->limit(300)->select();
+				foreach($data as $val){
+					$item = $this->_sitemap_item(tag_url($val['id'], $site_url), SYS_TIME, $changefreq, $priority);
 					$this->_add_data($item);
 				}
 			}
@@ -79,10 +93,11 @@ class sitemap extends common {
 			// 生成内容链接
 			$table = $model ? get_model($model) : 'all_content';
 			$order = $model ? 'id DESC' : 'allid DESC';
+			$where = $model ? array('status'=>1) : array('siteid'=>self::$siteid,'status'=>1);
 			if(!$table) return_json(array('status'=>0,'message'=>L('illegal_parameters')));
 
 			if(!$total) {
-				$total = D($table)->where(array('status'=>1))->total();
+				$total = D($table)->where($where)->total();
 				$total = $limit_total ? min($limit_total,$total) : $total;
 			}
 			$num = ceil($total/$pagesize);
@@ -90,7 +105,7 @@ class sitemap extends common {
 			$page = max($page, 1);
 			$offset = $pagesize*($page-1);
 			$limit = $offset.','.$pagesize;
-			$data = D($table)->field('updatetime,url')->where(array('status'=>1))->order($order)->limit($limit)->select();
+			$data = D($table)->field('updatetime,url')->where($where)->order($order)->limit($limit)->select();
 
 			foreach($data as $val){
 				if(!strpos($val['url'], '://')) $val['url'] = $site_url.ltrim($val['url'], '/');
@@ -101,11 +116,11 @@ class sitemap extends common {
 			}
 			
 			$str = $type ? $this->_txt_format() : $this->_xml_format();
-			$strlen = @file_put_contents(YZMPHP_PATH.$this->filename, $str, FILE_APPEND | LOCK_EX);
+			$strlen = @file_put_contents($this->root_dir.$this->filename, $str, FILE_APPEND | LOCK_EX);
 			if(!$strlen) return_json(array('status'=>0,'message'=>'生成文件 '.$this->filename.' 失败，请检查是否有写入权限！'));
 
 			if($num <= $page){
-				if(!$type) @file_put_contents(YZMPHP_PATH.$this->filename, $this->footer, FILE_APPEND | LOCK_EX);
+				if(!$type) @file_put_contents($this->root_dir.$this->filename, $this->footer, FILE_APPEND | LOCK_EX);
 				return_json(array('status'=>1,'message'=>'生成文件 '.$this->filename.' 成功！'));
 			}
 
@@ -121,8 +136,8 @@ class sitemap extends common {
 	public function delete(){
 		$type = isset($_GET['type']) ? intval($_GET['type']) : 0;
 		if($type) $this->filename = 'sitemap.txt';
-		if(is_file(YZMPHP_PATH.$this->filename)){
-			if(!@unlink(YZMPHP_PATH.$this->filename)) showmsg(L('operation_failure'));
+		if(is_file($this->root_dir.$this->filename)){
+			if(!@unlink($this->root_dir.$this->filename)) showmsg(L('operation_failure'));
 		}
 		return_json(array('status'=>1, 'message'=>L('operation_success')));
 	}
@@ -154,6 +169,18 @@ class sitemap extends common {
 		}
 		return $str;
 	}
+
+
+	/**
+	 * 获取当前地图根目录
+	 */	
+	private function _get_dir() {
+		$root_dir = YZMPHP_PATH;
+        if(self::$siteid){
+        	$root_dir = YZMPHP_PATH.'sites'.DIRECTORY_SEPARATOR.get_site(self::$siteid, 'dirname').DIRECTORY_SEPARATOR;
+        }
+        return $root_dir;
+    }	
 	
 
 	/**

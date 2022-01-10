@@ -12,9 +12,9 @@
             <section class="section">
                 <div class="step">
                     <ul>
-                        <li class="on"><em>1</em>检测环境</li>
-                        <li class="current"><em>2</em>创建数据</li>
-                        <li><em>3</em>完成安装</li>
+                        <li class="first current">检测环境</li>
+                        <li class="current">创建数据</li>
+                        <li>完成安装</li>
                     </ul>
                 </div>
                 <form action="index.php?step=4" method="post" onsubmit="return dosubmit(this)">
@@ -23,8 +23,8 @@
                         <table width="100%">
                             <tr>
                                 <td class="td1" width="120">数据库信息</td>
-                                <td class="td1" width="200">&nbsp;</td>
-                                <td class="td1">&nbsp;</td>
+                                <td width="200">&nbsp;</td>
+                                <td>&nbsp;</td>
                             </tr>
                             <tr>
                                 <td class="tar">数据库驱动类型：</td>
@@ -71,12 +71,12 @@
                         <table width="100%">
                             <tr>
                                 <td class="td1" width="120">网站配置</td>
-                                <td class="td1" width="200">&nbsp;</td>
-                                <td class="td1">&nbsp;</td>
+                                <td width="200">&nbsp;</td>
+                                <td>&nbsp;</td>
                             </tr>
                             <tr>
                                 <td class="tar">网站名称：</td>
-                                <td><input type="text" name="sitename" value="YzmCMS - 演示站" class="input"></td>
+                                <td><input type="text" name="sitename" value="YzmCMS演示站" class="input"></td>
                                 <td><div id="J_install_tip_sitename"></div></td>
                             </tr>
                             <tr>
@@ -98,13 +98,13 @@
                         <table width="100%">
                             <tr>
                                 <td class="td1" width="120">创始人信息</td>
-                                <td class="td1" width="200">&nbsp;</td>
-                                <td class="td1">&nbsp;</td>
+                                <td width="200">&nbsp;</td>
+                                <td>&nbsp;</td>
                             </tr>
                             <tr>
-                                <td class="tar">管理员帐号：</td>
+                                <td class="tar">管理员用户名：</td>
                                 <td><input type="text" name="manager_adminname" class="input" value="yzmcms"></td>
-                                <td><div id="J_install_tip_manager_adminname"><span class="gray">管理员帐号不能包含特殊字符</span></div></td>
+                                <td><div id="J_install_tip_manager_adminname"><span class="gray">管理员用户名不能包含特殊字符</span></div></td>
                             </tr>
                             <tr>
                                 <td class="tar">密码：</td>
@@ -120,7 +120,8 @@
                         <input type="hidden" name="webPath" value="<?php echo $rootpath?>/" />
                         <div id="J_response_tips" style="display:none;"></div>
                     </div>
-                    <div class="bottom tac"> <a href="./index.php?step=2" class="btn">上一步</a>
+                    <div class="bottom tac"> 
+                        <a href="./index.php?step=2" class="btn">上一步</a>
 						<input type="submit" class="btn btn_submit J_install_btn" value="创建数据">
                     </div>
                 </form>
@@ -180,8 +181,13 @@
                         layer.msg('网站域名格式不正确!', {icon:2});
                         return false;
                     }
-                    if(obj.manager_adminname.value == ''){
-                        layer.msg('创始人账号不能为空!', {icon:2});
+                    if(obj.manager_adminname.value.length<3 || obj.manager_adminname.value.length>20){
+                        layer.msg('管理员用户名长度必须为3-20位!', {icon:2});
+                        return false;
+                    }
+                    var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/;   
+                    if(!reg.test(obj.manager_adminname.value)) {
+                        layer.msg('管理员用户名必须为英文字母开头、可以包含数字或下划线!', {icon:2});
                         return false;
                     }
                     if(obj.manager_pwd.value.length < 6 || obj.manager_pwd.value.length > 20){

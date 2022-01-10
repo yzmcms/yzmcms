@@ -19,5 +19,4 @@ return array(
 	'can_not_read' => 'Can not read!',
 	'already_is_first' => 'Already is the first article',
 	'already_is_last' => 'Already is the last article',
-	'insufficient_authority_pc' => 'For content payment, please open it on the computer!',
 );

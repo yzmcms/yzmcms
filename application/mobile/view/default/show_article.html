@@ -10,7 +10,7 @@
     <meta name="description" content="{$description}" />
     <link href="{STATIC_URL}css/yzm-mobile-category.css?v=yzmcms" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
-    <script type="text/javascript" src="{STATIC_URL}js/mobile_simpler-sidebar.min.js"></script>
+    <script type="text/javascript" src="{STATIC_URL}js/yzm-mobile-simpler-sidebar.min.js"></script>
 </head>
 
 <body>
@@ -23,10 +23,17 @@
             <div class="yzm-info">
             {date("Y-m-d H:i:s",$inputtime)}&nbsp;&nbsp;浏览：{$click}&nbsp;&nbsp;作者：{$nickname}
             </div>
-            <div class="yzm-content">
-                {$content}
+            <div class="yzm-description">
+                {$description}
             </div>
-            <div class="yzm-next">
+            <div class="yzm-content">
+                {if $allow_read}
+                    {$content}
+                {else}
+                    <p class="yzm-content-read-tips">阅读此内容需要您支付<span>{$readpoint}</span>{if $paytype==1}点积分{else}元{/if}，<a href="{$pay_url}">点击支付</a></p>
+                {/if}
+            </div>
+            <div class="yzm-pre-next">
                 <p>上一篇：{$pre}</p>
                 <p>下一篇：{$next}</p>
             </div>

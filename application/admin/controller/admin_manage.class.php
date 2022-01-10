@@ -11,6 +11,7 @@
 
 defined('IN_YZMPHP') or exit('Access Denied'); 
 yzm_base::load_controller('common', 'admin', 0);
+yzm_base::load_sys_class('page','',0);
 
 class admin_manage extends common {
 
@@ -19,11 +20,12 @@ class admin_manage extends common {
 	 */
 	public function init() {
 		$roleid = isset($_GET['roleid']) ? intval($_GET['roleid']) : 0;
-		if(!$roleid){
-			$data = D('admin')->order('adminid ASC')->select();
-		}else{
-			$data = D('admin')->where(array('roleid' => $roleid))->order('adminid ASC')->select();	
-		}
+
+		$where = $roleid ? array('roleid' => $roleid) : array();
+		$admin = D('admin');
+		$total = $admin->where($where)->total();
+		$page = new page($total, 15);
+		$data = $admin->where($where)->order('adminid DESC')->limit($page->limit())->select();
 		
 		include $this->admin_tpl('admin_list');
 	}
@@ -38,7 +40,7 @@ class admin_manage extends common {
 		$roleid = D('admin')->field('roleid')->where(array('adminid'=>$adminid))->one();
 		if($roleid < $_SESSION['roleid']) showmsg('无权删除该管理员！', 'stop');
 		D('admin')->delete(array('adminid'=>$adminid));
-		showmsg(L('operation_success'));
+		showmsg(L('operation_success'), '', 1);
 	}
 	
 	

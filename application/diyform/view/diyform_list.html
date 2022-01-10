@@ -6,7 +6,7 @@
 <div class="page-container">
   <div class="cl pd-5 bg-1 bk-gray"> 
 	  <span class="l">  
-	  <a class="btn btn-primary radius" onclick="yzm_open('添加表单','<?php echo U('add');?>','700','500')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加表单</a>
+	  <a class="btn btn-primary radius" onclick="yzm_open('添加表单','<?php echo U('add');?>','700','505')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加表单</a>
 	  </span> 
 	  <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> 
   </div>
@@ -36,7 +36,7 @@
 			<a href="<?php echo U('diyform_info/init', array('modelid'=>$val['modelid']))?>"  class="btn-mini btn-success ml-5" style="text-decoration:none">信息列表</a> 
 			<a href="<?php echo U('index/show', array('modelid'=>$val['modelid']))?>" target="_blank"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">前台浏览</a>
 			<a href="<?php echo U('diyform_field/init', array('modelid'=>$val['modelid']))?>"  class="btn-mini btn-primary ml-5" style="text-decoration:none">字段管理</a>
-			<a href="javascript:;" onclick="yzm_open('编辑表单','<?php echo U('edit', array('modelid'=>$val['modelid']));?>','700','500')"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">修改</a>
+			<a href="javascript:;" onclick="yzm_open('编辑表单','<?php echo U('edit', array('modelid'=>$val['modelid']));?>','700','505')"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">修改</a>
 			<a href="javascript:;" onclick="yzm_del('<?php echo U('del',array('modelid'=>$val['modelid']));?>')"  class="btn-mini btn-warning ml-5" style="text-decoration:none">删除</a>
 			</td>
 		  </tr>		

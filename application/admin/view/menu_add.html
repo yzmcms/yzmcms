@@ -76,9 +76,11 @@
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1,time:1500}, function(){
+						parent.location.reload();     
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

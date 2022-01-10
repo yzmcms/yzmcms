@@ -8,17 +8,25 @@
 	<form method="post" onsubmit="return check_all()">
 		<ul>
 			 <li><label><i class="Hui-iconfont">&#xe67a;</i>移动分组</label></li>
-			 <li><label>移动到组：</label><span style="display:inline-block;">
-			 <select name="to_groupid" class="select">
-				<?php 
-					foreach($wechat_group as $val){
-						echo '<option value="'.$val['id'].'">'.$val['name'].'</option>';
-					}
-				?>
-			</select>
-			 </span></li>
-			 <li><input type="hidden" name="ids" value="<?php echo $ids;?>"><input type="hidden" name="openids" value="<?php echo $openids;?>">&nbsp;</li>
-			 <li><input class="btn btn-primary radius w_120" name="dosubmit" type="submit" value="提交"> <input type="button" class="btn btn-default radius w_120" value="返回" onclick="javascript:history.go(-1)"></li>
+			 <li><label>移动到组：</label>
+			 	 <span style="display:inline-block;">
+				 <select name="to_groupid" class="select">
+					<?php 
+						foreach($wechat_group as $val){
+							echo '<option value="'.$val['id'].'">'.$val['name'].'</option>';
+						}
+					?>
+				</select>
+			    </span>
+			 </li>
+			 <li>
+			 	<input type="hidden" name="ids" value="<?php echo $ids;?>">
+			 	<input type="hidden" name="openids" value="<?php echo $openids;?>">&nbsp;
+			 </li>
+			 <li>
+			 	<input class="btn btn-primary radius w_120" name="dosubmit" type="submit" value="提交"> 
+			 	<input type="button" class="btn btn-default radius w_120" value="返回" onclick="javascript:history.go(-1)">
+			 </li>
 		</ul>
 	</form>
 </div>

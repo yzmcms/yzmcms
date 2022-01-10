@@ -31,10 +31,10 @@
 		 <div class="yzm-main-right">	
 		 	<div class="yzm-content-box">
 				<div class="yzm-title">
-		 			<h2>点击排行</h2>
+		 			<h2>点击月榜</h2>
 		 		</div>
 		 	    <ul class="yzm-ranking">
-		 			{m:hits field="title,url,color,inputtime" modelid="1" limit="10" cache="3600"}
+		 			{m:hits field="title,url,color,inputtime" modelid="1" limit="10" day="30" cache="3600"}
 					{loop $data $k=>$v}
 					{php $k=$k+1;}
 					   <li><em>{$k}</em><span class="date">{date('m-d',$v['inputtime'])}</span><a href="{$v[url]}" title="{$v[title]}" target="_blank">{title_color($v['title'], $v['color'])}</a></li>	
@@ -47,7 +47,7 @@
 	 	 			<h2>热门标签</h2>
 	 	 		</div>
 			    <ul class="yzm-tag-list">
-				{m:tag field="id,tag,total,remarks" limit="30"}
+				{m:tag field="id,tag,total" limit="30"}
 				{loop $data $v}
 				   <li><a href="{tag_url($v['id'])}" target="_blank">{$v[tag]}({$v[total]})</a></li>	
 				{/loop}						

@@ -61,7 +61,7 @@ class debug {
 			self::addmsg($mess);			
 		}else{
 			if($errno == E_NOTICE) return '';
-			error_log('<?php exit;?> Error : '.date('Y-m-d H:i:s').' | '.$errno.' | '.str_pad($errstr,30).' | '.$errfile.' | '.$errline."\r\n", 3, YZMPHP_PATH.'cache/error_log.php');
+			write_error_log(array('Error', $errno, $errstr, $errfile, $errline));
 		}
 	}
 
@@ -81,7 +81,7 @@ class debug {
                 if(APP_DEBUG && !defined('DEBUG_HIDDEN')){
                 	application::fatalerror($e['message'], $e['file'].' on line '.$e['line'], 1);	
            		}else{
-           			error_log('<?php exit;?> FatalError : '.date('Y-m-d H:i:s').' message:'.$e['message'].', file:'.$e['file'].', line:'.$e['line']."\r\n", 3, YZMPHP_PATH.'cache/error_log.php');
+           			write_error_log(array('FatalError', $e['message'], $e['file'], $e['line']));
            			application::halt('error message has been saved.', 500);
            		}
                 break;
@@ -102,7 +102,7 @@ class debug {
 			$mess .= '</span>'; 		
 			self::addmsg($mess);
 		}else{
-			error_log('<?php exit;?> ExceptionError : '.date('Y-m-d H:i:s').' | '.$exception->getMessage().' | '.$exception->getFile().' | '.$exception->getLine()."\r\n", 3, YZMPHP_PATH.'cache/error_log.php');
+			write_error_log(array('ExceptionError', $exception->getMessage(), $exception->getFile(), $exception->getLine()));
 		}
 		showmsg($exception->getMessage(), 'stop');
 	}

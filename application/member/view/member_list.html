@@ -29,11 +29,19 @@
 			?>
 		</select>
 	</span>
+	<span class="select-box inline">
+		<select name="vip" class="select">
+			<option value="99">VIP状态</option>
+			<option value="1" <?php if(isset($_GET['vip']) && $_GET['vip']=='1'){?> selected <?php }?>>VIP会员</option>
+			<option value="0" <?php if(isset($_GET['vip']) && $_GET['vip']=='0'){?> selected <?php }?>>非VIP</option>
+		</select>
+	</span>
     <span class="select-box inline">
 		<select name="type" class="select">
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='1'){?> selected <?php }?> value="1">用户名</option>
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='2'){?> selected <?php }?> value="2">用户ID</option>	
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='3'){?> selected <?php }?> value="3">邮箱</option>
+		<option <?php if(isset($_GET['type']) && $_GET['type']=='4'){?> selected <?php }?> value="4">注册IP</option>
 		</select>
 	</span>
      <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
@@ -69,8 +77,8 @@
 		  <tr class="text-c">
 			<td><input type="checkbox" value="<?php echo $val['userid']?>" name="ids[]"></td>
 			<td><?php echo $val['userid']?></td>
-			<td class="text-l"><?php if($val['vip']) echo '<img src="'.STATIC_URL.'images/vip.gif" title="vip会员"> ';?><?php if($val['status'] == 2) echo '<img src="'.STATIC_URL.'images/icon_padlock.gif" title="用户已锁定"> '; echo '<a href="'.U('edit',array('userid'=>$val['userid'])).'" style="text-decoration:none"><img src="'.$avatar.'" height="25" class="radius" onmouseover="yzm_img_browse(this, \''.$avatar.'\')" onmouseout="layer.closeAll(\'tips\')"> '.$val['username'];?></a> <?php if($val['status'] == 0) echo '<span style="color:#c7254e;text-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);" title="待审核">「审」</span>'; ?></td>
-			<td class="text-l"><?php echo $val['email_status'] ? $val['email'].' <span style="color:green;text-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);" title="已验证">「验」</span>' : $val['email'];?></td>
+			<td class="text-l"><?php if($val['vip']) echo '<img src="'.STATIC_URL.'images/vip.gif" title="vip会员"> ';?><?php if($val['status'] == 2) echo '<img src="'.STATIC_URL.'images/icon_padlock.gif" title="用户已锁定"> '; echo '<a href="'.U('edit',array('userid'=>$val['userid'])).'" style="text-decoration:none"><img src="'.$avatar.'" height="25" class="radius" onmouseover="yzm_img_browse(this, \''.$avatar.'\')" onmouseout="layer.closeAll(\'tips\')"> '.$val['username'];?></a></td>
+			<td class="text-l"><?php echo $val['email_status'] ? $val['email'].' <span style="color:green;text-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);" title="已验证">「验」</span>' : $val['email'];?> <?php if($val['status'] == 0) echo '<span style="color:#c7254e;text-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);" title="待审核">「审」</span>'; ?></td>
 			<td><?php echo get_groupname($val['groupid']);?></td>
 			<td><?php echo $val['lastdate'] ? date("Y-m-d H:i:s",$val['lastdate']) : '从未登录';?></td>
 			<td><?php echo $val['loginnum']?></td>
@@ -115,9 +123,9 @@
 	}
 
 
-	var start = {elem:'#start',format:'YYYY-MM-DD',min:'1999-01-01',max:'2099-01-01',istime:false,istoday:false,choose:function(datas){end.min = datas;end.start = datas}
+	var start = {elem:'#start',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){end.min = datas;end.start = datas}
 	};
-	var end = {elem:'#end',format:'YYYY-MM-DD',min:'1999-01-01',max:'2099-01-01',istime:false,istoday:false,choose:function(datas){start.max = datas;}};
+	var end = {elem:'#end',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){start.max = datas;}};
 	laydate(start);
 	laydate(end);
 </script>

@@ -34,7 +34,7 @@ class role extends common {
 		}else{
 			D('admin_role')->delete(array('roleid'=>$roleid));
 		}	
-		showmsg(L('operation_success'));
+		showmsg(L('operation_success'), '', 1);
 	}
 	
 	

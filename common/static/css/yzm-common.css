@@ -1,6 +1,6 @@
 @charset "utf-8";
 /**
- * YZMCMS 内容管理系统
+ * YZMCMS 内容管理系统(yzm-cms轻量级开源CMS)
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
  */
@@ -71,7 +71,8 @@ a:hover{color:#1eaff1;}
 
 /* 前端分页 */
 #page{margin:30px 0;font-size:14px;height:30px;line-height:30px;text-align:center}
-#page .pageinfo{display: none;}
+#page .pageinfo {color:#666;padding:5px 8px;border:1px solid #ddd}
+#page .pageinfo strong{font-weight:normal}
 #page  a{border:1px solid #ddd;background:#fff;color:#808080;padding:5px 11px;margin-left:5px;border-radius:2px;transition:all 0.2s}
 #page  a:hover,#page .curpage{background:#2196f3;color:#fff;text-decoration:none;border:1px solid #2196f3;}
 #page .nopage{cursor:not-allowed;}

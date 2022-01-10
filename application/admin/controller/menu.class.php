@@ -52,7 +52,7 @@ class menu extends common {
 		D('menu')->delete(array('id'=>$id));
 		D('menu')->delete(array('parentid'=>$id));
 		delcache('menu_string_1');
-		showmsg(L('operation_success'));
+		showmsg(L('operation_success'), '', 1);
 	}
 	
 	

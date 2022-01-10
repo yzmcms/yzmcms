@@ -25,11 +25,8 @@ class api{
 		$this->username = isset($_SESSION['adminname']) ? $_SESSION['adminname'] : (isset($_SESSION['_username']) ? $_SESSION['_username'] : '');
 		$this->isadmin = isset($_SESSION['roleid']) ? 1 : 0;
 		$this->groupid = get_cookie('_groupid') ? intval(get_cookie('groupid')) : 0;
-
-		//判断是否登录
-		if(!$this->userid){
-			showmsg(L('login_website'), U('member/index/login'), 1);
-		}
+		if(!$this->userid) showmsg(L('login_website'), U('member/index/login'), 1);
+		if($this->isadmin) define('IN_YZMADMIN', true);
 		
 	}	
 	
@@ -182,6 +179,7 @@ class api{
 	 */	
 	private function _att_write($fileinfo){
 		$arr = array();
+		$arr['siteid'] = get_siteid();
 		$arr['originname'] = strlen($fileinfo['originname'])<50 ? $fileinfo['originname'] : $fileinfo['filename'];
 		$arr['filename'] = $fileinfo['filename'];
 		$arr['filepath'] = $fileinfo['filepath'];
@@ -204,7 +202,7 @@ class api{
 	 */	
 	private function _get_upload_types(){
 		$arr = explode('|', get_config('upload_types'));
-		$allow = array('gif', 'jpg', 'png', 'jpeg', 'zip', 'rar', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'txt', 'csv', 'mp4', 'avi', 'wmv', 'rmvb', 'flv', 'mp3', 'wma', 'wav', 'amr', 'ogg');
+		$allow = array('gif', 'jpg', 'png', 'jpeg', 'webp', 'zip', 'rar', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'txt', 'csv', 'mp4', 'avi', 'wmv', 'rmvb', 'flv', 'mp3', 'wma', 'wav', 'amr', 'ogg');
 		foreach($arr as $key => $val){
 			if(!in_array($val, $allow)) unset($arr[$key]);
 		}

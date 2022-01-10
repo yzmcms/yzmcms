@@ -61,7 +61,9 @@ class index{
         //接收消息
         $poststr = isset($GLOBALS['HTTP_RAW_POST_DATA']) ? $GLOBALS['HTTP_RAW_POST_DATA'] : file_get_contents('php://input');
         if(!empty($poststr)){
-			libxml_disable_entity_loader(true); 	//禁止引用外部xml实体
+        	if (PHP_VERSION_ID < 80000) {
+        	    libxml_disable_entity_loader(true); //禁止引用外部xml实体
+        	}
             $this->msgobj = simplexml_load_string($poststr, 'SimpleXMLElement', LIBXML_NOCDATA);
             $this->msgtype = strtolower($this->msgobj->MsgType);
 			switch ($this->msgtype) {

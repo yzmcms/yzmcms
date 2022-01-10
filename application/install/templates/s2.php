@@ -12,9 +12,9 @@
   <section class="section">
     <div class="step">
       <ul>
-        <li class="current"><em>1</em>检测环境</li>
-        <li><em>2</em>创建数据</li>
-        <li><em>3</em>完成安装</li>
+          <li class="first current">检测环境</li>
+          <li>创建数据</li>
+          <li>完成安装</li>
       </ul>
     </div>
     <div class="server">

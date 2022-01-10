@@ -40,6 +40,7 @@
         <option value="99">状态</option>
 		<option <?php if(isset($_GET["status"]) && $_GET["status"]=='0'){echo 'selected';} ?> value="0">草稿</option>
 		<option <?php if(isset($_GET["status"]) && $_GET["status"]=='1'){echo 'selected';} ?> value="1">正常</option>
+		<option <?php if(isset($_GET["status"]) && $_GET["status"]=='2'){echo 'selected';} ?> value="2">已退稿</option>
 		</select>
 	</span>
     <span class="select-box inline">
@@ -54,7 +55,7 @@
   <div class="cl pd-5 bg-1 bk-gray mt-20"> 
   <span class="l">
   <a href="javascript:;" onclick="yzm_open_full('添加内容','<?php echo U('add', array('modelid'=>$modelid));?>')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加内容</a>
-  <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
+  <a href="javascript:;" onclick="yzm_dels('ids', 1)" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
   <a href="javascript:;" onclick="baidu_push()" class="btn btn-secondary radius">推送至百度</a> 
   <a href="javascript:;" onclick="attribute_operation('移动分类', '<?php echo U('remove', array('modelid' => $modelid))?>')" class="btn btn-primary radius">移动分类</a> 
   <a href="javascript:;" onclick="attribute_operation('复制内容', '<?php echo U('copy', array('modelid' => $modelid))?>')" class="btn btn-primary radius">复制内容</a> 
@@ -129,7 +130,9 @@
 				<?php } ?>
 			</td>
 			<td><?php echo date('Y-m-d H:i:s', $val['updatetime'])?></td>
-			<td><?php echo $val['status'] ? '<span class="label label-success radius">正常</span>' : '<span class="label radius">草稿</span>';?></td>
+			<td>
+				<?php echo $val['status']=='0' ? '<span class="label radius">草稿</span>' : ($val['status']=='1' ? '<span class="label label-success radius">正常</span>' :'<span class="label label-danger radius">已退稿</span>');?>
+			</td>
 			<td><?php echo $val['is_push'] ? '已推送' : '<span class="c-red">未推送</span>';?></td>
 			<td>
 				<a title="编辑" href="javascript:;" onclick="yzm_open_full('编辑内容','<?php echo U('edit',array('modelid'=>$modelid,'id'=>$val['id']));?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
@@ -206,8 +209,22 @@
 		   return false;
 		}
 
-		document.getElementById('myform').action='<?php echo U('baidu_push');?>';
-		document.getElementById('myform').submit();
+		layer.msg('正在推送中...', { icon: 16, shade: 0.21, time:false });
+	    $.ajax({
+			type: 'POST',
+			url: '<?php echo U('baidu_push');?>', 
+			data: $("#myform").serialize(),
+			dataType: "json", 
+			success: function (msg) {
+				if(msg.status == 1){
+					layer.msg(msg.message, {icon:1, time:1000}, function(){
+						location.reload();
+					});
+			    }else{
+					layer.msg(msg.message, {icon:2});
+				}
+			}
+	    })		
 	}
 
 	function change_model(){

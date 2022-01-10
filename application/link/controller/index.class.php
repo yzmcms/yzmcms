@@ -12,19 +12,26 @@
 defined('IN_YZMPHP') or exit('Access Denied'); 
 
 class index{
+
+	private $siteid,$siteinfo;
 	
 	public function __construct(){
 		if(!get_config('is_link')) showmsg(L('close_apply_link'), 'stop');
+		$this->siteid = get_siteid();
+		$this->siteinfo = array();
+		if($this->siteid){
+			$this->siteinfo = get_site($this->siteid);
+			set_module_theme($this->siteinfo['site_theme']);
+		}
 	}
 
 	/**
 	 * 申请友情链接
 	 */	
 	public function init(){	
-		$site = get_config();
-		$seo_title = L('apply_link').'_'.$site['site_name'];
-		$keywords = L('apply_link').','.$site['site_keyword'];
-		$description = $site['site_description'];
+		$site = array_merge(get_config(), $this->siteinfo);
+
+		list($seo_title, $keywords, $description) = get_site_seo($this->siteid, L('apply_link'), L('apply_link'));
 		$location = '<a href="'.SITE_URL.'">首页</a> &gt; '.L('apply_link');
 		include template('index', 'apply_link');
 	}
@@ -52,6 +59,7 @@ class index{
 			if(!preg_match('/^(http|https)?:\/\/(.*)/i', $_POST['logo']))  $_POST['logo'] = '';
 					
 			$data = array(
+				'siteid' => $this->siteid,
 				'name' => $_POST['name'],
 				'url' => $_POST['url'],
 				'logo' => $_POST['logo'],

@@ -37,7 +37,8 @@ class db_mysqli{
 		self::$link = @new mysqli($this->config['db_host'], $this->config['db_user'], $this->config['db_pwd'], $this->config['db_name'], intval($this->config['db_port']));	
 		if(mysqli_connect_errno()){
 			self::$link = null;
-			application::halt("Can not connect to MySQL server!", 550);
+			$mysql_error = APP_DEBUG ? mysqli_connect_error() : 'Can not connect to MySQL server!';
+			application::halt($mysql_error, 550);
 		}    
 		self::$link->query("SET names utf8, sql_mode=''"); 	
 		return self::$link;
@@ -435,7 +436,7 @@ class db_mysqli{
 			if(PHP_SAPI == 'cli') exit('MySQL Error: '.self::$link->error.' | '.$msg);
 			application::fatalerror($msg, self::$link->error, 2);	
 		}else{
-			error_log('<?php exit;?> MySQL Error: '.date('Y-m-d H:i:s').' | Errno: '.self::$link->errno.' | Error: '.self::$link->error.' | SQL: '.$msg."\r\n", 3, YZMPHP_PATH.'cache/error_log.php');
+			write_error_log(array('MySQL Error', self::$link->errno, self::$link->error, $msg));
 			application::halt('MySQL Error!', 500);
 			exit;
 		}

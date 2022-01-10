@@ -12,40 +12,31 @@
 		<input type="hidden" value="<?php echo 	ROUTE_C?>" name="c">
 		<input type="hidden" value="<?php echo 	ROUTE_A?>" name="a">
 		<input type="hidden" name="id" value="<?php echo $id?>" >
-		<table width="100%" cellspacing="0" class="search-form">
-		    <tbody>
-				<tr>
-				<td>
-				<span class="select-box inline">
-					<select name="modelid" class="select" onchange="change_model()">
-						<?php 
-							foreach($modelinfo as $val){
-								$str = $val['modelid']==$modelid ? 'selected' : '';
-								echo '<option value="'.$val['modelid'].'" '.$str.'>'.$val['name'].'</option>';
-							}
-						?>
-					</select>
-				</span>
-				<span class="select-box inline"><?php echo select_category('catid', $catid, '不限栏目', 0, '', true, true, $modelid); ?></span>
-				<span class="select-box inline">
-				<select name="type" class="select">
-					<option value="1" <?php if(isset($_GET['type']) && $_GET['type']==1) echo 'selected';?>>标题</option>
-					<option value="2" <?php if(isset($_GET['type']) && $_GET['type']==2) echo 'selected';?>>关键词</option>
-					<option value="3" <?php if(isset($_GET['type']) && $_GET['type']==3) echo 'selected';?>>描述</option>
-					<option value="4" <?php if(isset($_GET['type']) && $_GET['type']==4) echo 'selected';?>>内容ID</option>
-				</select>
-				</span>
-				<input name="searinfo" type="text" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo']; ?>" style="width:330px;" class="input-text" />
-				
-				<button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button> 
-				</td>
-				</tr>
-		    </tbody>
-		</table>
+		<span class="select-box inline">
+			<select name="modelid" class="select" onchange="change_model()">
+				<?php 
+					foreach($modelinfo as $val){
+						$str = $val['modelid']==$modelid ? 'selected' : '';
+						echo '<option value="'.$val['modelid'].'" '.$str.'>'.$val['name'].'</option>';
+					}
+				?>
+			</select>
+		</span>
+		<span class="select-box inline"><?php echo select_category('catid', $catid, '不限栏目', 0, '', true, true, $modelid); ?></span>
+		<span class="select-box inline">
+		<select name="type" class="select">
+			<option value="1" <?php if(isset($_GET['type']) && $_GET['type']==1) echo 'selected';?>>标题</option>
+			<option value="2" <?php if(isset($_GET['type']) && $_GET['type']==2) echo 'selected';?>>关键词</option>
+			<option value="3" <?php if(isset($_GET['type']) && $_GET['type']==3) echo 'selected';?>>描述</option>
+			<option value="4" <?php if(isset($_GET['type']) && $_GET['type']==4) echo 'selected';?>>内容ID</option>
+		</select>
+		</span>
+		<input name="searinfo" type="text" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo']; ?>" style="width:330px;" class="input-text" />
+		
+		<button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 		</form>
 		<form action="<?php echo U('content_oper');?>" method="post" id="myform">
-	    <div class="table table-border table-bordered table-bg table-hover mt-10">
-	        <table width="100%" cellspacing="0">
+	        <table class="table table-border table-bordered table-bg table-hover mt-10">
 	            <thead>
 	                <tr>
 	                	<th width="20"><input type="checkbox"></th>
@@ -61,7 +52,7 @@
 	            	foreach($data as $val){
 						$is_exist = D('tag_content')->field('tagid')->where(array('modelid'=>$modelid,'aid'=>$val['id'],'tagid'=>$id))->one();
 	            	?>
-	                <tr <?php if($is_exist) echo 'class="selected'; ?>">
+	                <tr <?php if($is_exist) echo 'class="selected"'; ?>>
 	                	<td><input type="checkbox" value="<?php echo $val['catid']?>" name="ids[<?php echo $val['id']?>]"></td>
 	                    <td>
 	                    	<?php 
@@ -107,9 +98,9 @@
 	                ?>
 	            </tbody>
 	        </table>
-	        <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
-  			<span class="page_right"><?php echo $page->getfull(false);?></span></div>
-	    </div>
+	        <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
+	        <div id="page"><span class="page_left">共<?php echo $total?>条记录，页码：<?php echo $page->getpage()?>/<?php echo $page->total()?></span>
+  			<span class="page_right"><?php echo $page->gethome().$page->getlist().$page->getend().$page->getjump();?></span></div>
 	    <input type="hidden" name="modelid" value="<?php echo $modelid;?>">
 	    <input type="hidden" name="tagid" value="<?php echo $id;?>">
 	    <input type="hidden" name="operation" value="1">

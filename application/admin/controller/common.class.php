@@ -10,20 +10,23 @@
 // +----------------------------------------------------------------------
 
 defined('IN_YZMPHP') or exit('Access Denied');
+define('IN_YZMADMIN', true);
 new_session_start();
 
 class common{
 	
+	public static $siteid;
 	public static $ip;
 	
 	public function __construct() {
+		self::$siteid = get_siteid();
 		self::$ip = getip();
 		self::check_admin();
 		self::check_priv();
 		self::check_ip();
 		self::check_token();
 		self::lock_screen();
-		if(ROUTE_A == 'init') $_GET = array_map('htmlspecialchars', $_GET);
+		if(ROUTE_A == 'init') $_GET = array_map('new_html_special_chars', $_GET);
 		if(get_config('admin_log')) self::manage_log();
 	}
 

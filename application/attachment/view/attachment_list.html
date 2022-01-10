@@ -53,7 +53,12 @@
 				?>
 				 <a title="点击预览" href="javascript:;" <?php echo $click;?> style="text-decoration:none"><img src="<?php echo $src;?>" height="30" style="max-width:100px" onmouseover="yzm_img_browse(this, '<?php echo $src;?>')" onmouseout="layer.closeAll('tips')"></a>
 			</td>
-			<td><?php echo !empty($val['originname']) ? $val['originname'] : $val['filename']?></td>
+			<td>
+				<?php if($val['contentid']){ ?>
+				<i class="Hui-iconfont" title="关联内容<?php echo $val['contentid']?>">&#xe6f1;</i> 
+				<?php } ?>
+				<?php echo !empty($val['originname']) ? $val['originname'] : $val['filename']?>
+			</td>
 			<td><?php echo sizecount($val['filesize'])?></td>
 			<td><?php echo date('Y-m-d H:i:s', $val['uploadtime'])?></td>
 			<td><?php echo $val['username']?></td>

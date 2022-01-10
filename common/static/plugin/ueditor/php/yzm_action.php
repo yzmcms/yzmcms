@@ -34,10 +34,12 @@ if(version_compare(PHP_VERSION,'5.4.0','<')) {
     define('MAGIC_QUOTES_GPC', false);
 }
 define('SYS_TIME', time());
-define('SITE_PATH', $web_path);
-define('YZMPHP_PATH', $document_root.$web_path);
-define('EXT', '.class.php'); 
+define('SERVER_PORT', is_https() ? 'https://' : 'http://');
 define('HTTP_HOST', (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ''));
+define('SITE_PATH', $web_path);
+define('SITE_URL', SERVER_PORT.HTTP_HOST.SITE_PATH);
+define('YZMPHP_PATH', stripos(PHP_OS, 'WIN')!==false ? str_replace('/', DIRECTORY_SEPARATOR, $document_root.$web_path) : $document_root.$web_path);
+define('EXT', '.class.php'); 
 
 $web_upload = $web_path.'uploads';
 $CONFIG['imagePathFormat'] = $web_upload.$CONFIG['imagePathFormat'];
@@ -118,6 +120,7 @@ new_session_start();
 if(!isset($_SESSION['adminid']) && !isset($_SESSION['_userid'])){
     exit(json_encode(array('state'=> '请登录后再继续操作！')));
 }
+if(isset($_SESSION['roleid'])) define('IN_YZMADMIN', true);
 
 
 /**
@@ -130,6 +133,20 @@ function handle_suffix($type){
 
 
 /**
+ * 判断是否SSL协议
+ * @return boolean
+ */
+function is_https() {
+    if(isset($_SERVER['HTTPS']) && ('1' == $_SERVER['HTTPS'] || 'on' == strtolower($_SERVER['HTTPS']))){
+        return true;
+    }elseif(isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'] )) {
+        return true;
+    }
+    return false;
+}
+
+
+/**
  * 写入系统附件表
  * @param  array $info 
  */
@@ -137,6 +154,7 @@ function attachment_write($info){
     $pathinfo = pathinfo($info['url']);
     $param = yzm_base::load_sys_class('param');
     $arr = array();
+    $arr['siteid'] = get_siteid();
     $arr['originname'] = strlen($info['original'])<50 ? htmlspecialchars($info['original']) : htmlspecialchars(str_cut($info['original'], 45));
     $arr['filename'] = htmlspecialchars($info['title']);
     $arr['filepath'] = $pathinfo['dirname'].'/';
@@ -149,7 +167,24 @@ function attachment_write($info){
     $arr['username'] = isset($_SESSION['adminname']) ? $_SESSION['adminname'] : (isset($_SESSION['_username']) ? $_SESSION['_username'] : '');
     $arr['uploadtime'] = SYS_TIME;
     $arr['uploadip'] = getip();
-    D('attachment')->insert($arr);
+    $id = D('attachment')->insert($arr);
+    if(get_config('att_relation_content')) attachment_content($id);
+}
+
+
+/**
+ * 附件关联内容
+ */
+function attachment_content($id){
+    if(defined('IN_YZMADMIN')){
+        $attachmentid = isset($_SESSION['attachmentid']) ? $_SESSION['attachmentid'].'|'.$id : $id;
+        $_SESSION['attachmentid'] = $attachmentid;
+    }else{
+        $attachmentid = get_cookie('attachmentid');
+        $attachmentid = $attachmentid ? $attachmentid.'|'.$id : $id;
+        set_cookie('attachmentid', $attachmentid);
+    }
+    return true;
 }
 
 
@@ -194,6 +229,10 @@ function ue_file_upload($fieldName, $config, $base64, $document_root){
 	            "size" => $fileinfo['filesize'],
 	        );
 	        attachment_write($info);
+            if(C('watermark_enable') && isset($fileinfo['watermark'])){
+                $img = new image(1, 1);
+                $img->watermark($document_root.$fileinfo['watermark']);       
+            }
 	    }else{
 	        $info = array(
 	            "state" => $upload->geterrormsg()

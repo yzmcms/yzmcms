@@ -10,11 +10,15 @@
 		 <input type="hidden" value="<?php echo ROUTE_C;?>" name="c">
 		 <input type="hidden" value="init" name="a">	 
 		 
+		 添加时间：<input type="text" class="input-text laydate-icon" style="width:175px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
+		 至 <input type="text" class="input-text laydate-icon" style="width:175px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d H:i:s'); ?>">
 		<span class="select-box inline"><?php echo select_category('catid', $catid, '绑定栏目'); ?></span>
 		<span class="select-box inline">
 			<select name="type" class="select">
 				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='1'){echo "selected";} ?> value="1">TAG名称</option>
-				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo "selected";} ?> value="2">TAG描述</option>		
+				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo "selected";} ?> value="2">SEO标题</option>		
+				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='3'){echo "selected";} ?> value="3">SEO关键字</option>		
+				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='4'){echo "selected";} ?> value="4">SEO描述</option>		
 			</select>
 		</span>
 		<input type="text" name="searinfo"  class="input-text" style="width:200px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
@@ -31,7 +35,8 @@
 				<th>文档数<?php echo field_order('total');?></th>
 				<th>点击量<?php echo field_order('click');?></th>
 				<th>绑定栏目<?php echo field_order('catid');?></th>
-				<th>描述</th>
+				<th>SEO标题</th>
+				<!-- <th>SEO描述</th> -->
 				<th>添加时间<?php echo field_order('inputtime');?></th>		
 				<th>管理操作</th>
 			</tr>
@@ -43,14 +48,15 @@
 			<tr class="text-c">
 				<td><input type="checkbox" value="<?php echo $val['id']?>" name="id[]"></td>
 				<td><?php echo $val['id'];?></td>
-				<td><a href="<?php echo tag_url($val['id']);?>" target="_blank"><?php echo $val['tag'];?></a></td>
-				<td><a href="<?php echo tag_url($val['id']);?>" target="_blank"><?php echo $val['total'];?></a></td>
+				<td><a href="<?php echo $site_url.tag_url($val['id'], false);?>" target="_blank"><?php echo $val['tag'];?></a></td>
+				<td><a href="<?php echo $site_url.tag_url($val['id'], false);?>" target="_blank"><?php echo $val['total'];?></a></td>
 				<td><?php echo $val['click'];?></td>
 				<td><?php echo $val['catid'] ? get_catname($val['catid']) : '无';?></td>
-				<td><?php echo $val['remarks'] ? str_cut($val['remarks'], 90) : '无';?></td>
+				<td><?php echo $val['seo_title'] ? $val['seo_title'] : '无';?></td>
+				<!-- <td><?php echo $val['seo_description'] ? str_cut($val['seo_description'], 90) : '无';?></td> -->
 				<td><?php echo date('Y-m-d H:i:s',$val['inputtime']);?></td>
 				<td class="td-manage">
-					<a title="编辑TAG" href="javascript:;" onclick="yzm_open('编辑TAG','<?php echo U('edit',array('id'=>$val['id']));?>',600,350)" class="btn-mini btn-secondary">编辑TAG</a> 
+					<a title="编辑TAG" href="javascript:;" onclick="yzm_open('编辑TAG','<?php echo U('edit',array('id'=>$val['id']));?>',600,420)" class="btn-mini btn-secondary">编辑TAG</a> 
 					<a title="管理内容" href="javascript:;" onclick="yzm_open('Tag - <?php echo $val['tag'];?>','<?php echo U('content',array('id'=>$val['id']));?>', 850, 550)" class="btn-mini btn-success ml-5" style="text-decoration:none">管理内容</a> 
 				</td>
 			</tr>
@@ -65,5 +71,13 @@
   <span class="page_right"><?php echo $page->getfull();?></span></div>
 </div>
 <?php include $this->admin_tpl('footer');?>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
+<script type="text/javascript">
+	var start = {elem:'#start',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){end.min = datas;end.start = datas}
+	};
+	var end = {elem:'#end',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){start.max = datas;}};
+	laydate(start);
+	laydate(end);
+</script>
 </body>
 </html>

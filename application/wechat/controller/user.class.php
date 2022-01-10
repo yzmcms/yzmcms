@@ -47,29 +47,37 @@ class user extends wechat_common{
 		if(isset($_GET['dosubmit'])){	
 			$status = isset($_GET["status"]) ? intval($_GET["status"]) : 99;
 			$groupid = isset($_GET["groupid"]) ? intval($_GET["groupid"]) : 99;
+			$sex = isset($_GET["sex"]) ? intval($_GET["sex"]) : 99;
 			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
+
+			if($groupid != 99) {
+				$where .= ' AND groupid = '.$groupid;
+			}
+
+			if($sex != 99) {
+				$where .= ' AND sex = '.$sex;
+			}
+
+			if($status != 99) {
+				$where .= ' AND subscribe = '.$status;
+			}
+
+			if(isset($_GET['start']) && isset($_GET['end']) && $_GET['start']) {
+				$where .= " AND `subscribe_time` >= '".strtotime($_GET['start'])."' AND `subscribe_time` <= '".strtotime($_GET['end'])."' ";
+			}
 			
 			if($searinfo != ''){
 				if($type == '1')
 					$where .= ' AND wechatid = \''.$searinfo.'\'';
 				elseif($type == '2')
 					$where .= ' AND scan = \''.$searinfo.'\'';
-				else
+				elseif($type == '3')
 					$where .= ' AND nickname LIKE \'%'.$searinfo.'%\'';
+				else
+					$where .= ' AND remark LIKE \'%'.$searinfo.'%\'';
 			}
-			
-			if(isset($_GET['start']) && isset($_GET['end']) && $_GET['start']) {
-				$where .= " AND `subscribe_time` >= '".strtotime($_GET['start'])."' AND `subscribe_time` <= '".strtotime($_GET['end'])."' ";
-			}
-			
-			if($status != 99) {
-				$where .= ' AND subscribe = '.$status;
-			}
-			
-			if($groupid != 99) {
-				$where .= ' AND groupid = '.$groupid;
-			}			
+					
 		}
 		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $wechat_user->where($where)->total();

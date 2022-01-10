@@ -6,11 +6,21 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label>支付方式</label> 支付宝</li>
-			 <li><label>签名方式</label> RSA2</li>
-			 <li><label><span class="c-red">*</span>应用ID(APPID)</label><input type="text" class="input" required name="config[app_id]" value="<?php echo $config['app_id'];?>" style="width:400px"></li>
-			 <li><label><span class="c-red">*</span>商户应用私钥</label><span class="span_input"><textarea name="config[merchant_private_key]" class="textarea" style="width:80%" required><?php echo $config['merchant_private_key'];?></textarea></span></li>	
-			 <li><label><span class="c-red">*</span>支付宝公钥</label><span class="span_input"><textarea name="config[alipay_public_key]" class="textarea" style="width:80%" required><?php echo $config['alipay_public_key'];?></textarea></span></li>
+			 <li><label>支付方式</label>
+			 	支付宝
+			 </li>
+			 <li><label>签名方式</label>
+			 	RSA2
+			 </li>
+			 <li><label><span class="c-red">*</span>应用ID(APPID)</label>
+			 	<input type="text" class="input" required name="config[app_id]" value="<?php echo $config['app_id'];?>" style="width:400px">
+			 </li>
+			 <li><label><span class="c-red">*</span>商户应用私钥</label>
+			 	<span class="span_input"><textarea name="config[merchant_private_key]" class="textarea" style="width:80%" required><?php echo $config['merchant_private_key'];?></textarea></span>
+			 </li>	
+			 <li><label><span class="c-red">*</span>支付宝公钥</label>
+			 	<span class="span_input"><textarea name="config[alipay_public_key]" class="textarea" style="width:80%" required><?php echo $config['alipay_public_key'];?></textarea></span>
+			 </li>
 			 <li><label><span class="c-red">*</span>状态</label>
 			 <span class="span_input">
 			 	<label class="label_radio"><input name="enabled" type="radio" value="1" <?php if($data['enabled'] == 1) echo 'checked';?>> 启用</label>

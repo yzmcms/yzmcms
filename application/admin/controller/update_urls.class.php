@@ -19,7 +19,7 @@ class update_urls extends common {
 	 */
 	public function init() {
 		$modelid = 0;
-		$modelinfo = get_modelinfo();
+		$modelinfo = get_site_modelinfo();
 		$select = select_category('catids[]', '0', '≡ 所有栏目 ≡', 0, 'multiple="multiple" style="height:250px;width:140px;"', false, false);
 		include $this->admin_tpl('update_urls_list');
 	}
@@ -30,7 +30,7 @@ class update_urls extends common {
 	 */
 	public function change_model() {
 		$modelid = isset($_POST['modelid']) ? intval($_POST['modelid']) : 0;
-		$modelinfo = get_modelinfo();
+		$modelinfo = get_site_modelinfo();
 		$select = select_category('catids[]', '0', '≡ 所有栏目 ≡', 0, 'multiple="multiple" style="height:250px;width:140px;"', false, false, $modelid);
 		
 		include $this->admin_tpl('update_urls_list');
@@ -45,24 +45,35 @@ class update_urls extends common {
 			$catids = isset($_POST['catids']) && is_array($_POST['catids']) ? $_POST['catids'] : array('0');
 			
 			$category = D('category');
-			//根据系统URL规则生成栏目URL
 			$url_mode = get_config('url_mode');
+			$site_url = get_site_url();
 			
 			//更新所有栏目
 			if(!$catids[0]){
 				 $catinfo = get_category(); 
 			}else{
 				$catids = join(',', array_map('intval', $catids));
-				$catinfo = D('category')->field('catid,catname,`type`,catdir')->where("catid IN ($catids)")->select();
+				$catinfo = D('category')->field('catid,catname,arrparentid,`type`,catdir,domain')->where("catid IN ($catids)")->select();
 			}
 			
 			foreach($catinfo as $val){
-				if($val['type'] == 2) continue;  //如果是外部链接则跳过	
-				$pclink = $url_mode ? get_config('site_url').$val['catdir'].'/' : SITE_PATH.$val['catdir'].'/';			
+				if($val['type'] == 2 || $val['domain']) continue;  
+				if($url_mode==1 || $url_mode==3){
+					if($val['arrparentid']!='0'){
+						$arr = explode(',', $val['arrparentid']);
+						$parents_domain = get_category($arr[1], 'domain');
+						$pclink = $parents_domain ? $parents_domain.$val['catdir'].'/' : $site_url.$val['catdir'].'/';
+					}else{
+						$pclink = $site_url.$val['catdir'].'/';
+					}
+				}else{
+					$pclink = SITE_PATH.$val['catdir'].'/';
+				}		
 				$category->update(array('pclink' => $pclink), array('catid' => $val['catid']));
 			}
 			
 			delcache('categoryinfo');
+			delcache('categoryinfo_siteid_'.self::$siteid);
 			return_json(array('status'=>1, 'message'=>'更新栏目URL完成！'));
 		}
 	}
@@ -84,7 +95,7 @@ class update_urls extends common {
 			if($modelid){
 				$modelid_arr[] = $modelid;
 			}else{
-				$modelinfos = get_modelinfo();
+				$modelinfos = get_site_modelinfo();
 				foreach($modelinfos as $val) {
 					$modelid_arr[] = $val['modelid'];
 				}				

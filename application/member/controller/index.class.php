@@ -32,28 +32,25 @@ class index extends common{
 	 */	
 	public function login(){		
 		
-		if(isset($_POST['dosubmit'])){		
+		if(is_ajax()){		
 			
 			//检查是否开启验证码
-			if(get_config('member_yzm')){
-				$this->_check_code($_POST['code']);
-			}
+			if(get_config('member_yzm')) $this->_check_code($_POST['code']);
 			$member = D('member');
-			$username = isset($_POST['username']) ? trim($_POST['username']) : showmsg(L('lose_parameters'), 'stop');
+			$username = isset($_POST['username']) ? trim($_POST['username']) : return_json(array('status'=>0, 'message'=>L('lose_parameters')));
 			$password = password($_POST['password']);
 
 			//电子邮箱和用户名两种登录方式
 			$where = is_email($username) ? array('email'=>$username) : array('username'=>$username);
 			
 			$data = $member->where($where)->find();
-			if(!$data) showmsg(L('user_does_not_exist'));
-			if($data['password'] != $password) showmsg('密码错误！', '', 1);
+			if(!$data || ($data['password']!=$password)) return_json(array('status'=>0, 'message'=>L('user_or_password_error')));
 			if($data['status'] == '0') 
-				showmsg('用户未通过审核！', 'stop');		
+				return_json(array('status'=>0, 'message'=>'用户未通过审核！'));
 			else if($data['status'] == '2') 
-				showmsg('用户已锁定！', 'stop');		
+				return_json(array('status'=>0, 'message'=>'用户已锁定！'));
 			else if($data['status'] == '3') 
-				showmsg('用户已被管理员拒绝！', 'stop');
+				return_json(array('status'=>0, 'message'=>'用户已被管理员拒绝登录！'));
 			
 			$_SESSION['_userid'] = $data['userid'];
 			$_SESSION['_username'] = $data['username'];
@@ -74,7 +71,7 @@ class index extends common{
 			$where .= '`lastip`="'.getip().'",`lastdate`="'.SYS_TIME.'",`loginnum`=`loginnum`+1';
 			$member->update($where, array('userid'=>$data['userid']));
 			$referer = isset($_POST['referer']) && !empty($_POST['referer']) ? urldecode($_POST['referer']) : U('member/index/init');
-			showmsg(L('login_success'), $referer, 1);
+			return_json(array('status'=>1, 'message'=>L('login_success'), 'url'=>$referer));
 		}
 
 		$referer = isset($_GET['referer']) && is_string($_GET['referer']) ? urlencode($_GET['referer']) : '';
@@ -87,28 +84,25 @@ class index extends common{
 	 */	
 	public function register(){ 
 		$config = get_config();
-		//检查是否允许新会员注册
 		if($config['member_register'] == 0) showmsg('管理员关闭了新会员注册！', 'stop');
 		
 		if(isset($_SESSION['_userid']) && $_SESSION['_userid']){
 			showmsg(L('login_success'), U('member/index/init'), 1);
 		}
 			
-			
-		if(isset($_POST['dosubmit'])){
+		if(is_ajax()){
 			
 			$this->_check_code($_POST['code']);
-			
 			$member = D('member');
 			$data = array();
-			$data['username'] = isset($_POST['username']) && is_username($_POST['username']) ? trim($_POST['username']) : showmsg(L('user_name_format_error'));		
-			$data['password'] = isset($_POST['password']) && is_password($_POST['password']) ? trim($_POST['password']) : showmsg(L('password_format_error'));	
-			$data['email'] = isset($_POST['email']) && is_email($_POST['email']) ? trim($_POST['email']) : showmsg(L('mail_format_error'));				
+			$data['username'] = isset($_POST['username']) && is_username($_POST['username']) ? trim($_POST['username']) : return_json(array('status'=>0, 'message'=>L('user_name_format_error')));	
+			$data['password'] = isset($_POST['password']) && is_password($_POST['password']) ? trim($_POST['password']) : return_json(array('status'=>0, 'message'=>L('password_format_error')));	
+			$data['email'] = isset($_POST['email']) && is_email($_POST['email']) ? trim($_POST['email']) : return_json(array('status'=>0, 'message'=>L('mail_format_error')));		
 			
 			$result = $member->field('userid')->where(array('username'=>$_POST['username']))->find();
-			if($result) showmsg(L('user_already_exists'));
+			if($result) return_json(array('status'=>0, 'message'=>'该用户名已注册！'));		
 			$result = $member->field('userid')->where(array('email'=>$_POST['email']))->find();
-			if($result) showmsg("邮箱已存在！");
+			if($result) return_json(array('status'=>0, 'message'=>'该邮箱已注册！'));		
 			
 			$data['nickname'] = $data['username'];
 			$data["password"] = password($data['password']);
@@ -119,7 +113,7 @@ class index extends common{
 			$data['point'] = $data['experience'] = $config['member_point'];	 //经验和积分
 			$data['status'] = ($config['member_check'] || $config['member_email']) ? 0 : 1;		
 			$data['userid'] = $member->insert($data, true);		
-			if(!$data['userid']) showmsg('注册失败！', 'stop');
+			if(!$data['userid']) return_json(array('status'=>0, 'message'=>'注册失败！'));		
 			
 			D('member_detail')->insert($data, true, false); //插入附表
 			
@@ -128,14 +122,14 @@ class index extends common{
 				$mail_code = string_auth($data['userid'].'|'.SYS_TIME, 'ENCODE', make_auth_key('email'));
 				$url = U('member/index/register', array('mail_code'=>$mail_code, 'verify'=>1));
 				$email_tpl = APP_PATH.ROUTE_M.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.(defined('MODULE_THEME') ? MODULE_THEME : C('site_theme')).DIRECTORY_SEPARATOR.'email_register_message.html' ;
-				$message = is_file($email_tpl) ? file_get_contents($email_tpl) : showmsg('邮件模板不存在！', 'stop');
+				$message = is_file($email_tpl) ? file_get_contents($email_tpl) : return_json(array('status'=>0, 'message'=>'邮件模板不存在，请联系网站管理员！'));		
 				$message = str_replace(array('{site_name}','{url}','{username}','{email}'), array(get_config('site_name'),$url,$data['username'],$data['email']), $message);
 				$res = sendmail($data['email'], '会员注册邮箱验证', $message);
-				if(!$res) showmsg('邮件发送失败，请联系网站管理员！', 'stop');
-				showmsg('我们已将邮件发送到您的邮箱，请尽快完成验证！');
+				if(!$res) return_json(array('status'=>0, 'message'=>'邮件发送失败，请联系网站管理员！'));
+				return_json(array('status'=>1, 'message'=>'我们已将邮件发送到您的邮箱，请尽快完成验证！', 'url'=>U('member/index/login')));
 			}elseif($config['member_check']){  
 				//需要管理员审核
-				showmsg('注册成功，由于管理员开启审核机制，请耐心等待！');
+				return_json(array('status'=>1, 'message'=>'注册成功，由于管理员开启审核机制，请耐心等待！', 'url'=>U('member/index/login')));
 			}
 			
 			$_SESSION['_userid'] = $data['userid'];
@@ -144,7 +138,7 @@ class index extends common{
 			set_cookie('_username', $data['username'], 0, true);
 			set_cookie('_groupid', $data['groupid'], 0, true);		
 			set_cookie('_nickname', $data['username']);
-			showmsg('注册成功！', U('member/index/init'), 1);			
+			return_json(array('status'=>1, 'message'=>'注册成功！', 'url'=>U('member/index/init')));		
 			
 		}else{
 			if(!empty($_GET['verify'])) {
@@ -176,7 +170,8 @@ class index extends common{
 		del_cookie('_username');
 		del_cookie('_nickname');
 		del_cookie('_groupid');
-		showmsg(L('you_have_safe_exit'), U('member/index/login'), 2);
+		$referer = isset($_GET['referer']) && is_string($_GET['referer']) ? urldecode($_GET['referer']) : U('member/index/login');
+		showmsg(L('you_have_safe_exit'), $referer, 2);
 	}	
 
 	

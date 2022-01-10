@@ -80,7 +80,7 @@ class adver extends common {
 	public function del() {
 		if($_POST && is_array($_POST['id'])){
 			if(D('adver')->delete($_POST['id'], true)){
-				showmsg(L('operation_success'));
+				showmsg(L('operation_success'), '', 1);
 			}else{
 				showmsg(L('operation_failure'));
 			}

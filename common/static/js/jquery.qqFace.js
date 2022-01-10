@@ -1,5 +1,5 @@
 /**
- * YZMCMS内容管理系统
+ * YZMCMS内容管理系统   (yzm cms轻量级开源CMS)
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
  */

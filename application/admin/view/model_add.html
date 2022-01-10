@@ -1,14 +1,30 @@
 <?php include $this->admin_tpl('meta');?>
 <title>添加模型 - YzmCMS内容管理系统</title>
+<style>
+.exp{margin:0px 0px 0px 125px;color:#555;font-size:12px;}
+.exp span{color:#056ef4}
+</style>
 </head>
 <body>
 <article class="page-container">
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label><span class="c-red">*</span>模型名称：</label><input type="text" class="input" name="name" value=""></li>
-			 <li><label><span class="c-red">*</span>模型表名：</label><input type="text" class="input" value="" name="tablename"></li>	
-			 <li><label>模型简介：</label><span class="span_input"><textarea name="description" class="textarea" style="width:70%"></textarea></span></li>	
+			 <li class="yzm-explain-box"><label><span class="c-red">*</span>模型名称：</label>
+			 	<input type="text" class="input" name="name" value="">
+			 	<span class="yzm-explain">给新模型起一个名称，<br>例如：商品模型</span>
+			 </li>
+			 <li class="yzm-explain-box"><label><span class="c-red">*</span>模型表名：</label>
+			 	<input type="text" class="input" value="" name="tablename">
+			 	<span class="yzm-explain">模型表名只能由英文字母、数字<br>和下划线组成，例如：shop</span>
+			 	<p class="exp" style="color:red;margin-top:3px"><i class="Hui-iconfont">&#xe6cd;</i> 模型表名与栏目模板关连：</p>
+			 	<p class="exp">频道页模板规则是：<span>category_模型表名.html</span> 或 <span>category_模型表名_*.html</span></p>
+			 	<p class="exp">列表页模板规则是：<span>list_模型表名.html</span> 或 <span>list_模型表名_*.html</span></p>
+			 	<p class="exp">内容页模板规则是：<span>show_模型表名.html</span> 或 <span>show_模型表名_*.html</span></p>
+			 </li>	
+			 <li><label>模型简介：</label>
+			 	<span class="span_input"><textarea name="description" class="textarea" style="width:70%"></textarea></span>
+			 </li>	
 			 <li><label>默认模型：</label>
 			 <span class="span_input yzm-explain-box">
 			 	<label class="label_radio"><input name="isdefault" type="radio" value="1"> 是</label>
@@ -31,15 +47,15 @@
 	function dosub(obj){
 		 var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/;	
 		 if(obj.name.value==''){
-			 layer.msg('模型名称不能为空！');
+			 layer.msg('模型名称不能为空！', {icon:2});
 			 return false;
 		 }
-		 if(obj.tablename.value==''){
-			 layer.msg('模型表名不能为空！');
-			 return false;
+		 if(obj.tablename.value.length<1 || obj.tablename.value.length>20){
+		 	layer.msg('模型表名长度必须为1-20位！', {icon:2});
+		 	return false;
 		 }
 		 if(!reg.test(obj.tablename.value)){
-			layer.msg('模型表名只能为英文或拼音！');
+			layer.msg('模型表名必须为英文、数字或下划线！', {icon:2});
 			return false;
 		 }
         $.ajax({

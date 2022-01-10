@@ -5,18 +5,19 @@ return array(
     //系统配置
     'auth_key'           => 'TEZTYUQ0N1BZVmGCW4BeFSrmLsoq8ENh',    //系统密钥
     'error_page'         => '404.html',    //错误提示页面，非调试模式有效
-    'site_theme' => 'default',     //站点默认主题目录
+    'error_log_save'     => true,          //是否保存系统错误日志，非调试模式有效
+    'site_theme'         => 'default',     //站点默认主题目录
     'url_html_suffix'    => '.html',       //URL伪静态后缀
     'set_pathinfo'       => false,         //Nginx默认不支持PATHINFO模式，需配置此项为true，则Nginx可支持PATHINFO，系统默认为false
     
     //数据库配置
-    'db_type' => 'pdo',     	    // 数据库链接扩展 , 支持 pdo | mysqli | mysql
-    'db_host' => '127.0.0.1',       // 服务器地址
-    'db_name' => 'yzmcms',		    // 数据库名
-    'db_user' => 'root',            // 用户名
-    'db_pwd'  => '123456',       	// 密码
-    'db_port' => 3306,              // 端口
-    'db_prefix' => 'yzm_',          // 数据库表前缀
+    'db_type'            => 'pdo',     	    // 数据库链接扩展 , 支持 pdo | mysqli | mysql
+    'db_host'            => '127.0.0.1',    // 服务器地址
+    'db_name'            => 'yzmcms',		// 数据库名
+    'db_user'            => 'root',         // 用户名
+    'db_pwd'             => '123456',       // 密码
+    'db_port'            => 3306,           // 端口
+    'db_prefix'          => 'yzm_',         // 数据库表前缀
     
     //路由配置
     'route_config'       => array (
@@ -35,7 +36,7 @@ return array(
     'cookie_httponly'    => false,        //是否仅可通过 HTTP 协议访问Cookie
     
     //缓存配置
-    'cache_type'         => 'file',     	// 缓存类型【暂支持 file , redis , memcache 】
+    'cache_type'         => 'file',     	// 缓存类型，支持 file , redis , memcache
     //缓存类型为file缓存时的配置项
     'file_config'        => array (
 		'cache_dir'      => YZMPHP_PATH.'cache/cache_file/',    //缓存文件目录
@@ -64,13 +65,13 @@ return array(
     ),
     
     //系统语言
-    'language'           => 'zh_cn',      //【暂支持 简体中文zh_cn 和 美式英语en_us】
+    'language'           => 'zh_cn',      //支持 简体中文zh_cn 和 美式英语en_us
     
     //附件相关配置
-	'upload_type'        => 'host',       //文件上传类型，host:本地, qiniu:七牛云, aliyun:阿里云
+	'upload_type'        => 'host',       //文件上传类型，host:本地, qiniu:七牛云, aliyun:阿里云, tencent:腾讯云
     'upload_file'        => 'uploads',    //上传文件目录，后面一定不要加斜杠（“/”）
-    'watermark_enable' => '0',          //是否开启图片水印
-    'watermark_name' => 'mark.png',   //水印名称
+    'watermark_enable'   => 0,            //是否开启图片水印
+    'watermark_name'     => 'mark.png',   //水印名称
     'watermark_position' => '9',          //水印位置
     
     //其他设置

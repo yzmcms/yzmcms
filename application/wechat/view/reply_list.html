@@ -8,8 +8,13 @@
  <div class="formdoby_normal"> 
 	<form method="post" action="" onsubmit="return checkall()">
 		<ul>
-			 <li><label>消息内容：</label><textarea class="textarea" name="content" style="height:200px;width:600px" placeholder="<?php echo $mess;?>"><?php echo $data;?></textarea></li>					 
-			 <li><input type="hidden" name="type" value="<?php echo $type;?>"><input class="dosubmit btn-primary radius" style="margin:20px auto 0px;width:120px" name="dosubmit" type="submit" value="提交"></li> 
+			 <li><label>消息内容：</label>
+			 	<textarea class="textarea" name="content" style="height:200px;width:600px" placeholder="<?php echo $mess;?>"><?php echo $data;?></textarea>
+			 </li>					 
+			 <li>
+			 	<input type="hidden" name="type" value="<?php echo $type;?>">
+			 	<input class="dosubmit btn-primary radius" style="margin:20px auto 0px;width:120px" name="dosubmit" type="submit" value="提交">
+			 </li> 
 		</ul>
 		
 	</form>

@@ -9,12 +9,23 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			<li><label><span class="c-red">*</span>名称：</label><input type="text" class="input" style="width:400px" name="name" value=""><p class="exp">给它起一个描述名称</p></li>
-			<li><label><span class="c-red">*</span>URL规则：</label><input type="text" class="input" style="width:400px" name="urlrule" value=""><p class="exp">如：mylist/(\d+)，“(\d+)”表示匹配数字，支持的特殊符号有：<span class="c-red">~!@</span></p></li>
-			<li><label><span class="c-red">*</span>指向的路由：</label><input type="text" class="input" style="width:400px" name="route" value="">
-			<p class="exp">如：对应上面的例子：模块/控制器/方法/参数1/$1</p>
-			<p class="exp">URL规则：模块/控制器/方法/参数1/$1/参数2/$2...<span class="c-red">（$1,$2为规则中匹配到的动态值）</span></p></li>
-			<li><label><span class="c-red">*</span>优先级排序：</label><input type="text" class="input" style="width:400px" name="listorder" value="50"><p class="exp">取值范围1-255，数值越小优先级越高</p></li>
+			<li><label><span class="c-red">*</span>名称：</label>
+				<input type="text" class="input" style="width:400px" name="name" value="">
+				<p class="exp">给它起一个描述名称</p>
+			</li>
+			<li><label><span class="c-red">*</span>URL规则：</label>
+				<input type="text" class="input" style="width:400px" name="urlrule" value="">
+				<p class="exp">如：mylist/(\d+)，“(\d+)”表示匹配数字，支持的特殊符号有：<span class="c-red">~!@</span></p>
+			</li>
+			<li><label><span class="c-red">*</span>指向的路由：</label>
+				<input type="text" class="input" style="width:400px" name="route" value="">
+				<p class="exp">如：对应上面的例子：模块/控制器/方法/参数1/$1</p>
+				<p class="exp">URL规则：模块/控制器/方法/参数1/$1/参数2/$2...<span class="c-red">（$1,$2为规则中匹配到的动态值）</span></p>
+			</li>
+			<li><label><span class="c-red">*</span>优先级排序：</label>
+				<input type="text" class="input" style="width:400px" name="listorder" value="50">
+				<p class="exp">取值范围1-255，数值越小优先级越高</p>
+			</li>
 			<li>
 				<input type="hidden" name="dosubmit" value="1">
 				<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">

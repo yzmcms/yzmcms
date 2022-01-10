@@ -487,7 +487,6 @@ function is_utf8($string) {
  * @param $filepath 文件路径
  * @param $filename 文件名称
  */
-
 function file_down($filepath, $filename = '') {
 	if(!$filename) $filename = basename($filepath);
 	if(is_ie()) $filename = rawurlencode($filename);
@@ -542,29 +541,19 @@ function format_time($date = 0, $type = 1) {
 
 
 /**
-* 转换字节数为其他单位
-* @param	string	$size	字节大小
-* @return	string	返回大小
-*/
-function sizecount($size) {
-    $kb = 1024;
-    $mb = 1024 * $kb;
-    $gb = 1024 * $mb;
-    $tb = 1024 * $gb;
-    $db = 1024 * $tb;
-    if ($size < $kb) {
-        return $size . " B";
-    } else if ($size < $mb) {
-        return round($size / $kb, 2) . " KB";
-    } else if ($size < $gb) {
-        return round($size / $mb, 2) . " MB";
-    } else if ($size < $tb) {
-        return round($size / $gb, 2) . " GB";
-    } else if ($size < $db) {
-        return round($size / $tb, 2) . " TB";
-    } else {
-        return round($size / $db, 2) . " STB";
-    }
+ * 转换字节数为其他单位
+ * @param  int	$size	字节大小
+ * @param  int	$prec	小数点后的位数
+ * @return string	返回大小
+ */
+function sizecount($size, $prec = 2) {
+	$arr = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB');
+	$pos = 0;
+	while ($size >= 1024) {
+	    $size /= 1024;
+	    $pos++;
+	}
+	return round($size, $prec).' '.$arr[$pos];
 }
 
 
@@ -756,7 +745,7 @@ function watermark($source, $target = '') {
 		yzm_base::load_sys_class('image','','0');
 		$image_w = new image(1,1);
 	}
-		$image_w->watermark($source, $target);
+	$image_w->watermark($source, $target);
 	return $target;
 }
 
@@ -858,6 +847,27 @@ function del_cookie($name = '') {
 
 
 /**
+ * 新版获取配置参数
+ * @param string $key  要获取的配置荐，支持格式例如 database 或 database.host
+ * @param string $default  默认配置。当获取配置项目失败时该值发生作用。
+ * @return mixed
+ */
+function config($key = '', $default = '') {
+    $k = explode('.', $key);
+    static $cfg = array(); 
+    if (!isset($cfg[$k[0]])) {
+        $path = YZMPHP_PATH.'common'.DIRECTORY_SEPARATOR.'config'.DIRECTORY_SEPARATOR.$k[0].'.php';
+        if (is_file($path)) { 
+            $cfg[$k[0]] = include $path;
+        }else{
+            return $default;
+        }
+    }
+    return count($k)==1 ? $cfg[$k[0]] : (isset($cfg[$k[0]][$k[1]]) ? $cfg[$k[0]][$k[1]] : $default);
+}
+
+
+/**
  * 用于实例化一个model对象
  * @param string $classname 模型名
  * @param string $m 模块
@@ -915,6 +925,7 @@ function U($url='', $vars='', $domain=null, $suffix=true) {
 		}
 	}else{
 		if(URL_MODEL == 1) $string .= 'index.php?s=';
+		if(URL_MODEL == 4) $string .= 'index.php/';
 		
 		if($num == 3){
 			$string .= $url;
@@ -927,7 +938,7 @@ function U($url='', $vars='', $domain=null, $suffix=true) {
 		if($vars){
 			if(!is_array($vars)) parse_str($vars, $vars);			
             foreach ($vars as $var => $val){
-                if(trim($val) !== '') $string .= '/'.urlencode($var).'/'.urlencode($val);
+                if(!is_array($val) && trim($val) !== '') $string .= '/'.urlencode($var).'/'.urlencode($val);
             } 
 		}
         $string .= $suffix === true ? C('url_html_suffix') : $suffix;		
@@ -1218,18 +1229,47 @@ function return_json($arr = array(), $show_debug = false){
  * 记录日志
  * @param $message 日志信息
  * @param $filename 文件名称
+ * @param $ext 文件后缀
  * @param $path 日志路径
  * @return bool
  */
-function write_log($message, $filename = '', $path = '') {
+function write_log($message, $filename = '', $ext = '.log', $path = '') {
 	$message = is_array($message) ? json_encode($message, JSON_UNESCAPED_UNICODE) : $message;
 	$message = date('H:i:s').' '.$message."\r\n";
 	if(!$path) $path = YZMPHP_PATH.'cache/syslog';
 	if(!is_dir($path)) @mkdir($path, 0777, true);
 	
-	if(!$filename) $filename = date('Ymd').'.log';
+	if(!$filename) $filename = date('Ymd').$ext;
 	
 	return error_log($message, 3, $path.DIRECTORY_SEPARATOR.$filename);
+}
+
+
+/**
+ * 记录错误日志
+ * @param $err_arr 错误信息
+ * @param $path 日志路径
+ * @return bool
+ */
+function write_error_log($err_arr, $path = '') {
+	if(!C('error_log_save')) return false;
+	$err_arr = is_array($err_arr) ? $err_arr : array($err_arr);
+	$message[] = date('Y-m-d H:i:s');
+	$message[] = get_url();
+	$message[] = getip();
+	if(isset($_POST) && !empty($_POST)) $message[] = json_encode($_POST, JSON_UNESCAPED_UNICODE);
+	$message = array_merge($message, $err_arr);
+	$message = join(' | ', $message)."\r\n";
+	if(!$path) $path = YZMPHP_PATH.'cache';
+	if(!is_dir($path)) @mkdir($path, 0777, true);
+	$file = $path.DIRECTORY_SEPARATOR.'error_log.php';
+	if(is_file($file) && filesize($file)>20971520){
+		@rename($file, $path.DIRECTORY_SEPARATOR.'error_log'.date('YmdHis').rand(100,999).'.php') ;
+	}
+	if(!is_file($file)){
+		error_log("<?php exit;?>\r\n", 3, $file);
+	}
+	return error_log($message, 3, $file);
 }
 
 

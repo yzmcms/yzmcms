@@ -18,17 +18,18 @@ class yzm_tag{
 	public function lists($data) {
 		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 0;
 		$catid = isset($data['catid']) ? trim($data['catid']) : '';
+		$all = isset($data['all']) ? true : false;
 		
 		if($catid){
 			if(!strpos($catid, ',')){
-				$category = get_category($catid);
+				$category = get_category($catid, '', $all);
 				if(!$category) return false;
 				$arrchildid = $category['arrchildid'];
 				$catid = strpos($arrchildid, ',') ? ' AND catid IN ('.$arrchildid.')' : ' AND catid='.$arrchildid;
 			}else{
 				$catarr = explode(',', rtrim($catid, ','));
 				$catid = $catarr[0]; 
-				$category = get_category($catid);
+				$category = get_category($catid, '', $all);
 				if(!$category) return false;
 				$catid = ' AND catid IN ('.join(',', $catarr).')';
 			}
@@ -68,7 +69,7 @@ class yzm_tag{
 	public function pages() {
 		if(!is_object($this->page)) return '';
 		//当前页：$this->page->getpage();
-		return '<span class="pageinfo">共<strong>'.$this->page->total().'</strong>页<strong>'.$this->total.'</strong>条记录</span>'.$this->page->getfull(false);
+		return '<span class="pageinfo">共<strong>'.$this->total.'</strong>条记录</span>'.$this->page->getfull(false);
 	}
 
 
@@ -79,11 +80,12 @@ class yzm_tag{
 	 */
 	public function all($data) {
 
+		$where = isset($data['allsite']) ? array('status'=>1) : array('siteid'=>get_siteid(), 'status'=>1);
 		$field = isset($data['field']) ? $data['field'] : 'modelid,catid,id,userid,username,title,inputtime,updatetime,url,thumb,issystem';
 		$order = isset($data['order']) ? $data['order'] : 'allid DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
 		
-		return D('all_content')->field($field)->where('`status` = 1')->order($order)->limit($limit)->select();
+		return D('all_content')->field($field)->where($where)->order($order)->limit($limit)->select();
 	}
 	
 	
@@ -95,9 +97,10 @@ class yzm_tag{
 	public function hits($data) {
 		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 0;
 		$catid = isset($data['catid']) ? intval($data['catid']) : '';
+		$all = isset($data['all']) ? true : false;
 		
 		if($catid){
-			$category = get_category($catid);
+			$category = get_category($catid, '', $all);
 			if(!$category) return false;
 			$arrchildid = $category['arrchildid'];
 			$catid = strpos($arrchildid, ',') ? ' AND catid IN ('.$arrchildid.')' : ' AND catid='.$arrchildid;		
@@ -113,8 +116,9 @@ class yzm_tag{
 		if(isset($data['where']) && $data['where']){
 			$where = 'status=1'.$catid.' AND '.$data['where'];
 		}else{
+			$day = isset($data['day']) ? ' AND updatetime>'.(SYS_TIME - intval($data['day'])*86400) : '';
 			$thumb = isset($data['thumb']) ? " AND thumb != ''" : '';
-			$where = 'status=1'.$catid.$thumb;
+			$where = 'status=1'.$catid.$day.$thumb;
 		}
 		
 		return $this->db->field($field)->where($where)->order('`click` DESC')->limit($limit)->select();
@@ -127,11 +131,13 @@ class yzm_tag{
 	 * @param $data
 	 */
 	public function nav($data) {
+		$siteid = isset($data['siteid']) ? intval($data['siteid']) : get_siteid();
+		$where = 'siteid = '.$siteid.' AND `display`=1';
 		$field = isset($data['field']) ? $data['field'] : '*';
 		$order = isset($data['order']) ? $data['order'] : 'listorder ASC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
-		$where = isset($data['where']) ? $data['where'].' AND ' : '';
-		$where .= '`display`=1';
+
+		if(isset($data['where'])) $where .= ' AND '.$data['where'];
 		return D('category')->field($field)->where($where)->order($order)->limit($limit)->select();
 	}	
 	
@@ -142,8 +148,9 @@ class yzm_tag{
 	 * @param $data
 	 */
 	public function link($data) {
+		$siteid = isset($data['siteid']) ? intval($data['siteid']) : get_siteid();
 		$field = isset($data['field']) ? $data['field'] : '*';
-		$where = 'status = 1';
+		$where = 'siteid = '.$siteid.' AND status = 1';
 		$order = isset($data['order']) ? $data['order'] : 'listorder ASC, id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
 		if(isset($data['typeid'])){
@@ -164,11 +171,20 @@ class yzm_tag{
 	 * @param $data
 	 */
 	public function tag($data) {
-		$field = isset($data['field']) ? $data['field'] : 'id,tag,click,total,remarks';
+		$siteid = isset($data['siteid']) ? intval($data['siteid']) : get_siteid();
+		$field = isset($data['field']) ? $data['field'] : 'id,tag,click,total';
 		$catid = isset($data['catid']) ? intval($data['catid']) : 0;
 		$order = isset($data['order']) ? $data['order'] : 'id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
-		$where = $catid ? 'catid='.$catid : '';
+		$where = $catid ? 'siteid='.$siteid.' AND catid='.$catid : 'siteid='.get_siteid();
+
+		if(isset($data['page'])){
+			yzm_base::load_sys_class('page','',0);
+			$this->total = D('tag')->where($where)->total();
+			$this->page = new page($this->total, $limit);
+			$limit = $this->page->limit();
+		}
+		
 		return D('tag')->field($field)->where($where)->order($order)->limit($limit)->select();
 	}	
 	
@@ -182,7 +198,7 @@ class yzm_tag{
 		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 1;
 		$id = isset($data['id']) ? intval($data['id']) : 0;
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
-		return  D('tag_content')->field('id,tag')->join('yzmcms_tag b ON yzmcms_tag_content.tagid=b.id')->order('id DESC')->where('yzmcms_tag_content.modelid='.$modelid.' AND yzmcms_tag_content.aid='.$id)->limit($limit)->order('id ASC')->select();
+		return  D('tag_content')->field('id,tag')->join('yzmcms_tag b ON yzmcms_tag_content.tagid=b.id')->where('yzmcms_tag_content.modelid='.$modelid.' AND yzmcms_tag_content.aid='.$id)->limit($limit)->order('id ASC')->select();
 	}	
 	
 	
@@ -228,7 +244,7 @@ class yzm_tag{
 		$field = isset($data['field']) ? $data['field'] : '*';
 		$order = isset($data['order']) ? $data['order'] : 'id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
-		$where = isset($data['where']) ? $data['where'] : '`ischeck` = 1';
+		$where = isset($data['where']) ? $data['where'] : 'siteid='.get_siteid().' AND `ischeck` = 1';
 		$guestbook = D('guestbook');
 		if(isset($data['page'])){
 			yzm_base::load_sys_class('page','',0);
@@ -283,8 +299,9 @@ class yzm_tag{
 	 * @param $data
 	 */
 	public function comment_ranking($data) {
+		$where = 'siteid='.get_siteid();
 		$field = isset($data['field']) ? $data['field'] : 'title,url,total,catid';
-		$where = isset($data['modelid']) ? 'modelid='.intval($data['modelid']) : ''; 
+		if(isset($data['modelid'])) $where .= ' AND modelid='.intval($data['modelid']);
 		$order = '`total` DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
 		return D('comment_data')->field($field)->where($where)->order($order)->limit($limit)->select();
@@ -298,7 +315,7 @@ class yzm_tag{
 	 */
 	public function comment_newest($data) {
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
-		return D('comment')->field('userid,username,userpic,inputtime,content,title,url,catid,modelid')->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->where('`status`=1')->order('id DESC')->limit($limit)->select();
+		return D('comment')->field('userid,username,userpic,inputtime,content,title,url,catid,modelid')->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->where('yzmcms_comment.siteid='.get_siteid().' AND `status`=1')->order('id DESC')->limit($limit)->select();
 	}
 
 	
@@ -318,6 +335,89 @@ class yzm_tag{
 		return $this->db->field("FROM_UNIXTIME(inputtime, '$format') AS pubtime, count(*) AS total,inputtime")->where('`status`=1')->group("FROM_UNIXTIME(inputtime, '$format')")->order('pubtime DESC')->limit($limit)->select();
 	}
 
+
+	/**
+	 * 搜索标签
+	 * @param $data
+	 */
+	public function search($data) {
+		$siteid = isset($data['siteid']) ? intval($data['siteid']) : 0;
+		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 0;
+		$keyword = isset($data['keyword']) ? $data['keyword'] : '';
+		$field = isset($data['field']) ? $data['field'] : '*';
+		$order = isset($data['order']) ? $data['order'] : 'id DESC';
+		$limit = isset($data['limit']) ? $data['limit'] : '20';
+
+		switch(ROUTE_A) {
+			case 'init' :
+				$where = "`status` = 1 AND `title` LIKE '%$keyword%'";
+				if($modelid){
+					if(!$this->_set_model($modelid)) return false;
+					$db = $this->db;
+				}else{
+					$where = 'siteid = '.$siteid.' AND '.$where;
+					$db = D('all_content');
+				}
+
+				if(isset($data['page'])){
+					$this->total = $db->where($where)->total();
+					$this->page = new page($this->total, $limit);
+					$limit = $this->page->limit();
+				}
+
+				if($modelid) return $db->field($field)->where($where)->order($order)->limit($limit)->select();
+
+				$data = $db->field('modelid,id')->where($where)->order('allid DESC')->limit($limit)->select();
+				$search_data = array();
+				foreach ($data as $value) {
+					$res = D(get_model($value['modelid']))->field($field)->where(array('id'=>$value['id']))->find();
+					if(!$res) continue;
+					$search_data[] = $res;
+				}
+				return $search_data;
+			case 'tag' : 
+				$tagid = isset($_GET['id']) ? intval($_GET['id']) : 0;
+				$where = array('tagid' => $tagid);
+				$db = D('tag_content');
+
+				if(isset($data['page'])){
+					$this->total = $db->where($where)->total();
+					$this->page = new page($this->total, $limit);
+					$limit = $this->page->limit();
+				}
+
+				$data = $db->field('modelid,aid')->where($where)->order('modelid ASC,aid DESC')->limit($limit)->select();
+				$search_data = array();
+				foreach ($data as $value) {
+					$res = D(get_model($value['modelid']))->field($field)->where(array('id'=>$value['aid'],'status'=>1))->find();
+					if(!$res) continue;
+					$search_data[] = $res;
+				}
+				return $search_data;
+			case 'archives' : 
+				$pubtime = isset($_GET['pubtime']) ? intval($_GET['pubtime']) : 0;
+				$date = date('Y-m', $pubtime);
+				$starttime = strtotime($date); 
+				$endtime = strtotime("$date +1 month");
+				if(!$starttime || !$endtime) return false;  
+
+				$where = '`status` = 1 AND inputtime BETWEEN '.$starttime.' AND '.$endtime;
+				if(!$this->_set_model($modelid)) return false;
+				$db = $this->db; 
+
+				if(isset($data['page'])){
+					$this->total = $db->where($where)->total();
+					$this->page = new page($this->total, $limit);
+					$limit = $this->page->limit();
+				}
+
+				return $db->field($field)->where($where)->order($order)->limit($limit)->select();
+			default :
+				return false;
+		}
+		
+	}
+
 	
 	
 	/**
@@ -327,6 +427,7 @@ class yzm_tag{
 	public function get($data) {
 		if(!isset($data['sql'])) return false;
 		$sql = $data['sql'];
+		$order = isset($data['order']) ? $data['order'] : '';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
 		$db = D('admin');
 		if(isset($data['page'])){
@@ -337,11 +438,10 @@ class yzm_tag{
 			$this->page = new page($this->total, $limit);
 			$limit = $this->page->limit();
 		}
-		$sql = $sql.' LIMIT '.$limit;
+		$sql = $sql.$order.' LIMIT '.$limit;
 		return $db->fetch_all($db->query($sql));
 	}	
-	
-	
+		
 	
 	/**
 	 * 设置模型

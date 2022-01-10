@@ -140,9 +140,8 @@ class member_pay extends common{
 		if(!preg_match('/^([0-9]+)_([0-9]+)$/', $flag)) showmsg(L('illegal_parameters'), 'stop');
 		$readpoint = intval($auth_str[1]);
 		$paytype = intval($auth_str[2]);
-		$http_referer = $auth_str[3];
 		M('point')->point_spend($paytype,$readpoint,'7',$this->memberinfo['userid'],$this->memberinfo['username'],$flag);
-		showmsg('支付成功，请刷新原页面！', $http_referer, 2);
+		showmsg('支付成功，请刷新原页面！', '', 2);
 	}
 
 

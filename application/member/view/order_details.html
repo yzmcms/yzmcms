@@ -13,8 +13,10 @@
 			 <li><label>第三方交易单号</label> <?php echo $data['transaction'];?></li>
 			 <li><label>订单详情</label> <?php echo $data['desc'];?></li>
 			 <!-- <li><label>订单状态</label> <?php echo $this->order_status[$data['status']];?></li> -->
-			 <li><input type="hidden" name="dosubmit" value="1"><input type="hidden" name="id" value="<?php echo $data['id'];?>">
-			  <input class="btn w_120 btn-default radius" type="button" value="关闭" onclick="yzmcms_close()"></li>
+			 <li>
+			 	<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="id" value="<?php echo $data['id'];?>">
+			  	<input class="btn w_120 btn-default radius" type="button" value="关闭" onclick="yzmcms_close()">
+			 </li>
 		</ul>
 	</form>
 </div>

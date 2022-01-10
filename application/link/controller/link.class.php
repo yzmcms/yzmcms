@@ -24,9 +24,33 @@ class link extends common{
 		$of = in_array($of, array('id','listorder','typeid','linktype','addtime','status')) ? $of : 'listorder ASC, id';
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$link = D('link');
-		$total = $link->total();
+		$where = array('siteid'=>self::$siteid);
+		if(isset($_GET['dosubmit'])){	
+			$status = isset($_GET['status']) ? intval($_GET['status']) : 99;
+			$linktype = isset($_GET['linktype']) ? intval($_GET['linktype']) : 99;
+			$type = isset($_GET['type']) ? intval($_GET['type']) : 1;
+			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+
+			if($status != 99) $where['status'] = $status;
+			if($linktype != 99)  $where['linktype'] = $linktype;
+			if(isset($_GET['start']) && isset($_GET['end']) && $_GET['start']) {
+				$where['addtime>='] = strtotime($_GET['start']);
+				$where['addtime<='] = strtotime($_GET['end']);
+			}
+			if($searinfo != ''){
+				if($type == '1')
+					$where['name'] = '%'.$searinfo.'%';
+				elseif($type == '2')
+					$where['url'] = '%'.$searinfo.'%';
+				elseif($type == '3')
+					$where['username'] = '%'.$searinfo.'%';
+				else
+					$where['email'] = '%'.$searinfo.'%';
+			}
+		}
+		$total = $link->where($where)->total();
 		$page = new page($total, 15);
-		$data = $link->order("$of $or")->limit($page->limit())->select();		
+		$data = $link->where($where)->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('link_list');
 	}
 	
@@ -36,10 +60,13 @@ class link extends common{
 	 */
  	public function add() {
  		if(isset($_POST['dosubmit'])) {
+ 			$_POST['url'] = trim($_POST['url']);
 			if(!$_POST['url']) return_json(array('status'=>0,'message'=>'网站地址不能为空！'));
+
 			$link = D('link');
-			$res = $link->where(array('url' => $_POST['url']))->find();
-			if($res) return_json(array('status'=>0,'message'=>'该网站地址已存在！'));
+			$res = $link->where(array('siteid'=>self::$siteid, 'url'=>$_POST['url']))->find();
+			if($res) return_json(array('status'=>0, 'message'=>'该网站地址已存在！'));
+			$_POST['siteid'] = self::$siteid;										
 			$_POST['addtime'] = SYS_TIME;										
 			$link->insert($_POST, true);
 			return_json(array('status'=>1,'message'=>L('operation_success')));
@@ -57,9 +84,10 @@ class link extends common{
 		$link = D('link');
 		if(isset($_POST['dosubmit'])) {
 			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-		
+			
+			$_POST['url'] = trim($_POST['url']);
 			if($link->update($_POST, array('id' => $id), true)){
-				return_json(array('status'=>1,'message'=>L('operation_success')));
+				return_json(array('status'=>1, 'message'=>L('operation_success')));
 			}else{
 				return_json();
 			}

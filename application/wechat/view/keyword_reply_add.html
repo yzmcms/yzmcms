@@ -7,15 +7,29 @@
 <div class="formdoby_normal"> 
 	<form method="post" action="<?php echo U('add');?>" onsubmit="return dosub(this)">
 		<ul>
-			<li><label><span class="c-red">*</span>关键字：</label><input type="text" class="input" style="width:300px" placeholder="关键字不宜太长" name="keyword" value=""></li>
-			<li><label>关键字模式：</label><label><input class="radio" type="radio" name="keyword_type" value="1" checked="checked">完全匹配</label>&nbsp;&nbsp;
-	                <label><input class="radio" type="radio" name="keyword_type" value="0" >模糊匹配</label></li>
-			<li><label>回复模式：</label><label><input class="radio" type="radio" name="type" value="1" checked="checked">文本回复</label>&nbsp;&nbsp;
-	                <label><input class="radio" type="radio" name="type" value="0" >图文回复</label></li>
-			<li id="relation_id_li" style="display:none"><label>回复文章ID：</label><input type="text" class="input" style="width:450px" id="relation_id" placeholder="多个ID之间用“,”分隔，限制为8条以内" name="relation_id" readonly="readonly" value="">&nbsp;&nbsp;<a href="javascript:;" class="btn btn-default radius" onclick="yzm_open('选择文章','<?php echo U('select_article');?>',900,520)">选择文章</a></li>
-			<li id="content"><label>回复内容：</label><textarea class="textarea" name="content" style="width:450px"></textarea></li>
+			<li><label><span class="c-red">*</span>关键字：</label>
+				<input type="text" class="input" style="width:300px" placeholder="关键字长度控制在21个汉字之内" name="keyword" value="">
+			</li>
+			<li><label>关键字模式：</label>
+				<label><input class="radio" type="radio" name="keyword_type" value="1" checked="checked"> 完全匹配 </label>
+	            <label><input class="radio" type="radio" name="keyword_type" value="0" > 模糊匹配 </label>
+	        </li>
+			<li><label>回复模式：</label>
+				<label><input class="radio" type="radio" name="type" value="1" checked="checked"> 文本回复 </label>
+	            <label><input class="radio" type="radio" name="type" value="0" > 图文回复 </label>
+	        </li>
+			<li id="relation_id_li" style="display:none"><label>回复文章ID：</label>
+				<input type="text" class="input" style="width:450px" id="relation_id" placeholder="多个ID之间用“,”分隔，限制为8条以内" name="relation_id" readonly="readonly" value="">&nbsp;&nbsp;
+				<a href="javascript:;" class="btn btn-default radius" onclick="yzm_open('选择文章','<?php echo U('select_article');?>',900,525)">选择文章</a>
+			</li>
+			<li id="content"><label>回复内容：</label>
+				<textarea class="textarea" name="content" style="width:450px"></textarea>
+			</li>
 			<li></li>
-			<li><input type="hidden" name="dosubmit" value="1"><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"></li>
+			<li>
+				<input type="hidden" name="dosubmit" value="1">
+				<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
+			</li>
 		</ul>
 	</form>
 </div>

@@ -28,8 +28,8 @@
 			<div class="panel-body yzm-box-container">
 				<ul class="yzm-box">
 					<li class="col-xs-6">
-						<a data-title="全部文章"  _href="<?php echo U('admin/content/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" class="yzm-backlog-body">
-							<h3>全部文章</h3>
+						<a data-title="全部内容"  _href="<?php echo U('admin/content/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" class="yzm-backlog-body">
+							<h3>全部内容</h3>
 							<p><cite><?php echo $count[0];?></cite></p>
 						</a>
 					</li>
@@ -74,7 +74,7 @@
 				  </tr>
 				  <tr>
 					<td>上次登录IP</td>
-					<td><?php echo $_SESSION['admininfo']['loginip'];?></td>
+					<td><?php echo $_SESSION['admininfo']['loginip'] ? $_SESSION['admininfo']['loginip'] : '首次登录';?></td>
 				  </tr>
 				  <tr>
 					<td>登录日志</td>

@@ -79,7 +79,7 @@ class collection_content extends common {
 	public function del() {
 		if($_POST && is_array($_POST['id'])){
 			if(D('collection_node')->delete($_POST['id'], true)){
-				showmsg(L('operation_success'));
+				showmsg(L('operation_success'), '', 1);
 			}else{
 				showmsg(L('operation_failure'));
 			}
@@ -299,10 +299,10 @@ class collection_content extends common {
 			}
 			
 			$data['updatetime'] = $data['inputtime'];
-			$data['seo_title'] = $data['title'].'_'.$site_name;
 			$id = $content_tabname->insert($data);
 			$url = get_content_url($data['catid'], $id);
 
+			$data['siteid'] = get_siteid();
 			$data['modelid'] = $modelid;
 			$data['id'] = $id;
 			$data['url'] = $url;

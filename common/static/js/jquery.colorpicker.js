@@ -1,6 +1,9 @@
-/**
- * 颜色拾取器
- */
+ /**
+  * 颜色拾取器 - by qq:214243830
+  * YZMCMS内容管理系统  (yzm cms轻量级开源CMS)
+  * @author           袁志蒙  
+  * @license          http://www.yzmcms.com
+  */
 (function($) {
     var ColorHex=new Array('00','33','66','99','CC','FF');
     var SpColorHex=new Array('FF0000','00FF00','0000FF','FFFF00','00FFFF','FF00FF');

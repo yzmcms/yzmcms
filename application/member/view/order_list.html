@@ -13,7 +13,7 @@
      至 <input type="text" class="input-text laydate-icon" style="width:170px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d H:i:s'); ?>">
      <span class="select-box inline">
 		<select name="status" class="select">
-		<option <?php if(isset($_GET['status']) && $_GET['status']=='99'){?> selected <?php }?> value="99">全部</option>
+		<option <?php if(isset($_GET['status']) && $_GET['status']=='99'){?> selected <?php }?> value="99">订单状态</option>
 		<option <?php if(isset($_GET['status']) && $_GET['status']=='0'){?> selected <?php }?> value="0">未付款</option>
 		<option <?php if(isset($_GET['status']) && $_GET['status']=='1'){?> selected <?php }?> value="1">已付款</option>	
 		</select>
@@ -87,9 +87,9 @@
 <?php include $this->admin_tpl('footer', 'admin');?>
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
 <script type="text/javascript">
-	var start = {elem:'#start',format:'YYYY-MM-DD',min:'1999-01-01',max:'2099-01-01',istime:false,istoday:false,choose:function(datas){end.min = datas;end.start = datas}
+	var start = {elem:'#start',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){end.min = datas;end.start = datas}
 	};
-	var end = {elem:'#end',format:'YYYY-MM-DD',min:'1999-01-01',max:'2099-01-01',istime:false,istoday:false,choose:function(datas){start.max = datas;}};
+	var end = {elem:'#end',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){start.max = datas;}};
 	laydate(start);
 	laydate(end);
 </script>

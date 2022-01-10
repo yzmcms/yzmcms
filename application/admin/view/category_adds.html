@@ -12,12 +12,13 @@
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>选择模型：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<span class="select-box">
-						<select name="modelid" class="select" onchange="javascript:yzmcms_msg(this.value)">
+						<select name="modelid" class="select" onchange="javascript:yzm_change_template(this.value)">
 						  <?php 
 						      foreach($modelinfo as $val){
 									$str = $modelid==$val['modelid'] ? ' selected="selected" ' : '';
-									echo '<option value="'.$val['modelid'].'"'.$str.'>'.$val['name'].'</option>';
+									echo '<option value="'.$val['modelid'].'"'.$str.'>'.$val['name'].'('.$val['tablename'].')</option>';
 							  }
+							  if(!$modelinfo) echo '<option value="">暂无模型</option>';
 						  ?>
 						</select>
 						</span>
@@ -46,7 +47,7 @@
 					<label class="form-label col-xs-4 col-sm-2">栏目类型：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<label class="label_radio"><input name="type" type="radio" value="0" checked> 普通栏目</label>
-						<label class="label_radio"><input name="type" type="radio" value="1"> 单页面</label>
+						<!-- <label class="label_radio"><input name="type" type="radio" value="1"> 单页面</label> -->
 					</div>
 				</div>	
 				<div class="row cl">
@@ -66,52 +67,57 @@
 			</div>
 			<div class="tabCon">
 				<div class="row cl">
-					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>频道页模板：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<span class="select-box">
-						<select name="category_template" class="select">
+					<label class="form-label col-xs-4 col-sm-2">频道页模板：</label>
+					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
+						<span class="select-box" style="width:400px">
+						<select name="category_template" id="category_template" class="select">
 						  <?php 
 						      foreach($category_temp as $key => $val){
 									$str = $parent_temp&&$key==$parent_temp['category_template'] ? ' selected="selected" ' : '';
 									echo '<option value="'.$key.'"'.$str.'>'.$val.'('.$key.')</option>';
 							  }
+							  if(!$category_temp) echo '<option value="">暂无模板</option>';
 						  ?>
 						</select>
 						</span>
+						<span class="yzm-explain">频道页模板命名规则：<br>category_<i class="model_table"><?php echo $tablename;?></i>.html<br> 或 category_<i class="model_table"><?php echo $tablename;?></i>_*.html</span>
 					</div>
 				</div>	
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>列表页模板：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<span class="select-box">
-						<select name="list_template" class="select">
+					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
+						<span class="select-box" style="width:400px">
+						<select name="list_template" id="list_template" class="select">
 						  <?php 
 						      foreach($list_temp as $key => $val){
 									$str = $parent_temp&&$key==$parent_temp['list_template'] ? ' selected="selected" ' : '';
 									echo '<option value="'.$key.'"'.$str.'>'.$val.'('.$key.')</option>';
 							  }
+							  if(!$list_temp) echo '<option value="">暂无模板</option>';
 						  ?>
 						</select>
 						</span>
+						<span class="yzm-explain">列表页模板命名规则：<br>list_<i class="model_table"><?php echo $tablename;?></i>.html<br> 或 list_<i class="model_table"><?php echo $tablename;?></i>_*.html</span>
 					</div>
 				</div>	
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>内容页模板：</label>
-					<div class="formControls col-xs-8 col-sm-9">
-						<span class="select-box">
-						<select name="show_template" class="select">
+					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
+						<span class="select-box" style="width:400px">
+						<select name="show_template" id="show_template" class="select">
 						  <?php 
 						      foreach($show_temp as $key => $val){
 									$str = $parent_temp&&$key==$parent_temp['show_template'] ? ' selected="selected" ' : '';
 									echo '<option value="'.$key.'"'.$str.'>'.$val.'('.$key.')</option>';
 							  }
+							  if(!$show_temp) echo '<option value="">暂无模板</option>';
 						  ?>
 						</select>
 						</span>
+						<span class="yzm-explain">内容页模板命名规则：<br>show_<i class="model_table"><?php echo $tablename;?></i>.html<br> 或 show_<i class="model_table"><?php echo $tablename;?></i>_*.html</span>
 					</div>
 				</div>					
 			</div>
-
 		</div>
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
@@ -124,7 +130,7 @@
 </div>
 
 <?php include $this->admin_tpl('footer');?>
-<script type="text/javascript" src="<?php echo STATIC_URL;?>js/pinyin.js"></script> 
+<script type="text/javascript" src="<?php echo STATIC_URL;?>js/yzm-pinyin.js"></script> 
 
 <script type="text/javascript">
 
@@ -142,7 +148,7 @@ function yzmcms_pinyin() {
 		}else{
 			value = lines[i].split('|'); 
 			if(!reg.test(value[1])){
-				layer.msg('英文名称「'+value[1]+'」格式不正确！');
+				layer.msg('英文名称「'+value[1]+'」格式不正确！', {icon:2});
 				return false;
 			}
 		}
@@ -152,13 +158,36 @@ function yzmcms_pinyin() {
 	$(".textarea").val(str);
 }
 
-function yzmcms_msg(modelid){
-	if(modelid != 1){
-		layer.alert('您选择的非文章模型，记得选择不同的模板哦');
-	}
+function yzm_change_template(modelid){
+	$.ajax({
+		type: 'GET',
+		url: '<?php echo U('public_category_template');?>?modelid='+modelid, 
+		dataType: "json", 
+		success: function (msg) {
+			var category_template='',list_template='',show_template='';
+			var options = '<option value="">暂无模板</option>';
+			for(var info in msg.category_template) {
+			    category_template += '<option value="'+info+'">'+msg.category_template[info]+'('+info+')</option>';
+			}
+			for(var info in msg.list_template) {
+			    list_template += '<option value="'+info+'">'+msg.list_template[info]+'('+info+')</option>';
+			}
+			for(var info in msg.show_template) {
+			    show_template += '<option value="'+info+'">'+msg.show_template[info]+'('+info+')</option>';
+			}
+			$('#category_template').html(category_template ? category_template : options);
+			$('#list_template').html(list_template ? list_template : options);
+			$('#show_template').html(show_template ? show_template : options);
+			$('.model_table').html(msg.tablename);
+		}
+	})
 }
 
 function dosub(obj){
+	if($("select[name='modelid']").val()==''){
+		layer.msg('请新建模型后再创建栏目！', {icon:2});
+		return false;
+	}
 	var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[-/]){0,29}$/;
 	if($("textarea[name='catnames']").val()==''){
 		layer.msg('栏目名称不能为空！', {icon:2});
@@ -168,16 +197,17 @@ function dosub(obj){
 		layer.msg('栏目英文名称有错误，请检查！', {icon:2});
 		return false;
 	}
-	if($("select[name='category_template']").val()=='0'){
-		layer.msg('请选择频道页模板！', {icon:2});
+	// if($("select[name='category_template']").val()==''){
+	// 	layer.msg('请选择频道页模板！', {icon:2});
+	// 	$.Huitab("#tab_system .tabBar span","#tab_system .tabCon","current","click","1");
+	// 	return false;
+	// }
+	if($("select[name='list_template']").val()==''){
+		layer.msg('请选择列表页模板！', {icon:2});
 		$.Huitab("#tab_system .tabBar span","#tab_system .tabCon","current","click","1");
 		return false;
 	}
-	if($("select[name='list_template']").val()=='0'){
-		layer.msg('请选择列表页模板！', {icon:2});
-		return false;
-	}
-	if($("select[name='show_template']").val()=='0'){
+	if($("select[name='show_template']").val()==''){
 		layer.msg('请选择内容页模板！', {icon:2});
 		return false;
 	}		

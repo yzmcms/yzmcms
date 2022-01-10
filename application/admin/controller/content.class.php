@@ -61,14 +61,11 @@ class content extends common {
 			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
 
-			if($searinfo != ''){
-				if($type == '1')
-					$where .= ' AND title LIKE \'%'.$searinfo.'%\'';
-				else
-					$where .= ' AND username LIKE \'%'.$searinfo.'%\'';
-			}
+			if(isset($_GET["status"]) && $_GET["status"] != '99'){
+				$where .= ' AND status = '.intval($_GET["status"]);
+			}	
 
-			if($catid != '0'){
+			if($catid){
 				$where .= ' AND catid='.$catid;
 			}
 
@@ -80,10 +77,13 @@ class content extends common {
 				$where .= ' AND FIND_IN_SET('.intval($_GET["flag"]).',flag)';
 			}
 
-			if(isset($_GET["status"]) && $_GET["status"] != '99'){
-				$where .= ' AND status = '.intval($_GET["status"]);
-			}	
-			
+			if($searinfo != ''){
+				if($type == '1')
+					$where .= ' AND title LIKE \'%'.$searinfo.'%\'';
+				else
+					$where .= ' AND username LIKE \'%'.$searinfo.'%\'';
+			}
+
 		}
 		$_GET = array_map('htmlspecialchars', $_GET);
 		$total = $content_db->where($where)->total();
@@ -149,6 +149,7 @@ class content extends common {
 			$content_form = new content_form($_GET['modelid']);
 			$string = $content_form->content_edit($data);
 			$member_group = get_groupinfo();
+			if(!$data['issystem']) $allid = D('all_content')->field('allid')->where(array('modelid'=>$this->content->modelid, 'id'=>$id))->one();
 			include $this->admin_tpl('content_edit');	
 		}
 	}
@@ -168,7 +169,7 @@ class content extends common {
 				$this->content->content_delete($id); 
 			}
 		}
-		showmsg(L('operation_success'),'',1);
+		return_json(array('status'=>1,'message'=>L('operation_success')));
 	}
 
 
@@ -191,22 +192,26 @@ class content extends common {
 	public function baidu_push() {
 		if($_POST && is_array($_POST['ids'])){
 			$ids_arr = array_map('intval', $_POST['ids']);
-			if(empty($ids_arr)) showmsg(L('lose_parameters'), 'stop');
+			if(empty($ids_arr)) return_json(array('status'=>0,'message'=>L('lose_parameters')));
 			$ids = join(',', $ids_arr);
 			$content = D($this->content->tabname);
 			$data = $content->field('url,is_push')->where('id IN ('.$ids.')')->select();
 			$urls = array();
-			$site_url = get_config('site_url');
+			$site_url = get_site_url();
 			foreach ($data as $value) {
 				if($value['is_push']) continue;
 				$urls[] = strpos($value['url'], '://') ? $value['url'] : $site_url.$value['url'];
 			}
 			if(!empty($urls)){
-				$baidu_push_token = get_config('baidu_push_token');
-				if(!$baidu_push_token) showmsg('token值为空，请到系统设置中配置！', 'stop');
-				$length = strpos(HTTP_HOST, ':');
-				$http_host = $length ? substr(HTTP_HOST, 0, $length) : HTTP_HOST;
-				$api_url = 'http://data.zz.baidu.com/urls?site='.$http_host.'&token='.$baidu_push_token;
+				if(self::$siteid){
+					$baidu_push_token = get_site(self::$siteid, 'baidu_push_token');
+					if(!$baidu_push_token) return_json(array('status'=>0,'message'=>'百度推送token为空，请到站点管理中配置！'));
+				}else{
+					$baidu_push_token = get_config('baidu_push_token');
+					if(!$baidu_push_token) return_json(array('status'=>0,'message'=>'百度推送token为空，请到系统管理中配置！'));
+				}
+				
+				$api_url = 'http://data.zz.baidu.com/urls?site='.rtrim($site_url, '/').'&token='.$baidu_push_token;
 				$ch = curl_init();
 				$options =  array(
 				    CURLOPT_URL => $api_url,
@@ -221,13 +226,12 @@ class content extends common {
 				$result = json_decode($result, true);
 				if(isset($result['success'])){
 					$content->update(array('is_push' => 1), 'id IN ('.$ids.')');
-					showmsg('成功推送'.$result['success'].'条URL地址！', '', 2);
+					return_json(array('status'=>1,'message'=>'成功推送'.$result['success'].'条URL地址！'));
 				}else{
-					showmsg('推送失败，错误码：'.$result['error'], 'stop');
+					return_json(array('status'=>0,'message'=>'推送失败，错误码：'.$result['error']));
 				}
 			}
-
-			showmsg('没有数据被推送！', '', 2);
+			return_json(array('status'=>0,'message'=>'没有数据被推送！'));
 		}
 	}
 
@@ -281,6 +285,7 @@ class content extends common {
 					$target_db->update(array('url' => get_content_url($catid, $target_id)), array('id' => $target_id));
 					$res['url'] = get_content_url($catid, $target_id);
 				}
+				$res['siteid'] = get_siteid();
 				$res['modelid'] = $target_modelid;
 				$res['id'] = $target_id;
 				$all_content->insert($res);

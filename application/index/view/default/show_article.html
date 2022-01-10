@@ -29,8 +29,15 @@
 		 	    	 <span>编辑：{$nickname}  </span>   
 		 	    	 <span>浏览：{$click}</span>   
 		 	    	</div>
+		 	    	<div class="yzm-content-description">
+		 	    		{$description}
+		 	    	</div>
 		 	    	<div class="yzm-content">
-		 	    		{$content}
+		 	    		{if $allow_read}
+		 	    			{$content}
+		 	    		{else}
+		 	    			<p class="yzm-content-read-tips">阅读此内容需要您支付<span>{$readpoint}</span>{if $paytype==1}点积分{else}元{/if}，<a href="{$pay_url}">点击支付</a></p>
+		 	    		{/if}
 		 	    	</div>
 		 	    	<div class="yzm-content-tag">
 			 	    	{m:centent_tag modelid="$modelid" id="$id" limit="10"}
@@ -180,7 +187,7 @@
 	 	 			<h2>热门标签</h2>
 	 	 		</div>
 			    <ul class="yzm-tag-list">
-				{m:tag field="id,tag,total,remarks" limit="30"}
+				{m:tag field="id,tag,total" limit="30"}
 				{loop $data $v}
 				   <li><a href="{tag_url($v['id'])}" target="_blank">{$v[tag]}({$v[total]})</a></li>	
 				{/loop}						

@@ -4,26 +4,26 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>后台管理登录 - YzmCMS内容管理系统</title>
-	<link rel="stylesheet" href="<?php echo STATIC_URL;?>admin/yzm_admin/css/yzm.admin.login.css" />
+	<link rel="stylesheet" href="<?php echo STATIC_URL;?>admin/yzm_admin/css/yzm.admin.login.css?v=yzmcms" />
 	<link rel="Shortcut Icon" href="<?php echo STATIC_URL;?>admin/yzm_admin/images/favicon.ico" />
 </head>
 <body>
 	<div class="yzm-loginwarrp">
 		<div class="yzm-logo">管理员登录</div>
         <div class="yzm-login-form">
-			<form method="post" action="">
+			<form method="post" action="" onsubmit="return dologin(this)">
 			    <ul>
 					<li class="yzm-login-item">
-						<input type="text" name="username" class="yzm-login-input" required="required" autofocus="autofocus" placeholder="请输入用户名">
+						<input type="text" name="username" class="yzm-login-input" autofocus="autofocus" placeholder="请输入用户名">
 						<span>用户名：</span>
 					</li>
 					<li class="yzm-login-item">					
-						<input type="password" name="password" class="yzm-login-input" required="required" placeholder="请输入密码">
-						<span>密　码：</span>
+						<input type="password" name="password" class="yzm-login-input" placeholder="请输入密码">
+						<span>密码：</span>
 					</li>
 					<li class="yzm-login-item">
-						<img src="<?php echo U('api/index/code');?>" border="0" class="yzm-verifyimg" onclick="this.src=this.src+'?'"/>
-						<input type="text" name="code" class="yzm-login-input yzm-verify-input" required="required" placeholder="请输入验证码">
+						<img src="<?php echo U('api/index/code');?>" id="codeimg" class="yzm-verifyimg" onclick="this.src=this.src+'?'"/>
+						<input type="text" name="code" class="yzm-login-input yzm-verify-input" placeholder="请输入验证码">
 						<span>验证码：</span>
 					</li>
 					<li class="yzm-login-sub">
@@ -33,6 +33,42 @@
            </form>
 		</div>
 	</div>
-	<div class="yzm-footer"><p>Powered By <a href="http://www.yzmcms.com" target="_blank" title="<?php echo YZMCMS_SOFTNAME;?>"><?php echo YZMCMS_SOFTNAME;?></a> © 2014-2021 袁志蒙工作室</p></div>
+	<div class="yzm-footer"><p>Powered By <a href="http://www.yzmcms.com" target="_blank" title="<?php echo YZMCMS_SOFTNAME;?>"><?php echo YZMCMS_SOFTNAME;?></a> © 2014-2022 袁志蒙工作室</p></div>
+	<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/jquery/1.8.2/jquery.min.js"></script> 
+	<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/layer/layer.js"></script>
+	<script type="text/javascript">
+		function dologin(obj) {
+			if(obj.username.value==''){
+				layer.msg('请输入用户名！', {icon:2});
+				return false;
+			}
+			if(obj.password.value==''){
+				layer.msg('请输入密码！', {icon:2});
+				return false;
+			}
+			if(obj.code.value==''){
+				layer.msg('请输入验证码！', {icon:2});
+				return false;
+			}
+			layer.msg('正在登录……', {icon:16, time:0, shade:0.3});
+	        $.ajax({
+	            type: 'POST',
+	            url: '<?php echo U('login');?>', 
+	            data: $(obj).serialize(),
+			    dataType: "json", 
+	            success: function (msg) {
+	            	$("#codeimg").attr('src',$("#codeimg").attr('src') + '?' + Math.random());
+					if(msg.status == 1){
+						layer.msg(msg.message, {icon:1, time:1200}, function(){
+							window.location.href = msg.url;
+						});
+				    }else{
+						layer.msg(msg.message, {icon:2});
+					}
+	            }
+	        })		 
+			return false;			
+		}
+	</script>
 </body>
 </html>

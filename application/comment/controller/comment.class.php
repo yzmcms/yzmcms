@@ -23,12 +23,14 @@ class comment extends common {
 		$or = input('get.or');
 		$of = in_array($of, array('id','username','title','inputtime','ip','status')) ? $of : 'id';
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
+		$site_url = self::$siteid ? rtrim(get_site_url(), '/') : '';
 		$modelid = 0;
-		$modelinfo = get_modelinfo();
+		$modelinfo = get_site_modelinfo();
 		$comment = D('comment');
-		$total = $comment->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->total();
+		$where = array('a.siteid'=>self::$siteid);
+		$total = $comment->alias('a')->join('yzmcms_comment_data b ON a.commentid=b.commentid')->where($where)->total();
 		$page = new page($total, 15);
-		$data = $comment->field('yzmcms_comment.*,b.title,b.url')->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->order("$of $or")->limit($page->limit())->select();		
+		$data = $comment->alias('a')->field('a.*,b.title,b.url')->join('yzmcms_comment_data b ON a.commentid=b.commentid')->where($where)->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('comment_list');
 	}
 
@@ -41,27 +43,35 @@ class comment extends common {
 		$or = input('get.or');
 		$of = in_array($of, array('id','username','title','inputtime','ip','status')) ? $of : 'id';
 		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
-		$where = '1=1';
+		$where = 'a.siteid = '.self::$siteid;
 		if(isset($_GET['dosubmit'])){
 			$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 0;
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
 			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
 			$status = isset($_GET["status"]) ? intval($_GET["status"]) : 99 ;
 			if($modelid) $where .= ' AND modelid = '.$modelid;
-			if($searinfo != ''){
-				if($type == '1')
-					$where .= ' AND title LIKE \'%'.$searinfo.'%\'';
-				else
-					$where .= ' AND username LIKE \'%'.$searinfo.'%\'';
-			}			
 			if($status != 99) $where .= ' AND status = '.$status;
+			if(isset($_GET["start"]) && $_GET["start"] != '' && $_GET["end"]){		
+				$where .= ' AND inputtime BETWEEN '.strtotime($_GET["start"]).' AND '.strtotime($_GET["end"]);
+			}
+			if($searinfo != ''){
+				if($type == '1'){
+					$where .= ' AND title LIKE \'%'.$searinfo.'%\'';
+				}elseif($type == '2'){
+					$where .= ' AND content LIKE \'%'.$searinfo.'%\'';
+				}else{
+					$where .= ' AND username LIKE \'%'.$searinfo.'%\'';
+				}
+					
+			}			
 		}		
 		$_GET = array_map('htmlspecialchars', $_GET);
-		$modelinfo = get_modelinfo();
+		$site_url = self::$siteid ? rtrim(get_site_url(), '/') : '';
+		$modelinfo = get_site_modelinfo();
 		$comment = D('comment');
-		$total = $comment->where($where)->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->total();
+		$total = $comment->alias('a')->where($where)->join('yzmcms_comment_data b ON a.commentid=b.commentid')->total();
 		$page = new page($total, 15);
-		$data = $comment->field('yzmcms_comment.*,b.title,b.url')->where($where)->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->order("$of $or")->limit($page->limit())->select();		
+		$data = $comment->alias('a')->field('a.*,b.title,b.url')->where($where)->join('yzmcms_comment_data b ON a.commentid=b.commentid')->order("$of $or")->limit($page->limit())->select();		
 		include $this->admin_tpl('comment_list');
 	}
 

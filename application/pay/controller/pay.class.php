@@ -36,6 +36,7 @@ class pay extends common {
 			$data['enabled'] = intval($_POST['enabled']);
 			$data['config'] = array2string($_POST['config']);
 			if(D('pay_mode')->update($data, array('id'=>$id))){
+				delcache('alipay');
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();

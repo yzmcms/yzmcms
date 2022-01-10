@@ -1,13 +1,20 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
 <title>添加广告 - YzmCMS内容管理系统</title>
+<style>
+	.upload-btn{height:33px;}
+</style>
 </head>
 <body>
 <article class="page-container">
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label><span class="c-red">*</span>广告名称</label><input type="text" placeholder="广告名称" class="input" name="title" value=""></li>
-			 <li><label><span class="c-red">*</span>链接地址</label><input type="url" placeholder="要加http://" class="input" name="url" value="" style="width:400px"></li>
+			 <li><label><span class="c-red">*</span>广告名称</label>
+			 	<input type="text" placeholder="广告名称" class="input" name="title" value="">
+			 </li>
+			 <li><label><span class="c-red">*</span>链接地址</label>
+			 	<input type="url" placeholder="要加http://" class="input" name="url" value="" style="width:400px">
+			 </li>
 			 <li><label><span class="c-red">*</span>广告类型</label>
 			 <span class="span_input">
 			 	<label class="label_radio"><input name="type" type="radio" value="1" checked> 文字形式</label>
@@ -15,15 +22,23 @@
 			 	<label class="label_radio"><input name="type" type="radio" value="3"> 图片形式</label>
 			 </span>
 			 </li>
-			 <li id="adver_text"><label><span class="c-red">*</span>广告值</label><textarea name="text" class="textarea" style="width:400px"></textarea></li>
-			 <li id="adver_img" style="display:none"><label><span class="c-red">*</span>选择图像</label><?php echo form::image('img');?></li>
-			 <li class="yzm-explain-box"><label>开始时间</label><input type="text" class="input-text laydate-icon" id="start" style="width:230px;height:30px;" name="start_time" value=""> 
+			 <li id="adver_text"><label><span class="c-red">*</span>广告值</label>
+			 	<textarea name="text" class="textarea" style="width:400px"></textarea>
+			 </li>
+			 <li id="adver_img" style="display:none"><label><span class="c-red">*</span>选择图像</label>
+			 	<?php echo form::image('img');?>
+			 </li>
+			 <li class="yzm-explain-box"><label>开始时间</label>
+			 	<input type="text" class="input-text laydate-icon" id="start" style="width:230px;height:30px;" name="start_time" value=""> 
 			 	<span class="yzm-explain">留空为不限制</span>
 			 </li>
-			 <li class="yzm-explain-box"><label>结束时间</label><input type="text" class="input-text laydate-icon" id="end" style="width:230px;height:30px;" name="end_time" value="">
+			 <li class="yzm-explain-box"><label>结束时间</label>
+			 	<input type="text" class="input-text laydate-icon" id="end" style="width:230px;height:30px;" name="end_time" value="">
 			 	<span class="yzm-explain">留空为不限制</span>
 			 </li>
-			 <li><label>简洁描述</label><span class="span_input"><input type="text" class="input" name="describe" value="" style="width:500px"></span></li>			 
+			 <li><label>简洁描述</label>
+			 	<span class="span_input"><input type="text" class="input" name="describe" value="" style="width:500px"></span>
+			 </li>			 
 			 <li><input type="hidden" name="dosubmit" value="1">
 			 <input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
 			 <input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">

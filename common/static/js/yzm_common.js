@@ -1,5 +1,5 @@
 /**
- * YzmCMS 公共js文件 
+ * YzmCMS 公共js文件 (yzm cms轻量级开源CMS)
  * 
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
@@ -229,6 +229,7 @@ function yzm_page_jump(obj) {
 	}
 	url = url.replace("PAGE", page);
 	window.location.href = url;
+	return false;
 }
 
 

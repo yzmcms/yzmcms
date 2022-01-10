@@ -34,7 +34,7 @@ class keyword_link extends common {
 		if($_POST && is_array($_POST['id'])){
 			if(D('keyword_link')->delete($_POST['id'], true)){
 				delcache('keyword_link');	
-				showmsg(L('operation_success'));
+				showmsg(L('operation_success'), '', 1);
 			}else{
 				showmsg(L('operation_failure'));
 			}

@@ -22,8 +22,8 @@
 		<div class="box">
 			<!-- 轮播图 开始 -->
 			<!-- 
-				这里并没有调用后台自带的轮播图，如果有需要请自行调用轮播图标签即可，
-				YzmCMS标签大全：https://blog.yzmcms.com/php/76.html 
+				这里并没有调用后台自带的轮播图，如有需要调用后台轮播图请查看教程，
+				https://www.yzmcms.com/dongtai/130.html
 			-->
 			<div class="swiper-container yzm-banner">
 				 <div class="swiper-wrapper">
@@ -47,14 +47,14 @@
 
 			<div class="yzm-content-box yzm-top-right">
 				<div class="yzm-title">
-					<h2>推荐文章</h2>
+					<h2>最近更新</h2>
 				</div>
 				<ul class="yzm-ranking">
-					<!-- 此处为功能演示，调取内容属性为“推荐”的内容 -->
-					{m:lists field="title,url,color,inputtime" modelid="1" flag="4" limit="10"}
+					<!-- 此处为功能演示，调取全站(不限模型)最近更新内容，加 allsite="1" 属性，即可调用分站内容 -->
+					{m:all field="title,url,inputtime" limit="10"}
 					{loop $data $k=>$v}
 					{php $k=$k+1;}
-					   <li><em>{$k}</em><span class="date">{date('m-d',$v['inputtime'])}</span><a href="{$v[url]}" title="{$v[title]}" target="_blank">{title_color($v['title'], $v['color'])}</a></li>	
+					   <li><em>{$k}</em><span class="date">{date('m-d',$v['inputtime'])}</span><a href="{$v[url]}" title="{$v[title]}" target="_blank">{$v[title]}</a></li>	
 					{/loop}	
 				</ul>
 			</div>
@@ -62,10 +62,10 @@
 			<div class="yzm-line"></div>
 			<div class="yzm-content-box yzm-text-thumbs">
 				<div class="yzm-title">
-					<h2>最近更新</h2> 
+					<h2>推荐文章</h2> 
 				</div>
-				<!-- 此处仅为功能演示，不分栏目，调取模型ID(modelid)为1的所有内容 -->
-				{m:lists field="title,description,url,color,thumb" modelid="1" limit="4"}
+				<!-- 此处仅为功能演示，不分栏目，调取模型ID(modelid)为1的推荐文章 -->
+				{m:lists field="title,description,url,color,thumb" modelid="1" flag="4" limit="4"}
 				{loop $data $v}
 					<div class="yzm-text-thumb">
 						<a href="{$v[url]}" class="yzm-text-thumbl">
@@ -140,7 +140,7 @@
 					<h2>热门标签</h2>
 				</div>
 			    <ul>
-				{m:tag field="id,tag,total,remarks" limit="27"}
+				{m:tag field="id,tag,total" limit="27"}
 				{loop $data $v}
 				   <li><a href="{tag_url($v['id'])}" target="_blank">{$v[tag]}({$v[total]})</a></li>	
 				{/loop}						

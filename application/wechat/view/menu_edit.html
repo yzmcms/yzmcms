@@ -6,7 +6,9 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			<li class="yzm-explain-box"><label><span class="c-red">*</span>上级菜单：</label><select  name="parentid" class="select" disabled="disabled" style="width:300px">
+			<li class="yzm-explain-box">
+			<label><span class="c-red">*</span>上级菜单：</label>
+			<select  name="parentid" class="select" disabled="disabled" style="width:300px">
 				<option value="0">一级菜单</option>
 			   <?php 
 				foreach($res as $val){
@@ -19,25 +21,33 @@
 			</li>
 			<li class="yzm-explain-box">
 				<label><span class="c-red">*</span>菜单名称：</label>
-				<input type="text" class="input" style="width:300px" name="name" value="<?php echo $data['name']?>" placeholder="请输入菜单名称">
+				<input type="text" class="input" style="width:286px" name="name" value="<?php echo $data['name']?>" placeholder="请输入菜单名称">
 				<span class="yzm-explain">一级菜单最多4个汉字，二级菜单最多7个汉字，多出来的部分将会以“...”代替。</span>
 			</li>
-			<li><label>菜单类型：</label>
+			<li>
+				<label>菜单类型：</label>
 				<select  name="type" class="select" style="width:300px" onchange="javascript:setting(this.value);">
 				<option value="1">关键字</option>	
 				<option value="2" <?php if($data['type'] == 2) echo 'selected';?>>跳转链接</option>	
 				</select>
 			</li>
-			<li class="yzm-explain-box"><label>Key/URL：</label>
-			<input type="text" class="input" style="width:300px;<?php if($data['type'] == 2) echo 'display:none';?>" name="keyword" id="keyword" value="<?php echo $data['keyword']?>">
-			<input type="text" class="input" style="width:300px;<?php if($data['type'] == 1) echo 'display:none';?>" name="url" id="url" value="<?php echo $data['url']?>">
-			<span class="yzm-explain">该菜单为一级菜单，且该菜单下有二级菜单时，此选项为空，否则不为空！</span>
+			<li class="yzm-explain-box">
+				<label>Key/URL：</label>
+				<input type="text" class="input" style="width:286px;<?php if($data['type'] == 2) echo 'display:none';?>" name="keyword" id="keyword" value="<?php echo $data['keyword']?>">
+				<input type="text" class="input" style="width:286px;<?php if($data['type'] == 1) echo 'display:none';?>" name="url" id="url" value="<?php echo $data['url']?>">
+				<span class="yzm-explain">该菜单为一级菜单，且该菜单下有二级菜单时，此选项为空，否则不为空！</span>
 			</li>
-			<li></li>
-			<li class="yzm-explain-box"><label>菜单排序：</label><input type="text" class="input" style="width:100px;" name="listorder" value="<?php echo $data['listorder']?>"> 
+			<li class="yzm-explain-box">
+				<label>菜单排序：</label>
+				<input type="text" class="input" style="width:100px;" name="listorder" value="<?php echo $data['listorder']?>"> 
 				<span class="yzm-explain">由小到大排列</span>
 			</li>
-			<li><input type="hidden" name="id" value="<?php echo $data['id']?>"><input type="hidden" name="dosubmit" value="1"><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"> <input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()"></li>
+			<li>
+				<input type="hidden" name="id" value="<?php echo $data['id']?>">
+				<input type="hidden" name="dosubmit" value="1">
+				<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交"> 
+				<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			</li>
 		</ul>
 	</form>
 </div>
@@ -66,9 +76,11 @@
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.location.reload();       
+					layer.msg(msg.message, {icon:1,time:1500}, function(){
+						parent.location.reload();     
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

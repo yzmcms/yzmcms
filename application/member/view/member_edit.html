@@ -57,13 +57,13 @@
 				<tr>
 					<td>账户余额</td>
 					<td>
-					<input type="text" name="amount" value="<?php echo $data['amount']; ?>" disabled class="input-text w_120"> *  更改金钱已移动至「<a data-title="在线充值" style="color:#3b639f" _href="<?php echo U('member/recharge');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
+					<input type="text" name="amount" value="<?php echo $data['amount']; ?>" disabled class="input-text w_120"> *  更改金钱已移动至「<a data-title="在线充值" style="color:#3b639f" _href="<?php echo U('member/recharge',array('username'=>$data['username']));?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
 					</td>
 				</tr>
 				<tr>
 					<td>积分点数</td>
 					<td>
-					<input type="text" name="point" value="<?php echo $data['point']; ?>" disabled class="input-text w_120"> *  更改积分已移动至「<a data-title="在线充值" style="color:#3b639f" _href="<?php echo U('member/recharge');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
+					<input type="text" name="point" value="<?php echo $data['point']; ?>" disabled class="input-text w_120"> *  更改积分已移动至「<a data-title="在线充值" style="color:#3b639f" _href="<?php echo U('member/recharge',array('username'=>$data['username']));?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
 					</td>
 				</tr>
 				<tr>
@@ -125,8 +125,8 @@
 				<tr>
 					<td>性别</td> 
 					<td>
-					<label><input class="radio" type="radio" name="sex" value="男" <?php if($data['sex'] != '女') echo 'checked="checked"'; ?>>男</label>&nbsp;&nbsp;
-	                <label><input class="radio" type="radio" name="sex" value="女" <?php if($data['sex'] == '女') echo 'checked="checked"'; ?>>女</label>			
+					<label><input class="radio" type="radio" name="sex" value="男" <?php if($data['sex'] != '女') echo 'checked="checked"'; ?>> 男 </label>&nbsp;&nbsp;
+	                <label><input class="radio" type="radio" name="sex" value="女" <?php if($data['sex'] == '女') echo 'checked="checked"'; ?>> 女 </label>			
 					</td>
 				</tr>
 				<tr>
@@ -210,7 +210,7 @@
 </article>
 <?php include $this->admin_tpl('footer', 'admin');?> 
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
-<script type="text/javascript" src="<?php echo STATIC_URL;?>js/address.js"></script>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>js/yzm-address.js"></script>
 <script type="text/javascript">
 	!function(){
 		laydate({elem: '#birthday'});  //绑定生日，防止日期插件冲突

@@ -11,11 +11,17 @@ defined('IN_YZMPHP') or exit('Access Denied');
 
 class index{
 	
-	public $modelid, $modelinfo;
+	public $siteid, $siteinfo, $modelid, $modelinfo;
 	public function __construct() {
 		
+		$this->siteid = get_siteid();
+		$this->siteinfo = array();
 		$this->modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : (isset($_POST['modelid']) ? intval($_POST['modelid']) : 0);
 		if(ROUTE_A != 'init')	$this->_check_model();
+		if($this->siteid){
+			$this->siteinfo = get_site($this->siteid);
+			set_module_theme($this->siteinfo['site_theme']);
+		}
 	}
 
 	
@@ -30,10 +36,9 @@ class index{
 		$formdata = $model->where(array('type'=>1, 'disabled'=>0))->order('modelid DESC')->limit($page->limit())->select();
 		
 		//SEO相关设置
-		$site = get_config();
-		$seo_title = '自定义表单列表_'.$site['site_name'];
-		$keywords = $site['site_keyword'];
-		$description = $site['site_description'];
+		$site = array_merge(get_config(), $this->siteinfo);
+		list($seo_title, $keywords, $description) = get_site_seo($this->siteid, '自定义表单列表');	
+
 		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
 		include template('index', 'list_diyform');	
 	}
@@ -50,10 +55,9 @@ class index{
 		$template = $modelinfo['show_template'];
 		
 		//SEO相关设置
-		$site = get_config();
-		$seo_title = $title.'_'.$site['site_name'];
-		$keywords = $site['site_keyword'];
-		$description = $modelinfo['description'] ? $modelinfo['description'] : $site['site_description'];
+		$site = array_merge(get_config(), $this->siteinfo);
+		list($seo_title, $keywords, $description) = get_site_seo($this->siteid, $title);
+		$description = $modelinfo['description'] ? $modelinfo['description'] : $description;
 		
 		//获取当前位置
 		$location = '<a href="'.SITE_URL.'">首页</a> &gt; <a href="'.U('init').'">'.$modelinfo['name'].'</a> &gt;显示页';
@@ -108,7 +112,7 @@ class index{
 				'您的网站-表单（'.$this->modelinfo['name'].'）有新的消息，<a href="'.get_config('site_url').'">请查看</a>！<br> <b>'.get_config('site_name').'</b>');
 			}
 			
-			showmsg(L('operation_success'));
+			showmsg(L('operation_success'), '', 1);
 		}
 	}
 	

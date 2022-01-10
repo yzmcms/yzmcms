@@ -19,7 +19,7 @@ class common{
 		}
 		
 		//设置会员模块模板风格
-		set_module_theme('default');
+		set_module_theme(get_config('member_theme'));
 	}
 
 	
@@ -76,7 +76,7 @@ class common{
 	protected function _check_code($code){
 		if(empty($_SESSION['code']) || strtolower($code)!=$_SESSION['code']){
 			$_SESSION['code'] = '';
-			showmsg(L('code_error'), '', 1);
+			is_ajax() ? return_json(array('status'=>-1, 'message'=>L('code_error'))) : showmsg(L('code_error'), '', 1);
 		}
 		$_SESSION['code'] = '';
 	}

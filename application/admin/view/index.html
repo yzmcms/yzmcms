@@ -90,6 +90,23 @@
 		})
 		return false;
 	}
+
+	function yzm_change_site(siteid){
+        $.ajax({
+            type: 'GET',
+            url: '<?php echo U('site/site/public_set_siteid');?>?siteid='+siteid, 
+		    dataType: "json", 
+            success: function (msg) {
+				if (msg.status == 1) {
+					layer.msg(msg.message, {icon:1, time:1000}, function(){
+						location.reload();
+					});
+				} else {
+					layer.msg(msg.message, {icon:2});
+				}
+            }
+        })
+	}
 </script>
 </body>
 </html>

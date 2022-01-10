@@ -15,15 +15,9 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>标　　题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="<?php echo $data['title'];?>"  name="title" onblur="get_seotitle()" <?php if($data['color']) echo 'style="color:'.$data['color'].'"';?>>
+				<input type="text" class="input-text" value="<?php echo $data['title'];?>"  name="title" <?php if($data['color']) echo 'style="color:'.$data['color'].'"';?>>
 				<input type="hidden" name="color" id="color" value="<?php echo $data['color'];?>">
 				<img src="<?php echo STATIC_URL;?>images/colors.png" title="设置颜色" id="colors">
-			</div>
-		</div>
-		<div class="row cl">
-			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>SEO标题：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="<?php echo $data['seo_title'];?>"  name="seo_title">
 			</div>
 		</div>
 		<div class="row cl">
@@ -140,11 +134,12 @@
 		<div class="row cl">
 			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
 				<input type="hidden" name="status" value="<?php echo $data['status'];?>">
-				<?php if(!isset($_GET['is_draft'])){ ?>
+				<?php if($data['issystem']){ ?>
 				<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(1)"><i class="Hui-iconfont">&#xe603;</i> 保存发布</button>
 				<button name="dosubmit" class="btn btn-secondary radius" type="submit" onclick="set_status(0)"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
 				<?php }else{ ?>
-				<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(0)"><i class="Hui-iconfont">&#xe632;</i> 修改稿件</button>
+				<button name="dosubmit" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 修改稿件</button>
+				<button class="btn btn-warning radius" type="button" onclick="show_rejection()"><i class="Hui-iconfont">&#xe6dd;</i> 退稿</button>
 				<?php } ?>
 				<button onclick="yzm_content_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
 			</div>
@@ -152,6 +147,10 @@
 		<input type="hidden"  value="<?php echo $data['listorder'];?>"  name="listorder">
 	</form>
 </article>
+
+<div id="rejection_mess" style="margin:10px 15px 0 15px;display:none">
+	<textarea name="content_c" class="textarea" style="width:300px;margin-bottom:5px" placeholder="请输入退稿理由，退稿理由将会以短消息方式发送！"></textarea>
+</div>
 
 <?php include $this->admin_tpl('footer');?>
 <script type="text/javascript" src="<?php echo STATIC_URL;?>js/jquery.colorpicker.js"></script>
@@ -172,18 +171,6 @@
         $("#url").toggle();
     }
 	
-	function get_seotitle(){
-		var title = $("input[name='title']").val();
-		var seo_title = $("input[name='seo_title']").val();
-		if(title == '') {
-			layer.msg('标题不能为空！', {icon:2,time: 2000});
-			return false;
-		}
-		if(seo_title == ''){
-			$("input[name='seo_title']").val(title+'_<?php echo get_config('site_name');?>');
-		}
-	}
-	
 	function yzm_content_close(){
 		if(UE.getEditor('content').getContent()!=''){
 			layer.confirm('内容未保存，确定要关闭吗？',function(index){
@@ -193,10 +180,33 @@
 			yzmcms_close();
 		}
 	}
+
+	function show_rejection() {
+		layer.open({
+			type: 1,
+			title: '内容退稿',
+			btn: ['发送', '取消'],
+			content: $('#rejection_mess'),
+			yes: function(index, layero){
+				var content_c = $("textarea[name='content_c']").val();
+			    $.ajax({
+	               type: 'POST',
+	               url: '<?php echo U('admin_content/rejection');?>', 
+	               data: 'ids[]=<?php echo isset($allid) ? $allid : 0;?>&content_c='+content_c+'&yzm_csrf_token='+yzm_csrf_token,
+	   		       dataType: "json", 
+	               success: function (msg) {
+		   				layer.msg(msg.message, {icon:1, time:1000}, function(){
+		   					parent.location.reload();
+		   				});
+	               }
+	           })
+			}
+		});
+	}
 	
 	function checkall(){
-		if($("input[name='title']").val()==''||$("input[name='seo_title']").val()==''){
-			layer.msg('标题或SEO标题不能为空！', {icon:2,time: 2000});
+		if($("input[name='title']").val()==''){
+			layer.msg('标题不能为空！', {icon:2,time: 2000});
 			return false;
 		}
 		if($("select[name='catid']").val()=='0'){
