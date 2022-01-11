@@ -86,15 +86,21 @@ class index{
 	 * 设置站点模板
 	 */
 	private function _set_theme(){
-		$ismobile = isset($_GET['is_wap']) || ismobile() ? true : false;
+		$ismobile = ismobile() || isset($_GET['is_wap']) ? true : false;
 		if($this->siteid){
 			$this->siteinfo = get_site($this->siteid);
-			set_module_theme($ismobile&&$this->siteinfo['site_wap_theme'] ? $this->siteinfo['site_wap_theme'] : $this->siteinfo['site_theme']);
+			if($ismobile && $this->siteinfo['site_wap_theme']){
+				$this->module = 'mobile';
+				set_module_theme($this->siteinfo['site_wap_theme']);
+			}else{
+				set_module_theme($this->siteinfo['site_theme']);
+			}
 		}else{
-			if($ismobile) set_module_theme(get_config('site_wap_theme'));
+			if($ismobile && get_config('site_wap_open')) {
+				$this->module = 'mobile';
+				set_module_theme(get_config('site_wap_theme'));
+			}
 		}
-
-		if($ismobile) $this->module = 'mobile';
 	}
 
 }

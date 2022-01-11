@@ -6,7 +6,7 @@
  * 
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
- * @lastmodify       2020-05-10
+ * @lastmodify       2022-01-11
  */
  
 defined('IN_YZMPHP') or exit('Access Denied');
@@ -16,6 +16,7 @@ class index{
 	
 	
 	public function __construct() {
+		if(!get_config('site_wap_open')) showmsg('手机站点已关闭！', 'stop');
 		set_module_theme(get_config('site_wap_theme'));
 	}
 	
