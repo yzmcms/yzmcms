@@ -253,7 +253,6 @@ class content extends common {
 			}
 			return_json(array('status' => 1, 'message' => '操作成功'));
 		}else{
-			$flag = false;
 			$modelid = $this->content->modelid;
 			include $this->admin_tpl('content_remove');	
 		}
@@ -292,7 +291,6 @@ class content extends common {
 			}
 			return_json(array('status' => 1, 'message' => '操作成功'));
 		}else{
-			$flag = true;
 			$modelid = $this->content->modelid;
 			include $this->admin_tpl('content_remove');	
 		}

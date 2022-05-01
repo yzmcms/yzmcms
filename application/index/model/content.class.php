@@ -13,12 +13,15 @@ class content {
 	/**
 	 * 阅读收费检测
 	 */
-	public static function check_readpoint($flag, $readpoint, $paytype, $url) {
+	public static function check_readpoint($data) {
 		$userid = intval(get_cookie('_userid'));
 		if(!$userid) return false;
-		
+
+		//检查是否是作者自己
+		if(!$data['issystem'] && $data['userid']==$userid) return true;
+
 		//检查一个月内是否支付过
-		$data = D('pay_spend')->field('creat_time')->where(array('userid'=>$userid,'remarks'=>$flag))->order('id DESC')->find();
+		$data = D('pay_spend')->field('creat_time')->where(array('userid'=>$userid,'remarks'=>$data['catid'].'_'.$data['id']))->order('id DESC')->find();
 		if($data && $data['creat_time']+2592000 > SYS_TIME) {
 			return true;
 		}

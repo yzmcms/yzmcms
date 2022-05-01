@@ -250,6 +250,10 @@ function adver($id){
  * @return string
  */
 function tag_url($tid, $domain=null){
+	if($domain){
+		$domain = rtrim($domain, '/');
+		return $domain.U('search/index/tag',array('id'=>$tid),false);
+	}
 	return U('search/index/tag',array('id'=>$tid),$domain);
 }
 
@@ -412,7 +416,11 @@ function delete_attachment($modelid, $id){
  */
 function get_siteid() {
 
-	return 0;
+	if(!is_file(APP_PATH.'site/common/function/function.php')) return 0;
+
+	include_once APP_PATH.'site/common/function/function.php';
+	
+	return public_get_siteid();
 }
 
 
@@ -426,11 +434,17 @@ function get_siteid() {
 function get_site($siteid = 0, $parameter = ''){
 
 	$siteid = intval($siteid);
-	if($siteid){
-		return $parameter ? '' : array();
-	}else{
-		return  array();
+	if(!is_file(APP_PATH.'site/common/function/function.php')) {
+		if($siteid){
+			return $parameter ? '' : array();
+		}else{
+			return  array();
+		}
 	}
+
+	include_once APP_PATH.'site/common/function/function.php';
+	
+	return public_get_site($siteid, $parameter);
 }
 
 
@@ -561,9 +575,7 @@ function get_default_model($key = false){
 	$data = get_site_modelinfo();
 	foreach ($data as $value) {
 		if($value['isdefault']){
-			$default_model['modelid'] = $value['modelid'];
-			$default_model['tablename'] = $value['tablename'];
-			$default_model['name'] = $value['name'];
+			$default_model = $value;
 			break;
 		}
 	}

@@ -27,5 +27,6 @@
 .yzm-progress span{display:block;background:#33c84a;height:6px}
 .yzm-upload-done{display:none}
 .yzm-upload-error{color:#ff0202;margin-top:5px}
-.yzm-notice{display:block;margin:5px 0}
+.yzm-notice{margin:4px 0;color:#454545;font-size:13px;}
+.yzm-open-watermark{float:right;color:#454545;font-size:13px;}
 .yzm-bottom-button{position:fixed;bottom:10px;right:10px;z-index:99;}

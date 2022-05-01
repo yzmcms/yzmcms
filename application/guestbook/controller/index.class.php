@@ -14,11 +14,23 @@ class index{
 	private $siteid,$siteinfo;
 	
 	public function __construct(){
+		$ismobile = ismobile() ? true : false;
 		$this->siteid = get_siteid();
 		$this->siteinfo = array();
+		$this->module = 'index';
 		if($this->siteid){
 			$this->siteinfo = get_site($this->siteid);
-			set_module_theme($this->siteinfo['site_theme']);
+			if($ismobile && $this->siteinfo['site_wap_theme']){
+				$this->module = 'mobile';
+				set_module_theme($this->siteinfo['site_wap_theme']);
+			}else{
+				set_module_theme($this->siteinfo['site_theme']);
+			}
+		}else{
+			if($ismobile && get_config('site_wap_open')) {
+				$this->module = 'mobile';
+				set_module_theme(get_config('site_wap_theme'));
+			}
 		}
 	}
 	
@@ -54,7 +66,7 @@ class index{
 			$site = array_merge(get_config(), $this->siteinfo);
 
 			list($seo_title, $keywords, $description) = get_site_seo($this->siteid, '留言反馈');
-			include template('index','guestbook');			
+			include template($this->module,'guestbook');			
 		}
 	}
 	
@@ -69,7 +81,7 @@ class index{
 
 		// 开启重复验证
 		$res = D('guestbook')->field('title,name,bookmsg')->order('id DESC')->find();
-		if($data['title']==$res['title'] && $data['bookmsg']==$res['bookmsg']){
+		if($res && $data['title']==$res['title'] && $data['bookmsg']==$res['bookmsg']){
 			showmsg('请勿重复提交！', '', 2);
 		}
 

@@ -1,0 +1,169 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
+    <title>{$seo_title}</title>
+    <meta name="author" content="YzmCMS内容管理系统">
+    <meta name="keywords" content="{$keywords}" />
+    <meta name="description" content="{$description}" />
+    <link href="{STATIC_URL}css/yzm-mobile-category.css?v=yzmcms" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="{STATIC_URL}js/yzm-mobile-simpler-sidebar.min.js"></script>
+</head>
+
+<body>
+    <!--网站容器-->
+    <div class="yzm-container">
+        {m:include "mobile","header"}
+        <!--主要内容-->
+        <div class="yzm-main-article">
+            <h1>{$title}</h1>
+            <div class="yzm-info">
+            {date("Y-m-d H:i:s",$inputtime)}&nbsp;&nbsp;浏览：{$click}&nbsp;&nbsp;作者：{$nickname}
+            </div>
+            <div class="yzm-description">
+                {$description}
+            </div>
+            <div class="yzm-content">
+                <ul class="yzm-down-info">
+                    <img src="{get_thumb($thumb)}" title="{$title}" alt="{$title}">
+                    <li><strong>更新日期:</strong> {date('Y-m-d H:i:s',$updatetime)} </li>
+                    <li><strong>软件大小:</strong> {$filesize} </li>
+                    <li><strong>运行环境:</strong> {$systems} </li>
+                    <li><strong>软件授权:</strong> {$copytype} </li>
+                    <li><strong>软件类型:</strong> {$classtype} </li>
+                    <li><strong>软件语言:</strong> {$language} </li>
+                    <li><strong>软件版本:</strong> {$version} </li>
+                    <li><strong>评分等级:</strong> {$stars} </li>
+                </ul>
+                {if $allow_read}
+                    {$content}
+                {else}
+                    <p class="yzm-content-read-tips">阅读此内容需要您支付<span>{$readpoint}</span>{if $paytype==1}点积分{else}元{/if}，<a href="{$pay_url}">点击支付</a></p>
+                {/if}
+            </div>
+            <div class="yzm-title-box">
+                <h5>下载地址：</h5>
+                <ul>
+                   <li>
+                    {if $allow_read}
+                        <a href="{$down_url}" target="_blank">{$title}</a>
+                    {else}
+                        <a href="{$pay_url}">点击支付 <span>{$readpoint}</span> {if $paytype==1}点积分{else}元{/if}后，方可显示下载地址</a>
+                    {/if}
+                    
+                   </li>                            
+                </ul>
+            </div>
+            <div class="yzm-pre-next">
+                <p>上一篇：{$pre}</p>
+                <p>下一篇：{$next}</p>
+            </div>
+
+            <!-- 评论区开始 -->
+            <div class="yzm-content-box">
+                <h3 class="yzm-title-btn">评论区</h3>
+                <div class="yzm-comment-box">
+                    <div class="yzm-comment-form">
+                    <form action="{U('comment/index/init')}" method="post"  onsubmit="return check_comm(this)">
+                    <input type="hidden" name="modelid" value="{$modelid}">
+                    <input type="hidden" name="catid" value="{$catid}">
+                    <input type="hidden" name="id" value="{$id}">
+                    <input type="hidden" name="title" value="{$title}">
+                    <input type="hidden" name="url" value="{$url}">
+                    <textarea class="textarea" id="content" name="content" placeholder="我来说两句~"></textarea>
+                    <p>
+                        {if $site['comment_code']}
+                        <span class="yzm-comment-code"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" title="看不清？点击更换"><input type="text" name="code" placeholder="请输入验证码" required="required"></span>
+                        {/if}
+                        <input type="submit" class="yzm-comment-submit" name="dosubmit" value="提交">
+                    </p>
+                    </form>
+                    </div>
+                </div>
+                <div class="yzm-comment-list-box">
+                    {m:comment_list modelid="$modelid" catid="$catid" id="$id" limit="20"}
+                    <div class="yzm-comment-list-top">共 {get_comment_total($id, $catid, $modelid)} 条评论</div>
+                    <div class="yzm-comment-list-body">
+                    <ul>
+                        {loop $data $v}
+                        <li>
+                            <a class="user_pic" href="{U('member/myhome/init', array('userid'=>$v['userid']))}" target="blank"><img src="{if !empty($v['userpic'])}{$v[userpic]}{else}{STATIC_URL}images/default.gif{/if}" height="35" width="35"></a>
+                            <div class="yzm-comm-right">
+                                <a class="user_name" href="{U('member/myhome/init', array('userid'=>$v['userid']))}" target="blank">{$v[username]}</a>
+                                <p>{nl2br($v['content'])}</p>
+                                <p><span class="comm_time">{date('Y-m-d H:i:s',$v['inputtime'])}</span> <a href="javascript:toreply('{$v[id]}');" class="comm_a">回复</a></p>
+                                <div id="rep_{$v[id]}" class="none">
+                                <form action="{U('comment/index/init')}" method="post"  onsubmit="return check_rep(this)">
+                                <input type="hidden" name="modelid" value="{$modelid}">
+                                <input type="hidden" name="catid" value="{$catid}">
+                                <input type="hidden" name="id" value="{$id}">
+                                <input type="hidden" name="title" value="{$title}">
+                                <input type="hidden" name="url" value="{$url}">
+                                <input type="hidden" name="reply" value="{$v[id]}">
+                                <input type="hidden" name="reply_to" value="{$v[username]}">
+                                <textarea name="content" class="textarea textarea2" placeholder="我来说两句~"></textarea>
+                                {if $site['comment_code']}
+                                <span class="yzm-comment-reply-code"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" title="看不清？点击更换"><input type="text" name="code" placeholder="请输入验证码" required="required"></span>
+                                {/if}
+                                <input type="submit" class="yzm-comment-submit static" name="dosubmit" value="提交">
+                                </form>
+                                </div>
+                            </div>
+                        </li>
+                        {/loop}
+                        {if empty($data)}<li>这篇文章还没有收到评论，赶紧来抢沙发吧~</li>{/if}
+                    </ul>
+                    </div>
+                </div> 
+            </div>
+            <!-- 评论区结束 -->
+
+        </div>
+        <div class="clearfix"></div>
+        <div class="yzm-article-img">
+            <h3 class="yzm-title">【随机内容】</h3>
+            <ul>
+                {m:lists field="id,catid,title,thumb,updatetime,description" modelid="$modelid" order="RAND()" limit="4"}
+                {loop $data $k=>$v}
+                <li>
+                    <a href="{mobile_url($v['catid'], $v['id'])}">
+                        <img src="{get_thumb($v['thumb'])}" alt="{$v[title]}">
+                    </a>
+                    <p><a href="{mobile_url($v['catid'], $v['id'])}">{$v[title]}</a></p>
+                    <span>{date('Y-m-d', $v['updatetime'])}</span>
+                </li>
+                {/loop}
+            </ul>
+        </div>
+        <script type="text/javascript">
+            function toreply(obj) {
+                if ($("#rep_" + obj).css("display") == "none") {
+                    $("#rep_" + obj + " .yzm-comment-reply-code img").attr('src', $("#rep_" + obj + " .yzm-comment-reply-code img").attr("src") + "?");
+                    $("#rep_" + obj).css("display", "block");
+                } else {
+                    $("#rep_" + obj).css("display", "none");
+                }
+            }
+
+            function check_comm(obj) {
+                var content = obj.content.value;
+                if (content === '') {
+                    alert('你不打算说点什么吗？');
+                    return false;
+                }
+                return true;
+            }
+
+            function check_rep(obj) {
+                var content = obj.content.value;
+                if (content === '') {
+                    alert('你不打算说点什么吗？');
+                    return false;
+                }
+                return true;
+            }
+        </script>
+        {m:include "mobile","footer"}

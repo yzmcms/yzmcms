@@ -162,7 +162,10 @@ class index{
 	protected function _check_auth($userid, $username, $ip){
 		$groupid = intval(get_cookie('_groupid'));
 		$groupinfo = get_groupinfo($groupid);
-		if(strpos($groupinfo['authority'], '2') === false) showmsg('你没有权限发布评论，请升级会员组！');
+		if(strpos($groupinfo['authority'], '2') === false) showmsg('你没有权限发布评论，请升级会员组！', 'stop');
+
+		$inputtime = D('comment')->field('inputtime')->where(array('userid'=>$userid))->order('id DESC')->one();
+		if($inputtime+5 >= SYS_TIME) showmsg('评论过快，请稍后再试！', 'stop');
 		
 		$pay = D('pay');
 		$comment_point = get_config('comment_point');

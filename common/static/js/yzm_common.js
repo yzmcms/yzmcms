@@ -10,6 +10,8 @@
 //删除一条记录
 function yzm_del(url){
 	var is_ajax = arguments[1] || 0;
+	var symbol = url.indexOf('?')<0 ? '?' : '&';
+	url += symbol+'yzm_csrf_token='+yzm_csrf_token;
 	layer.confirm('确认要删除吗？',function(index){
 		if(!is_ajax){
 			window.location.href = url;
@@ -73,10 +75,10 @@ function yzm_open(title,url,w,h){
 		url="404.html";
 	};
 	if (w == null || w == '') {
-		w=800;
+		w=($(window).width() * 0.8);
 	};
 	if (h == null || h == '') {
-		h=($(window).height() - 50);
+		h=($(window).height() * 0.8);
 	};
 	layer.open({
 		type: 2,

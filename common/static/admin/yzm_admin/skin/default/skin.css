@@ -4,7 +4,7 @@
 a{color:#333}a:hover,a:focus,.maincolor,.maincolor a{color:#06c}
 
 /*顶部导航*/
-.navbar{ background:#222}
+.navbar{ background:#1a2137}
 
 /*logo 及 用户信息文字颜色*/
 .navbar-logo,.navbar-logo-m,.navbar-slogan,.navbar-userbar{color:#fff}
@@ -15,17 +15,17 @@ a{color:#333}a:hover,a:focus,.maincolor,.maincolor a{color:#06c}
 .navbar-userbar > ul> > li,.navbar-userbar > ul> > li > a{ color:#fff}
 
 /*侧边栏*/
-.navbar,.yzm-menubox {background:rgba(40,43,51)}
-.Hui-aside {background:#333333;color:rgba(255,255,255,.7);padding-top:0px;}
-.Hui-aside .menu_dropdown dt {color:rgba(255,255,255,.9);line-height:45px;border-bottom:none;background:rgb(56, 56, 62);width:218px;box-sizing:border-box;transition:all 0.2s}
+.navbar,.yzm-menubox {background:#1a2137}
+.Hui-aside {background:#1a2137;color:rgba(255,255,255,.7);padding-top:0px;}
+.Hui-aside .menu_dropdown dt {color:rgba(255,255,255,.9);line-height:45px;border-bottom:none;background:#252e4a;width:218px;box-sizing:border-box;transition:all 0.2s}
 .Hui-aside .menu_dropdown dt:hover {color:#fff;border-left:5px solid #5c5c5c;}
 .Hui-aside .menu_dropdown dt:hover [class^="icon-"] {color:#999}
 .Hui-aside .menu_dropdown dd ul {padding:3px 0px}
 .Hui-aside .menu_dropdown dd li a {line-height:40px;}
 .Hui-aside .menu_dropdown li a {color:rgba(255,255,255,.7);transition:all .1s ease 0s}
-.Hui-aside .menu_dropdown li a:hover {color:#fff;background:#5c5c5c;}
+.Hui-aside .menu_dropdown li a:hover {background:#cccccc;}
 .Hui-aside .menu_dropdown li .current a,.menu_dropdown li.current a:hover {color:#fff;}
-.Hui-aside .menu_dropdown li .curmenu {background:#5c5c5c;color:#fff;}
+.Hui-aside .menu_dropdown li .curmenu {background:#1a2137;color:#ffd04b;}
 .Hui-aside .menu_dropdown dt .Hui-iconfont {color:rgba(255,255,255,.8)}
 .Hui-aside .menu_dropdown dt .menu_dropdown-arrow {color:rgba(255,255,255,.8);right:33px;}
 .dislpayArrow a {background:url(icon_arrow.png) no-repeat 0 0}

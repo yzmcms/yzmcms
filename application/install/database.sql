@@ -168,7 +168,7 @@ CREATE TABLE `yzm_all_content` (
 -- Records of yzm_all_content
 -- ----------------------------
 INSERT INTO `yzm_all_content` VALUES ('1', '0', '1', '2', '1', '1', 'yzmcms', 'YZMPHP轻量级开源框架 V2.0', '1526387722', '1526387996', '/guanfangxinwen/1.html', '', '1', '1');
-INSERT INTO `yzm_all_content` VALUES ('2', '0', '1', '2', '2', '1', 'yzmcms', 'YzmCMS v6.3正式版发布', '1641915595', '1641915595', '/guanfangxinwen/2.html', '', '1', '1');
+INSERT INTO `yzm_all_content` VALUES ('2', '0', '1', '2', '2', '1', 'yzmcms', 'YzmCMS v6.5正式版发布', '1651388400', '1651388400', '/guanfangxinwen/2.html', '', '1', '1');
 
 -- ----------------------------
 -- Table structure for yzm_article
@@ -209,7 +209,7 @@ CREATE TABLE `yzm_article` (
 -- Records of yzm_article
 -- ----------------------------
 INSERT INTO `yzm_article` VALUES ('1', '2', '1', 'yzmcms', '袁志蒙', 'YZMPHP轻量级开源框架 V2.0', '', '1526387722', '1526387996', 'yzmphp,php框架,轻量级框架,mvc框架', '简介：YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效...', '100', '<p><strong>简介:</strong></p><p>YZMPHP是一款免费开源的轻量级PHP框架，框架完全采用面向对象的设计思想，并且是基于MVC的三层设计模式。具有部署和应用及为简单、效率高、速度快，扩展性和可维护性都很好等特点。</p><p>2016年12月19日完成框架的1.0版本，经过近两年的磨炼与成长，今日发布YZMPHP 2.0版本，该框架已经被多家公司企业采用和认可，是一款简单强大的PHP框架。上手快、框架源码简单明了结构清析，使得项目开发更加容易和方便，使用YZMPHP框架适合开发BBS、电子商城、SNS、CMS、Blog、企业门户等任何的中小型系统！</p><p><br/></p><p><strong>特点：</strong></p><p>简洁、高效、轻量级、高性能</p><p>软件环境：Apache/Nginx/IIS</p><p>PHP：支持PHP5.2以上的所有版本</p><p><br/></p><p><strong>YZMPHP  V2.0更新日志：</strong></p><p>1.新增：框架命令模式,可自定义或新增命令;</p><p>2.新增：缓存类型配置，支持类型:file/redis/memcache;</p><p>3.新增：系统URL路由映射重写;</p><p>4.新增：DB类库事务处理;</p><p>5.新增：支持切换和链接其他数据库;</p><p>6.新增：DB类库多种操作数据库方法;</p><p>7.新增：Nginx支持PATHINFO模式配置;</p><p>8.新增：系统函数库多种方法;</p><p>9.新增：支持捕捉致命错误;</p><p>10.优化：数据对象单例模式;</p><p>11.优化：支持join多表链接查询;</p><p>12.修复：框架漏洞一枚;</p><p>本次更新优化内容包括但不限于以上所列举的项！</p><p><br/></p>', '原创', '', '/guanfangxinwen/1.html', '4', '1', '1', '10', '0', '0', '1', '0');
-INSERT INTO `yzm_article` VALUES ('2', '2', '1', 'yzmcms', '袁志蒙', 'YzmCMS v6.3正式版发布', '#ff0000', '1641915595', '1641915595', 'cms系统,yzmcms最新版,yzmcms下载,php建站系统,轻量级开源', '产品说明：YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一...', '100', '<p><strong style=\"color: red;\">产品说明：</strong></p><p>YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一款高效开源的内容管理系统，可运行在Linux、Windows、MacOSX、Solaris等各种平台上。</p><p>它可以让您不需要任何专业技术轻松搭建您需要的网站，操作简单，很容易上手，快捷方便的后台操作让您10分钟就会建立自己的爱站。在同类产品的比较中，YzmCMS更是凸显出了体积轻巧、功能强大、源码简洁、系统安全等特点，无论你是做企业网站、新闻网站、个人博客、门户网站、行业网站、电子商城等，它都能完全胜任，而且还提供了非常方便的二次开发体系，是一款全能型的建站系统！</p><p><br/></p><p>下载地址：<a href=\"http://www.yzmcms.com/xiazai/\" target=\"_blank\" style=\"color:blue\">官方下载</a></p>', '原创', '', '/guanfangxinwen/2.html', '1,4', '1', '1', '1', '0', '0', '1', '0');
+INSERT INTO `yzm_article` VALUES ('2', '2', '1', 'yzmcms', '袁志蒙', 'YzmCMS v6.5正式版发布', '#ff0000', '1651388400', '1651388400', 'cms系统,yzmcms最新版,yzmcms下载,php建站系统,轻量级开源', '产品说明：YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一...', '100', '<p><strong style=\"color: red;\">产品说明：</strong></p><p>YzmCMS是一款轻量级开源内容管理系统，它采用OOP（面向对象）方式自主开发的框架。基于PHP+Mysql架构，并采用MVC框架式开发的一款高效开源的内容管理系统，可运行在Linux、Windows、MacOSX、Solaris等各种平台上。</p><p>它可以让您不需要任何专业技术轻松搭建您需要的网站，操作简单，很容易上手，快捷方便的后台操作让您10分钟就会建立自己的爱站。在同类产品的比较中，YzmCMS更是凸显出了体积轻巧、功能强大、源码简洁、系统安全等特点，无论你是做企业网站、新闻网站、个人博客、门户网站、行业网站、电子商城等，它都能完全胜任，而且还提供了非常方便的二次开发体系，是一款全能型的建站系统！</p><p><br/></p><p>下载地址：<a href=\"http://www.yzmcms.com/xiazai/\" target=\"_blank\" style=\"color:blue\">官方下载</a></p>', '原创', '', '/guanfangxinwen/2.html', '1,4', '1', '1', '1', '0', '0', '1', '0');
 
 -- ----------------------------
 -- Table structure for yzm_attachment
@@ -461,7 +461,7 @@ INSERT INTO `yzm_config` VALUES ('14', 'ishtml5', '0', '选择上传附件插件
 INSERT INTO `yzm_config` VALUES ('15', 'watermark_enable', '0', '是否开启图片水印', '0', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('16', 'watermark_name', '0', '水印图片名称', 'mark.png', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('17', 'watermark_position', '0', '水印的位置', '9', '', '', '1');
-INSERT INTO `yzm_config` VALUES ('18', 'mail_server', '1', 'SMTP服务器', 'smtp.qq.com', '', '', '1');
+INSERT INTO `yzm_config` VALUES ('18', 'mail_server', '1', 'SMTP服务器', 'ssl://smtp.qq.com', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('19', 'mail_port', '1', 'SMTP服务器端口', '25', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('20', 'mail_from', '1', 'SMTP服务器的用户邮箱', '', '', '', '1');
 INSERT INTO `yzm_config` VALUES ('21', 'mail_auth', '1', 'AUTH LOGIN验证', '1', '', '', '1');
@@ -1132,6 +1132,7 @@ CREATE TABLE `yzm_model` (
   `siteid` tinyint(3) unsigned NOT NULL DEFAULT '0',
   `name` char(30) NOT NULL DEFAULT '',
   `tablename` char(20) NOT NULL DEFAULT '',
+  `alias` varchar(30) NOT NULL DEFAULT '',
   `description` varchar(100) NOT NULL DEFAULT '',
   `setting` text,
   `inputtime` int(10) unsigned NOT NULL DEFAULT '0',
@@ -1148,9 +1149,9 @@ CREATE TABLE `yzm_model` (
 -- ----------------------------
 -- Records of yzm_model
 -- ----------------------------
-INSERT INTO `yzm_model` VALUES ('1', '0', '文章模型', 'article', '文章模型', '', '1466393786', '0', '0', '0', '0', '1', '1');
-INSERT INTO `yzm_model` VALUES ('2', '0', '产品模型', 'product', '产品模型', '', '1466393786', '0', '0', '0', '0', '1', '0');
-INSERT INTO `yzm_model` VALUES ('3', '0', '下载模型', 'download', '下载模型', '', '1466393786', '0', '0', '0', '0', '1', '0');
+INSERT INTO `yzm_model` VALUES ('1', '0', '文章模型', 'article', 'article', '文章模型', '', '1466393786', '0', '0', '0', '0', '1', '1');
+INSERT INTO `yzm_model` VALUES ('2', '0', '产品模型', 'product', 'product', '产品模型', '', '1466393786', '0', '0', '0', '0', '1', '0');
+INSERT INTO `yzm_model` VALUES ('3', '0', '下载模型', 'download', 'download', '下载模型', '', '1466393786', '0', '0', '0', '0', '1', '0');
 
 -- ----------------------------
 -- Table structure for yzm_model_field

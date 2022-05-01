@@ -7,13 +7,23 @@
 
 em,i{font-style:normal;}
 select{background:#fff}
+.label, .badge{font-weight:normal;}
+.input-text, .btn, .input-text.size-M, .btn.size-M{font-size:13px;}
+.disabled{cursor:not-allowed;background-color:#eee;}
 .yzm-menubox{width:200px;overflow:hidden;position:absolute;top:44px;bottom:0;left:0;}
 .yzm-table-box{overflow-y:auto;box-sizing:border-box;}
+.yzm-table-box::-webkit-scrollbar{width : 10px;height: 10px;}
+.yzm-table-box::-webkit-scrollbar-thumb{border-radius: 5px;box-shadow : inset 0 0 5px rgba(0, 0, 0, 0.2);background : #535353;}
+.yzm-table-box::-webkit-scrollbar-track{box-shadow : inset 0 0 5px rgba(0, 0, 0, 0.2);border-radius: 5px;background : #ededed;}
+.yzm-rotate{transform:rotateX(180deg);overflow-x:auto;}
+.yzm-table-rotate{transform: rotateX(180deg);}
 .Hui-aside{position:relative;top:0px;overflow-y:auto;overflow-x:hidden;width:218px;height:100%;}
+.Hui-aside .menu_dropdown dd li a{font-size:13px;}
 .big-page .Hui-aside{left:-219px;}
 .btn-primary{background:#08c}
 .col-sm-2{width:16.6667%;}
 .yzmcms_a{color:#06c;}
+.pointer{cursor:pointer}
 .formdoby{width:80%;margin:0 auto;text-align:center}
 .formdoby ul li{margin-bottom:20px;}
 .formdoby2 ul li{margin-bottom:10px;}
@@ -24,7 +34,7 @@ select{background:#fff}
 .formdoby ul li .span_input{display:inline-block;width:60%;margin-left:5%;padding:0px 3px;text-align:left;}
 .formdoby ul li select{height:28px;line-height:28px;width:61%;margin-left:5%;padding:0px 3px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}
 .formdoby ul li .input:focus{border-color:#75a1f0;box-shadow: 0 0 12px #75a1f0;outline:medium none;transition:all 0.218s ease 0s;}
-.dosubmit{border:0px;outline:none;height:35px;line-height:35px;width:60%;cursor:pointer;font-size:14px;transition:background 0.3s}
+.dosubmit{border:0px;outline:none;height:35px;line-height:35px;width:60%;cursor:pointer;font-size:13px;transition:background 0.3s}
 .m_left_21{margin-left:21%;}
 .h35{height:35px;}
 .w_60{width:60px !important;}
@@ -38,6 +48,7 @@ select{background:#fff}
 .btn-mini:hover{text-decoration:none}
 .btn-disabled{border:1px solid #d3d1d1;color:#bdbcbc;cursor:not-allowed;}
 .select optgroup {background:#f0f0f0}
+.yzm-content-error{background:#d23131;color:#fff;font-size:12px;padding:3px 6px}
 .yzm_text_link{border-bottom: dashed 1px #0088cc;padding:2px;border-radius:1px;}
 .yzm_text_link:hover{text-decoration:none;background:#1292af;color:#fff;}
 .yzm_no_data{line-height:50px;text-align:center;font-size:14px;color:#686868;border:1px solid #ddd;border-top:none}

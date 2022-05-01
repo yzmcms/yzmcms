@@ -1,0 +1,49 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, maximum-scale=1.0, initial-scale=1.0, user-scalable=no">
+    <title>{$seo_title}</title>
+    <meta name="author" content="YzmCMS内容管理系统">
+    <meta name="keywords" content="{$keywords}" />
+    <meta name="description" content="{$description}" />
+    <link href="{STATIC_URL}css/yzm-mobile-category.css?v=yzmcms" rel="stylesheet" type="text/css" />
+    <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
+    <script type="text/javascript" src="{STATIC_URL}js/yzm-mobile-simpler-sidebar.min.js"></script>
+</head>
+
+<body>
+    <!--网站容器-->
+    <div class="yzm-container">
+        {m:include "mobile","header"}
+        <!--主要内容-->
+        <div id="main">
+            <div class="yzm-news-img">
+                <ul>
+                    {m:lists field="id,catid,title,url,color,thumb,brand,price,stock" catid="$catid" limit="20" page="page"}
+                    {loop $data $v}
+                    <li>
+                        <a href="{mobile_url($v['catid'], $v['id'])}"><img src="{get_thumb($v['thumb'])}" alt="{$v[title]}" title="{$v[title]}">
+                            <p>{$v[title]} <span class="yzm-label">￥{$v[price]}元</span></p>
+                        </a>
+                    </li>
+                    {/loop}
+                </ul>
+            </div>
+            <div id="page">{$pages}</div>
+            <div class="clearfix"></div>
+            <div class="yzm-news-list">
+                <h3 class="yzm-title">【点击排行】</h3>
+                <ul>
+                    {m:hits field="id,catid,title,inputtime,color" catid="$catid" limit="10"}
+                    {loop $data $v}
+                    <li>
+                        <span class="date">[{date('m-d',$v['inputtime'])}]</span>
+                        <a href="{mobile_url($v['catid'], $v['id'])}">{title_color($v['title'], $v['color'])}</a>
+                    </li>
+                    {/loop}
+                </ul>
+            </div>
+        </div>
+        {m:include "mobile","footer"}

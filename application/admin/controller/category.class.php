@@ -47,7 +47,7 @@ class category extends common {
 			$v['parentoff'] = $v['parentid'] ? '' : '<i class="yzm-iconfont parentid" action="2">&#xe653;</i> ';
 			$v['domain'] = $v['domain'] ? '<div title="绑定域名：'.$v['domain'].'" style="color:#0194ff;font-size:12px" class="yzm-iconfont">&#xe64a; 域名</div>' : '';
 			$v['cattype'] = $v['type']=="0" ? '普通栏目' : ($v['type']=="1" ? '<span style="color:green">单页面</span>' : '<span style="color:red">外部链接</span>');
-			$v['catmodel'] = $v['modelid'] ? $modelarr[$v['modelid']] : '无';
+			$v['catmodel'] = $v['modelid']&&isset($modelarr[$v['modelid']]) ? $modelarr[$v['modelid']] : '无';
 			$v['display'] = $v['display'] ? '<span class="yzm-status-enable" data-field="display" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe81f;</i>是</span>' : '<span class="yzm-status-disable" data-field="display" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe601;</i>否</span>';
 			$v['member_publish'] = $v['member_publish'] ? '<span class="yzm-status-enable" data-field="member_publish" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe81f;</i>是</span>' : '<span class="yzm-status-disable" data-field="member_publish" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe601;</i>否</span>';
 			$v['string'] = '<a title="增加子类" href="javascript:;" onclick="yzm_open(\'增加栏目\',\''.U('add',array('modelid'=>$v['modelid'],'type'=>$v['type'],'catid'=>$v['id'])).'\',800,500)" class="btn-mini btn-secondary ml-5" style="text-decoration:none">增加子类</a> 
@@ -169,11 +169,11 @@ class category extends common {
 			$parent_dir = $parent_temp ? str_replace(SITE_URL, '', $parent_temp['pclink']) : '';
 			
 			if($type == 0){
-				$default_model = get_default_model();
+				$default_model = $modelid ? get_model($modelid, false) : get_default_model();
 				$category_temp = $this->select_template('category_temp', 'category_', $default_model);
 				$list_temp = $this->select_template('list_temp', 'list_', $default_model);
 				$show_temp = $this->select_template('show_temp', 'show_', $default_model);
-				$tablename = $default_model ? $default_model['tablename'] : '模型表名';
+				$tablename = $default_model ? $default_model['alias'] : '模型别名';
 				include $this->admin_tpl('category_add');
 			}else if($type == 1){
 				$category_temp = $this->select_template('category_temp', 'category_', 'page');
@@ -242,7 +242,7 @@ class category extends common {
 			$show_temp = $this->select_template('show_temp', 'show_', $default_model);
 			$parent_temp = $this->db->field('category_template,list_template,show_template,pclink')->where(array('catid'=>$catid))->find();
 			$parent_dir = $parent_temp ? str_replace(SITE_URL, '', $parent_temp['pclink']) : '';
-			$tablename = $default_model ? $default_model['tablename'] : '模型表名';
+			$tablename = $default_model ? $default_model['alias'] : '模型别名';
 			include $this->admin_tpl('category_adds');			
 		}
 		
@@ -303,11 +303,11 @@ class category extends common {
 			$parent_dir = $parent_temp ? str_replace(SITE_URL, '', $parent_temp['pclink']) : '';
 			
 			if($type == 0){
-				$default_model = get_model($data['modelid'], null);
+				$default_model = get_model($data['modelid'], false);
 				$category_temp = $this->select_template('category_temp', 'category_', $default_model);
 				$list_temp = $this->select_template('list_temp', 'list_', $default_model);
 				$show_temp = $this->select_template('show_temp', 'show_', $default_model);
-				$tablename = $default_model ? $default_model['tablename'] : '模型表名';
+				$tablename = $default_model ? $default_model['alias'] : '模型别名';
 				include $this->admin_tpl('category_edit');
 			}else if($type == 1){
 				$category_temp = $this->select_template('category_temp', 'category_', 'page');
@@ -354,7 +354,7 @@ class category extends common {
 	 */
 	public function public_category_template(){
 		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 0;
-		$default_model = $modelid ? get_model($modelid) : 'page';
+		$default_model = $modelid ? get_model($modelid, 'alias') : 'page';
 		$data = array(
 			'category_template' => $this->select_template('category_temp', 'category_', $default_model),
 			'list_template' => $this->select_template('list_temp', 'list_', $default_model),
@@ -395,7 +395,7 @@ class category extends common {
 	private function select_template($style, $pre='', $model=null) {
 			if(!$model) return array();
 			$site_theme = self::$siteid ? get_site(self::$siteid, 'site_theme') : C('site_theme');
-			$tablename = is_array($model) ? $model['tablename'] : $model;
+			$tablename = is_array($model) ? $model['alias'] : $model;
 			$pre = $model ? $pre.$tablename : $pre;
 			$files = glob(APP_PATH.'index'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.$site_theme.DIRECTORY_SEPARATOR.$pre.'*.html');
 			$files = @array_map('basename', $files);

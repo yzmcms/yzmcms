@@ -165,6 +165,7 @@ class order extends common{
 	 * 删除
 	 */	
 	public function del(){ 
+		if(!isset($_GET['yzm_csrf_token']) || !check_token($_GET['yzm_csrf_token'])) showmsg(L('token_error'), 'stop');
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 		D('order')->delete(array('id'=>$id));
 		showmsg(L('operation_success'),'',1);

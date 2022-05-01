@@ -28,6 +28,7 @@ class sitemodel extends common {
 	 * 删除模型
 	 */
 	public function delete() {
+		if(!isset($_GET['yzm_csrf_token']) || !check_token($_GET['yzm_csrf_token'])) showmsg(L('token_error'), 'stop');
 		$modelid = intval($_GET['modelid']);
 		if(in_array($modelid, array(1, 2, 3))) showmsg('不能删除系统模型！');		
 		$model = D('model');		
@@ -51,10 +52,11 @@ class sitemodel extends common {
 		if(isset($_POST['dosubmit'])) { 
 			if(!$_POST['name']) return_json(array('status'=>0,'message'=>'模型名称不能为空！'));
 			$tablename = isset($_POST['tablename']) ? strip_tags($_POST['tablename']) : '';
-			if(!$tablename) return_json(array('status'=>0,'message'=>'表名称不能为空！'));			
+			if(!$tablename) return_json(array('status'=>0,'message'=>'模型表名不能为空！'));			
 			$model = D('model');
-			if($model->table_exists(C('db_prefix').$tablename)) return_json(array('status'=>0,'message'=>'表名已存在！'));	
+			if($model->table_exists(C('db_prefix').$tablename)) return_json(array('status'=>0,'message'=>'模型表名已存在！'));	
 			$_POST['issystem'] = $_POST['type'] = 0;
+			$_POST['alias'] = trim($_POST['alias']);
 			$_POST['inputtime'] = SYS_TIME;
 			$_POST['siteid'] = self::$siteid;
 			if($_POST['isdefault']){
@@ -78,7 +80,7 @@ class sitemodel extends common {
 		$model = D('model');
 		if(isset($_POST['dosubmit'])) {
 			$modelid = isset($_POST['modelid']) ? intval($_POST['modelid']) : 0;
-			$data = array('name'=>$_POST['name'],'description'=>$_POST['description'],'isdefault'=>$_POST['isdefault']);
+			$data = array('name'=>$_POST['name'],'alias'=>trim($_POST['alias']),'description'=>$_POST['description'],'isdefault'=>$_POST['isdefault']);
 			if($_POST['isdefault']){
 				$data['disabled'] = 0;
 				$model->update(array('isdefault'=>0), array('siteid'=>self::$siteid));
@@ -134,6 +136,7 @@ class sitemodel extends common {
 			$model_arr = array();
 			$model_arr['siteid'] = self::$siteid;
 			$model_arr['name'] = htmlspecialchars($model_data['name']);
+			$model_arr['alias'] = htmlspecialchars($model_data['alias']);
 			$model_arr['description'] = htmlspecialchars($model_data['description']);
 			$model_arr['setting'] = $model_data['setting'];
 			$model_arr['inputtime'] = intval($model_data['inputtime']);

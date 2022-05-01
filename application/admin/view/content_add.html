@@ -18,7 +18,9 @@
 				<input type="text" class="input-text" value=""  name="title" onblur="check_title()">
 				<input type="hidden" name="color" id="color">
 				<img src="<?php echo STATIC_URL;?>images/colors.png" title="设置颜色" id="colors">
+				<div class="yzm-content-error hidden"><i class="Hui-iconfont pointer" onclick="$('.yzm-content-error').addClass('hidden')">&#xe6a6;</i> 标题重复，但仍然可继续发布！</div>
 			</div>
+
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">属性：</label>
@@ -217,9 +219,7 @@
             data: {title:title},
 		    dataType: "json", 
             success: function (msg) {
-				if(!msg.status){
-					layer.msg('标题已重复！', {icon:0,time: 2000});
-			    }
+				msg.status ? $(".yzm-content-error").addClass("hidden") : $(".yzm-content-error").removeClass("hidden");
             }
         })
 	}

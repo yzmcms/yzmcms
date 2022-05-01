@@ -277,9 +277,7 @@ class collection_content extends common {
 		$modelid = get_category($data['catid'], 'modelid');
 		if(!$modelid)  showmsg(L('illegal_operation'), 'stop');
 		$content_tabname = D(get_model($modelid));
-		
-		$site_name = get_config('site_name');
-		
+			
 		$i = 0;
 		foreach($res as $v){
 			if($v['status'] != 1) continue;

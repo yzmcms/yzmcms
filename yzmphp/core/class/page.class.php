@@ -26,8 +26,8 @@ class page{
      * @param array $parameter  分页跳转的参数
      */
 	public function __construct($total_rows, $list_rows = 10, $parameter = array()){
-		$this->total_rows = $total_rows;	
-		$this->list_rows = $list_rows; 
+		$this->total_rows = intval($total_rows);	
+		$this->list_rows = intval($list_rows);
 		$this->total_page = ceil($this->total_rows/$this->list_rows); 
 		$this->now_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$this->now_page = $this->now_page>0 ? $this->now_page : 1;

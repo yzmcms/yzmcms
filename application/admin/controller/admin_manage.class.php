@@ -35,6 +35,7 @@ class admin_manage extends common {
 	 * 删除管理员
 	 */
 	public function delete() {
+		if(!isset($_GET['yzm_csrf_token']) || !check_token($_GET['yzm_csrf_token'])) showmsg(L('token_error'), 'stop');
 		$adminid = intval($_GET['adminid']);
 		if($adminid == '1' || $adminid == $_SESSION['adminid']) showmsg('不能删除ID为1的管理员，或不能删除自己！', 'stop');
 		$roleid = D('admin')->field('roleid')->where(array('adminid'=>$adminid))->one();

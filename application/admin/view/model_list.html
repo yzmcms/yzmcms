@@ -5,7 +5,7 @@
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 模型管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
 	<div class="cl pd-5 bg-1 bk-gray"> <span class="l">
-		<a href="javascript:;" onclick="yzm_open('添加模型','<?php echo U('add');?>','650','450')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加模型</a>
+		<a href="javascript:;" onclick="yzm_open('添加模型','<?php echo U('add');?>','650','480')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加模型</a>
 		<a onclick="yzm_open('导入模型','<?php echo U('import');?>','550','300')" href="javascript:;" class="btn btn-warning radius"><i class="Hui-iconfont">&#xe645;</i> 导入模型</a>  
 	</span></div>
 	<table class="table table-border table-bordered table-bg table-hover">
@@ -13,7 +13,8 @@
 			<tr class="text-c">
 				<th>模型ID</th>
 				<th>模型名称</th>
-				<th>数据表</th>
+				<th>模型表名</th>
+				<th>模型别名</th>
 				<th>描述</th>		
 				<th>默认模型</th>
 				<th>系统模型</th>
@@ -29,6 +30,7 @@
 				<td><?php echo $val['modelid'];?></td>
 				<td><?php echo $val['name'];?></td>
 				<td><?php echo $val['tablename'];?></td>
+				<td><?php echo $val['alias'];?></td>
 				<td><?php echo $val['description'] ? htmlspecialchars($val['description']) : '无';?></td>
 				<td><?php echo $val['isdefault'] ? '<span class="c-red">是</span>' : '否';?></td>
 				<td><?php echo $val['issystem'] ? '<span class="c-green">是</span>' : '否';?></td>
@@ -41,7 +43,7 @@
 				</td>
 				<td class="td-manage">
 					<a title="字段管理"  class="btn-mini btn-secondary ml-5" href="<?php echo U('model_field/init',array('modelid'=>$val['modelid']));?>" style="text-decoration:none">字段管理</a> 
-					<a title="编辑"  class="btn-mini btn-success ml-5" href="javascript:;" onclick="yzm_open('编辑模型','<?php echo U('edit',array('modelid'=>$val['modelid']));?>','650','450')" style="text-decoration:none">编辑</a> 
+					<a title="编辑"  class="btn-mini btn-success ml-5" href="javascript:;" onclick="yzm_open('编辑模型','<?php echo U('edit',array('modelid'=>$val['modelid']));?>','650','480')" style="text-decoration:none">编辑</a> 
 					<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('modelid'=>$val['modelid']));?>')"  class="btn-mini btn-warning ml-5" style="text-decoration:none">删除</a>
 					<a title="导出" href="<?php echo U('export',array('modelid'=>$val['modelid']));?>"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">导出</a>
 				</td>

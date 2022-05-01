@@ -14,9 +14,10 @@
  * @param  string  $data  POST请求，数组不为空
  * @param  boolean $array 是否返回数组形式
  * @param  int     $timeout 设置超时时间（毫秒）
+ * @param  array   $header 请求头
  * @return array|string
  */
-function https_request($url, $data = '', $array = true, $timeout = 2000){
+function https_request($url, $data = '', $array = true, $timeout = 2000, $header = array()){
     $curl = curl_init($url);
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
@@ -27,11 +28,15 @@ function https_request($url, $data = '', $array = true, $timeout = 2000){
         curl_setopt($curl, CURLOPT_POST, 1);
         curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
     }
+
+	if($header){
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $header);
+	}
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     $output = curl_exec($curl);
 	if($output === false) $output = curl_error($curl);
     curl_close($curl);
-	debug::addmsg(array('url'=>$url, 'data'=>$data), 2);
+    debug::addmsg(array('url'=>$url, 'data'=>$data), 2);
     return $array ? json_decode($output, true) : $output;
 }
 
@@ -739,14 +744,25 @@ function thumb($imgurl, $width = 300, $height = 200 ,$autocut = 0, $smallpic = '
 function watermark($source, $target = '') {
 	global $image_w;
 	if(empty($source)) return $source;
+	if(strpos($source, '://')) $source = str_replace(SERVER_PORT.HTTP_HOST, '', $source);
 	if(!extension_loaded('gd') || strpos($source, '://')) return $source;
-	if(!$target) $target = $source;
+	
 	if(!is_object($image_w)){
 		yzm_base::load_sys_class('image','','0');
 		$image_w = new image(1,1);
 	}
-	$image_w->watermark($source, $target);
-	return $target;
+
+	if(SITE_PATH == '/'){
+		$source = YZMPHP_PATH.$source;
+		$target = $target ? YZMPHP_PATH.$target : $source;
+		$image_w->watermark($source, $target);
+		return str_replace(YZMPHP_PATH, '', $target);
+	}else{
+		$source = YZMPHP_PATH.str_replace(SITE_PATH, '', $source);
+		$target = $target ? YZMPHP_PATH.str_replace(SITE_PATH, '', $target) : $source;
+		$image_w->watermark($source, $target);
+		return SITE_PATH.str_replace(YZMPHP_PATH, '', $target);
+	}
 }
 
 
@@ -786,6 +802,10 @@ function to_sqls($data, $front = ' AND ', $in_column = false) {
 function new_session_start(){
 	// session_save_path(YZMPHP_PATH.'cache/sessions');
 	ini_set('session.cookie_httponly', true);
+	$session_name = session_name();
+	if (isset($_COOKIE[$session_name]) && !preg_match('/^[-,a-zA-Z0-9]{1,128}$/', $_COOKIE[$session_name])) {
+        unset($_COOKIE[$session_name]);
+    } 
 	return session_start();
 }
 
@@ -1392,18 +1412,19 @@ function is_ajax(){
  * @return string
  */
 function creat_token($isinput = true){
-	$_SESSION['token'] = create_randomstr(8);
-	return $isinput ? '<input type="hidden" name="token" value="'.$_SESSION['token'].'">' : $_SESSION['token'];
+	if(!isset($_SESSION['yzm_csrf_token'])) $_SESSION['yzm_csrf_token'] = create_randomstr(8);
+	return $isinput ? '<input type="hidden" name="token" value="'.$_SESSION['yzm_csrf_token'].'">' : $_SESSION['yzm_csrf_token'];
 }
 
 
 /**
  * 验证TOKEN，确保已经开启SESSION
  * @param string $token 
+ * @param bool $delete
  * @return bool
  */
-function check_token($token){
-	if(!$token || !isset($_SESSION['token']) || $token!=$_SESSION['token']) return false;
-	unset($_SESSION['token']);
+function check_token($token, $delete=false){
+	if(!$token || !isset($_SESSION['yzm_csrf_token']) || $token!=$_SESSION['yzm_csrf_token']) return false;
+	if($delete) unset($_SESSION['yzm_csrf_token']);
 	return true;
 }

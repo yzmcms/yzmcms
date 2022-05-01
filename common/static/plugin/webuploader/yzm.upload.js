@@ -124,4 +124,8 @@ jQuery(function() {
         }
     });
 
+    uploader.on('uploadBeforeSend', function (obj, data, headers) {
+        data.open_watermark = $('#open_watermark').attr('checked') ? 1 : 0;
+    });
+
 });

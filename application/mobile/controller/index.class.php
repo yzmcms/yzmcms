@@ -1,8 +1,8 @@
 <?php
 /**
  * YzmCMS手机模块 - 商业用途请购买官方授权
- * 手机版如果想实现与PC版一样可自由切换模板方式，查看教程:
- * https://www.yzmask.com/show/504.html
+ * YzmCMS手机版绑定独立二级域名，查看教程:
+ * https://www.yzmask.com/show/768.html
  * 
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
@@ -46,15 +46,13 @@ class index{
 		//外部链接
 		if($type == 2) showmsg(L('is_jump'), $pclink, 1);
 		
-		//手机模板暂时就做这一个，不要问我为什么，因为没时间!!!
-		//手机端模板想与PC端同步请查看：https://www.yzmask.com/show/504.html
-		$template = 'category_article';
+		$template = $catid!=$arrchildid&&$category_template ? $category_template : $list_template;
 		
 		//单页面
 		if($type == 1){
 			$r = D('page')->where(array('catid'=>$catid))->find();
 			extract($r);
-			$template = 'category_page';
+			$template = $category_template;
 		}
 
 		//SEO相关设置
@@ -82,6 +80,7 @@ class index{
 		$category = get_category($catid);
 		if(!$category) showmsg(L('category_not_existent'),'stop');
 		$modelid = $category['modelid'];
+		$template = $category['show_template'];
 		
 		$tablename = get_model($modelid);
 		if(!$tablename)  showmsg(L('model_not_existent'),'stop');
@@ -103,8 +102,12 @@ class index{
 		//阅读收费检测
 		$allow_read = true;
 		if($readpoint){
-			$allow_read = content::check_readpoint($catid.'_'.$id, $readpoint, $paytype, $url);
-			$pay_url = U('member/member_pay/spend_point', 'par='.string_auth($catid.'_'.$id.'|'.$readpoint.'|'.$paytype));
+			$allow_read = content::check_readpoint($data);
+			$par[] = $catid.'_'.$id;
+			$par[] = $readpoint;
+			$par[] = $paytype;
+			$par[] = $issystem ? 0 : $userid;
+			$pay_url = U('member/member_pay/spend_point', 'par='.string_auth(join('|',$par)));
 		} 
 		
 		//SEO相关设置
@@ -130,23 +133,8 @@ class index{
 		$pre = $pre ? '<a href="'.U('mobile/index/show', array('catid'=>$pre['catid'],'id'=>$pre['id'])).'">'.$pre['title'].'</a>' : L('already_is_first');
 		$next = $next ? '<a href="'.U('mobile/index/show', array('catid'=>$next['catid'],'id'=>$next['id'])).'">'.$next['title'].'</a>' : L('already_is_last');
 		
-		include template('mobile', 'show_article');
+		include template('mobile', $template);
 	}
 	
-	
-	/**
-	 * 手机留言板
-	 */
-	public function guestbook() {
-		
-		if(!get_config('is_words')) showmsg('管理员已关闭留言功能！', 'stop');
-		
-		//SEO相关设置
-		$site = get_config();
-		$seo_title = '留言反馈'.get_seo_suffix();
-		$keywords = $site['site_keyword'];
-		$description = $site['site_description'];
-		include template('mobile', 'guestbook');
-	}
 
 }

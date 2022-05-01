@@ -23,7 +23,7 @@
 			 </span>
 			 </li>
 			 <li id="adver_text"<?php if($data['type'] == 3) echo ' style="display:none"';?>><label><span class="c-red">*</span>广告值</label>
-			 <textarea name="text" class="textarea" style="width:400px"><?php echo $data['text'];?></textarea>
+			 <textarea name="text" class="textarea" style="width:400px"><?php echo $data['type']==2 ? $data['code'] : $data['text'];?></textarea>
 			</li>
 			 <li id="adver_img"<?php if($data['type'] != 3) echo ' style="display:none"';?>><label><span class="c-red">*</span>选择图像</label>
 			 <?php echo form::image('img', $data['img']);?>

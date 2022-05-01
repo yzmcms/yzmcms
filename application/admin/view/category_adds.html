@@ -16,7 +16,7 @@
 						  <?php 
 						      foreach($modelinfo as $val){
 									$str = $modelid==$val['modelid'] ? ' selected="selected" ' : '';
-									echo '<option value="'.$val['modelid'].'"'.$str.'>'.$val['name'].'('.$val['tablename'].')</option>';
+									echo '<option value="'.$val['modelid'].'"'.$str.'>'.$val['name'].'('.$val['alias'].')</option>';
 							  }
 							  if(!$modelinfo) echo '<option value="">暂无模型</option>';
 						  ?>

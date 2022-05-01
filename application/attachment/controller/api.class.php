@@ -45,6 +45,7 @@ class api{
 
 		//$filename = isset($_POST['filename']) ? $_POST['filename'] : 'file';
 		$filename = 'file';
+		$open_watermark = isset($_POST['open_watermark']) ? intval($_POST['open_watermark']) : 0;
 		$filetype = isset($_POST['filetype']) ? intval($_POST['filetype']) : 1;
 		$module = isset($_POST['module']) ? htmlspecialchars($_POST['module']) : '';
 		$option = array();
@@ -70,6 +71,7 @@ class api{
 				'size' => $fileinfo['filesize'],
 				'filetype' => $fileinfo['filetype']
 			);
+			if($open_watermark) watermark($arr['msg']);
 			return_json($arr);
 		}else{
 			$arr = array(

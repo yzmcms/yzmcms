@@ -18,6 +18,7 @@ class yzm_tag{
 	public function lists($data) {
 		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 0;
 		$catid = isset($data['catid']) ? trim($data['catid']) : '';
+		$id = isset($data['id']) ? intval($data['id']) : 0;
 		$all = isset($data['all']) ? true : false;
 		
 		if($catid){
@@ -37,6 +38,9 @@ class yzm_tag{
 
 		// 优先采用传入的modelid
 		$modelid = $modelid ? $modelid : (isset($category['modelid']) ? $category['modelid'] : 0);
+
+		// 支持单个ID查询
+		if($id) $catid = ' AND id='.$id;
 		
 		if(!$this->_set_model($modelid)) return false;
 		$field = isset($data['field']) ? $data['field'] : '*';
@@ -427,7 +431,7 @@ class yzm_tag{
 	public function get($data) {
 		if(!isset($data['sql'])) return false;
 		$sql = $data['sql'];
-		$order = isset($data['order']) ? $data['order'] : '';
+		$order = isset($data['order']) ? ' ORDER BY '.$data['order'] : '';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
 		$db = D('admin');
 		if(isset($data['page'])){

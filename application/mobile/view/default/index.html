@@ -69,7 +69,7 @@
                 <ul>
                     <!-- 此处仅为功能演示，调用模型ID为1且有缩略图的内容 -->
                     {m:lists field="id,catid,title,thumb" modelid="1" thumb="1" limit="6"}
-                    {loop $data $k=>$v}
+                    {loop $data $v}
                     <li>
                     	<a href="{mobile_url($v['catid'], $v['id'])}"><img src="{$v[thumb]}" alt="{$v[title]}" title="{$v[title]}">
                             <p>{$v[title]}</p>

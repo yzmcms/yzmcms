@@ -94,8 +94,12 @@ class index{
 		//阅读收费检测
 		$allow_read = true;
 		if($readpoint){
-			$allow_read = content::check_readpoint($catid.'_'.$id, $readpoint, $paytype, $url);
-			$pay_url = U('member/member_pay/spend_point', 'par='.string_auth($catid.'_'.$id.'|'.$readpoint.'|'.$paytype));
+			$allow_read = content::check_readpoint($data);
+			$par[] = $catid.'_'.$id;
+			$par[] = $readpoint;
+			$par[] = $paytype;
+			$par[] = $issystem ? 0 : $userid;
+			$pay_url = U('member/member_pay/spend_point', 'par='.string_auth(join('|',$par)));
 		} 
 		
 		//SEO相关设置

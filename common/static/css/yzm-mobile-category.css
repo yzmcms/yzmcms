@@ -40,10 +40,17 @@ a:hover{color:#2196f3;}
 .yzm-news-list ul li a{color:#666;}
 .yzm-news-list ul li a:hover{color:#2196f3;}
 .yzm-news-list ul li .date{float:right;color:#666;font-size:12px;margin-left:7px;}
+.yzm-news-list ul li .yzm-label{font-size:12px;color:#8d1adc}
+.yzm-news-list ul li .yzm-label2{font-size:12px;color:#c00}
 .yzm-news-list ul li:last-child:{border-bottom:0;}
 .yzm-flag{font-style: normal;font-size: 12px;background:#f60;color:#fff;padding: 2px 3px;font-weight:normal;}
 .yzm-title{background:#eee;font-weight:normal;height:35px;line-height:35px;border-top:#2196f3 2px solid;}
 .yzm-title a{color:#123261;}
+.yzm-news-img{overflow:hidden;margin-bottom:10px;}
+.yzm-news-img ul li{width:50%;float:left;height:175px;padding:10px 10px;text-align:center;}
+.yzm-news-img ul li img{width:100%;height:120px;}
+.yzm-news-img ul li p{color:#444;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.yzm-news-img ul li .yzm-label{color:#ff5522}
 #page{margin:20px 0;font-size:14px;line-height:30px;text-align:center}
 #page .pageinfo{display:none}
 #page  a{border:1px solid #ddd;background:#fff;color:#808080;padding:4px 10px;margin-left:5px;transition:all 0.2s}
@@ -58,6 +65,8 @@ a:hover{color:#2196f3;}
 .yzm-main-article h1{font-size:18px;margin-bottom: 20px}
 .yzm-info{font-size:14px;color:#666;margin-bottom:20px;border-bottom: 1px dashed #ddd;padding-bottom:10px;}
 .yzm-description{color:#888888;border:1px solid #f3f3f3;padding:10px;background:#f6f6f6;line-height:23px;font-size:13px;margin-bottom:15px}
+.yzm-content .yzm-down-info{margin-bottom: 10px;color: #4c4c4c}
+.yzm-content .yzm-down-info img{max-width: 100%;margin-bottom: 10px;}
 .yzm-content h2{font-size: 16px;margin:20px 0;padding-left:10px;border-left:3px solid #2196f3;}
 .yzm-content p{font-size:16px;color:#4c4c4c;line-height:30px;}
 .yzm-content img{max-width:100%;}
@@ -67,6 +76,10 @@ a:hover{color:#2196f3;}
 .yzm-content-read-tips span{color:red;margin:0 3px;}
 .yzm-content-read-tips a{color:#0844f7;}
 .yzm-content-read-tips a:hover{color:red;}
+.yzm-title-box{margin-top: 20px;}
+.yzm-title-box h5{font-size: 16px;color:#121212;font-weight: normal;border-left: 3px solid #2196f3;padding-left: 8px}
+.yzm-title-box ul{margin:8px 0}
+.yzm-title-box ul li{background: #fafafa;padding: 10px;}
 .yzm-pre-next{font-size:14px;margin-top:10px;}
 
 .yzm-article-img {overflow:hidden;}
@@ -75,6 +88,8 @@ a:hover{color:#2196f3;}
 .yzm-article-img ul li img{float:left;width:30%;height:60px;margin-right:15px;}
 .yzm-article-img ul li p a{color:#333;display:block;font-size: 16px;margin-top: 6px}
 .yzm-article-img ul li span{color:#868686;font-size:14px;}
+
+.yzm-img-ul img{max-width:100%}
 
 /*评论区*/
 .yzm-content-box{margin-top:20px}

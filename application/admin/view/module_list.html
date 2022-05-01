@@ -58,6 +58,8 @@
 <?php include $this->admin_tpl('footer');?>
 <script type="text/javascript">
 function uninstall(m, url){
+	var symbol = url.indexOf('?')<0 ? '?' : '&';
+	url += symbol+'yzm_csrf_token='+yzm_csrf_token;
 	layer.confirm('确认要卸载 '+m+' 模块吗？',function(index){
 		window.location.href = url;
 	});

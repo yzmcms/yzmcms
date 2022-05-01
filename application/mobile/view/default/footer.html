@@ -4,7 +4,7 @@
 		<!--底部导航-->
 		<div class="yzm-footer-nav">
 			<ul>
-				<li><a href="{U('guestbook')}">留言板</a></li>
+				<li><a href="{U('guestbook/index/init')}">留言板</a></li>
 				{loop $nav_data $v}
 				<li>
 					<a href="{if $v['type']!=2}{U('mobile/index/lists', array('catid'=>$v['catid']))}{else}{$v[pclink]}{/if}">{$v[mobname]}</a>

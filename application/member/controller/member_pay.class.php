@@ -140,7 +140,14 @@ class member_pay extends common{
 		if(!preg_match('/^([0-9]+)_([0-9]+)$/', $flag)) showmsg(L('illegal_parameters'), 'stop');
 		$readpoint = intval($auth_str[1]);
 		$paytype = intval($auth_str[2]);
+		$author_userid = intval($auth_str[3]);
 		M('point')->point_spend($paytype,$readpoint,'7',$this->memberinfo['userid'],$this->memberinfo['username'],$flag);
+
+		// 增加原作者收入
+		if($author_userid){
+			$username = D('member')->field('username')->where(array('userid'=>$author_userid))->one();
+			M('point')->point_add($paytype,$readpoint,12,$author_userid,$username,0,'内容（'.$flag.'）收入','',false);
+		}
 		showmsg('支付成功，请刷新原页面！', '', 2);
 	}
 

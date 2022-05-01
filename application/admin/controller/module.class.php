@@ -71,8 +71,9 @@ class module extends common {
 	 * 模块卸载
 	 */
 	public function uninstall() {
-		define('UNINSTALL', true);
 		if(!isset($_GET['module']) || empty($_GET['module'])) showmsg('模块名称为空！', 'stop');
+		if(!isset($_GET['yzm_csrf_token']) || !check_token($_GET['yzm_csrf_token'])) showmsg(L('token_error'), 'stop');
+		define('UNINSTALL', true);
 		$module_api = new module_api();
 		if ($module_api->uninstall($_GET['module'])){
 			delcache('menu_string_1');

@@ -7,8 +7,13 @@
 	<div id="tab_system" class="HuiTab">
 		<div class="tabBar cl"><span>上传文件</span><span>站内文件</span></div>
 		<div class="tabCon">
-			<span class="yzm-notice">类型:  <?php echo $type;?></span>
-			<span class="yzm-notice">单文件最大: <span class="c-red"><?php echo $s;?></span> ，数量: <span class="c-red"><?php echo $n;?></span>个</span>
+			<div class="yzm-notice">
+				类型:  <?php echo $type;?>
+			</div>
+			<div class="yzm-notice">
+				单文件最大: <span class="c-red"><?php echo $s;?></span> ，数量: <span class="c-red"><?php echo $n;?></span>个
+				<label class="yzm-open-watermark"><input type="checkbox" name="open_watermark" id="open_watermark" value="1"> 添加水印</label>
+			</div>
 			<div id="fileList" class="yzm-uploader-list">
 			</div>
 			<div id="filePicker" class="yzm-upload-button">选择文件</div>
@@ -63,15 +68,17 @@
 	    pick: '#filePicker',
 	    fileNumLimit : <?php echo $n;?>,
 	    fileSingleSizeLimit : <?php echo 1024*get_config('upload_maxsize');?>,
+	    compress: false,
 	    accept: {
 	    	title: '文件上传',
 	        extensions: '<?php echo $type;?>'
 	    },
 	    formData : {
+	        'open_watermark' : 0,
 	        'filetype' : '<?php echo $t;?>',
 	        'module' : '<?php echo $module;?>',
-	    },
-	    compress: false
+	    }
+	    
 	};
 
 $(function(){
@@ -119,8 +126,8 @@ $(function(){
 });
 
 </script>
-<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/webuploader/webuploader.nolog.min.js"></script>
-<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/webuploader/yzm.upload.js"></script>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/webuploader/webuploader.nolog.min.js?v=<?php echo YZMCMS_VERSION;?>"></script>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/webuploader/yzm.upload.js?v=<?php echo YZMCMS_VERSION;?>"></script>
 
 </body>
 </html>

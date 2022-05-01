@@ -28,7 +28,7 @@
 			<?php if(!$stop){?>
 			<p>本页面将在<span style="color:red;font-weight:bold;margin:0 5px;"><?php echo $limittime;?></span>秒后跳转...</p>
 			<?php }else{?>
-			<p><a href="javascript:history.back(-1)" title="点击返回上一页">点击返回上一页</a></p>
+			<p><a href="<?php echo HTTP_REFERER; ?>" title="点击返回上一页">点击返回上一页</a></p>
 			<?php }?>
 		</div>
 	</div> 

@@ -359,7 +359,7 @@ class db_mysqli{
 		$sql = 'SELECT '.$field.' FROM '.$this->get_tablename().$join.$where.$group.$having.$order.$limit;
 		$findquery = $this->execute($sql);
 		$data = $findquery->fetch_row();
-	    return $data[0] ? $data[0] : '';
+	    return $data&&$data[0] ? $data[0] : '';
 	}	
 	
 		

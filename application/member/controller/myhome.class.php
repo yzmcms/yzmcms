@@ -25,6 +25,7 @@ class myhome{
 		$memberinfo = get_memberinfo($userid, true);
 		if(!$memberinfo) showmsg('会员不存在或已被删除！', 'stop');
 		extract($memberinfo);
+		if($status != 1) showmsg('会员状态异常！', 'stop');
 		
 		$groupinfo = get_groupinfo($groupid);
 		D('member_detail')->update('`guest`=`guest`+1', array('userid'=>$userid));
