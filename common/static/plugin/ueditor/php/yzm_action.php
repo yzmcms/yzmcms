@@ -39,6 +39,7 @@ define('HTTP_HOST', (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : ''))
 define('SITE_PATH', $web_path);
 define('SITE_URL', SERVER_PORT.HTTP_HOST.SITE_PATH);
 define('YZMPHP_PATH', stripos(PHP_OS, 'WIN')!==false ? str_replace('/', DIRECTORY_SEPARATOR, $document_root.$web_path) : $document_root.$web_path);
+define('APP_PATH', YZMPHP_PATH.'application'.DIRECTORY_SEPARATOR);
 define('EXT', '.class.php'); 
 
 $web_upload = $web_path.'uploads';
