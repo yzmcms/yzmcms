@@ -95,7 +95,7 @@ class index{
 		//会员组权限检测
 		if($groupids_view) {
 			$groupid = intval(get_cookie('_groupid'));
-			if(!$groupid) showmsg(L('need_login'), url_referer(get_url()), 2);
+			if(!$groupid) showmsg(L('need_login'), url_referer(), 2);
 			if($groupid < $groupids_view) showmsg(L('insufficient_authority'), 'stop');
 		}
 		

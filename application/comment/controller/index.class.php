@@ -43,9 +43,8 @@ class index{
 			
 			$userid = $_POST['userid'] = isset($_SESSION['_userid']) ? $_SESSION['_userid']  : 0;
 			$username = $_POST['username'] = isset($_SESSION['_username']) ? $_SESSION['_username'] : '网友';
-			
 			if(!$userid && !$site['comment_tourist']){
-				 showmsg('登录后方可发布评论！', url_referer($_SERVER['HTTP_REFERER']), 1);
+				 showmsg('登录后方可发布评论！', url_referer(1, HTTP_REFERER), 1);
 			}
 			
 			$ip = getip();
@@ -165,7 +164,7 @@ class index{
 		if(strpos($groupinfo['authority'], '2') === false) showmsg('你没有权限发布评论，请升级会员组！', 'stop');
 
 		$inputtime = D('comment')->field('inputtime')->where(array('userid'=>$userid))->order('id DESC')->one();
-		if($inputtime+5 >= SYS_TIME) showmsg('评论过快，请稍后再试！', 'stop');
+		if($inputtime && ($inputtime+5>=SYS_TIME)) showmsg('评论过快，请稍后再试！', 'stop');
 		
 		$pay = D('pay');
 		$comment_point = get_config('comment_point');

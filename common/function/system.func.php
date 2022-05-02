@@ -212,9 +212,9 @@ function file_icon($file){
  * @param $is_login 1登录，0退出
  * @return string
  */
-function url_referer($is_login = 1){
+function url_referer($is_login = 1, $referer = ''){
 	
-	$referer = urlencode(get_url());
+	$referer = $referer ? urlencode($referer) : urlencode(get_url());
 	$url = $is_login ? U('member/index/login') : U('member/index/logout');
 	if(URL_MODEL) return $url.'?referer='.$referer;	
 	return $url.'&referer='.$referer;

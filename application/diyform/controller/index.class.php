@@ -129,7 +129,7 @@ class index{
 		}
 		
 		$setting = json_decode($data['setting'], true);
-		if(!$setting['allowvisitor'] && empty($_SESSION['_userid'])) showmsg('请登录会员！', url_referer(get_url()), 2);
+		if(!$setting['allowvisitor'] && empty($_SESSION['_userid'])) showmsg('请登录会员！', url_referer(), 2);
 		
 		$this->modelinfo = array_merge($data, $setting);
 	}
