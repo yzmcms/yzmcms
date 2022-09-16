@@ -4,10 +4,10 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 网站地图 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-  <div class="explain"> 
-       <p>网站地图可方便网站管理员通知搜索引擎他们网站上有哪些可供抓取的网页，能够有效提升整站的收录率。</p>
+  <div class="explain light"> 
+     <p><span class="yzm-iconfont yzm-iconshuoming"></span>网站地图可方便网站管理员通知搜索引擎他们网站上有哪些可供抓取的网页，能够有效提升整站的收录率。</p>
   </div>
-	<div class="pd-5 mt-20 formdoby_normal">
+	<div class="pd-5 mt-10 formdoby_normal">
 		<form method="post" action="<?php echo U('make_sitemap');?>" id="myform" onsubmit="return do_submit()">
 		<ul>
 			<li class="yzm-explain-box"><label>选择模型：</label>
@@ -72,7 +72,7 @@
 			<a href="<?php echo $site_url.'sitemap.txt';?>" target="_blank" class="btn btn-success size-MINI radius ml-5" >点击查看</a>
 			</li>
 			<?php } ?>
-			<li><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="开始生成"></li>
+			<li><input class="dosubmit w_100 btn-primary radius" name="dosubmit" type="submit" value="开始生成"></li>
 		</ul>
 		</form>
 	</div>

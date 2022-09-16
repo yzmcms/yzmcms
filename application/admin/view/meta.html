@@ -23,6 +23,7 @@
 <script>DD_belatedPNG.fix('*');</script>
 <![endif]-->
 <script type="text/javascript">
+	var yzm_admin_url = '<?php echo SITE_URL?>';
 	<?php if(isset($_SESSION['yzm_csrf_token'])) { ?>
 	var yzm_csrf_token = '<?php echo $_SESSION['yzm_csrf_token'];?>';
 	window.onload = function() {

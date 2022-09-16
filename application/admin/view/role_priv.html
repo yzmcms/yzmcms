@@ -8,13 +8,13 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 角色管理 <span class="c-gray en">&gt;</span> 权限管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container footer_padding">
-	<div class="cl pd-5 bg-1 bk-gray"> 
+	<div class="cl tb-top"> 
 		<span class="l"> 
 		<a href="javascript:;" onclick="yzm_tree_toggle(this)" isshow="1" class="btn btn-secondary radius tree_toggle"><i class="yzm-iconfont">&#xe653;</i> 收起子项</a>
 		</span> 
 	</div>
 	<form action="" method="post">
-	<table class="table table-border table-bordered table-bg table-hover permission">
+	<table class="table table-border table-bg table-hover permission">
 		<thead>
 			<tr class="text-c">
 				<th class="text-l">权限名称</th>
@@ -25,8 +25,8 @@
 		</tbody>
 	</table>
 	<input type="hidden" name="roleid" value="<?php echo $roleid?>"></input>
-	<div class="footer_btn"> 
-		<input class="btn btn-primary radius mr-10" name="dosubmit" value="确 定" type="submit">
+	<div class="footer_btn footer_border"> 
+		<input class="btn btn-primary radius" name="dosubmit" value="确 定" type="submit">
 		<input type="button" class="btn btn-default radius" value="返 回" onclick="javascript:history.go(-1)">
 	</div>
 	</form>

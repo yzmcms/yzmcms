@@ -8,17 +8,16 @@
 <article class="page-container">
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
-		<ul>
-			<li>&nbsp;</li>			
+		<ul>	
 			<li><label>微信昵称：</label><span class="span_input"><?php echo $data['nickname'];?></span></li>
-			<li><label>备注名称：</label><span class="span_input"><input type="text" name="remark" class="input" value="<?php echo $data['remark'];?>"></span></li>
-			<li>&nbsp;</li>					
-			<li>
-				<input type="hidden" name="openid" value="<?php echo $data['openid'];?>"><input type="hidden" name="dosubmit" value="1">
-			 	<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
-			 	<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
-			</li>
+			<li><label>备注名称：</label><span class="span_input"><input type="text" name="remark" class="input" value="<?php echo $data['remark'];?>"></span></li>				
 		</ul>
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input type="hidden" name="openid" value="<?php echo $data['openid'];?>">
+			<input class="btn btn-primary radius" type="submit" value="提 交">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>

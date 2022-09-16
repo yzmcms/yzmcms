@@ -21,12 +21,12 @@
 			 <li><label>旧密码：</label><input type="password" class="input" placeholder="请输入旧密码" name="old_password" value=""></li>
 			 <li><label>新密码：</label><input type="password" class="input" placeholder="密码长度为6-20位" name="password" value="" onkeyup="checkpwd(this.value)"> <div class="pwdstrength"><span>弱</span><span>中</span><span>强</span></div></li>
 			 <li><label>确认密码：</label><input type="password" class="input" placeholder="密码长度为6-20位" name="password2" value=""></li>
-			 <li>
-			 	<input type="hidden" name="dosubmit" value="1">
-			 	<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
-			 	<input class="btn w_120 btn-default radius h35" type="button" value="取消" onclick="yzmcms_close()">
-			 </li>
 		</ul>
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input class="btn btn-primary radius" type="submit" value="提 交">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>

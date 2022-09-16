@@ -32,10 +32,10 @@
                     </select>
                 </span>
                 <button name="dosubmit" class="btn btn-success radius" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
-                <a href="https://www.yzmcms.com/lianxi/" target="_blank" class="btn btn-secondary radius"><i class="Hui-iconfont">&#xe603;</i> 我要发布</a>
+                <a href="https://www.yzmcms.com/lianxi/" target="_blank" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe603;</i> 我要发布</a>
             </form>
         </div>
-        <table class="table table-border table-bordered table-bg table-hover mt-20">
+        <table class="table table-border table-bg table-hover mt-15">
             <thead>
                 <tr class="text-c">
                     <th class="text-l">应用名称</th>
@@ -71,14 +71,14 @@
                     <td>
                         <?php echo date('Y-m-d', $val['updatetime']);?>
                     </td>
-                    <td><a href="<?php echo $val['url'];?>" target="_blank" class="btn-mini btn-secondary">查看购买</a></td>
+                    <td><a href="<?php echo $val['url'];?>" target="_blank" class="btn-mini btn-primary">查看购买</a></td>
                 </tr>
                 <?php 
 			     }	 
 			    ?>
             </tbody>
         </table>
-        <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
+        <?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
         <div id="page">
             <span class="page_left">共
                 <?php echo $total?>条记录，共

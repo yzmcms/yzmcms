@@ -59,7 +59,7 @@
 .yzm-box-left{width: 800px;}
 .yzm-main-right{float: right; width: 350px; margin: 20px 0;}
 .yzm-tag-list{padding-bottom: 10px; overflow: hidden;}
-.yzm-tag-list a{font-size: 14px; line-height: 24px; height: 24px; display: block; background: #f1f1f1; float: left; padding: 3px 10px; margin: 10px 5px 0 0; border-radius: 3px; transition: all .2s; color: #525252;}
+.yzm-tag-list a{font-size: 13px; line-height: 24px; height: 24px; display: block; background: #f1f1f1; float: left; padding: 3px 10px; margin: 10px 5px 0 0; border-radius: 3px; transition: all .2s; color: #525252;}
 .yzm-tag-list a:hover{background: #2196f3; color: #fff;}
 .yzm-flag{font-style: normal;font-size: 12px;background:#f60;color:#fff;padding: 1px 3px;font-weight:normal;margin-right:3px;}
 .yzm-news{margin: 20px 0; height: 170px; border-bottom: 1px dashed #d3d3d3; overflow: hidden;}
@@ -205,9 +205,9 @@
 .yzm-product-list img:hover{transform: scale(1.1);}
 .yzm-product-right{float: right; width: 270px;}
 .yzm-product-title{font-size: 16px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 35px}
-.yzm-product-price{color: #ff5522; line-height: 35px}
+.yzm-product-price{color: #fd6161; line-height: 35px}
 .yzm-product-stock{line-height: 35px}
-.yzm-product-details{background: #ff5522; border-radius: 3px; display: block; width: 130px; height: 35px; line-height: 35px; text-align: center; color: #fff; transition: 0.3s; font-size: 16px;}
+.yzm-product-details{background: #fd6161; border-radius: 3px; display: block; width: 130px; height: 35px; line-height: 35px; text-align: center; color: #fff; transition: 0.3s; font-size: 16px;}
 .yzm-product-details:hover{color: #fff; opacity: 0.8}
 .yzm-image{width: 100%; height: 450px; line-height: 450px; text-align: center; border: 1px solid #ddd; background: #f9f8f8}
 .yzm-image img{width: 600px; height: 450px; overflow: hidden;}

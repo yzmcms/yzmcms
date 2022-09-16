@@ -9,11 +9,11 @@
 <div class="lock-desktop" id="lock_desktop" style="<?php if(!isset($_SESSION['yzm_lock_screen']) || $_SESSION['yzm_lock_screen']==0) echo 'display:none';?>">
     <form action="" class="lock-box" onsubmit="return yzm_unlock_screen()">
     	<div class="lockuser"><img src="<?php echo STATIC_URL;?>admin/yzm_admin/images/lockuser.png" alt="管理员"></div>
-    	<!-- <h5><i class="Hui-iconfont">&#xe60e;</i> 锁屏状态，请输入密码解锁</h5> -->
+    	<!-- <h5><i class="yzm-iconfont yzm-iconlock-line"></i> 锁屏状态，请输入密码解锁</h5> -->
     	<p class="lock-user"><?php echo $_SESSION['adminname'];?></p>
     	<div class="input-box">
     	    <input type="password" name="password" id="lock_password" class="lock-text" placeholder="锁屏状态，请输入密码">
-    	    <button class="lock-submit" type="button" onclick="yzm_unlock_screen()" title="提交"><i class="Hui-iconfont">&#xe67a;</i></button>
+    	    <button class="lock-submit" type="button" onclick="yzm_unlock_screen()" title="提交"><i class="yzm-iconfont yzm-iconyaoshi"></i></button>
     	</div>
     </form>
 </div>
@@ -51,8 +51,8 @@
 
 	function yzm_clear() {
 		$.ajax({
-			type: 'GET',
-			url: '<?php echo U('clear_cache/public_clear');?>',
+			type: "GET",
+			url: "<?php echo U('clear_cache/public_clear');?>",
 			dataType: "json",
 			success: function(msg) {
 				if (msg.status == 1) {
@@ -75,8 +75,8 @@
 			return false;
 		}
 		$.ajax({
-			type: 'POST',
-			url: '<?php echo U('public_unlock_screen');?>',
+			type: "POST",
+			url: "<?php echo U('public_unlock_screen');?>",
 			data: $(".lock-box").serialize(),
 			dataType: "json",
 			success: function(msg) {
@@ -93,8 +93,8 @@
 
 	function yzm_change_site(siteid){
         $.ajax({
-            type: 'GET',
-            url: '<?php echo U('site/site/public_set_siteid');?>?siteid='+siteid, 
+            type: "GET",
+            url: "<?php echo U('site/site/public_set_siteid');?>?siteid="+siteid, 
 		    dataType: "json", 
             success: function (msg) {
 				if (msg.status == 1) {

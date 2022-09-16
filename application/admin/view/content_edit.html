@@ -5,17 +5,17 @@
 <script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/ueditor.all.min.js"> </script>
 <script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/lang/zh-cn/zh-cn.js"></script>
 <style>
-	.date{height:30px;padding:4px;width:265px;font-size:14px}.Hui-tags-token{color:#353535;}
+	.date{height:30px;padding:4px;width:265px;font-size:13px}.Hui-tags-token{color:#353535;}
 	#colors{position:absolute;top:9px;right:23px;cursor:pointer;}
 </style>
 </head>
 <body>
 <article class="page-container">
-	<form class="form form-horizontal mb-20" onsubmit="return checkall()" method="post">
+	<form class="form form-horizontal mb-50" onsubmit="return checkall()" method="post">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>标　　题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="<?php echo $data['title'];?>"  name="title" <?php if($data['color']) echo 'style="color:'.$data['color'].'"';?>>
+				<input type="text" class="input-text" value="<?php echo $data['title'];?>"  name="title" <?php if($data['color']) echo 'style="color:'.$data['color'].'"';?> onblur="check_title()" >
 				<input type="hidden" name="color" id="color" value="<?php echo $data['color'];?>">
 				<img src="<?php echo STATIC_URL;?>images/colors.png" title="设置颜色" id="colors">
 			</div>
@@ -76,8 +76,8 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">内容摘要：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="description" class="textarea"  placeholder="如不填写，则自动提取文章前200字符" datatype="*10-100" dragonfly="true" nullmsg="文章摘要不能为空！" onKeyUp="textarealength(this,200)"><?php echo $data['description'];?></textarea>
-				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
+				<textarea name="description" class="textarea"  placeholder="如不填写，则自动提取文章前250字符" datatype="*10-100" dragonfly="true" nullmsg="文章摘要不能为空！" onKeyUp="textarealength(this,250)"><?php echo $data['description'];?></textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
 			</div>
 		</div>		
 		<div class="row cl">
@@ -117,8 +117,16 @@
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">来　　源：</label>
+			<?php $copyfroms = get_copyfrom($modelid);?>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="<?php echo $data['copyfrom'];?>"  name="copyfrom" style="width:150px">
+				<input type="text" class="input-text" value="<?php echo $data['copyfrom'];?>" list="copyfroms"  name="copyfrom" style="width:150px">
+				<datalist id="copyfroms">
+					<?php 
+						foreach($copyfroms as $v){
+							echo '<option value="'.$v.'">';
+						}
+					?>
+				</datalist>
 				<span class="yzmcms_small">点击量：<input type="text" class="input-text" style="width:150px" value="<?php echo $data['click'];?>"  name="click"></span>  
 				<span class="yzmcms_small">作者昵称：<input type="text" class="input-text" style="width:150px" value="<?php echo $data['nickname']; ?>"  name="nickname"></span>  
 			</div>
@@ -128,21 +136,19 @@
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>内　　容：</label>
 			<div class="formControls col-xs-8 col-sm-9">
 			<?php echo form::editor('content', $data['content'], 'width:100%;height:400px', false);?>
-			<label title="提取内容第一张图片为缩略图"><input name="auto_thum" type="checkbox" value="1" />提取内容第一张图片为缩略图</label>
+			<label title="提取内容第一张图片为缩略图"><input name="auto_thum" type="checkbox" value="1" <?php if(get_cookie('auto_thum')) echo 'checked';?>/>提取内容第一张图片为缩略图</label>
 			</div>
 		</div>
-		<div class="row cl">
-			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<input type="hidden" name="status" value="<?php echo $data['status'];?>">
-				<?php if($data['issystem']){ ?>
-				<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(1)"><i class="Hui-iconfont">&#xe603;</i> 保存发布</button>
-				<button name="dosubmit" class="btn btn-secondary radius" type="submit" onclick="set_status(0)"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
-				<?php }else{ ?>
-				<button name="dosubmit" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 修改稿件</button>
-				<button class="btn btn-warning radius" type="button" onclick="show_rejection()"><i class="Hui-iconfont">&#xe6dd;</i> 退稿</button>
-				<?php } ?>
-				<button onclick="yzm_content_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
-			</div>
+		<div class="footer_btn footer_border">
+			<input type="hidden" name="status" value="<?php echo $data['status'];?>">
+			<?php if($data['issystem']){ ?>
+			<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(1)"><i class="Hui-iconfont">&#xe603;</i> 保存发布</button>
+			<button name="dosubmit" class="btn btn-secondary radius" type="submit" onclick="set_status(0)"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
+			<?php }else{ ?>
+			<button name="dosubmit" class="btn btn-primary radius" type="submit"><i class="Hui-iconfont">&#xe632;</i> 修改稿件</button>
+			<button class="btn btn-danger radius" type="button" onclick="show_rejection()"><i class="Hui-iconfont">&#xe6dd;</i> 退稿</button>
+			<?php } ?>
+			<button onclick="yzm_content_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
 		</div>
 		<input type="hidden"  value="<?php echo $data['listorder'];?>"  name="listorder">
 	</form>
@@ -189,9 +195,13 @@
 			content: $('#rejection_mess'),
 			yes: function(index, layero){
 				var content_c = $("textarea[name='content_c']").val();
+				if(content_c == ''){
+					layer.msg("请输入退稿理由！", {icon:2,time:2000});
+					return false;
+				}
 			    $.ajax({
-	               type: 'POST',
-	               url: '<?php echo U('admin_content/rejection');?>', 
+	               type: "POST",
+	               url: "<?php echo U('admin_content/rejection');?>", 
 	               data: 'ids[]=<?php echo isset($allid) ? $allid : 0;?>&content_c='+content_c+'&yzm_csrf_token='+yzm_csrf_token,
 	   		       dataType: "json", 
 	               success: function (msg) {
@@ -229,11 +239,36 @@
 		}
 		return true;
 	}
+
+	function check_title() {
+		var title = $("input[name='title']").val();
+		if(title == ''){
+			layer.msg('标题不能为空！', {icon:2,time: 2000});
+			return false;
+		}
+        var keywords = $("[name=keywords]").val();
+        if(keywords == ''){
+			$.ajax({
+	            type: "POST",
+	            url: 'https://www.yzmcms.com/api/analysis', 
+	            data: {content:title},
+			    dataType: "json", 
+	            success: function (msg) {
+					if(msg.status && msg.data){
+						$("[name=keywords]").val(msg.data);
+					}
+	            }
+	        })
+        }
+	}
 	
 	function change_keyword() {
-		var v = $("#taglist").val();
-		if(v != '') v = v.substr(0,v.length-1);
-		$("[name=keywords]").val(v);
+		var keywords = $("[name=keywords]").val();
+		if(keywords == ''){
+			var v = $("#taglist").val();
+			if(v != '') v = v.substr(0,v.length-1);
+			$("[name=keywords]").val(v);
+		}
 	}
 
 	$("#colors").colorpicker({

@@ -10,8 +10,8 @@ div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,butt
 table{border-collapse:collapse;}
 a,img{border:0;}
 ol,ul{list-style:none}
-a{color:#adf;text-decoration:none;}
-a:hover{color:#fff;text-decoration:underline;}
+a{color:#4395ff;text-decoration:none;}
+a:hover{text-decoration:underline;}
 .clearfix{clear:both;width:0px;height:0px;overflow:hidden;}
 
 .yzm-loginwarrp{position: absolute;top: 46%;left: 50%;width:480px;height:350px;margin: -175px 0px 0px -240px;background:#fff; background:rgba(255,255,255,0.7);overflow:hidden;font-size:14px;box-shadow:0px 20px 60px rgba(0,0,0,0.5),0px 0px 150px rgba(0,0,0,0.5);border-radius:4px;color:#333;}
@@ -24,9 +24,11 @@ a:hover{color:#fff;text-decoration:underline;}
 .yzm-login-item .yzm-verify-input{width:177px;margin-right:8px;}
 .yzm-verifyimg{float:right;height:33px;width:100px;margin-top:3px;cursor:pointer;}
 .yzm-login-sub{text-align:right;margin-right:8px}
-.yzm-login-sub input{margin-top:15px;height:35px;line-height:33px;width:285px;color:#fff;font-size:14px;border-radius:3px;cursor:pointer;outline:none;transition:background 0.3s ease 0s;border:1px solid #217ef2;background-color:#529ecc;text-shadow: 0 -1px 0 rgba(0,0,0,.1);}
-.yzm-login-sub input:hover{background:#4288B3;}
+.yzm-login-sub input{margin-top:15px;height:35px;line-height:33px;width:285px;color:#fff;font-size:14px;border-radius:3px;cursor:pointer;outline:none;transition:background 0.3s ease 0s;border:1px solid #409eff;background-color:#409eff;text-shadow: 0 -1px 0 rgba(0,0,0,.1);}
+.yzm-login-sub input:hover{background:#66b1ff;border:1px solid #66b1ff}
 .yzm-footer{color:#eee;position:fixed;_position:absolute;bottom:0px;text-align:center;width:100%;background:#453c5a;background:rgba(0,0,0,0.3);padding:10px 0;}
+.yzm-footer a{color:#fff}
+.yzm-footer a:hover{color:#4395ff}
 
 @media screen and (max-width:640px) {
 	.yzm-logo{width:100%;margin:30px auto 20px}

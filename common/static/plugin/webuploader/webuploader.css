@@ -16,11 +16,13 @@
 .yzm-search-btn{display:inline-block;cursor:pointer;border:none;height:30px;width:65px;border-radius:1px;text-align:center;font-weight:400;white-space:nowrap;vertical-align:middle;transition:background-color .1s linear}
 .yzm-imagelist ul{background:#fff}
 .yzm-imagelist ul li{float:left;width:25%;text-align:center;margin:10px 0;position:relative;}
-.yzm-imagelist ul li a{width:100px;height:70px;border:1px solid #eee;text-align:center;vertical-align:middle;display:table-cell;position:relative;}
+.yzm-imagelist ul li a{width:100px;height:70px;border:1px solid #eee;text-align:center;vertical-align:middle;display:table-cell;position:relative;z-index:6;}
 .yzm-imagelist ul li a:hover{background:#f3f6fa;}
 .yzm-imagelist ul li .on{background:#f3f6fa;border:1px solid #0099ff;}
 .yzm-imagelist ul li a img{width:90px;height:60px;position:absolute;right:5px;bottom:5px;z-index:9;}
 .yzm-imagelist ul li a .checkd{width:25px;height:25px;position:absolute;right:0;bottom:0;z-index:10;}
+.yzm-imagelist ul li .img_del{display:none;position:absolute;cursor:pointer;top:-10px;left:92px;font-size:15px;color:#0099ff;z-index:88}
+.yzm-imagelist ul li a:hover + .img_del{display:block}
 .yzm-file-item{margin:6px 0;background:#f5f5f5;font-size:12px;padding:6px 15px;border-bottom:1px dotted #d5d5d5}
 .yzm-upload-button{margin-top:10px}
 .yzm-progress{width:100%;background:#ddcfcc;height:6px;margin-top:3px}

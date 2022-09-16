@@ -21,7 +21,7 @@
 			 <li class="yzm-explain-box"><label><span class="c-red">*</span>模型别名：</label>
 			 	<input type="text" class="input" name="alias" placeholder="如：shop" value="<?php echo $data['alias'];?>">
 			 	<span class="yzm-explain">模型别名与模型表名规则相同，<br>区别在于模型别名可重复</span>
-			 	<p class="exp" style="color:red;margin-top:3px"><i class="Hui-iconfont">&#xe6cd;</i> 模型别名与栏目模板关连：</p>
+			 	<p class="exp" style="color:red;margin-top:3px"><i class="yzm-iconfont yzm-iconshuoming2"></i>  模型别名与栏目模板关连：</p>
 			 	<p class="exp">频道页模板规则是：<span>category_模型别名.html</span> 或 <span>category_模型别名_*.html</span></p>
 			 	<p class="exp">列表页模板规则是：<span>list_模型别名.html</span> 或 <span>list_模型别名_*.html</span></p>
 			 	<p class="exp">内容页模板规则是：<span>show_模型别名.html</span> 或 <span>show_模型别名_*.html</span></p>
@@ -35,13 +35,14 @@
 			 	<label class="label_radio"><input name="isdefault" type="radio" value="0" <?php echo $data['isdefault']==0 ? ' checked="checked" ' : '';?>> 否</label>
 			 	<span class="yzm-explain">设为默认模型后，内容管理默认展示该模型下的数据</span>
 			 </span>
-			 </li>				 
-			<li>
-				<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="modelid" value="<?php echo $data['modelid'];?>">
-				<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
-			 	<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
-			</li>
+			 </li>
 		</ul>
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input type="hidden" name="modelid" value="<?php echo $data['modelid'];?>">
+			<input class="btn btn-primary radius" type="submit" value="提 交">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>

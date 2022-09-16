@@ -349,17 +349,22 @@ class yzm_tag{
 		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 0;
 		$keyword = isset($data['keyword']) ? $data['keyword'] : '';
 		$field = isset($data['field']) ? $data['field'] : '*';
+		$search = isset($data['search']) ? $data['search'] : 'title';
 		$order = isset($data['order']) ? $data['order'] : 'id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
 
 		switch(ROUTE_A) {
 			case 'init' :
-				$where = "`status` = 1 AND `title` LIKE '%$keyword%'";
 				if($modelid){
 					if(!$this->_set_model($modelid)) return false;
 					$db = $this->db;
+					$whereor = array();
+					foreach(explode(',', $search) as $val){
+					    $whereor[] = "`{$val}` LIKE '%$keyword%'";
+					}
+					$where = '`status` = 1 AND ('.join(' OR ', $whereor).')';
 				}else{
-					$where = 'siteid = '.$siteid.' AND '.$where;
+					$where = 'siteid = '.$siteid." AND `status` = 1 AND `title` LIKE '%$keyword%'";
 					$db = D('all_content');
 				}
 
@@ -436,14 +441,14 @@ class yzm_tag{
 		$db = D('admin');
 		if(isset($data['page'])){
 			yzm_base::load_sys_class('page','',0);
-			$countsql = 'SELECT COUNT(*) as total FROM ('.$sql.') T';
-			$r = $db->fetch_array($db->query($countsql));
+			$countsql = 'SELECT COUNT(*) AS total FROM ('.$sql.') T';
+			$r = $db->query($countsql, false);
 			$this->total = $r['total'];
 			$this->page = new page($this->total, $limit);
 			$limit = $this->page->limit();
 		}
 		$sql = $sql.$order.' LIMIT '.$limit;
-		return $db->fetch_all($db->query($sql));
+		return $db->query($sql);
 	}	
 		
 	

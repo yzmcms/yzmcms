@@ -32,8 +32,7 @@ class database extends common {
 	 * 数据库列表
 	 */
 	public function init() {
-		$admin = D('admin');
-		$data = $admin->fetch_all($admin->query('SHOW TABLE STATUS'));		
+		$data = D('admin')->query('SHOW TABLE STATUS');		
 		include $this->admin_tpl('database_list');
 	}
 	
@@ -94,8 +93,7 @@ class database extends common {
 	public function public_datatable_structure() {
 		$table = isset($_GET['table']) ? trim($_GET['table']) : '';
 		if(!$table) showmsg(L('lose_parameters'), 'stop');
-		$admin = D('admin');
-		$data = $admin->fetch_array($admin->query('SHOW CREATE TABLE '.$this->_safe_replace($table)));
+		$data = D('admin')->query('SHOW CREATE TABLE '.$this->_safe_replace($table), false);
 		include $this->admin_tpl('datatable_structure');
 	}
 

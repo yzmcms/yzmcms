@@ -5,18 +5,17 @@
 <article class="page-container">
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return checkall(this)">
-		<ul>
-			 <li><label>分类名称：</label>
-			 	<input type="text" class="input" name="name" value="">
-			 </li> 
-			 <li>&nbsp;</li>
+		<ul class="mt-20">
 			 <li>
-			 	<input type="hidden" name="dosubmit" value="1">
-			 	<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
-			 	<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
+			 	<label><span class="c-red">*</span>分类名称：</label>
+			 	<input type="text" class="input" name="name" value="" style="width:200px">
 			 </li> 
 		</ul>
-		
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input class="btn btn-primary radius" type="submit" value="提 交">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>
@@ -25,7 +24,7 @@
 
 function checkall(obj){
 		if($("input[name='name']").val()==''){
-			layer.msg('分类名称不能为空！');
+			layer.msg('分类名称不能为空！', {icon:2});
 			return false;
 		}
         $.ajax({

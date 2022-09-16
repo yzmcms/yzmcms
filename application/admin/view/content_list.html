@@ -52,19 +52,19 @@
      <input type="text" name="searinfo" class="input-text search" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	 </form>	
   </div>
-  <div class="cl pd-5 bg-1 bk-gray mt-20"> 
+  <div class="cl mt-15 tb-top"> 
   <span class="l">
   <a href="javascript:;" onclick="yzm_open_full('添加内容','<?php echo U('add', array('modelid'=>$modelid));?>')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加内容</a>
   <a href="javascript:;" onclick="yzm_dels('ids', 1)" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
   <a href="javascript:;" onclick="baidu_push()" class="btn btn-secondary radius">推送至百度</a> 
   <a href="javascript:;" onclick="attribute_operation('移动分类', '<?php echo U('remove', array('modelid' => $modelid))?>')" class="btn btn-primary radius">移动分类</a> 
   <a href="javascript:;" onclick="attribute_operation('复制内容', '<?php echo U('copy', array('modelid' => $modelid))?>')" class="btn btn-primary radius">复制内容</a> 
-  <a href="javascript:;" onclick="attribute_operation('增加属性', '<?php echo U('attribute_operation', array('modelid' => $modelid, 'op' => 1))?>')" class="btn btn-primary radius">增加属性</a> 
-  <a href="javascript:;" onclick="attribute_operation('删除属性', '<?php echo U('attribute_operation', array('modelid' => $modelid, 'op' => 0))?>')" class="btn btn-primary radius">删除属性</a> 
+  <a href="javascript:;" onclick="attribute_operation('增加属性', '<?php echo U('attribute_operation', array('modelid' => $modelid, 'op' => 1))?>')" class="btn btn-success radius">增加属性</a> 
+  <a href="javascript:;" onclick="attribute_operation('删除属性', '<?php echo U('attribute_operation', array('modelid' => $modelid, 'op' => 0))?>')" class="btn btn-warning radius">删除属性</a> 
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
   <form method="post" action="<?php echo U('del');?>" id="myform">
   <input type="hidden" name="modelid" value="<?php echo $modelid;?>">
-  <table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
+  <table class="table table-border table-bg table-hover yzm-table-sort">
     <thead>
       <tr class="text-c">
         <th width="25"><input type="checkbox"></th>
@@ -144,7 +144,7 @@
 		?>
     </tbody>
   </table>
-  <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
+  <?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
   </form>
   <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>

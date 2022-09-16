@@ -12,13 +12,13 @@
 			<li><label>SEO标题：</label><input type="text" class="input" value="<?php echo $data['seo_title']?>" name="seo_title"></li>	
 			<li><label>SEO关键字：</label><input type="text" class="input" value="<?php echo $data['seo_keywords']?>" name="seo_keywords"></li>	
 			<li><label>SEO描述：</label><textarea name="seo_description" class="textarea" style="width:75%"><?php echo $data['seo_description']?></textarea></li>			
-			<li>
-				<input type="hidden" name="id" value="<?php echo $data['id']?>">
-				<input type="hidden" name="dosubmit" value="1">
-				<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
-				<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
-			</li>
 		</ul>
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input type="hidden" name="id" value="<?php echo $data['id']?>">
+			<input class="btn btn-primary radius" type="submit" value="提 交">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>

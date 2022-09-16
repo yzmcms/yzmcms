@@ -18,12 +18,13 @@
 			 <li><label>角色描述：</label>
 			 	<span class="span_input"><textarea name="description" cols="" rows="" class="textarea  w_420"  placeholder="角色描述"><?php echo $data['description'];?></textarea></span>
 			 </li>
-			 <li>
-			 	<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="roleid" value="<?php echo $data['roleid'];?>">
-			 	<input class="dosubmit w_120 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
-			 	<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
-			</li>
 		</ul>
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input type="hidden" name="roleid" value="<?php echo $data['roleid'];?>">
+			<input class="btn btn-primary radius" type="submit" value="提 交">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>

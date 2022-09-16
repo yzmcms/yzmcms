@@ -4,8 +4,8 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 管理员管理 <span class="c-gray en">&gt;</span> 管理员列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a href="javascript:;" onclick="yzm_open('添加管理员','<?php echo U('add');?>','600','420')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a></span></div>
-	<table class="table table-border table-bordered table-bg table-hover">
+	<div class="cl tb-top"> <span class="l"><a href="javascript:;" onclick="yzm_open('添加管理员','<?php echo U('add');?>','600','420')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加管理员</a></span></div>
+	<table class="table table-border table-bg table-hover">
 		<thead>
 			<tr class="text-c">
 				<th>ID</th>
@@ -35,8 +35,8 @@
 				<td><?php echo $val['loginip'] ? $val['loginip'] : '从未登录';?></td>
 				<td><?php echo $val['addpeople'];?></td>
 				<td class="td-manage">
-					<a title="编辑" href="javascript:;" onclick="yzm_open('管理员编辑','<?php echo U('edit',array('adminid'=>$val['adminid']));?>','600','420')" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
-					<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('adminid'=>$val['adminid']));?>')" class="yzm-box-img btn-warning ml-5"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a>
+					<a title="编辑" href="javascript:;" onclick="yzm_open('管理员编辑','<?php echo U('edit',array('adminid'=>$val['adminid']));?>','600','420')" class="yzm-box-img btn-primary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
+					<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('adminid'=>$val['adminid']));?>')" class="yzm-box-img btn-danger ml-5"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a>
 				</td>
 			</tr>
 			<?php 
@@ -44,7 +44,7 @@
 			?>	
 		</tbody>
 	</table>
-	<?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
+	<?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
 	<div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
 	<span class="page_right"><?php echo $page->getfull();?></span></div>
 </div>

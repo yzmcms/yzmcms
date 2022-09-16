@@ -40,7 +40,7 @@
 					<?php
 					foreach($data as $val){
 						$thum = $val['isimage'] ? $val['filepath'].$val['filename'] : (in_array($val['fileext'], array('zip', 'rar')) ? STATIC_URL.'images/ext/rar.png' : STATIC_URL.'images/ext/blank.png');
-						echo '<li><a href="javascript:;" onclick="javascript:album_cancel(this)" title="'.$val['originname'].'"><img class="img_src" src="'.$thum.'" path="'.$val['filepath'].$val['filename'].'"><img src="'.STATIC_URL.'images/checked.gif" class="checkd hidden"></a></li>';
+						echo '<li><a href="javascript:;" onclick="album_cancel(this)" title="'.$val['originname'].'"><img class="img_src" src="'.$thum.'" attid="'.$val['id'].'" path="'.$val['filepath'].$val['filename'].'"><img src="'.STATIC_URL.'images/checked.gif" class="checkd hidden"></a><span class="yzm-iconfont img_del" onclick="yzm_att_del(\''.U('delete', array('id'=>$val['id'])).'\', \''.$val['originname'].'\')">&#xe625;</span></li>';
 					}
 					?>
 				</ul>
@@ -54,6 +54,7 @@
 		<input type="button" class="btn btn-default radius" id="cancel" value="&nbsp;&nbsp;取消&nbsp;&nbsp;">
 	</div>
 </div>
+<div id="att_id" class="hidden"></div>
 <div id="att_status" class="hidden"></div>
 <div id="att_titles" class="hidden"></div>
 <?php include $this->admin_tpl('footer', 'admin');?>
@@ -85,12 +86,14 @@ $(function(){
 	
 	var index = parent.layer.getFrameIndex(window.name);
 	$('#determine').on('click', function(){
+		var att_id = $("#att_id").html();
 		var att_status = $("#att_status").html();
 		var att_titles = $("#att_titles").html();
 		if(att_status == ''){
 			layer.alert('你还没选择附件呢？'); 
 			return false;
 		}
+		att_id = att_id.substr(1);		
 		att_status = att_status.substr(1);		
 		att_titles = att_titles.substr(1);		
 		<?php
@@ -99,6 +102,7 @@ $(function(){
 		<?php if($n == 1) { ?>
 		
 		parent.$("#<?php echo $pid;?>").val(att_status);
+		parent.$("#<?php echo $pid;?>_attid").val(att_id);
 		parent.$("#<?php echo $pid;?>_src").attr("src", att_status);
 		
 		<?php }else{ ?>

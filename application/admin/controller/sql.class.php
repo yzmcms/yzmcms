@@ -45,10 +45,7 @@ class sql extends common {
 
 				$result = $admin->query($sql); 
 				if($result){
-					$str = '<span style="color:green">OK : 执行成功！</span>';
-					if(!preg_match("/^(?:UPDATE|DELETE|TRUNCATE|ALTER|DROP|FLUSH|INSERT|REPLACE|SET|CREATE)\\s+/i", $sql)){
-						$data = $admin->fetch_all($result);
-					}					
+					$str = '<span style="color:green">OK : 执行成功！</span>';					
 				}else{
 					$str = '<span class="c-red">ERROR : 执行失败！</span>';
 					break;

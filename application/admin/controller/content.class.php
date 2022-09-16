@@ -191,17 +191,16 @@ class content extends common {
 	 */
 	public function baidu_push() {
 		if($_POST && is_array($_POST['ids'])){
-			$ids_arr = array_map('intval', $_POST['ids']);
-			if(empty($ids_arr)) return_json(array('status'=>0,'message'=>L('lose_parameters')));
-			$ids = join(',', $ids_arr);
+			if(empty($_POST['ids'])) return_json(array('status'=>0,'message'=>L('lose_parameters')));
 			$content = D($this->content->tabname);
-			$data = $content->field('url,is_push')->where('id IN ('.$ids.')')->select();
+			$data = $content->field('url,is_push')->where(array('id'=>array('in', $_POST['ids'], 'intval')))->select();
 			$urls = array();
 			$site_url = get_site_url();
 			foreach ($data as $value) {
 				if($value['is_push']) continue;
-				$urls[] = strpos($value['url'], '://') ? $value['url'] : $site_url.$value['url'];
+				$urls[] = strpos($value['url'], '://') ? $value['url'] : rtrim($site_url, '/').$value['url'];
 			}
+
 			if(!empty($urls)){
 				if(self::$siteid){
 					$baidu_push_token = get_site(self::$siteid, 'baidu_push_token');
@@ -211,7 +210,8 @@ class content extends common {
 					if(!$baidu_push_token) return_json(array('status'=>0,'message'=>'百度推送token为空，请到系统管理中配置！'));
 				}
 				
-				$api_url = 'http://data.zz.baidu.com/urls?site='.rtrim($site_url, '/').'&token='.$baidu_push_token;
+				$parse_url = parse_url($site_url);
+				$api_url = 'http://data.zz.baidu.com/urls?site='.$parse_url['host'].'&token='.$baidu_push_token;
 				$ch = curl_init();
 				$options =  array(
 				    CURLOPT_URL => $api_url,
@@ -225,7 +225,7 @@ class content extends common {
 				curl_close($ch);
 				$result = json_decode($result, true);
 				if(isset($result['success'])){
-					$content->update(array('is_push' => 1), 'id IN ('.$ids.')');
+					$content->update(array('is_push' => 1), array('id'=>array('in', $_POST['ids'], 'intval')));
 					return_json(array('status'=>1,'message'=>'成功推送'.$result['success'].'条URL地址！'));
 				}else{
 					return_json(array('status'=>0,'message'=>'推送失败，错误码：'.$result['error']));

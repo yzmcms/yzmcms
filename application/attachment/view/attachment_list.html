@@ -16,14 +16,14 @@
 		 类型：<input type="text" name="fileext" placeholder="如：jpg" style="width:135px" class="input-text" value="<?php if(isset($_GET['fileext'])) echo $_GET['fileext'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 		 </form>	
   </div>
-  <div class="cl pd-5 bg-1 bk-gray mt-20"> 
+  <div class="cl mt-15 tb-top"> 
 	  <span class="l">
 	  <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  
 	  </span> 
 	  <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> 
   </div>
   <form method="post" action="<?php echo U('del');?>" id="myform">
-  <table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
+  <table class="table table-border table-bg table-hover yzm-table-sort">
     <thead>
       <tr class="text-c">
 		<th width="25"><input type="checkbox"></th>
@@ -64,8 +64,8 @@
 			<td><?php echo $val['username']?></td>
 			<td><?php echo $val['uploadip']?></td>
 			<td>
-				<a title="点击预览" href="javascript:;" <?php echo $click;?> class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe695;</i> 预览</a> 
-				<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('del_one',array('id'=>$val['id']));?>')" class="yzm-box-img btn-warning ml-5"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a>
+				<a title="点击预览" href="javascript:;" <?php echo $click;?> class="yzm-box-img btn-primary"><i class="Hui-iconfont">&#xe695;</i> 预览</a> 
+				<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('del_one',array('id'=>$val['id']));?>')" class="yzm-box-img btn-danger ml-5"><i class="Hui-iconfont">&#xe6e2;</i> 删除</a>
 			</td>
 		  </tr>		
 		<?php 
@@ -73,7 +73,7 @@
 		?>
     </tbody>
   </table>
-  <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
+  <?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
   </form>
   <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>

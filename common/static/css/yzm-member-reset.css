@@ -16,6 +16,8 @@ a:hover{color:#2f549f;text-decoration:underline;}
 .clearfix{clear:both;width:0px;height:0px;overflow:hidden;}
 
 .w880{margin:0 auto;width:880px;}
+.mt-10{margin-top:10px}
+.mt-20{margin-top:20px}
 
 /*网站头部 */
 .head{height:35px;line-height:35px}

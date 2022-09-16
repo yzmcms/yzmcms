@@ -34,9 +34,9 @@ class store extends common {
 				$data['system'] = intval($_GET['system']);
 			}
 		}
-		$res = https_request($api_url, $data);
-		$total = $res ? $res['total'] : 0;
-		$data = $res ? $res['data'] : array();
+		$res = https_request($api_url, $data, true, 3000);
+		$total = $res&&isset($res['total']) ? $res['total'] : 0;
+		$data = $res&&isset($res['data']) ? $res['data'] : array();
 		$page = new page($total, 15);
 		include $this->admin_tpl('store_list');
 	}
@@ -49,6 +49,51 @@ class store extends common {
 
 		include $this->admin_tpl('system_info');
 	}
-	
+
+
+	/**
+	 * 忽略更新
+	 */
+	public function public_update_ignore(){
+		if(is_ajax()){
+			setcache('yzm_update_ignore', 1, 864000);
+			return_json(array('status'=>1, 'message'=>'近期不再提示此信息！'));
+		}
+	}
+
+
+	/**
+	 * 检测更新
+	 */
+	public function public_check_update(){
+		yzm_base::load_common('lib/update'.EXT, 'admin');
+		if(is_post()){
+			$auto_update = isset($_POST['auto_update']) ? intval($_POST['auto_update']) : 1;
+			if($auto_update && getcache('yzm_update_ignore')) return_json(array('status'=>3, 'message'=>'近期不再提示升级信息！'));
+			if(!class_exists('update') || !method_exists('update', 'check_update')) return_json(array('status'=>0, 'message'=>'缺少系统升级文件，请联系官方！'));
+			$data = update::check_update();
+			if($data['status'] == 2) setcache('yzm_update_info', $data['data']);
+			return_json($data);
+		}
+		$data = getcache('yzm_update_info');
+		if(!$data){
+			showmsg('请重新检测升级！', 'stop');
+		}
+		debug();
+		include $this->admin_tpl('system_update');
+	}
+
+
+	/**
+	 * 一键更新
+	 */
+	public function public_system_update(){
+		if(is_ajax()){
+			set_time_limit(0);
+			yzm_base::load_common('lib/update'.EXT, 'admin');
+			if(!class_exists('update') || !method_exists('update', 'system_update')) return_json(array('status'=>0, 'message'=>'缺少系统升级文件，请联系官方！'));
+			update::system_update();
+		}
+	}
 
 }

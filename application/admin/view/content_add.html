@@ -5,13 +5,13 @@
 <script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/ueditor.all.min.js"> </script>
 <script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/lang/zh-cn/zh-cn.js"></script>
 <style>
-	.date{height:30px;padding:4px;width:265px;font-size:14px}.Hui-tags-token{color:#353535;}
+	.date{height:30px;padding:4px;width:265px;font-size:13px}.Hui-tags-token{color:#353535;}
 	#colors{position:absolute;top:9px;right:23px;cursor:pointer;}
 </style>
 </head>
 <body>
 <article class="page-container">
-	<form class="form form-horizontal mb-20" onsubmit="return checkall()" method="post">
+	<form class="form form-horizontal mb-50" onsubmit="return checkall()" method="post">
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>标题：</label>
 			<div class="formControls col-xs-8 col-sm-9">
@@ -81,8 +81,8 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">内容摘要：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<textarea name="description" class="textarea"  placeholder="如不填写，则自动提取文章前200字符" datatype="*10-100" dragonfly="true" nullmsg="文章摘要不能为空！" onKeyUp="textarealength(this,200)"></textarea>
-				<p class="textarea-numberbar"><em class="textarea-length">0</em>/200</p>
+				<textarea name="description" class="textarea"  placeholder="如不填写，则自动提取文章前250字符" datatype="*10-100" dragonfly="true" nullmsg="文章摘要不能为空！" onKeyUp="textarealength(this,250)"></textarea>
+				<p class="textarea-numberbar"><em class="textarea-length">0</em>/250</p>
 			</div>
 		</div>		
 		<div class="row cl">
@@ -121,9 +121,17 @@
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">来源：</label>
+			<?php $copyfroms = get_copyfrom($modelid);?>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value="原创"  name="copyfrom" style="width:150px">
-				<span class="yzmcms_small">点击量：<input type="text" class="input-text" style="width:150px" value="0"  name="click"></span>  
+				<input type="text" class="input-text" value="<?php echo $copyfroms[0];?>" list="copyfroms"  name="copyfrom" style="width:150px">
+				<datalist id="copyfroms">
+					<?php 
+						foreach($copyfroms as $v){
+							echo '<option value="'.$v.'">';
+						}
+					?>
+				</datalist>
+				<span class="yzmcms_small">点击量：<input type="text" class="input-text" style="width:150px" value="<?php echo rand(10,99);?>"  name="click"></span>  
 				<span class="yzmcms_small">作者昵称：<input type="text" class="input-text" style="width:150px" value="<?php echo $_SESSION['admininfo']['nickname'] ? $_SESSION['admininfo']['nickname'] : '管理员'; ?>"  name="nickname"></span>  
 			</div>
 		</div>
@@ -132,21 +140,19 @@
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>内容：</label>
 			<div class="formControls col-xs-8 col-sm-9"> 
 			<?php echo form::editor('content', '', 'width:100%;height:400px', false);?>
-			<label title="提取内容第一张图片为缩略图"><input name="auto_thum" type="checkbox" value="1" />提取内容第一张图片为缩略图</label>
+			<label title="提取内容第一张图片为缩略图"><input name="auto_thum" type="checkbox" value="1" <?php if(get_cookie('auto_thum')) echo 'checked';?> />提取内容第一张图片为缩略图</label>
 			</div>
 		</div>
-		<div class="row cl">
-			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<input type="hidden" name="status" value="1">
-				<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(1)"><i class="Hui-iconfont">&#xe603;</i> 保存发布</button>
-				<button name="dosubmit" class="btn btn-secondary radius" type="submit" onclick="set_status(0)"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
-				<button name="continuity" class="btn btn-success radius" type="submit" onclick="set_status(1)"><i class="Hui-iconfont">&#xe603;</i> 保存后继续发布</button>
-				<?php if(!isset($_GET['catid'])){ ?>
-				<button onclick="yzm_content_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
-				<?php }else{ ?>
-				<a href="<?php echo U('category/init');?>" class="btn btn-default radius">&nbsp;&nbsp;关闭&nbsp;&nbsp;</a>
-				<?php } ?>
-			</div>
+		<div class="footer_btn footer_border">
+			<input type="hidden" name="status" value="1">
+			<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(1)"><i class="Hui-iconfont">&#xe603;</i> 保存发布</button>
+			<button name="dosubmit" class="btn btn-secondary radius" type="submit" onclick="set_status(0)"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
+			<button name="continuity" class="btn btn-success radius" type="submit" onclick="set_status(1)"><i class="Hui-iconfont">&#xe603;</i> 保存后继续发布</button>
+			<?php if(!isset($_GET['catid'])){ ?>
+			<button onclick="yzm_content_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
+			<?php }else{ ?>
+			<a href="<?php echo U('category/init');?>" class="btn btn-default radius">&nbsp;&nbsp;关闭&nbsp;&nbsp;</a>
+			<?php } ?>
 		</div>
 		<input type="hidden"  value="10"  name="listorder">
 	</form>
@@ -214,20 +220,37 @@
 			return false;
 		}
 		$.ajax({
-            type: 'GET',
-            url: '<?php echo U('api/index/check_title');?>', 
+            type: "GET",
+            url: "<?php echo U('api/index/check_title');?>", 
             data: {title:title},
 		    dataType: "json", 
             success: function (msg) {
 				msg.status ? $(".yzm-content-error").addClass("hidden") : $(".yzm-content-error").removeClass("hidden");
             }
         })
+        var keywords = $("[name=keywords]").val();
+        if(keywords == ''){
+			$.ajax({
+	            type: "POST",
+	            url: 'https://www.yzmcms.com/api/analysis', 
+	            data: {content:title},
+			    dataType: "json", 
+	            success: function (msg) {
+					if(msg.status && msg.data){
+						$("[name=keywords]").val(msg.data);
+					}
+	            }
+	        })
+        }
 	}
 	
 	function change_keyword() {
-		var v = $("#taglist").val();
-		if(v != '') v = v.substr(0,v.length-1);
-		$("[name=keywords]").val(v);
+		var keywords = $("[name=keywords]").val();
+		if(keywords == ''){
+			var v = $("#taglist").val();
+			if(v != '') v = v.substr(0,v.length-1);
+			$("[name=keywords]").val(v);
+		}
 	}
 
 	$("#colors").colorpicker({

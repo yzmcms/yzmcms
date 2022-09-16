@@ -96,7 +96,7 @@ class form {
 	 * @param $array 一维数组 如：array('交易成功', '交易失败', '交易结果未知');
 	 */
 	public static function checkbox($name, $val = '', $array = array()) {
-		$string = '';
+		$string = '<input type="hidden" name="'.$name.'" value="">';
 		$val = trim($val);
 		if($val != '') $val = strpos($val, ',') ? explode(',', $val) : array($val);
 		$i = 1;
@@ -177,8 +177,9 @@ class form {
 	 * @param $style 样式
 	 * @param $attribute 外加属性	 
 	 */
-	public static function image($name, $val = '', $style = 'width:370px', $iscropper = false, $attribute = '') {		
-		$string = '<input class="input-text uploadfile" type="text" name="'.$name.'"  value="'.$val.'"  onmouseover="yzm_img_preview(\''.$name.'\', this.value)" onmouseout="layer.closeAll();" id="'.$name.'" style="'.$style.'" '.$attribute.'> <a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name), false).'\')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>';
+	public static function image($name, $val = '', $style = '', $iscropper = false, $attribute = '') {	
+		$style = $style ? $style : 'width:370px';		
+		$string = '<input type="hidden" name="'.$name.'_attid" id="'.$name.'_attid" value="0"><input class="input-text uploadfile" type="text" name="'.$name.'"  value="'.$val.'"  onmouseover="yzm_img_preview(\''.$name.'\', this.value)" onmouseout="layer.closeAll();" id="'.$name.'" style="'.$style.'" '.$attribute.'> <a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name), false).'\')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>';
 		
 		if($iscropper) $string = $string .' '.form::cropper($name);
 		return $string;
@@ -232,8 +233,9 @@ class form {
 	 * @param $style 样式
 	 * @param $attribute 外加属性	
 	 */
-	public static function attachment($name, $val = '', $style='width:370px', $attribute='') {		
-		$string = '<input class="input-text uploadfile" type="text" name="'.$name.'"  value="'.$val.'"  id="'.$name.'" style="'.$style.'" '.$attribute.'> <a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name, 't'=>2), false).'\')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>';
+	public static function attachment($name, $val = '', $style='', $attribute='') {
+		$style = $style ? $style : 'width:370px';		
+		$string = '<input type="hidden" name="'.$name.'_attid" id="'.$name.'_attid" value="0"><input class="input-text uploadfile" type="text" name="'.$name.'"  value="'.$val.'"  id="'.$name.'" style="'.$style.'" '.$attribute.'> <a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name, 't'=>2), false).'\')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>';
 		
 		return $string;
 	}	

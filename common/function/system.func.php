@@ -95,6 +95,7 @@ function get_site_seo($siteid = null, $title = '', $keyword = '', $site_descript
  * @param $id 
  */
 function get_content_url($catid, $id){
+	if(!$catid || !$id) return '';
 	$catinfo = get_category($catid);
 	$url_mode = get_config('url_mode');
 	if($url_mode==1 || $url_mode==2){
@@ -118,6 +119,21 @@ function page_content($catid = 1, $limit = 300, $strip = true, $field = 'content
 	$string = $catpage->where(array('catid'=>$catid))->field($field)->find();
 	$string = $string ? str_cut(($strip ? strip_tags($string[$field]) : $string[$field]), $limit) : '';
 	return $string;	
+}
+
+
+/**
+ * 获取来源
+ * @param  $modelid
+ * @return array
+ */
+function get_copyfrom($modelid = 1){
+	$arr = array('网络', '原创');
+	$db = get_model($modelid);
+	if(!$db) return $arr;
+	$res = D($db)->field('copyfrom')->group('copyfrom')->order('id DESC')->limit(100)->select();
+	$res = yzm_array_column($res, 'copyfrom');
+	return array_unique(array_merge($res, $arr));
 }
 
 

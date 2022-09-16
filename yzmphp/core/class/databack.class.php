@@ -118,7 +118,7 @@ class databack{
 
         //备份表结构
         if(0 == $start){
-            $result = $db->fetch_array($db->query("SHOW CREATE TABLE `{$table}`"));
+            $result = $db->query("SHOW CREATE TABLE `{$table}`", false);
 			$result = array_change_key_case($result,CASE_LOWER); //数组小写化
             $sql  = "\n";
             $sql .= "-- -----------------------------\n";
@@ -133,7 +133,7 @@ class databack{
         }
 
         //数据总数
-        $result = $db->fetch_array($db->query("SELECT COUNT(*) AS count FROM `{$table}`"));
+        $result = $db->query("SELECT COUNT(*) AS count FROM `{$table}`", false);
         $count  = $result['count'];
             
         //备份表数据
@@ -147,11 +147,11 @@ class databack{
             }
 
             //备份数据记录
-            $result = $db->fetch_all($db->query("SELECT * FROM `{$table}` LIMIT {$start}, 1000"));
+            $result = $db->query("SELECT * FROM `{$table}` LIMIT {$start}, 1000");
             foreach ($result as $row) {
                 $sql = "INSERT INTO `{$table}` VALUES (";
 				foreach($row as $v){
-					$sql .= "'".str_replace("\r\n", '\r\n', addslashes($v))."',";
+					$sql .= $v ? "'".str_replace("\r\n", '\r\n', addslashes($v))."'," : "'',";
 				}
 				$sql = trim($sql, ',').");\n";
                 if(false === $this->write($sql)){

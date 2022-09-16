@@ -26,13 +26,13 @@
 				<input type="text" class="input" style="width:400px" name="listorder" value="<?php echo $data['listorder'];?>">
 				<p class="exp">取值范围1-255，数值越小优先级越高</p>
 			</li>
-			<li>
-				<input type="hidden" name="id" value="<?php echo $data['urlruleid'];?>">
-				<input type="hidden" name="dosubmit" value="1">
-				<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
-				<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
-			</li>
 		</ul>
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input type="hidden" name="id" value="<?php echo $data['urlruleid'];?>">
+			<input class="btn btn-primary radius" type="submit" value="提 交">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>

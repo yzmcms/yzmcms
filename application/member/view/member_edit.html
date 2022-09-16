@@ -57,19 +57,19 @@
 				<tr>
 					<td>账户余额</td>
 					<td>
-					<input type="text" name="amount" value="<?php echo $data['amount']; ?>" disabled class="input-text w_120"> *  更改金钱已移动至「<a data-title="在线充值" style="color:#3b639f" _href="<?php echo U('member/recharge',array('username'=>$data['username']));?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
+					<input type="text" name="amount" value="<?php echo $data['amount']; ?>" disabled class="input-text w_100"> *  更改金钱已移动至「<a data-title="在线充值" style="color:#1890ff" _href="<?php echo U('member/recharge',array('username'=>$data['username']));?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
 					</td>
 				</tr>
 				<tr>
 					<td>积分点数</td>
 					<td>
-					<input type="text" name="point" value="<?php echo $data['point']; ?>" disabled class="input-text w_120"> *  更改积分已移动至「<a data-title="在线充值" style="color:#3b639f" _href="<?php echo U('member/recharge',array('username'=>$data['username']));?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
+					<input type="text" name="point" value="<?php echo $data['point']; ?>" disabled class="input-text w_100"> *  更改积分已移动至「<a data-title="在线充值" style="color:#1890ff" _href="<?php echo U('member/recharge',array('username'=>$data['username']));?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
 					</td>
 				</tr>
 				<tr>
 					<td>经验</td>
 					<td class="yzm-explain-box">
-					<input type="text" name="experience" value="<?php echo $data['experience']; ?>" required class="input-text w_120">
+					<input type="text" name="experience" value="<?php echo $data['experience']; ?>" required class="input-text w_100">
 					<span class="yzm-explain">用户经验将影响会员用户组</span>
 					</td>
 				</tr>				
@@ -113,7 +113,7 @@
 				<tr>
 					<td>高级功能</td>
 					<td>
-					<a href="<?php echo U('login_user', array('userid'=>$userid,'yzm_csrf_token'=>$_SESSION['yzm_csrf_token']));?>" target="_blank" style="color:#3b639f"><i class="Hui-iconfont">&#xe62c;</i> 登录到此用户会员中心</a>
+					<a href="<?php echo U('login_user', array('userid'=>$userid,'yzm_csrf_token'=>$_SESSION['yzm_csrf_token']));?>" target="_blank" style="color:#1890ff"><i class="Hui-iconfont">&#xe62c;</i> 登录到此用户会员中心</a>
 					</td>
 				</tr>			
 			</table>
@@ -199,8 +199,8 @@
                 <tr>
 					<td></td>
 					<td>
-					<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
-					<input class="btn w_120 btn-default radius h35" type="reset" value="重置">
+					<input class="dosubmit w_100 btn-primary radius" name="dosubmit" type="submit" value="提交">
+					<input class="btn w_100 btn-default radius h35" type="reset" value="重置">
 					</td>
 				</tr>				
 			</table>

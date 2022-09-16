@@ -61,8 +61,9 @@ class common{
 	public function get_message(){ 
 		//系统消息[群发]
 		$system_totnum = D('message_group')->where(array('groupid' => $this->memberinfo['groupid']))->total(); //总条数
-		$data = $this->db->fetch_array($this->db->query("SELECT COUNT(*) AS total FROM yzmcms_message_group a LEFT JOIN yzmcms_message_data b ON a.id=b.group_message_id WHERE a.groupid='{$this->memberinfo['groupid']}' AND a.`status`=1 AND b.userid={$this->memberinfo['userid']}"));  //已读信息
-		$this->memberinfo['system_msg'] = $system_totnum - $data['total'];   //系统消息，未读条数
+
+		$total = D('message_group')->alias('a')->join('yzmcms_message_data b ON a.id=b.group_message_id', 'LEFT')->where(array('a.groupid'=>$this->memberinfo['groupid'], 'a.status'=>1, 'b.userid'=>$this->memberinfo['userid']))->total();  //已读信息
+		$this->memberinfo['system_msg'] = $system_totnum - $total;   //系统消息，未读条数
 		
 		//收件箱消息，未读条数
 		$this->memberinfo['inbox_msg'] = D('message')->where(array('send_to' => $this->memberinfo['username'], 'status' => '1', 'isread' => '0'))->total(); 

@@ -93,7 +93,7 @@ class member_content extends common{
 			$_POST['issystem'] = '0';
 			$_POST['status'] = $is_adopt;	
 			$_POST['listorder'] = '10';		//为内容置顶做准备
-			$_POST['description'] = empty($_POST['description']) ? str_cut(strip_tags($_POST['content']),200) : $_POST['description'];
+			$_POST['description'] = empty($_POST['description']) ? str_cut(strip_tags($_POST['content']),250) : $_POST['description'];
 			$_POST['inputtime'] = SYS_TIME;
 			$_POST['updatetime'] = SYS_TIME;
 			$_POST['catid'] = $catid;
@@ -192,7 +192,7 @@ class member_content extends common{
 			//会员权限-投稿免审核
 			$is_adopt = strpos($groupinfo['authority'], '4') === false ? 0 : 1;
 
-			$_POST['description'] = empty($_POST['description']) ? str_cut(strip_tags($_POST['content']),200) : $_POST['description'];
+			$_POST['description'] = empty($_POST['description']) ? str_cut(strip_tags($_POST['content']),250) : $_POST['description'];
 			$_POST['updatetime'] = SYS_TIME;
 			$_POST['status'] = $is_adopt;	
 			
@@ -411,10 +411,10 @@ class member_content extends common{
 				$val['defaultvalue'] = isset($data[$val['field']]) ? $data[$val['field']] : '';
 			}
 			$setting = $val['setting'] ? string2array($val['setting']) : 0;
-			$required = $val['isrequired'] ? '<span class="red">*</span>' : '';
+			$required = $val['isrequired'] ? '<span class="required">*</span>' : '';
 			$fieldstr[] = array(
-				'field' => $val['name'],
-				'form' => form::$fieldtype($val['field'], $val['defaultvalue'], $setting).$required
+				'field' => $required.$val['name'],
+				'form' => form::$fieldtype($val['field'], $val['defaultvalue'], $setting)
 			);
 			$fields[$val['field']] = $val['isrequired'] ? array('isrequired'=>1, 'fieldtype'=>$fieldtype, 'errortips'=>$val['errortips'] ? $val['errortips'] : $val['name'].'不能为空！') : array('isrequired'=>0);
 		}

@@ -4,10 +4,10 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 数据管理 <span class="c-gray en">&gt;</span> 数据还原 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-    <div class="explain"> 
-       <p>说明：数据备份文件保存于“/cache/databack/”目录，如需恢复以往数据，请将备份文件放置到该目录即可.</p>
-    </div>
-	<table class="table table-border table-bordered table-bg mt-20 table-hover">
+   <div class="explain light"> 
+      <p><span class="yzm-iconfont yzm-iconshuoming"></span>数据备份文件保存于“/cache/databack/”目录，如需恢复以往数据，请将备份文件放置到该目录即可.</p>
+   </div>
+	<table class="table table-border table-bg mt-20 table-hover">
 		<thead>
 			<tr class="text-c">
 				<th>文件名称</th>
@@ -27,9 +27,9 @@
 				<td><?php echo $val['backtime'];?></td>
 				<td><?php echo $val['part'];?></td>
 				<td class="td-manage">
-					<a title="还原" href="javascript:;" onclick="databack_import('<?php echo U('import',array('random'=>$val['random'],'time'=>$val['time']));?>')" class="btn-mini btn-secondary" style="text-decoration:none">还原</a> 
+					<a title="还原" href="javascript:;" onclick="databack_import('<?php echo U('import',array('random'=>$val['random'],'time'=>$val['time']));?>')" class="btn-mini btn-primary" style="text-decoration:none">还原</a> 
 					<a title="下载" href="<?php echo U('databack_down',array('random'=>$val['random'],'time'=>$val['time'],'part'=>$val['part']));?>" class="btn-mini btn-success ml-5">下载</a> 
-					<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('databack_del',array('random'=>$val['random'],'time'=>$val['time']));?>', 1)" class="btn-mini btn-warning ml-5">删除</a>
+					<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('databack_del',array('random'=>$val['random'],'time'=>$val['time']));?>', 1)" class="btn-mini btn-danger ml-5">删除</a>
 				</td>
 			</tr>
 			<?php 
@@ -37,7 +37,7 @@
 			?>	
 		</tbody>
 	</table>
-	<?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无备份数据</div><?php } ?>
+	<?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无备份数据</div><?php } ?>
 </div>
 <?php include $this->admin_tpl('footer');?>
 <script type="text/javascript">

@@ -36,7 +36,7 @@
 		<button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 		</form>
 		<form action="<?php echo U('content_oper');?>" method="post" id="myform">
-	        <table class="table table-border table-bordered table-bg table-hover mt-10">
+	        <table class="table table-border table-bg table-hover mt-10">
 	            <thead>
 	                <tr>
 	                	<th width="20"><input type="checkbox"></th>
@@ -98,15 +98,15 @@
 	                ?>
 	            </tbody>
 	        </table>
-	        <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
+	        <?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
 	        <div id="page"><span class="page_left">共<?php echo $total?>条记录，页码：<?php echo $page->getpage()?>/<?php echo $page->total()?></span>
   			<span class="page_right"><?php echo $page->gethome().$page->getlist().$page->getend().$page->getjump();?></span></div>
 	    <input type="hidden" name="modelid" value="<?php echo $modelid;?>">
 	    <input type="hidden" name="tagid" value="<?php echo $id;?>">
 	    <input type="hidden" name="operation" value="1">
 	    <div style="position:fixed;bottom:20px;left:20px;z-index:99;">
-	    	<input class="dosubmit w_120 btn-primary radius" type="button" onclick="dosub(1)" value="加入Tag">
-	    	<input class="btn w_120 btn-warning radius h35" type="button" onclick="dosub(0)" value="移除Tag">
+	    	<input class="dosubmit w_100 btn-primary radius" type="button" onclick="dosub(1)" value="加入Tag">
+	    	<input class="btn w_100 btn-danger radius h35" type="button" onclick="dosub(0)" value="移除Tag">
 	    </div>
 	    </form>
 	</article>

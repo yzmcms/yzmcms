@@ -63,9 +63,11 @@ class api{
 			$fileinfo = $upload->getnewfileinfo();
 			$fileinfo['module'] = $module;
 			$fileinfo['originname'] = safe_replace($fileinfo['originname']);
-			$this->_att_write($fileinfo);
+			$attid = $this->_att_write($fileinfo);
 			$arr = array(
 				'status' => 1,
+				'attid' => $attid,
+				'delurl' => U('delete', array('id'=>$attid)),
 				'msg' => $fileinfo['filepath'].$fileinfo['filename'],
 				'title' => $fileinfo['originname'],
 				'size' => $fileinfo['filesize'],
@@ -117,7 +119,7 @@ class api{
 		$parameter = $_GET;
 		$parameter['tab'] = 1;
 		$page = new page($total, 8, $parameter);
-		$data = $attachment->field('isimage,originname,filename,filepath,fileext')->where($where)->order('id DESC')->limit($page->limit())->select();
+		$data = $attachment->field('id,isimage,originname,filename,filepath,fileext')->where($where)->order('id DESC')->limit($page->limit())->select();
 		include $this->admin_tpl('upload_box'); 
 	}
 		
@@ -175,6 +177,32 @@ class api{
 		include $this->admin_tpl('cropper_box'); 
 	}
 
+
+	/**
+	 * 删除附件
+	 */	
+	public function delete(){
+		$id = isset($_GET['id']) ? intval($_GET['id']) : return_json(array('status'=>0, 'message'=>L('lose_parameters')));
+		$attachment = D('attachment');
+		$info = $attachment->field('userid,filepath,filename')->where(array('id'=>$id))->find();
+		if(!$this->isadmin && $info['userid']!=$this->userid) return_json(array('status'=>0, 'message'=>'无权删除该文件！'));
+
+		$upload_type = C('upload_type', 'host');
+		yzm_base::load_model($upload_type, '', 0);
+		if(!class_exists($upload_type)) return_json(array('status'=>0, 'message'=>'附件操作类「'.$upload_type.'」不存在！'));
+
+		// PHP5.2不支持 $class::$method();
+		$upload = new $upload_type();
+		$res = $upload->deletefile($info);
+		if(!$res)  return_json(array('status'=>0, 'message'=>'删除文件「'.$info['filename'].'」失败！'));
+
+		if($attachment->delete(array('id' => $id))){
+			return_json(array('status'=>1, 'message'=>L('operation_success')));
+		}else{
+			return_json(array('status'=>0, 'message'=>'删除文件「'.$info['filename'].'」失败！'));
+		}
+	}
+
 	
 	/**
 	 * 上传附件写入数据库
@@ -182,7 +210,7 @@ class api{
 	private function _att_write($fileinfo){
 		$arr = array();
 		$arr['siteid'] = get_siteid();
-		$arr['originname'] = strlen($fileinfo['originname'])<50 ? $fileinfo['originname'] : $fileinfo['filename'];
+		$arr['originname'] = strlen($fileinfo['originname'])<50 ? htmlspecialchars($fileinfo['originname']) : htmlspecialchars(str_cut($fileinfo['original'], 45));
 		$arr['filename'] = $fileinfo['filename'];
 		$arr['filepath'] = $fileinfo['filepath'];
 		$arr['filesize'] = $fileinfo['filesize'];
@@ -194,7 +222,7 @@ class api{
 		$arr['username'] = $this->username;
 		$arr['uploadtime'] = SYS_TIME;
 		$arr['uploadip'] = getip();
-		D('attachment')->insert($arr);
+		return D('attachment')->insert($arr);
 	}
 
 	
@@ -204,7 +232,7 @@ class api{
 	 */	
 	private function _get_upload_types(){
 		$arr = explode('|', get_config('upload_types'));
-		$allow = array('gif', 'jpg', 'png', 'jpeg', 'webp', 'zip', 'rar', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'txt', 'csv', 'mp4', 'avi', 'wmv', 'rmvb', 'flv', 'mp3', 'wma', 'wav', 'amr', 'ogg');
+		$allow = array('gif', 'jpg', 'png', 'jpeg', 'webp', 'zip', 'rar', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'txt', 'csv', 'mp4', 'avi', 'wmv', 'rmvb', 'flv', 'mp3', 'wma', 'wav', 'amr', 'ogg', 'torrent');
 		foreach($arr as $key => $val){
 			if(!in_array($val, $allow)) unset($arr[$key]);
 		}

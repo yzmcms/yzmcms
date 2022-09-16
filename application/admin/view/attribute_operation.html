@@ -8,12 +8,12 @@
 		<div class="row cl">
 			<label class="form-label col-xs-3"><span class="c-red">*</span>属性：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-                <label>置顶[1] <input name="flag[]" type="checkbox" value="1"/></label>&nbsp;&nbsp;
-                <label>头条[2] <input name="flag[]" type="checkbox" value="2"/></label>&nbsp;&nbsp;
-                <label>特荐[3] <input name="flag[]" type="checkbox" value="3"/></label>&nbsp;&nbsp;
-                <label>推荐[4] <input name="flag[]" type="checkbox" value="4"/></label>&nbsp;&nbsp;
-                <label>热点[5] <input name="flag[]" type="checkbox" value="5"/></label>&nbsp;&nbsp;
-                <label>幻灯[6] <input name="flag[]" type="checkbox" value="6"/></label>
+                <label class="mr-10">置顶[1] <input name="flag[]" type="checkbox" value="1"/></label>
+                <label class="mr-10">头条[2] <input name="flag[]" type="checkbox" value="2"/></label>
+                <label class="mr-10">特荐[3] <input name="flag[]" type="checkbox" value="3"/></label>
+                <label class="mr-10">推荐[4] <input name="flag[]" type="checkbox" value="4"/></label><br>
+                <label class="mr-10">热点[5] <input name="flag[]" type="checkbox" value="5"/></label>
+                <label class="mr-10">幻灯[6] <input name="flag[]" type="checkbox" value="6"/></label>
 			</div>
 		</div>
 		<div class="row cl">
@@ -22,12 +22,12 @@
 				<input type="text" class="input-text" value=""  name="ids" id="ids">
 				<input type="hidden" class="input-text" value="<?php echo $modelid; ?>"  name="modelid">
 				<input type="hidden" class="input-text" value="<?php echo $op; ?>"  name="op">
-				<input type="hidden" class="input-text" value="1"  name="dosubmit">
 			</div>
 		</div>
-		<div style="margin-top:20px;margin-left:10px">
-                <button name="dosubmit" class="btn btn-primary radius" type="submit">&nbsp;&nbsp;确定&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
-				<button onclick="yzmcms_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input class="btn btn-primary radius" type="submit" value="确 定">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
 		</div>
     </form>
 

@@ -7,11 +7,11 @@
             <h3>修改头像</h3>
         </div>
         <div class="main_cont">
-            <div class="explain">
-                <p>禁止上传违法、色情、广告头像，情节严重者将会被封号处理。</p>
-                <p>支持 jpg, jpeg, png, gif 格式图片</p>
+            <div class="explain explain-error light">
+                <p><span class="yzm-iconfont yzm-iconshuoming"></span> 禁止上传违法、色情、广告头像，情节严重者将会被封号处理。</p>
+                <p><span class="yzm-iconfont yzm-iconshuoming"></span> 支持 jpg, jpeg, png, gif 格式图片</p>
             </div>
-            <div class="userimg">
+            <div class="userimg mt-10">
                 <img id="avatar" src="{if $userpic}{$userpic}{else}{STATIC_URL}images/default.gif{/if}" />
             </div>
             <form action="" method="post" enctype="multipart/form-data" onsubmit="return check()">

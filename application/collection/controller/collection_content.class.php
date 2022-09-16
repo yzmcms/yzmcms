@@ -256,13 +256,10 @@ class collection_content extends common {
 		if(!isset($_POST['dosubmit'])) showmsg(L('lose_parameters'), 'stop');
 		
 		$ids = safe_replace($_POST['ids']);
-		$ids_arr = explode(',', $ids);
-		$ids_arr = array_map('intval', $ids_arr);
-		$ids = join(',', $ids_arr);
 		
 		$collection_content = D('collection_content');
 		$order = $_POST['order'] =='1' ? 'id ASC' : 'id DESC';
-		$res = $collection_content->field('id AS cid,status,data')->where('id IN('.$ids.')')->order($order)->select(); 
+		$res = $collection_content->field('id AS cid,status,data')->where(array('id'=>array('in', explode(',', $ids), 'intval')))->order($order)->select(); 
 		
 		$data = array();
 		$data['nickname'] = safe_replace($_POST['nickname']);
@@ -293,7 +290,7 @@ class collection_content extends common {
 
 			//自动提取内容摘要
 			if($_POST['auto_description']) {
-				$data['description'] = str_cut(trim(strip_tags($data['content'])), 200);
+				$data['description'] = str_cut(trim(strip_tags($data['content'])), 250);
 			}
 			
 			$data['updatetime'] = $data['inputtime'];

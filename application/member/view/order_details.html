@@ -1,5 +1,5 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
-<title>订单改价 - YzmCMS内容管理系统</title>
+<title>订单详情 - YzmCMS内容管理系统</title>
 </head>
 <body>
 <article class="page-container">
@@ -13,11 +13,13 @@
 			 <li><label>第三方交易单号</label> <?php echo $data['transaction'];?></li>
 			 <li><label>订单详情</label> <?php echo $data['desc'];?></li>
 			 <!-- <li><label>订单状态</label> <?php echo $this->order_status[$data['status']];?></li> -->
-			 <li>
-			 	<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="id" value="<?php echo $data['id'];?>">
-			  	<input class="btn w_120 btn-default radius" type="button" value="关闭" onclick="yzmcms_close()">
-			 </li>
 		</ul>
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input type="hidden" name="id" value="<?php echo $data['id'];?>">
+			<!-- <input class="btn btn-primary radius" type="submit" value="提 交"> -->
+			<input class="btn btn-default radius" type="button" value="关 闭" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>

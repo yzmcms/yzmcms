@@ -31,7 +31,7 @@
 						{/loop}
 						{if $modelinfo['check_code']}
 				        <tr>
-				            <td class="yzm-table-title">验证码<span class="red">*</span></td>
+				            <td class="yzm-table-title"><span class="required">*</span>验证码</td>
 				            <td>
 				            	<input name="code" type="text" class="yzm-input-text" style="width:100px;">
 				            	<img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="yzm-code" title="看不清？点击更换">

@@ -14,12 +14,12 @@
             <form method="post" action="{U('publish')}" onsubmit="return chcekall()">
                 <table>
                     <tr>
-                        <td width="70">栏目：</td>
-                        <td>{$category_data} <span class="red">*</span></td>
+                        <td width="70"><span class="required">*</span>栏目：</td>
+                        <td>{$category_data}</td>
                     </tr>
                     <tr>
-                        <td>标题：</td>
-                        <td><input type="text" name="title" value="" required class="input w370"><span class="red">*</span></td>
+                        <td><span class="required">*</span>标题：</td>
+                        <td><input type="text" name="title" value="" required class="input w370"></td>
                     </tr>
                     <tr>
                         <td>关键字：</td>

@@ -12,13 +12,13 @@
 			 <li><label>支付方式</label> <?php echo $this->paytype[$data['paytype']]?></li>
 			 <li><label><span class="c-red">*</span>订单金额</label><input type="text" class="input" required name="money" value="<?php echo $data['money'];?>" style="width:100px"> 元</li>
 			 <li><label>订单详情</label> <?php echo $data['desc'];?></li>
-			 <li>
-			 	<input type="hidden" name="dosubmit" value="1">
-			 	<input type="hidden" name="id" value="<?php echo $data['id'];?>">
-			  	<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
-			  	<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
-			</li>
 		</ul>
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input type="hidden" name="id" value="<?php echo $data['id'];?>">
+			<input class="btn btn-primary radius" type="submit" value="提 交">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>

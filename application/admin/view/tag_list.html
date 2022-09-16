@@ -24,9 +24,9 @@
 		<input type="text" name="searinfo"  class="input-text" style="width:200px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 		</form>	
   </div>
-	<div class="cl pd-5 bg-1 bk-gray mt-10"> <span class="l"> <a href="javascript:;" onclick="yzm_open('添加TAG','<?php echo U('add');?>',600,350)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加TAG</a> <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span></div>
+	<div class="cl mt-15 tb-top"> <span class="l"> <a href="javascript:;" onclick="yzm_open('添加TAG','<?php echo U('add');?>',600,350)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加TAG</a> <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span></div>
 	<form method="post" action="<?php echo U('del');?>" id="myform">
-	<table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
+	<table class="table table-border table-bg table-hover yzm-table-sort">
 		<thead>
 			<tr class="text-c">
 				<th width="25"><input type="checkbox"></th>
@@ -56,7 +56,7 @@
 				<!-- <td><?php echo $val['seo_description'] ? str_cut($val['seo_description'], 90) : '无';?></td> -->
 				<td><?php echo date('Y-m-d H:i:s',$val['inputtime']);?></td>
 				<td class="td-manage">
-					<a title="编辑TAG" href="javascript:;" onclick="yzm_open('编辑TAG','<?php echo U('edit',array('id'=>$val['id']));?>',600,420)" class="btn-mini btn-secondary">编辑TAG</a> 
+					<a title="编辑TAG" href="javascript:;" onclick="yzm_open('编辑TAG','<?php echo U('edit',array('id'=>$val['id']));?>',600,420)" class="btn-mini btn-primary">编辑TAG</a> 
 					<a title="管理内容" href="javascript:;" onclick="yzm_open('Tag - <?php echo $val['tag'];?>','<?php echo U('content',array('id'=>$val['id']));?>', 850, 550)" class="btn-mini btn-success ml-5" style="text-decoration:none">管理内容</a> 
 				</td>
 			</tr>
@@ -65,7 +65,7 @@
 			?>	
 		</tbody>
 	</table>
-	<?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
+	<?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
 	</form>
 	<div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>

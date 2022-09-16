@@ -4,14 +4,14 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 自定义表单 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-  <div class="cl pd-5 bg-1 bk-gray"> 
+  <div class="cl tb-top"> 
 	  <span class="l">  
 	  <a class="btn btn-primary radius" onclick="yzm_open('添加表单','<?php echo U('add');?>','700','505')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加表单</a>
 	  </span> 
 	  <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> 
   </div>
   <form method="post" action="<?php echo U('del');?>" id="myform">
-  <table class="table table-border table-bordered table-bg table-hover table-sort">
+  <table class="table table-border table-bg table-hover table-sort">
     <thead>
       <tr class="text-c">
 		<th>表单名称(数据量)</th>
@@ -37,7 +37,7 @@
 			<a href="<?php echo U('index/show', array('modelid'=>$val['modelid']))?>" target="_blank"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">前台浏览</a>
 			<a href="<?php echo U('diyform_field/init', array('modelid'=>$val['modelid']))?>"  class="btn-mini btn-primary ml-5" style="text-decoration:none">字段管理</a>
 			<a href="javascript:;" onclick="yzm_open('编辑表单','<?php echo U('edit', array('modelid'=>$val['modelid']));?>','700','505')"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">修改</a>
-			<a href="javascript:;" onclick="yzm_del('<?php echo U('del',array('modelid'=>$val['modelid']));?>')"  class="btn-mini btn-warning ml-5" style="text-decoration:none">删除</a>
+			<a href="javascript:;" onclick="yzm_del('<?php echo U('del',array('modelid'=>$val['modelid']));?>')"  class="btn-mini btn-danger ml-5" style="text-decoration:none">删除</a>
 			</td>
 		  </tr>		
 		<?php 
@@ -45,7 +45,7 @@
 		?>
     </tbody>
   </table>
-  <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
+  <?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
   </form>
   <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>

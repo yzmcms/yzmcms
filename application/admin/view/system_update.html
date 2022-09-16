@@ -1,0 +1,43 @@
+<?php include $this->admin_tpl('meta');?>
+<title>系统升级 - YzmCMS内容管理系统</title>
+<style>
+	.page-container{padding:10px}
+	.yzm_update_title{color:#555;font-size:20px;margin-bottom:10px;text-align:center;hidden:42px;overflow:hidden}
+	.yzm_update_title .yzm-iconfont{margin-right:5px;color:#ff9f3f;font-size:26px;vertical-align:middle}
+	.update_left{width:60%;float:left}
+	.update_right{width:40%;float:right;text-align:right}
+	.yzm_update_version{overflow:hidden;clear:both}
+	.yzm_update_version a,.yzm-version{color:#20a53a}
+	.yzm_update_version p{margin-bottom:0}
+	.yzm_update_content{background:#f9f9f9;border-radius:4px;padding:20px;margin:10px;color:#555}
+	.yzm_update_logs{margin-top:15px;font-size:12px;height:200px;overflow:auto;padding:5px 5px;background:#fff;border-radius:3px;border:1px solid #ddd}
+	.yzm-remarks{color:#ff2727;margin-bottom:0px;font-weight:bold;font-size:14px;}
+	.yzm_update_footer{width:100%;position:fixed;bottom:0;left:0;height:50px;background:#f8f8f8;text-align:center;padding:10px 0}
+	.yzm_update_footer .btn{margin-top:6px;height:36px;line-height:36px}
+</style>
+</head>
+<body>
+<article class="page-container">
+	<div class="yzm_update_title"><span class="yzm-iconfont yzm-iconshuoming2"></span>发现新的版本，是否立即升级？</div>
+	<div class="yzm_update_content">
+		<div class="yzm_update_version">
+			<div class="update_left">新版本：<span class="yzm-version">YzmCMS  <?php echo $data['version'];?> <?php echo $data['type'] ? '正式版' : 'Beta版';?></span></div>
+			<div class="update_right">更新日期：<span><?php echo date('Y-m-d', $data['update_time']);?></span></div>
+			<p class="c-red"><span class="yzm-iconfont yzm-iconshuoming"></span> 系统会自动备份相关文件，且系统升级不会更改前台模板.</p>
+		</div>
+		<div class="yzm_update_logs">
+			<?php if($data['remarks']){ ?>
+			<p class="yzm-remarks"><?php echo $data['remarks']; ?></p>
+			<?php } ?>
+			<?php echo nl2br($data['detail']);?>
+		</div>
+	</div>
+	<div class="yzm_update_footer">
+		<input type="button" class="btn btn-primary radius w_120" onclick="yzm_update_exec()" value="立刻升级" >
+		<input type="button" class="btn btn-default radius w_120 ml-10" onclick="yzm_update_ignore()" value="忽略本次升级" >
+	</div>
+</article>
+<?php include $this->admin_tpl('footer');?>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>admin/yzm_admin/js/yzm.update.js"></script> 
+</body>
+</html>

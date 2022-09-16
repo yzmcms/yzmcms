@@ -4,12 +4,12 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 审核列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-  <div class="cl pd-5 bg-1 bk-gray"> <span class="l">
+  <div class="cl tb-top"> <span class="l">
   <a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6a7;</i> 通过审核</a>
   <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
   <form method="post" action="<?php echo U('del');?>" id="myform">
-  <table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
+  <table class="table table-border table-bg table-hover yzm-table-sort">
     <thead>
       <tr class="text-c">
         <th width="30"><input type="checkbox"></th>
@@ -29,7 +29,7 @@
 		  <tr class="text-c">
 			<td><input type="checkbox" value="<?php echo $val['userid']?>" name="ids[]"></td>
 			<td><?php echo $val['userid']?></td>
-			<td class="text-l"><a href="<?php echo U('edit',array('userid'=>$val['userid']));?>"><?php if($val['status'] == 2) echo '<img src="'.STATIC_URL.'images/icon_padlock.gif" title="用户已锁定">';echo $val['username'];?></a></td>
+			<td class="text-l"><a href="<?php echo U('edit',array('userid'=>$val['userid']));?>"><?php if($val['status'] == 2) echo '<img src="'.STATIC_URL.'images/lock.png" height="18" title="用户已锁定">';echo $val['username'];?></a></td>
 			<td class="text-l"><?php echo $val['email_status'] ? $val['email'].' <span class="green" title="已验证">[验]</span>' : $val['email'];?></td>
 			<td><?php echo get_groupname($val['groupid']);?></td>
 			<td><?php echo $val['regip']?></td>
@@ -47,7 +47,7 @@
 		?>
     </tbody>
   </table>
-  <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
+  <?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
   </form>
   <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>

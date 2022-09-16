@@ -7,10 +7,10 @@
             <h3>已通过的稿件</h3>
         </div>
         <div class="main_cont">
-            <div class="explain">
-                <p>说明：已通过的稿件不支持删除.</p>
+            <div class="explain explain-error light">
+                <p><span class="yzm-iconfont yzm-iconshuoming"></span> 已通过的稿件不支持删除.</p>
             </div>
-            <table class="tablelist">
+            <table class="tablelist mt-10">
                 <thead>
                     <tr>
                         <th width="45%">内容标题</th>
@@ -26,7 +26,7 @@
                         <td><a href="{$val['url']}" target="_blank">{str_cut($val['title'], 60)}</a></td>
                         <td>{get_catname($val['catid'])}</td>
                         <td>{date('Y-m-d H:i:s',$val['updatetime'])}</td>
-                        <td><span style='color:green;'>通过</span></td>
+                        <td><span class="yzm-iconfont yzm-icontongguo green" title="已通过"></span></td>
                         <td><a href="{U('edit_through',array('catid'=>$val['catid'],'id'=>$val['id']))}" class="yzm-xs-btn">编辑</a></td>
                     </tr>
                     {/loop}

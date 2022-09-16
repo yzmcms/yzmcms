@@ -4,10 +4,10 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 高级群发 <span class="c-gray en">&gt;</span> 新建群发 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <article class="page-container">
-  <div class="explain"> 
-       <p>订阅号：提供了每天一条的群发权限，服务号：每月（自然月）4条的群发权限，请谨慎操作！</p>
+  <div class="explain explain-error light"> 
+       <p><span class="yzm-iconfont yzm-iconshuoming"></span>订阅号：提供了每天一条的群发权限，服务号：每月（自然月）4条的群发权限，请谨慎操作！</p>
   </div>
-<div class="formdoby_normal mt-20"> 
+<div class="formdoby_normal mt-10"> 
 	<form method="post" action="<?php echo U('add');?>" onsubmit="return dosub(this)">
 		<ul>
 			<li><label>群发模式：</label>
@@ -25,7 +25,7 @@
 			 </select>
 			</li>
 			<li id="openid_li" style="display:none"><label>openid：</label>
-			<textarea class="textarea" name="openid" id="openid" placeholder="多个openid之间用“,”分隔" style="width:450px"></textarea>&nbsp;&nbsp;<a href="javascript:;" class="btn btn-default radius" onclick="yzm_open('选择用户','<?php echo U('select_user');?>',900,550)">选择用户</a>
+			<textarea class="textarea" name="openid" id="openid" placeholder="多个openid之间用“,”分隔" style="width:450px"></textarea>&nbsp;&nbsp;<a href="javascript:;" class="btn btn-primary radius" onclick="yzm_open('选择用户','<?php echo U('select_user');?>',900,550)">选择用户</a>
 			</li>
 			<li><label>消息类型：</label>
 			 <select  name="message_type" style="width:200px" onchange="javascript:change_type(this.value);">
@@ -37,13 +37,13 @@
 			</li>
 			<li id="media_li"><label>media_id：</label>
 			<input type="text" class="input" style="width:300px" name="media_id" id="media_id" value="<?php echo $media_id;?>">&nbsp;&nbsp;
-			<a href="javascript:;" class="btn btn-default radius" onclick="yzm_open('选择素材','<?php echo U('select_material');?>',900,550)">选择素材</a>
+			<a href="javascript:;" class="btn btn-primary radius" onclick="yzm_open('选择素材','<?php echo U('select_material');?>',900,550)">选择素材</a>
 			</li>
 			<li id="text_li" style="display:none"><label>内容：</label>
 			<textarea class="textarea" name="content" id="content_text" style="width:450px"></textarea>
 			</li>
 			<li>
-			<input type="hidden" name="dosubmit" value="1"><input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
+			<input type="hidden" name="dosubmit" value="1"><input class="dosubmit w_100 btn-primary radius" name="dosubmit" type="submit" value="提交">
 			</li>
 		</ul>
 	</form>

@@ -50,9 +50,9 @@ class category extends common {
 			$v['catmodel'] = $v['modelid']&&isset($modelarr[$v['modelid']]) ? $modelarr[$v['modelid']] : '无';
 			$v['display'] = $v['display'] ? '<span class="yzm-status-enable" data-field="display" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe81f;</i>是</span>' : '<span class="yzm-status-disable" data-field="display" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe601;</i>否</span>';
 			$v['member_publish'] = $v['member_publish'] ? '<span class="yzm-status-enable" data-field="member_publish" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe81f;</i>是</span>' : '<span class="yzm-status-disable" data-field="member_publish" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe601;</i>否</span>';
-			$v['string'] = '<a title="增加子类" href="javascript:;" onclick="yzm_open(\'增加栏目\',\''.U('add',array('modelid'=>$v['modelid'],'type'=>$v['type'],'catid'=>$v['id'])).'\',800,500)" class="btn-mini btn-secondary ml-5" style="text-decoration:none">增加子类</a> 
+			$v['string'] = '<a title="增加子类" href="javascript:;" onclick="yzm_open(\'增加栏目\',\''.U('add',array('modelid'=>$v['modelid'],'type'=>$v['type'],'catid'=>$v['id'])).'\',800,500)" class="btn-mini btn-primary ml-5" style="text-decoration:none">增加子类</a> 
 			<a title="编辑栏目" href="javascript:;" onclick="yzm_open(\'编辑栏目\',\''.U('edit',array('type'=>$v['type'],'catid'=>$v['id'])).'\',800,500)" class="btn-mini btn-success ml-5" style="text-decoration:none">编辑</a> 
-			<a title="删除" href="javascript:;" onclick="yzm_del(\''.U('delete',array('type'=>$v['type'],'catid'=>$v['id'])).'\')" class="btn-mini btn-warning ml-5" style="text-decoration:none">删除</a>';
+			<a title="删除" href="javascript:;" onclick="yzm_del(\''.U('delete',array('type'=>$v['type'],'catid'=>$v['id'])).'\')" class="btn-mini btn-danger ml-5" style="text-decoration:none">删除</a>';
 			
 			$array[] = $v;
 		}	
@@ -483,7 +483,7 @@ class category extends common {
 	private function set_domain() {
 
 		// 当你看到这里的时候，你一定想绑定域名，免费版已经把该功能阉割了，开发不易，请购买授权支持，联系QQ：214243830！
-		return_json(array('status'=>0,'message'=>'当前版本不支持栏目绑定域名，请升级版本！'));	
+		return_json(array('status'=>0,'message'=>'当前版本不支持栏目绑定域名，请购买授权版本！'));	
 	}
 	
 }

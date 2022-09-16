@@ -20,36 +20,38 @@ a:hover{color:#2f549f;text-decoration:underline;}
 
 #toppic{height:260px;background:url(../images/toppic.jpg);text-indent:-9999px}
 
-#top{background: #F5F7FA;padding-left: 20px;height: 100px;border-bottom: solid 1px #dddddd;position: relative;}
+#top{background: #f5f7fa;padding-left: 20px;height: 100px;border-bottom: solid 1px #dddddd;position: relative;color: #454545}
 #top .feeb  { border: solid 3px #ffffff; width: 150px;height: 150px;position: absolute;top: -65px;overflow: hidden;border-radius: 10px;left: 10px;}
 #top .feeb  img {  width: 150px;height: 150px;}
 #top .userinfo {float: left;margin-top:10px;margin-left: 160px;_margin-left:80px;width:650px}
 #top .username { margin-bottom: 6px;}
 #top .username {font-size:20px; height:26px;line-height:26px;}   
-#top .username .dengji{font-size:14px;margin-left:5px;color:#999}   
-#top .userinfo_userdata  span{color: #999;font-size: 14px;}  
-#top .userinfo_userdata  span b{color: #333;}  
+#top .username .grade{font-size:13px;margin-left:5px;color:#666}   
+#top .username .grade img{height:23px;vertical-align:middle;}   
+#top .username .grade img.vip{height:28px;}   
+#top .userinfo_userdata  span{color: #666;font-size: 13px;}  
+#top .userinfo_userdata  span b{color: #454545;}  
 #top .userinfo_userdata  .qianming{display:block;width:620px;overflow:hidden;white-space:nowrap;text-overflow: ellipsis;}  
 #top .userinfo_shortcut {float:right;margin-top:70px;padding-right:20px;}
 #top .userinfo_shortcut a{color:#797C80;font-size:12px;}
 
 #main{height:650px;background:#fff;overflow:hidden;zoom:1;}
 #main_left{height:650px;width:705px;background:#fff;float:left;margin-left:10px;}
-#main_left h1{color: #494A4C;font-size: 18px;font-weight: 400;line-height: 18px;margin:20px 0;border-left: solid 2px #226bb0;padding-left:10px;}
+#main_left h1{color: #494A4C;font-size: 18px;font-weight: 400;line-height: 18px;margin:20px 0;border-left: solid 3px #1890ff;padding-left:10px;}
 #main_left .list li{height:30px;line-height:30px;margin-top:20px;border-bottom: 1px dotted #E1E3E6;padding-left:20px;}
 #main_left .list li a{color:#616366;font-size:14px;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 #main_left .list li span{float:right;color:#919499;font-size:12px;}
 #main_right{height:650px;width:210px;padding:0 10px;background:#f7f9fb;float:right;border-left: solid 1px #dddddd;font-size:12px;overflow:hidden}
 #main_right .right_title{font-size:14px;font-weight:normal; color: #428bca;margin:10px 0;}
 #main_right .laifang ul li{float:left;width:33%;margin-bottom:10px;}
-#main_right .laifang ul li p{margin-left:4px;}
+#main_right .laifang ul li p{margin-left:4px;color: #454545}
 #main_right .laifang ul li img{height:60px;width:60px;border-radius:5px;}
 
-#page{margin-top:20px;font-size:14px;height:30px;line-height:30px;text-align:center}
-#page .pageinfo{margin-right:3px;color:#808080;font-size:14px;padding:4px 10px;border:1px solid #aaa;}
-#page .pageinfo strong{font-weight:normal;margin:0 3px}
-#page  a{border:1px solid #aaa;background:#fff;color:#808080;padding:4px 10px;margin-left:5px;transition:all 0.2s}
-#page  a:hover,#page .curpage{background:#62a8ea;color:#fff;text-decoration:none;border:1px solid #62a8ea;}
+#page{margin-top:20px;font-size:13px;height:30px;line-height:30px;text-align:center}
+#page .pageinfo {color:#666;padding:6px 8px;border:1px solid #ddd}
+#page .pageinfo strong{font-weight:normal}
+#page  a{border:1px solid #ddd;background:#fff;color:#808080;padding:6px 11px;margin-left:5px;border-radius:2px;transition:all 0.2s}
+#page  a:hover,#page .curpage{background:#2196f3;color:#fff;text-decoration:none;border:1px solid #2196f3;}
 #page .nopage{cursor:not-allowed;}
-#page .nopage:hover{background:#fff;color:#808080;border:1px solid #aaa;}
+#page .nopage:hover{background:#fff;color:#808080;border:1px solid #ddd;}
    

@@ -7,7 +7,7 @@
 /* CSS Document */
 
 *{margin:0;padding:0;}
-body{font-size:13px;font-family:Tahoma,Arial,sans-serif;color: #232323; background: #f1f1f1;line-height: 25px}
+body{font-size:13px;font-family:Tahoma,Arial,sans-serif;color: #333; background: #f1f1f1;line-height: 25px}
 div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0px;padding:0px;}
 table{border-collapse:collapse;}
 a,img{border:0;}
@@ -28,6 +28,7 @@ a:hover{color:#1eaff1;}
 /* 网站容器 */
 .yzm-container{margin:auto;width:1170px;}
 .yzm-content-box{padding:5px 20px 10px 20px;background: #fff;border: 1px solid #eee;}
+.yzm-content{color:#353535}
 .yzm-title{border-bottom: #e4e3e3 1px solid;margin-bottom: 10px}
 .yzm-title h2{font-size: 14px;line-height: 40px;font-weight: normal;border-bottom: 3px solid #2196f3;display: inline-block;padding-right:2px;color: #2196f3}
 .yzm-title-right{float: right;}
@@ -70,10 +71,10 @@ a:hover{color:#1eaff1;}
 .yzm-nav li .sub_nav li a{height:34px;line-height:34px;width:108px;display:inline-block;}
 
 /* 前端分页 */
-#page{margin:30px 0;font-size:14px;height:30px;line-height:30px;text-align:center}
-#page .pageinfo {color:#666;padding:5px 8px;border:1px solid #ddd}
+#page{margin:30px 0;font-size:13px;height:30px;line-height:30px;text-align:center}
+#page .pageinfo {color:#666;padding:6px 8px;border:1px solid #ddd}
 #page .pageinfo strong{font-weight:normal}
-#page  a{border:1px solid #ddd;background:#fff;color:#808080;padding:5px 11px;margin-left:5px;border-radius:2px;transition:all 0.2s}
+#page  a{border:1px solid #ddd;background:#fff;color:#808080;padding:6px 11px;margin-left:5px;border-radius:2px;transition:all 0.2s}
 #page  a:hover,#page .curpage{background:#2196f3;color:#fff;text-decoration:none;border:1px solid #2196f3;}
 #page .nopage{cursor:not-allowed;}
 #page .nopage:hover{background:#fff;color:#808080;border:1px solid #ddd;}

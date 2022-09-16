@@ -12,16 +12,16 @@ a{color:#333}a:hover,a:focus,.maincolor,.maincolor a{color:#06c}
 /*侧边栏*/
 .navbar {background:#f1c40f}
 .Hui-aside {background:#f1c40f;color:rgba(0,0,0,.7);padding-top:0px;border-right:none;}
-.Hui-aside .menu_dropdown dt {color:rgba(0,0,0,.8);line-height:45px;border-bottom:none;background:#e3bc04;width:218px;box-sizing:border-box;transition:all 0.2s}
-.Hui-aside .menu_dropdown dt:hover {color:#000;border-left:5px solid #fff;}
-.Hui-aside .menu_dropdown dt:hover [class^="icon-"] {color:#999}
+.Hui-aside .menu_dropdown dt {color:rgba(0,0,0,.8);line-height:45px;border-bottom:none;background:#e3bc04;width:218px;box-sizing:border-box;transition:all 0.3s}
+.Hui-aside .menu_dropdown dt:hover {color:#000;background:#f1c40f}
+.Hui-aside .menu_dropdown dt.selected:hover{color:#000;background:#e3bc04}
 .Hui-aside .menu_dropdown dd ul {padding:3px 0px}
 .Hui-aside .menu_dropdown dd li a {line-height:40px;}
-.Hui-aside .menu_dropdown li a {color:rgba(0,0,0,.7);}
+.Hui-aside .menu_dropdown li a {color:rgba(0,0,0,.7);padding-left:5px}
 .Hui-aside .menu_dropdown li a:hover {color:#333;background:#fff;}
 .Hui-aside .menu_dropdown li .current a,.menu_dropdown li.current a:hover {color:#fff;}
 .Hui-aside .menu_dropdown li .curmenu {background:#fff;color:#333;}
-.Hui-aside .menu_dropdown dt .Hui-iconfont {color:rgba(0,0,0,.8);transition:all .1s ease 0s}
+.Hui-aside .menu_dropdown dt .Hui-iconfont {color:rgba(0,0,0,.8);transition:all .1s ease 0s;margin-right:5px}
 .Hui-aside .menu_dropdown dt .menu_dropdown-arrow {color:rgba(0,0,0,.8);right:33px;}
 .dislpayArrow a {background:url(icon_arrow.png) no-repeat 0 0}
 .tabBar {border-bottom: 2px solid #f1c40f}

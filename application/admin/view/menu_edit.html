@@ -32,7 +32,7 @@
 			 <li class="yzm-explain-box">
 			 	<label>附加参数：</label>
 			 	<input type="text" class="input" placeholder="如：id=1&mid=2" name="data" value="<?php echo $data?>">
-			 	<span class="yzm-explain">为一级菜单时，<br>可填写icon图标</span>
+			 	<span class="yzm-explain">为一级菜单时，<br>需填写icon图标的class名称</span>
 			 </li>
 			 <li><label>显示菜单：</label>
 			 <span class="span_input">
@@ -40,12 +40,13 @@
 			 	<label class="label_radio"><input name="display" type="radio" value="0" <?php if(!$display) echo 'checked';?>> 否</label>
 			 </span>
 			 </li>
-			<li>
-				<input type="hidden" name="dosubmit" value="1"><input name="id" type="hidden" value="<?php echo $id?>">
-			 	<input class="dosubmit w_120 btn-primary radius" name="dosubmit" type="submit" value="提交">
-			 	<input class="btn w_120 btn-default radius h35" type="button" value="取消" onclick="yzmcms_close()">
-			</li>
 		</ul>
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input name="id" type="hidden" value="<?php echo $id?>">
+			<input class="btn btn-primary radius" type="submit" value="提 交">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>

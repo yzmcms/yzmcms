@@ -24,12 +24,12 @@
                             <td>{str_cut($val['content'], 180)}</td>
                             <td><a href="{$val['url']}" target="_blank" title="{$val['title']}">{str_cut($val['title'], 42)}</a></td>
                             <td>{date('Y-m-d',$val['inputtime'])}<br>{date('H:i:s',$val['inputtime'])}</td>
-                            <td>{if $val['status']}<span style="color:green">通过</span>{else}<span style="color:red">未通过</span>{/if}</td>
+                            <td>{if $val['status']}<span class="yzm-iconfont yzm-icontongguo green" title="已通过"></span>{else}<span class="yzm-iconfont yzm-iconjinyong red" title="未通过"></span>{/if}</td>
                         </tr>
                         {/loop}
                         <tr class="tablast">
                             <td></td>
-                            <td colspan="4"><input type="submit" class="submit" value="删除选中" onclick="return confirm('你确定要删除所选内容吗？')" name="dosubmit"></td>
+                            <td colspan="4"><input type="submit" class="submit btn-danger" value="删除选中" onclick="return confirm('你确定要删除所选内容吗？')" name="dosubmit"></td>
                         </tr>
                     </tbody>
                 </table>

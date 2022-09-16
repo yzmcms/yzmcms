@@ -19,7 +19,7 @@ class db_pdo{
 		PDO::ATTR_CASE              => PDO::CASE_NATURAL,
         PDO::ATTR_ERRMODE           => PDO::ERRMODE_EXCEPTION,
         PDO::ATTR_ORACLE_NULLS      => PDO::NULL_NATURAL,
-        PDO::ATTR_STRINGIFY_FETCHES => true,
+        PDO::ATTR_STRINGIFY_FETCHES => false,
         PDO::ATTR_EMULATE_PREPARES  => false,
 	);
 		
@@ -161,23 +161,41 @@ class db_pdo{
 	 * return string
 	 */
 	public function where($arr = ''){
-		if(empty($arr)) {
-		   return $this;
-		}		
+		if(empty($arr))  return $this;		
 		if(is_array($arr)) {
 			$args = func_get_args();
 			$str = '(';
-			foreach ($args as $k => $v){
-				foreach($v as $key => $value){
-					if(!strpos($key,'>') && !strpos($key,'<') && !strpos($key,'=') && substr($value, 0, 1) != '%' && substr($value, -1) != '%'){    //where(array('age'=>'22'))
-						$str .= $key.' = ? AND ';
-					}else if(substr($value, 0, 1) == '%' || substr($value, -1) == '%'){	//where(array('name'=>'%php%'))
-						$str .= $key.' LIKE ? AND '; 
+			foreach ($args as $value){
+				foreach($value as $kk => $vv){
+					if(!is_array($vv)){
+						$vv = !is_null($vv) ? $vv : '';
+						if(!strpos($kk,'>') && !strpos($kk,'<') && !strpos($kk,'=') && substr($vv, 0, 1) != '%' && substr($vv, -1) != '%'){   
+							$str .= $kk.' = ? AND ';
+						}else if(substr($vv, 0, 1) == '%' || substr($vv, -1) == '%'){
+							$str .= $kk.' LIKE ? AND '; 
+						}else{
+							$str .= $kk.' ? AND ';     
+						}
+						
+						$this->key['where']['bind'][] = $this->safe_data($vv);
 					}else{
-						$str .= $key.' ? AND ';      //where(array('age>'=>'22'))
+						
+						$exp_arr = array('eq'=>'=','neq'=>'<>','gt'=>'>','egt'=>'>=','lt'=>'<','elt'=>'<=','notlike'=>'NOT LIKE','like'=>'LIKE','in'=>'IN','notin'=>'NOT IN','not in'=>'NOT IN','between'=>'BETWEEN','not between'=>'NOT BETWEEN','notbetween'=>'NOT BETWEEN');
+						
+						$exp = isset($vv[0])&&isset($exp_arr[strtolower($vv[0])]) ? $exp_arr[strtolower($vv[0])] : '';
+						$rule = isset($vv[1]) ? $vv[1] : '';
+						$fun = isset($vv[2]) ? $vv[2] : '';
+						if(!$exp) $this->geterr('The expression '.$vv[0].' does not exis!'); 
+						
+						if(is_array($rule)) {
+							if($fun) $rule = array_map($fun, $rule);
+							$rule = strpos($exp, 'BETWEEN') === false ? "('".join("','", $rule)."')" : "'".join("' AND '", $rule)."'";
+						}else{
+							$this->key['where']['bind'][] = $fun ? $fun($rule) : $this->safe_data($rule);
+							$rule = '?';
+						}
+						$str .= $kk.' '.$exp.' '.$rule.' AND ';
 					}
-					
-					$this->key['where']['bind'][] = $value;
 				}
 				$str = rtrim($str,' AND ').')';
 				$str .= ' OR (';
@@ -200,7 +218,7 @@ class db_pdo{
 	 */
 	public function __call($name, $value){
 		if(in_array($name, array('alias', 'field', 'order', 'limit', 'group', 'having'))){
-			$this->key[$name] = $value[0];
+			if(isset($value[0])) $this->key[$name] = $value[0];
 			return $this;
 		}else{
 			$this->geterr('Call to '.$name.' function not exist!'); 
@@ -231,7 +249,8 @@ class db_pdo{
 		if(empty($fields)) return false;
 		$sql = ($replace ? 'REPLACE' : 'INSERT').' INTO '.$this->get_tablename().' ('. implode(', ', $fields) .') VALUES ('. implode(', ', $values) .')';
 		$this->execute($sql);
-		return self::$link->lastInsertId();
+		$id = self::$link->lastInsertId();
+		return is_numeric($id) ? (int) $id : $id;
 	}
 
 
@@ -260,7 +279,8 @@ class db_pdo{
 		if(empty($fields)) return false;
 		$sql = ($replace ? 'REPLACE' : 'INSERT').' INTO '.$this->get_tablename().' ('. implode(', ', $fields) .') VALUES '. implode(', ', $values);
 		$this->execute($sql);
-		return self::$link->lastInsertId();
+		$id = self::$link->lastInsertId();
+		return is_numeric($id) ? (int) $id : $id;
 	}
 	
 	
@@ -411,34 +431,38 @@ class db_pdo{
 	
 
 	/**
-	 * 自定义执行SQL语句
+	 * 自定义SQL语句
 	 * @param  $sql sql语句
-	 * @return （self::$link->query返回值）
+	 * @param  $fetch_all 查询时是否返回二维数组
+	 * @return mixed
 	 */		
-	public function query($sql = ''){
-		 $sql = str_replace('yzmcms_', $this->config['db_prefix'], $sql);  
-         return $this->execute($sql);	 
+	public function query($sql = '', $fetch_all = true){
+		$sql = str_replace('yzmcms_', $this->config['db_prefix'], $sql);  
+		if(preg_match("/^(?:UPDATE|DELETE|TRUNCATE|ALTER|DROP|FLUSH|INSERT|REPLACE|SET|CREATE)\\s+/i", $sql)){
+			return $this->execute($sql);	 
+		} 
+		return $fetch_all ? $this->fetch_all($this->execute($sql)) : $this->fetch_array($this->execute($sql));
 	}
 
 
 	/**
 	 * 返回一维数组，与query方法结合使用
-	 * @param  resource
+	 * @param  object
 	 * @return array
 	 */		
     public function fetch_array($query, $result_type = PDO::FETCH_ASSOC) {
-		if(!is_object($query))   return false;
+		if(!is_object($query))   return $query;
 		return $query->fetch($result_type);
 	}	
 	
 
 	/**
 	 * 返回二维数组，与query方法结合使用
-	 * @param  resource
+	 * @param  object
 	 * @return array
 	 */		
     public function fetch_all($query, $result_type = PDO::FETCH_ASSOC) {
-		if(!is_object($query))   return false;
+		if(!is_object($query))   return $query;
 		return $query->fetchAll($result_type);
 	}
 	
@@ -448,12 +472,13 @@ class db_pdo{
 	 */		
 	private function geterr($msg, $sql=''){
 		if(APP_DEBUG){
+			if(is_ajax()) return_json(array('status'=>0, 'message'=>'MySQL Error: '.$msg.' | '.$sql));
 			if(PHP_SAPI == 'cli') exit('MySQL Error: '.$msg.' | '.$sql);
 			application::fatalerror($msg, $sql, 2);	
 		}else{
 			write_error_log(array('MySQL Error', $msg, $sql));
+			if(is_ajax()) return_json(array('status'=>0, 'message'=>'MySQL Error!'));
 			application::halt('MySQL Error!', 500);
-			exit;
 		}
 	}
 

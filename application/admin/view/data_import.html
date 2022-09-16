@@ -6,19 +6,24 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)" id="myform">
 		<ul>
-			 <li style="height: 35px"><label><span class="c-red">*</span><?php echo $title;?>：</label>
+			<li>
+				<span class="c-red">
+					<i class="yzm-iconfont yzm-iconshuoming"></i>
+					如现有的数据与导入的数据冲突，导入数据会覆盖现有数据！
+				</span>
+			</li>
+			 <li><label><span class="c-red">*</span><?php echo $title;?>：</label>
 				<span class="btn-upload form-group">
-				  <input class="input-text upload-url radius" type="text" readonly style="display:inline;width:230px"><a href="javascript:void();" class="btn btn-primary radius" style="height: 30px;font-size: 14px;"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+				  <input class="input-text upload-url radius" type="text" readonly style="display:inline;width:230px"><a href="javascript:void();" class="btn btn-primary radius" style="height: 30px;"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
 				  <input type="file" name="data_import" class="input-file">
 				</span>
-			 </li>
-			 <li><span class="c-red">注意： 如现有的数据与导入的数据冲突，导入数据会覆盖现有数据！</span></li>				 
-			<li>
-				<input type="hidden" name="dosubmit" value="1">
-				<input class="dosubmit w_120 btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
-				<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
-		    </li>
+			 </li>			 
 		</ul>
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input class="btn btn-primary radius" type="submit" value="提 交">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>
@@ -28,8 +33,8 @@
 
 	function dosub(obj){
 		if($("input[name='data_import']").val()==''){
-		layer.msg('请上传文件！');
-		return false;
+			layer.msg('请上传文件！', {time: 3000, icon:2});
+			return false;
 		}
 		layer.msg('正在上传中……', { icon: 16, shade: 0.21, time:false });
 		var form = document.getElementById("myform");

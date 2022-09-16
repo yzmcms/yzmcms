@@ -5,16 +5,17 @@
  */
 
 function album_cancel(obj){
-	var path = $(obj).children(".img_src").attr("path");
 	if($(obj).hasClass('on')){
 		$(obj).removeClass("on");
 		$(obj).children(".checkd").addClass("hidden");
 		var length = $("a[class='on']").children(".img_src").length;
-		var strs = '', tits = '';
+		var strs = '', tits = '', attids = '';
 		for(var i=0;i<length;i++){
+            attids += '|'+$("a[class='on']").children(".img_src").eq(i).attr('attid');
 			strs += '|'+$("a[class='on']").children(".img_src").eq(i).attr('path');
 			tits += '|'+$("a[class='on']").eq(i).attr('title');
 		}
+        $('#att_id').html(attids);
 		$('#att_status').html(strs);
 		$('#att_titles').html(tits);
 		
@@ -24,7 +25,8 @@ function album_cancel(obj){
 		if(num > file_upload_limit) {layer.alert('不能选择超过'+file_upload_limit+'个附件'); return false;}
 		$(obj).addClass("on");
 		$(obj).children(".checkd").removeClass("hidden");
-		$('#att_status').append('|'+path);
+		$('#att_id').append('|'+$(obj).children(".img_src").attr("attid"));
+        $('#att_status').append('|'+$(obj).children(".img_src").attr("path"));
 		$('#att_titles').append('|'+$(obj).attr("title"));
 	}
 }
@@ -44,6 +46,30 @@ function isimg(url){
 	}
 	}
 	return b;
+}
+
+
+function yzm_att_del(url, name){
+    layer.confirm('确认要删除 “ ' + name +' ” 吗？',function(index){
+        $.ajax({
+            type: "GET",
+            url: url, 
+            dataType: "json", 
+            success: function (msg) {
+                if(msg.status == 1){
+                    layer.msg(msg.message, {icon:1,time:1000},function(){
+                        if(window.location.href.indexOf('tab')<0){
+                            window.location.href = window.location.href+'?tab=1';
+                        }else{
+                            window.location.reload();
+                        }
+                    });
+                }else{
+                    layer.msg(msg.message, {icon:2,time:2500});
+                }
+            }
+        })
+    });
 }
 
 jQuery(function() {
@@ -79,8 +105,9 @@ jQuery(function() {
     uploader.on( 'uploadSuccess', function( file, data ) {
 		if(data.status == 1){
 			var att_url = data.filetype == 'jpg' || data.filetype == 'png' || data.filetype == 'gif' || data.filetype == 'jpeg' ? data.msg : (data.filetype == 'zip' || data.filetype == 'rar' ? STATIC_URL + 'images/ext/rar.png' : STATIC_URL + 'images/ext/blank.png');
-			var li='<li><a href="javascript:;" class="on" onclick="javascript:album_cancel(this)"><img src="'+att_url+'" class="img_src" path="'+data.msg+'" title="'+data.title+'"/><img src="'+ STATIC_URL +'images/checked.gif" class="checkd"></a></li>';
+			var li='<li><a href="javascript:;" class="on" onclick="album_cancel(this)"><img src="'+att_url+'" class="img_src" path="'+data.msg+'" attid="'+data.attid+'" title="'+data.title+'"/><img src="'+ STATIC_URL +'images/checked.gif" class="checkd"></a></li>';
 			$("#uploadlist ul").prepend(li);
+            $('#att_id').append('|'+data.attid);
 			$('#att_status').append('|'+data.msg);
 			$('#att_titles').append('|'+data.title);
 		}else{

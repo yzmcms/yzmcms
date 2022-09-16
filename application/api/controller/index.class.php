@@ -113,8 +113,8 @@ class index{
 
 		//系统消息[群发]
 		$system_totnum = D('message_group')->where(array('groupid' => $memberinfo['groupid']))->total(); //总条数
-		$res = $member->fetch_array($member->query("SELECT COUNT(*) AS total FROM yzmcms_message_group a LEFT JOIN yzmcms_message_data b ON a.id=b.group_message_id WHERE a.groupid='{$memberinfo['groupid']}' AND a.`status`=1 AND b.userid={$userid}"));  //已读信息
-		$data['system_msg'] = $system_totnum - $res['total'];   //系统消息，未读条数
+		$total = D('message_group')->alias('a')->join('yzmcms_message_data b ON a.id=b.group_message_id', 'LEFT')->where(array('a.groupid'=>$memberinfo['groupid'], 'a.status'=>1, 'b.userid'=>$userid))->total();  //已读信息
+		$data['system_msg'] = $system_totnum - $total;   //系统消息，未读条数
 		
 		//收件箱消息，未读条数
 		$data['inbox_msg'] = D('message')->where(array('send_to' => $memberinfo['username'], 'status' => '1', 'isread' => '0'))->total(); 

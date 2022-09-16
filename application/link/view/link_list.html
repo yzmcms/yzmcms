@@ -36,7 +36,7 @@
      <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	 </form>	
   </div>
-  <div class="cl pd-5 bg-1 bk-gray mt-20"> 
+  <div class="cl mt-15 tb-top"> 
 	  <span class="l">
 	  <a class="btn btn-primary radius" onclick="yzm_open('<?php echo L('add_link');?>','<?php echo U('add');?>','750','520')"  href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> <?php echo L('add_link');?></a>
 	  <a href="javascript:;" onclick="mydel()" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  
@@ -44,7 +44,7 @@
 	  <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> 
   </div>
   <form method="post" action="<?php echo U('order');?>" id="myform">
-  <table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
+  <table class="table table-border table-bg table-hover yzm-table-sort">
     <thead>
       <tr class="text-c">
 		<th width="25"><input type="checkbox"></th>
@@ -100,10 +100,10 @@
 		?>
     </tbody>
   </table>
-  <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
-  <div class="cl pd-5 bg-1 bk-gray"> <span class="l"><input class="orderbutton btn-primary radius" onclick="mylistorder()" value="排序" type="button"></span></div>
+  <?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
+  <div class="cl mt-5"> <span class="l"><input class="orderbutton btn-primary radius" name="dosubmit" value="排序" type="submit"></span></div>
   </form>
-  <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
+  <div id="page" style="margin-top:5px;"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>
 </div>
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>

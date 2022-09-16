@@ -36,11 +36,12 @@ function show_menu() {
 		$menu_list = get_menu();
 		$menu_string = '';
 		foreach($menu_list as $key => $val){
-			$s = $key ==0 ? ' style="display:block;"' : '';
+			$s1 = $key ==0 ? ' class="selected"' : '';
+			$s2 = $key ==0 ? ' style="display:block;"' : '';
 			$menu_string .= '<div class="menu_dropdown">
 			<dl id="'.$val['id'].'-menu">
-				<dt class="selected"><i class="Hui-iconfont">'.$val['data'].'</i> '.$val['name'].'<i class="Hui-iconfont menu_dropdown-arrow">&#xe6d5;</i></dt>
-				<dd'.$s.'>
+				<dt'.$s1.'><i class="yzm-iconfont '.$val['data'].' mr-5"></i> '.$val['name'].'<i class="yzm-nav-icon yzm-iconfont yzm-iconxiangxia menu_dropdown-arrow"></i></dt>
+				<dd'.$s2.'>
 					<ul>';
 						foreach($val['child'] as $v){
 							$menu_string .= '<li><a href="javascript:void(0)" _href="'.url($v['m'].'/'.$v['c'].'/'.$v['a'], $v['data']).'" data-title="'.$v['name'].'">'.$v['name'].'</a></li>';
@@ -76,7 +77,7 @@ function get_menu(){
 		}
 	}
 	
-	return $menu_list;
+	return array_values($menu_list);
 }
 
 
@@ -106,4 +107,112 @@ function url($url='', $vars='') {
 	}
 
 	return $string;
+}
+
+
+function downfile($url, $md5){
+    if (extension_loaded('curl')) {
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt($ch, CURLOPT_TIMEOUT_MS, 5000); 
+        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false); 
+        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        $content = curl_exec($ch);
+        curl_close($ch);
+    } else {
+        $content = @file_get_contents($url);
+    }
+
+    if(!$content) return array('status'=>0, 'message'=>'官方升级包不存在！');
+
+    $filename = explode('/', $url);    
+    $filename = end($filename);
+    $downname = YZMPHP_PATH.'cache/down_package/'.$filename;
+    $fp = fopen($downname, 'w');
+    fwrite($fp, $content);
+    fclose($fp);
+
+    if(!is_file($downname)) return array('status'=>0, 'message'=>'下载文件失败，请检查目录权限！');
+    if($md5 != md5_file($downname)) return array('status'=>0, 'message'=>'升级包损坏，请重新下载！');
+
+    return array('status'=>1, 'message'=>'下载成功！', 'file_path'=>$downname);
+}
+
+
+function unzips($filename, $unzip_folder){
+    if(!is_file($filename)) return array('status'=>0, 'message'=>'将解压的文件不存在！');
+
+    $zip = new ZipArchive();
+    if (!$zip->open($filename)) {
+        return array('status'=>0, 'message'=>'打开升级包失败！');
+    }
+
+    $zip->extractTo($unzip_folder);
+    $zip->close();
+    return array('status'=>1, 'message'=>'解压成功！');
+}
+
+
+function exec_sql($sqlstr) {
+    $sqlstr = preg_replace("/TYPE=(InnoDB|MyISAM|MEMORY)( DEFAULT CHARSET=[^; ]+)?/", "ENGINE=\\1 DEFAULT CHARSET=utf8", $sqlstr);
+    $sqlstr = str_replace("\r", "\n", $sqlstr);
+    $queriesarray = explode(";\n", trim($sqlstr));
+    $admin = D('admin');
+    foreach ($queriesarray as $query) {
+        $query_sql = '';
+        $queries = explode("\n", trim($query));
+        $queries = array_filter($queries);
+        foreach ($queries as $query) {
+            $str1 = substr($query, 0, 1);
+            if ($str1 != '-' && $str1 != '#') $query_sql .= $query;
+        }
+        if(!$query_sql) continue;
+        $result = $admin->query($query_sql);
+        if(!$result) {
+        	write_log($query_sql);
+        	return false;
+        }
+    }
+    return true;
+}
+
+
+function copy_file($source, $objective){
+	static $fail = 0;
+	$dir = opendir($source);
+	while ($file = readdir($dir)) {
+	    if($file!='.' && $file!='..') {
+	        if (is_dir($source.'/'.$file)) {
+	            copy_file($source.'/'.$file, $objective.'/'.$file);
+	        }else{
+	            if(!is_dir($objective)) mkdir($objective, 0777, true);
+                $res = @copy($source.'/'.$file, $objective.'/'.$file);
+                if($res) {
+                    @unlink($source.'/'.$file);
+                } else {
+                    $fail++;
+                }
+	        }
+	    }
+	}
+	closedir($dir);
+	return $fail;
+}
+
+
+function del_dir($path){
+	if (is_dir($path)) {
+	    $file_list = scandir($path);
+	    foreach ($file_list as $file) {
+	        if ($file != '.' && $file != '..') {
+	            del_dir($path . '/' . $file); 
+	        }
+	    }
+	    return @rmdir($path);
+	} else if (is_file($path)) {
+	    @unlink($path);
+	}
 }

@@ -27,14 +27,14 @@
                     </tr>
                     <tr style="display:none" id="answer">
                         <td>答案：</td>
-                        <td><input type="text" name="answer" value="" class="input"><span class="red">不修改请留空！</span></td>
+                        <td><input type="text" name="answer" value="" class="input"> <span class="red">不修改请留空！</span></td>
                     </tr>
                     <tr>
-                        <td>密码确认：</td>
-                        <td><input type="text" name="password" value="" class="input" onfocus="this.type='password'"><span class="red">*</span></td>
+                        <td><span class="required">*</span>密码确认：</td>
+                        <td><input type="text" name="password" value="" class="input" onfocus="this.type='password'"></td>
                     </tr>
                     <tr>
-                        <td>验证码：</td>
+                        <td><span class="required">*</span>验证码：</td>
                         <td><input type="text" name="code" value="" class="input" style="width:150px;">
                             <img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="yzm-code-img" title="看不清，换一张">
                         </td>

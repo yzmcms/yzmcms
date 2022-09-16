@@ -43,7 +43,7 @@ class content_model {
 		$data['issystem']  = $isimport ? 0 : 1;
 		$data['inputtime'] = strtotime($data['inputtime']);
 		$data['updatetime'] = SYS_TIME;
-		$data['description'] = empty($data['description']) ? str_cut(strip_tags($data['content']),200) : $data['description'];
+		$data['description'] = empty($data['description']) ? str_cut(strip_tags($data['content']),250) : $data['description'];
 		$data['username'] = $_SESSION['adminname'];
 		$data['userid'] = $_SESSION['adminid'];
 		$data['catid'] = intval($data['catid']);
@@ -84,6 +84,7 @@ class content_model {
 		
 		//记录catid
 		set_cookie('catid', $data['catid']);
+		set_cookie('auto_thum', isset($data['auto_thum']) ? 1 : 0);
 		update_attachment($this->modelid, $id);
 		
 		return $id;
@@ -118,7 +119,7 @@ class content_model {
         $data['status'] = isset($data['status']) ? intval($data['status']) : 0;
 		$data['updatetime'] = SYS_TIME;
 		$data['inputtime'] = strtotime($data['inputtime']);
-		$data['description'] = empty($data['description']) ? str_cut(strip_tags($data['content']),200) : $data['description'];
+		$data['description'] = empty($data['description']) ? str_cut(strip_tags($data['content']),250) : $data['description'];
 		$data['catid'] = intval($data['catid']);
 
 		//如果没有设置属性标签，即清空
@@ -152,6 +153,7 @@ class content_model {
 		D('all_content')->update($data, array('modelid' => $this->modelid, 'id' => $id));
 		
 		$affected = $content_tabname->update($data, array('id' => $id));
+		set_cookie('auto_thum', isset($data['auto_thum']) ? 1 : 0);
 		update_attachment($this->modelid, $id);
 		return $affected;
 

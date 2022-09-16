@@ -63,9 +63,11 @@ class index{
 			$_POST['catid'] = isset($_POST['catid']) ? intval($_POST['catid']) : 0; 
 			$_POST['id'] = isset($_POST['id']) ? intval($_POST['id']) : 0; 
 			$_POST['commentid'] = $this->_get_commentid($_POST['modelid'], $_POST['catid'], $_POST['id']);
-			$_POST['url'] = SITE_PATH.str_replace(SITE_URL, '', $_POST['url']);
+			$_POST['url'] = get_content_url($_POST['catid'], $_POST['id']);
 			$_POST['status'] = !$site['comment_check']; 
 			$_POST['total'] = 1;
+
+			if(empty($_POST['url'])) showmsg(L('illegal_parameters'), 'stop');
 			
 			//评论回复
 			if($_POST['reply']){

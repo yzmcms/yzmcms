@@ -4,9 +4,9 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 字段管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><a href="<?php echo U('add', array('modelid'=>$modelid));?>" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加字段</a></span></div>
+	<div class="cl tb-top"> <span class="l"><a href="<?php echo U('add', array('modelid'=>$modelid));?>" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加字段</a></span></div>
 	<form action="<?php echo U('order');?>" method="post">
-	<table class="table table-border table-bordered table-bg table-hover">
+	<table class="table table-border table-bg table-hover">
 		<thead>
 			<tr class="text-c">
 				<th>排序</th>
@@ -29,7 +29,7 @@
 				<td><?php echo $val['fieldtype'];?></td>
 				<td><?php echo $val['isrequired'] ? '<span style="color:red">是</span>' : '否';?></td>
 				<td><?php echo $val['disabled'] ? '<span class="label radius">已禁用</span>' : '<span class="label label-success radius">已启用</span>';?></td>
-				<td class="td-manage"><?php if($val['modelid']){ ?><a title="编辑字段"  class="btn-mini btn-secondary ml-5" href="<?php echo U('edit',array('modelid'=>$modelid,'fieldid'=>$val['fieldid']));?>" style="text-decoration:none">编辑</a> <a title="删除"  class="btn-mini btn-warning ml-5"   href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('modelid'=>$modelid, 'fieldid'=>$val['fieldid']));?>')" style="text-decoration:none">删除</a><?php }else{ echo '<span  class="btn-mini btn-disabled ml-5" >编辑</span> <span  class="btn-mini btn-disabled ml-5">删除</span>';} ?></td>
+				<td class="td-manage"><?php if($val['modelid']){ ?><a title="编辑字段"  class="btn-mini btn-primary ml-5" href="<?php echo U('edit',array('modelid'=>$modelid,'fieldid'=>$val['fieldid']));?>" style="text-decoration:none">编辑</a> <a title="删除"  class="btn-mini btn-danger ml-5"   href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('modelid'=>$modelid, 'fieldid'=>$val['fieldid']));?>')" style="text-decoration:none">删除</a><?php }else{ echo '<span  class="btn-mini btn-disabled ml-5" >编辑</span> <span  class="btn-mini btn-disabled ml-5">删除</span>';} ?></td>
 			</tr>
 			<?php 
 			   }		 
@@ -37,7 +37,7 @@
 		</tbody>
 	</table>
 	<input type="hidden" value="<?php echo $modelid;?>" name="modelid">
-	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><input class="orderbutton btn-primary radius" name="dosubmit" value="排序" type="submit"></span></div>
+	<div class="cl mt-5"> <span class="l"><input class="orderbutton btn-primary radius" name="dosubmit" value="排序" type="submit"></span></div>
 	</form>
 </div>
 <?php include $this->admin_tpl('footer');?>

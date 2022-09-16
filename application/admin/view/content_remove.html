@@ -16,12 +16,12 @@
 		<div class="formControls col-xs-8 col-sm-9">
 			<input type="text" class="input-text" value=""  name="ids" id="ids" readonly >
 			<input type="hidden" class="input-text" value="<?php echo $modelid; ?>"  name="modelid">
-			<input type="hidden" class="input-text" value="1"  name="dosubmit">
 		</div>
 	</div>
-	<div style="margin-top:20px;margin-left:10px">
-			<button name="dosubmit" class="btn btn-primary radius" type="submit">&nbsp;&nbsp;确定&nbsp;&nbsp;</button>&nbsp;&nbsp;&nbsp;&nbsp;
-			<button onclick="yzmcms_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
+	<div class="footer_btn">
+		<input type="hidden" name="dosubmit" value="1">
+		<input class="btn btn-primary radius" type="submit" value="确 定">
+		<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
 	</div>
 </form>
 

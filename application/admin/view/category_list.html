@@ -5,7 +5,7 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 栏目管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="cl pd-5 bg-1 bk-gray"> 
+	<div class="cl tb-top"> 
 		<span class="l">
 			<a href="javascript:;" onclick="yzm_open('添加栏目','<?php echo U('add', array('type'=>0));?>',800,500)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加栏目</a> 
 			<a href="javascript:;" onclick="yzm_open('添加单页','<?php echo U('add', array('type'=>1));?>',800,500)" class="btn btn-secondary radius"><i class="Hui-iconfont">&#xe600;</i> 添加单页</a> 
@@ -14,7 +14,7 @@
 		</span>
 	</div>
 	<form action="<?php echo U('order');?>" method="post">
-	<table class="table table-border table-bordered table-bg table-hover">
+	<table class="table table-border table-bg table-hover">
 		<thead>
 			<tr class="text-c">
 				<th width="60">排序</th>
@@ -32,8 +32,8 @@
 				<?php echo $categorys;?>
 		</tbody>
 	</table>
-	<?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
-	<div class="cl pd-5 bg-1 bk-gray"> <span class="l"><input class="orderbutton btn-primary radius" name="dosubmit" value="排序" type="submit"></span></div>
+	<?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
+	<div class="cl mt-5"> <span class="l"><input class="orderbutton btn-primary radius" name="dosubmit" value="排序" type="submit"></span></div>
 	</form>
 </div>
 <?php include $this->admin_tpl('footer');?>

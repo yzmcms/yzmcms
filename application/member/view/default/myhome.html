@@ -18,10 +18,10 @@
 				<img src="{if $userpic}{$userpic}{else}{STATIC_URL}images/default.gif{/if}" alt="{$username}" title="{$username}"/>
 			</div>
 			<div class="userinfo">
-				<div class="username">{$username}<span class="dengji">[{$groupinfo['name']}] {if $groupinfo['icon']}<img src="{STATIC_URL}images/icon/{$groupinfo['icon']}" height="18">{/if} {if $vip}<img src="{STATIC_URL}images/vip.gif" title="vip用户">{/if}</span></div>
+				<div class="username">{$username}<span class="grade">[{$groupinfo['name']}] {if $groupinfo['icon']}<img src="{STATIC_URL}images/icon/{$groupinfo['icon']}">{/if} {if $vip}<img src="{STATIC_URL}images/vip.png" class="vip" title="vip用户">{/if}</span></div>
 				<div class="userinfo_userdata">
-					<span class="qianming"><b>个性签名:</b> {$motto}</span>
-					<span class="fangkeshu"><b>空间访问数:</b> {$guest}</span>
+					<span class="qianming"><b>个性签名：</b> {if $motto}{$motto}{else}暂无{/if}</span>
+					<span class="fangkeshu"><b>空间访问量：</b> {$guest}</span>
 				</div>
 			</div>
 			<div class="userinfo_shortcut">

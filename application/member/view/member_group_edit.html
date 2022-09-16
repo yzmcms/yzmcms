@@ -16,8 +16,8 @@
 			 	<input type="text" class="input" name="max_amount" value="<?php echo $data['max_amount']; ?>"> 
 			 	<span class="yzm-explain">VIP用户不受限</span>
 			 </li>
-			 <li class="yzm-explain-box"><label>会员组图标：</label>
-			 	<input type="text" class="input" name="icon"  value="<?php echo $data['icon']; ?>"  style="width:450px">
+			 <li class="yzm-explain-box"><label><span class="c-red">*</span>会员组图标：</label>
+			 	<input type="text" class="input" name="icon"  value="<?php echo $data['icon']; ?>">
 			 	<span class="yzm-explain">图标放置在/common/static/images/icon/</span>
 			 </li>
 			 <li><label>组别权限：</label>
@@ -31,12 +31,13 @@
 			 <li><label>简洁描述：</label>
 			 	<input type="text" class="input" style="width:450px" value="<?php echo $data['description']; ?>"  name="description">
 			 </li>
-			 <li>
-			 	<input type="hidden" name="dosubmit" value="1"><input type="hidden" name="groupid" value="<?php echo $data['groupid'];?>">
-			 	<input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
-			 	<input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
-			 </li>
 		</ul>
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input type="hidden" name="groupid" value="<?php echo $data['groupid'];?>">
+			<input class="btn btn-primary radius" type="submit" value="提 交">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>
@@ -45,17 +46,21 @@
 <script type="text/javascript">
 	function dosub(obj){
 		 if(obj.name.value==''){
-			 layer.msg('会员组名称不能为空！');
+			 layer.msg('会员组名称不能为空！', {icon:2});
 			 return false;
 		 }
 		 if(obj.experience.value=='' || isNaN(obj.experience.value)){
-			 layer.msg('经验点数只能为数字类型！');
+			 layer.msg('经验点数只能为数字类型！', {icon:2});
 			 return false;
 		 }
 		if(obj.max_amount.value=='' || isNaN(obj.max_amount.value)){
-			layer.msg('每日最大投稿量只能为数字类型！');
+			layer.msg('每日最大投稿量只能为数字类型！', {icon:2});
 			return false;
-		}		 
+		}
+		 if(obj.icon.value==''){
+			 layer.msg('会员组图标不能为空！', {icon:2});
+			 return false;
+		 }		 
         $.ajax({
             type: 'POST',
             url: '<?php echo U('edit');?>', 

@@ -34,11 +34,11 @@
       <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
 	 </form>	
   </div>
-  <div class="cl pd-10 bg-1 bk-gray mt-20"> 
+  <div class="cl mt-20 mb-5"> 
   	总计 <span class="c-red"><?php echo $total?></span> 笔交易(金钱：<?php echo $money_total;?>笔，积分：<?php echo $point_total;?>笔)，金钱总金额：<span class="c-red"><?php echo floatval($money_sum);?></span> 元 ,成功交易：<span class="c-green"><?php echo floatval($money_success);?></span> 元 ，积分总点数：<span class="c-red"><?php echo intval($point_sum)?></span> 点 ,成功交易：<?php echo intval($point_success);?> 点
    </div>
   <form method="post" action="<?php echo U('pay_del');?>" id="myform">
-  <table class="table table-border table-bordered table-bg table-hover yzm-table-sort">
+  <table class="table table-border table-bg table-hover yzm-table-sort">
     <thead>
       <tr class="text-c">
 		<th>订单ID<?php echo field_order('id');?></th>
@@ -79,7 +79,7 @@
 		?>
     </tbody>
   </table>
-  <?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
+  <?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
   </form>
   <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>

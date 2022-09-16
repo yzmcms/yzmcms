@@ -22,7 +22,7 @@
 					<td class="yzm-explain-box">
 						<input type="text" name="wx_token" value="<?php echo $data['wx_token'];?>" class="input-text w_300">
 						<span class="yzm-explain">必填，一般不需要修改</span>
-						<a href="javascript:;" class="btn btn-secondary radius ml-5" onclick="wx_rand()">随机生成</a>
+						<a href="javascript:;" class="btn btn-primary radius ml-5" onclick="wx_rand()">随机生成</a>
 					</td>
 				</tr>								
 				<tr>
@@ -37,7 +37,7 @@
 					<td class="yzm-explain-box">
 						<input type="password" name="wx_secret" value="<?php echo $data['wx_secret'];?>" id="wx_secret" class="input-text w_420" readonly onfocus="this.removeAttribute('readonly');">
 						<span class="yzm-explain">必填，微信开发者密码</span>
-						<a href="javascript:;" class="btn btn-secondary radius ml-5" onclick="wx_show()" id="wx_secret_text">显示密码</a>
+						<a href="javascript:;" class="btn btn-primary radius ml-5" onclick="wx_show()" id="wx_secret_text">显示密码</a>
 					</td>
 				</tr>
 				<tr>
@@ -67,8 +67,8 @@
                 <tr>
 					<td></td>
 					<td>
-					<input class="btn w_120 h35 btn-primary radius" name="dosubmit" type="submit" value="提交">
-					<input class="btn w_120 h35 btn-default radius" type="reset" value="重置">
+					<input class="btn w_100 h35 btn-primary radius" name="dosubmit" type="submit" value="提交">
+					<input class="btn w_100 h35 btn-default radius" type="reset" value="重置">
 					</td>
 				</tr>				
 			</table>

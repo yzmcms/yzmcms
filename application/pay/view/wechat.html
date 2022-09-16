@@ -27,13 +27,13 @@
 			 	<label class="label_radio"><input name="enabled" type="radio" value="0" <?php if($data['enabled'] == 0) echo 'checked';?>> 禁用</label>
 			 </span>
 			 </li>
-			 <li>
-			 	<input type="hidden" name="dosubmit" value="1">
-			 	<input type="hidden" name="id" value="<?php echo $data['id'];?>">
-			    <input class="dosubmit w_120 btn-primary radius" type="submit" value="提交">
-			    <input class="btn w_120 btn-default radius" type="button" value="取消" onclick="yzmcms_close()">
-			 </li>
 		</ul>
+		<div class="footer_btn">
+			<input type="hidden" name="dosubmit" value="1">
+			<input type="hidden" name="id" value="<?php echo $data['id'];?>">
+			<input class="btn btn-primary radius" type="submit" value="提 交">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>

@@ -4,14 +4,14 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 微信场景 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-  <div class="explain"> 
-       <p>微信场景：为了满足用户渠道推广分析和用户帐号绑定等场景的需要，公众平台提供了生成带参数二维码的接口。使用该接口可以获得多个带不同场景值的二维码，用户扫描后，公众号可以接收到事件推送。</p>
+  <div class="explain light"> 
+       <p><span class="yzm-iconfont yzm-iconshuoming"></span>微信场景：为了满足用户渠道推广分析和用户帐号绑定等场景的需要，公众平台提供了生成带参数二维码的接口。使用该接口可以获得多个带不同场景值的二维码，用户扫描后，公众号可以接收到事件推送。</p>
   </div>
-  <div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="yzm_open('添加场景','<?php echo U('add');?>',700,400)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加场景</a>
+  <div class="cl mt-15 tb-top"> <span class="l"><a href="javascript:;" onclick="yzm_open('添加场景','<?php echo U('add');?>',660,400)" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加场景</a>
   <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
 	<form method="post" action="<?php echo U('del');?>" id="myform">
-	<table class="table table-border table-bordered table-bg table-hover">
+	<table class="table table-border table-bg table-hover">
 		<thead>
 			<tr class="text-c">
 				<th width="25"><input type="checkbox"></th>
@@ -34,14 +34,14 @@
 				<td><?php if($val['expire_time'] >= 3600){echo ($val['expire_time']/3600).'小时';}elseif($val['expire_time'] >= 60){ echo ($val['expire_time']/60).'分钟';}else{ echo'永久';}?></td>
 				<td><?php echo $val['ticket'];?></td>
 				<td><?php echo $val['remarks'];?></td>
-				<td class="td-manage"><a title="编辑" href="javascript:;" onclick="yzm_open('编辑场景','<?php echo U('edit',array('id'=>$val['id']));?>',700,400)" style="text-decoration:none"  class="btn-mini btn-secondary ml-5">编辑</a> <a target="_blank" href="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=<?php echo urlencode($val['ticket']);?>" class="btn-mini btn-success ml-5" style="text-decoration:none">查看二维码</a></td>
+				<td class="td-manage"><a title="编辑" href="javascript:;" onclick="yzm_open('编辑场景','<?php echo U('edit',array('id'=>$val['id']));?>',660,400)" style="text-decoration:none"  class="btn-mini btn-primary ml-5">编辑</a> <a target="_blank" href="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=<?php echo urlencode($val['ticket']);?>" class="btn-mini btn-success ml-5" style="text-decoration:none">查看二维码</a></td>
 			</tr>			  
 			<?php 
 			   }		 
 			?>	
 		</tbody>
 	</table>
-	<?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
+	<?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
 	</form>
   <div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>

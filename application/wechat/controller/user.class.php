@@ -147,7 +147,7 @@ class user extends wechat_common{
 			$json_arr = https_request($url, $str);
 
 			if($json_arr['errcode'] == 0){
-				D('wechat_user')->update(array('groupid' => $to_groupid), 'wechatid IN ('.$_POST['ids'].')');
+				D('wechat_user')->update(array('groupid' => $to_groupid), array('wechatid'=>array('in', $_POST['ids'], 'intval')));
 				$wechat_group = D('wechat_group');
 				$wechat_group->delete(array('1' => 1));
 				$url = 'https://api.weixin.qq.com/cgi-bin/groups/get?access_token='.$this->get_access_token();

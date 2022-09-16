@@ -6,6 +6,7 @@
 <title><?php echo $Title; ?> - <?php echo $Powered; ?></title>
 <link rel="stylesheet" href="./css/install.css?v=yzmcms" />
 <script src="../../common/static/js/jquery-1.8.2.min.js"></script>
+<script src="../../common/static/plugin/layer/layer.js"></script>
 </head>
 <body>
 <div class="wrap">
@@ -49,9 +50,15 @@ var n=0;
 						reloads(msg.n);
 					}else{
 						//alert('指定的数据库不存在，系统也无法创建，请先通过其他方式建立好数据库！');
-						alert(msg.msg);
+						layer.alert(msg.msg);
 					}					
 				}
+            },
+            error: function (xhr) {
+                if(xhr.status != 200){
+                    layer.alert('安装时出错，可能被系统防火墙拦截，状态码：'+xhr.status);
+                    return false;
+                }
             }
         });
     }

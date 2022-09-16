@@ -5,7 +5,7 @@ http://www.yzmcms.com
 
 CSS初始化
 ===================*/
-body{font-family:Tahoma,Arial,sans-serif;font-size:14px}
+body{font-family:Tahoma,Arial,sans-serif;font-size:13px}
 html,body,div, dl, dt, dd, ul, p, th, td,h1, h2, h3, h4, h5, h6,pre, code, form,fieldset, legend{margin: 0;padding: 0;}
 cite,em,strong,th{font-style: normal;}
 td,th,div{word-break:break-all;word-wrap:break-word;}
@@ -95,7 +95,7 @@ a:visited{color:#762e9c;}
 协议
 ===================
 */
-.pact{box-shadow:5px 5px 5px #f7f7f7 inset;border:1px solid #bdbcbc;width:750px;height:350px;padding:10px;overflow:hidden;display:block;overflow-y:scroll;margin:0 auto;font-size:12px;line-height:1.5;margin-bottom:22px;outline:none;}
+.pact{box-shadow:5px 5px 5px #f7f7f7 inset;border:1px solid #bdbcbc;width:750px;height:350px;padding:10px;overflow:hidden;display:block;overflow-y:scroll;margin:0 auto;font-size:12px;line-height:1.5;margin-bottom:22px;outline:none;border-radius:3px}
 pre{white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;word-break : normal;}
 .version{float:right;margin:50px 45px 0 0;}
 .logo{float:left;width:400px;height:80px;line-height: 80px;font-family:Tahoma,Arial,sans-serif;padding-left: 40px;font-weight: normal;/*background:url(../images/logo.png) no-repeat;overflow:hidden;text-indent:-2000em;*/}

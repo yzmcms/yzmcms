@@ -142,21 +142,39 @@ class db_mysql{
 	 * return string
 	 */
 	public function where($arr = ''){
-		if(empty($arr)) {
-		    return $this;
-		}		
+		if(empty($arr))  return $this;
 		if(is_array($arr)) {
 			$args = func_get_args();
 			$str = '(';
-			foreach ($args as $v){
-				foreach($v as $k => $value){
-					$value = $this->safe_data($value);
-					if(!strpos($k,'>') && !strpos($k,'<') && !strpos($k,'=') && substr($value, 0, 1) != '%' && substr($value, -1) != '%'){ //where(array('age'=>'22'))
-						$str .= $k." = '".$value."' AND ";
-					}else if(substr($value, 0, 1) == '%' || substr($value, -1) == '%'){	//where(array('name'=>'%php%'))
-						$str .= $k." LIKE '".$value."' AND "; 
+			foreach ($args as $value){
+				foreach($value as $kk => $vv){
+					if(!is_array($vv)){
+						$vv = !is_null($vv) ? $this->safe_data($vv) : '';
+						if(!strpos($kk,'>') && !strpos($kk,'<') && !strpos($kk,'=') && substr($vv, 0, 1) != '%' && substr($vv, -1) != '%'){   
+							$str .= $kk." = '".$vv."' AND ";
+						}else if(substr($vv, 0, 1) == '%' || substr($vv, -1) == '%'){
+							$str .= $kk." LIKE '".$vv."' AND "; 
+						}else{ 
+							$str .= $kk."'".$vv."' AND ";   
+						}
+						
 					}else{
-						$str .= $k."'".$value."' AND ";      //where(array('age>'=>'22'))
+						
+						$exp_arr = array('eq'=>'=','neq'=>'<>','gt'=>'>','egt'=>'>=','lt'=>'<','elt'=>'<=','notlike'=>'NOT LIKE','like'=>'LIKE','in'=>'IN','notin'=>'NOT IN','not in'=>'NOT IN','between'=>'BETWEEN','not between'=>'NOT BETWEEN','notbetween'=>'NOT BETWEEN');
+						
+						$exp = isset($vv[0])&&isset($exp_arr[strtolower($vv[0])]) ? $exp_arr[strtolower($vv[0])] : '';
+						$rule = isset($vv[1]) ? $vv[1] : '';
+						$fun = isset($vv[2]) ? $vv[2] : '';
+						if(!$exp) $this->geterr('The expression '.$vv[0].' does not exis!'); 
+						
+						if(is_array($rule)) {
+							if($fun) $rule = array_map($fun, $rule);
+							$rule = strpos($exp, 'BETWEEN') === false ? "('".join("','", $rule)."')" : "'".join("' AND '", $rule)."'";
+						}else{
+							$rule = $fun ? "'".$fun($rule)."'" : "'".$this->safe_data($rule)."'";
+						}
+
+						$str .= $kk.' '.$exp.' '.$rule.' AND '; 
 					}
 				}
 				$str = rtrim($str,' AND ').')';
@@ -166,7 +184,7 @@ class db_mysql{
 			$this->key['where'] = $str;
 			return $this;
 		}else{
-			$this->key['where'] = str_replace('yzmcms_', $this->config['db_prefix'], $arr);
+			$this->key['where'] = str_replace('yzmcms_', $this->config['db_prefix'], $arr);	
 			return $this;
 		}
 	}
@@ -180,7 +198,7 @@ class db_mysql{
 	 */
 	public function __call($name, $value){
 		if(in_array($name, array('alias','field','order','limit','group','having'))){
-			$this->key[$name] = $value[0];
+			if(isset($value[0])) $this->key[$name] = $value[0];
 			return $this;
 		}else{
 			$this->geterr('Call to '.$name.' function not exist!'); 
@@ -393,13 +411,17 @@ class db_mysql{
 
 	
 	/**
-	 * 自定义执行SQL语句
+	 * 自定义SQL语句
 	 * @param  $sql sql语句
-	 * @return （mysql_query返回值）
+	 * @param  $fetch_all 查询时是否返回二维数组
+	 * @return mixed
 	 */		
-	public function query($sql = ''){
-		 $sql = str_replace('yzmcms_', $this->config['db_prefix'], $sql); 
-         return $this->execute($sql);	  
+	public function query($sql = '', $fetch_all = true){
+		$sql = str_replace('yzmcms_', $this->config['db_prefix'], $sql);
+		if(preg_match("/^(?:UPDATE|DELETE|TRUNCATE|ALTER|DROP|FLUSH|INSERT|REPLACE|SET|CREATE)\\s+/i", $sql)){
+			return $this->execute($sql);	 
+		} 
+		return $fetch_all ? $this->fetch_all($this->execute($sql)) : $this->fetch_array($this->execute($sql));
 	}
 
 
@@ -409,6 +431,7 @@ class db_mysql{
 	 * @return array
 	 */		
     public function fetch_array($query, $result_type = MYSQL_ASSOC) {
+    	if(!is_resource($query))   return $query;
 		return mysql_fetch_array($query, $result_type);
 	}	
 
@@ -419,6 +442,7 @@ class db_mysql{
 	 * @return array
 	 */		
     public function fetch_all($query, $result_type = MYSQL_ASSOC) {
+    	if(!is_resource($query))   return $query;
 		$arr = array();
 		while($data = mysql_fetch_array($query, $result_type)) {
 			$arr[] = $data;
@@ -432,12 +456,13 @@ class db_mysql{
 	 */		
 	private function geterr($msg = ''){
 		if(APP_DEBUG){
+			if(is_ajax()) return_json(array('status'=>0, 'message'=>'MySQL Error: '.mysql_error().' | '.$msg));
 			if(PHP_SAPI == 'cli') exit('MySQL Error: '.mysql_error().' | '.$msg);
 			application::fatalerror($msg, mysql_error(), 2);	
 		}else{
 			write_error_log(array('MySQL Error', mysql_errno(), mysql_error(), $msg));
+			if(is_ajax()) return_json(array('status'=>0, 'message'=>'MySQL Error!'));
 			application::halt('MySQL Error!', 500);
-			exit;
 		}
 	}
 	

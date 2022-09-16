@@ -117,12 +117,12 @@ class code{
         if (!empty($color)) {
             $font_color = imagecolorallocate($this->img, hexdec(substr($color, 1, 2)), hexdec(substr($color, 3, 2)), hexdec(substr($color, 5, 2)));
         }
-        $x = ($this->width - 10) / $this->code_len;
+        $x = intval(($this->width - 10) / $this->code_len);
         for ($i = 0; $i < $this->code_len; $i++) {
             if (empty($color)) {
                 $font_color = imagecolorallocate($this->img, mt_rand(50, 155), mt_rand(50, 155), mt_rand(50, 155));
             }
-            imagettftext($this->img, $this->font_size, mt_rand(- 30, 30), $x * $i + mt_rand(6, 10), mt_rand($this->height / 1.3, $this->height - 5), $font_color, $this->font, $this->code [$i]);
+            imagettftext($this->img, $this->font_size, mt_rand(- 30, 30), $x * $i + mt_rand(6, 10), mt_rand(intval($this->height / 1.3), $this->height - 5), $font_color, $this->font, $this->code [$i]);
         }
         $this->font_color = $font_color;
     }

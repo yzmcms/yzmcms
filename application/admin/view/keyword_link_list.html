@@ -4,13 +4,13 @@
 <body>
 <nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 内容关键字 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
 <div class="page-container">
-	<div class="explain"> 
-	     <p>1. 在系统管理-系统设置-附加设置-启用内容关键字替换后，内容的关键字将自动加上链接。</p>
-	     <p>2. 内容关键字最多支持500条记录，请合理使用。</p>
+	<div class="explain light"> 
+	   <p><span class="yzm-iconfont yzm-iconshuoming"></span>在系统管理-系统设置-附加设置-启用内容关键字替换后，内容的关键字将自动加上链接。</p>
+	   <p><span class="yzm-iconfont yzm-iconshuoming"></span>内容关键字最多支持500条记录，请合理使用。</p>
 	</div>
-	<div class="cl pd-5 bg-1 bk-gray mt-20"> <span class="l"><a href="javascript:;" onclick="yzm_open('添加关键字','<?php echo U('add');?>','500','300')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加关键字</a> <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span></div>
+	<div class="cl mt-15 tb-top"> <span class="l"><a href="javascript:;" onclick="yzm_open('添加关键字','<?php echo U('add');?>','500','300')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加关键字</a> <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a></span></div>
 	<form method="post" action="<?php echo U('del');?>" id="myform">
-	<table class="table table-border table-bordered table-bg table-hover">
+	<table class="table table-border table-bg table-hover">
 		<thead>
 			<tr class="text-c">
 				<th width="25"><input type="checkbox"></th>
@@ -30,7 +30,7 @@
 				<td><?php echo $val['keyword'];?></td>
 				<td><a href="<?php echo $val['url'];?>" target="_blank"><?php echo $val['url'];?></a></td>
 				<td class="td-manage">
-					<a title="编辑" href="javascript:;" onclick="yzm_open('编辑关键字','<?php echo U('edit',array('id'=>$val['id']));?>','500','300')" class="yzm-box-img btn-secondary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
+					<a title="编辑" href="javascript:;" onclick="yzm_open('编辑关键字','<?php echo U('edit',array('id'=>$val['id']));?>','500','300')" class="yzm-box-img btn-primary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
 
 				</td>
 			</tr>
@@ -39,7 +39,7 @@
 			?>	
 		</tbody>
 	</table>
-	<?php if(!$data){ ?><div class="yzm_no_data"><i class="Hui-iconfont">&#xe6e0;</i> 暂无数据</div><?php } ?>
+	<?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
 	</form>
 	<div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
   <span class="page_right"><?php echo $page->getfull();?></span></div>

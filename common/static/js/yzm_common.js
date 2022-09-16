@@ -125,7 +125,7 @@ function yzm_upload_att(url){
 function yzm_img_cropper(cid, url){
 	var str = $('#' + cid).val();
 	if(str == ''){
-		layer.msg('请先上传图片！');
+		layer.msg('请先上传图片！', {icon:2,time:2500});
 		return false;
 	}
 	if(url.indexOf('?') != -1) {
@@ -237,7 +237,7 @@ function yzm_page_jump(obj) {
 
 //自动提示
 function yzm_auto_tips(){
-    var html = '<a class="yzm-tips" href="javascript:void(0);" onmouseover="yzm_tips = layer.tips($(this).parent().find(\'span.yzm-explain\').html(), this, {time:100000});" onmouseout="layer.close(yzm_tips);"><i class="Hui-iconfont yzm-tips-icon">&#xe633;</i></a>';
+    var html = '<a class="yzm-tips" href="javascript:void(0);" onmouseover="yzm_tips = layer.tips($(this).parent().find(\'span.yzm-explain\').html(), this, {time:100000});" onmouseout="layer.close(yzm_tips);"><i class="yzm-iconfont yzm-iconbangzhu yzm-tips-icon"></i></a>';
     $.each($('.yzm-explain-box > span.yzm-explain'), function(index, item){
         if ($(item).html() != '') {
             $(item).before(html);

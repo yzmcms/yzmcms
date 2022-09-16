@@ -25,7 +25,7 @@
 			<td>{if $val['paytype'] == 1}支付宝{else}微信{/if}</td>
 			<td>{date('Y-m-d H:i:s',$val['addtime'])}</td>
 			<td>{if $val['status'] == 1}<span class="green">已支付</span>{else}<span style="color:red">未支付</span>{/if}</td>
-			<td>{if $val['status'] == 0}<a href="{U('order_pay', array('id'=>$val['id']))}" class="yzm-xs-btn yzm-btn-danger" target="_blank">付款</a>{/if}</td>
+			<td>{if $val['status'] == 0}<a href="{U('order_pay', array('id'=>$val['id']))}" class="yzm-xs-btn yzm-btn-primary" target="_blank">付款</a>{/if}</td>
 			</tr> 
 			{/loop}				
 			</tbody>

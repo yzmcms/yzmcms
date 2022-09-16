@@ -34,9 +34,12 @@ function https_request($url, $data = '', $array = true, $timeout = 2000, $header
 	}
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     $output = curl_exec($curl);
-	if($output === false) $output = curl_error($curl);
-    curl_close($curl);
     debug::addmsg(array('url'=>$url, 'data'=>$data), 2);
+	if($output === false) {
+		$curl_error = curl_error($curl);
+		return $array ? array('status'=>0, 'message'=>$curl_error) : $curl_error;
+	}
+    curl_close($curl);
     return $array ? json_decode($output, true) : $output;
 }
 
@@ -281,6 +284,22 @@ function new_html_special_chars($string, $filter = array()) {
 		$string[$key] = $filter&&in_array($key, $filter) ? $val : new_html_special_chars($val);
 	}
 	return $string;
+}
+
+
+/**
+ * 兼容PHP低版本的json_encode
+ * @param  array   $array
+ * @param  integer $options
+ * @param  integer $depth 
+ */
+function new_json_encode($array, $options = 0, $depth = 512){
+	if(version_compare(PHP_VERSION,'5.4.0','<')) {
+	    $jsonstr = json_encode($array);
+	}else{
+	    $jsonstr = json_encode($array, $options, $depth);
+	}   
+	return $jsonstr;
 }
 
 
@@ -630,7 +649,7 @@ function string_auth($string, $operation = 'ENCODE', $key = '', $expiry = 0) {
 	}
 
 	if($operation == 'DECODE') {
-		if((substr($result, 0, 10) == 0 || substr($result, 0, 10) - SYS_TIME > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26).$keyb), 0, 16)) {
+		if((substr($result, 0, 10) == 0 || intval(substr($result, 0, 10)) - SYS_TIME > 0) && substr($result, 10, 16) == substr(md5(substr($result, 26).$keyb), 0, 16)) {
 			return substr($result, 26);
 		} else {
 			return '';
@@ -762,35 +781,6 @@ function watermark($source, $target = '') {
 		$target = $target ? YZMPHP_PATH.str_replace(SITE_PATH, '', $target) : $source;
 		$image_w->watermark($source, $target);
 		return SITE_PATH.str_replace(YZMPHP_PATH, '', $target);
-	}
-}
-
-
-/**
- * 生成sql语句，如果传入$in_cloumn 生成格式为 IN('a', 'b', 'c')
- * @param $data 条件数组或者字符串
- * @param $front 连接符
- * @param $in_column 字段名称
- * @return string
- */
-function to_sqls($data, $front = ' AND ', $in_column = false) {
-	if($in_column && is_array($data)) {
-		$ids = '\''.implode('\',\'', $data).'\'';
-		$sql = "$in_column IN ($ids)";
-		return $sql;
-	} else {
-		if ($front == '') {
-			$front = ' AND ';
-		}
-		if(is_array($data)) {
-			$sql = '';
-			foreach ($data as $key => $val) {
-				$sql .= $sql ? " $front `$key` = '$val' " : " `$key` = '$val' ";
-			}
-			return $sql;
-		} else {
-			return $data;
-		}
 	}
 }
 
@@ -1241,7 +1231,7 @@ function return_json($arr = array(), $show_debug = false){
     header('Content-Type:application/json; charset=utf-8');
     if(!$arr) $arr = array('status'=>0,'message'=>L('data_not_modified'));
 	if(APP_DEBUG || $show_debug) $arr = array_merge($arr, debug::get_debug());
-    exit(json_encode($arr));
+    exit(new_json_encode($arr, JSON_UNESCAPED_UNICODE));
 }
 
 
@@ -1254,7 +1244,7 @@ function return_json($arr = array(), $show_debug = false){
  * @return bool
  */
 function write_log($message, $filename = '', $ext = '.log', $path = '') {
-	$message = is_array($message) ? json_encode($message, JSON_UNESCAPED_UNICODE) : $message;
+	$message = is_array($message) ? new_json_encode($message, JSON_UNESCAPED_UNICODE) : $message;
 	$message = date('H:i:s').' '.$message."\r\n";
 	if(!$path) $path = YZMPHP_PATH.'cache/syslog';
 	if(!is_dir($path)) @mkdir($path, 0777, true);
@@ -1277,7 +1267,7 @@ function write_error_log($err_arr, $path = '') {
 	$message[] = date('Y-m-d H:i:s');
 	$message[] = get_url();
 	$message[] = getip();
-	if(isset($_POST) && !empty($_POST)) $message[] = json_encode($_POST, JSON_UNESCAPED_UNICODE);
+	if(isset($_POST) && !empty($_POST)) $message[] = new_json_encode($_POST, JSON_UNESCAPED_UNICODE);
 	$message = array_merge($message, $err_arr);
 	$message = join(' | ', $message)."\r\n";
 	if(!$path) $path = YZMPHP_PATH.'cache';
