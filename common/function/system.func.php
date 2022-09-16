@@ -464,6 +464,20 @@ function get_site($siteid = 0, $parameter = ''){
 }
 
 
+
+/**
+ * 是否存在子栏目
+ * @param  array  $data 
+ * @return boolean
+ */
+function is_childid($data){
+	if(!isset($data['catid']) || !isset($data['arrchildid'])) return false;
+	$data['catid'] = strval($data['catid']);
+	return $data['catid']!=$data['arrchildid'];
+}
+
+
+
 /**
  * 获取栏目信息
  *

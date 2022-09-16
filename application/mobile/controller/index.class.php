@@ -46,7 +46,7 @@ class index{
 		//外部链接
 		if($type == 2) showmsg(L('is_jump'), $pclink, 1);
 		
-		$template = $catid!=$arrchildid&&$category_template ? $category_template : $list_template;
+		$template = !$parentid&&$category_template ? $category_template : $list_template;
 		
 		//单页面
 		if($type == 1){
