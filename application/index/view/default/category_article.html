@@ -17,6 +17,7 @@
 	<div class="yzm-line"></div>
 		
 	{php $data = get_childcat($catid);}
+	{if empty($data)}<div class="yzm-no-content">暂无可展示的栏目数据</div>{/if}
 	{loop $data $val}
 	<div class="yzm-content-box yzm-img-list">
 		<div class="yzm-title">

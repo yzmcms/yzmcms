@@ -35,6 +35,7 @@ a:hover{color:#1eaff1;}
 .yzm-title-right a{line-height: 40px}
 
 .yzm-line{height:20px;clear:both;}
+.yzm-no-content{padding:50px 0px;background:#fff;border:1px solid #eee;margin-bottom:20px;text-align:center;font-size:14px;color:#686868}
 
 /*网站头部 */
 .yzm-header{height:100px;padding:10px 0;width:1170px;margin:0 auto;}
