@@ -694,6 +694,7 @@ function get_groupname($groupid){
  * @return string
  */
 function get_memberavatar($user, $type=1, $default=true) {
+	if(!$user) return STATIC_URL.'images/default.gif';
 	global $member_detail;
 	$member_detail = isset($member_detail) ? $member_detail : D('member_detail');
 	if($type == 1){

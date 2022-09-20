@@ -66,12 +66,14 @@ function yzm_update_exec(){
         url: yzm_admin_url+'admin/store/public_system_update', 
 	    dataType: "json", 
         success: function (msg) {
-        	if(msg.status){
+        	if(msg.status == 0){
+        		layer.alert(msg.message, {icon:2});
+        	}else if(msg.status == 1){
         		layer.msg(msg.message, {icon:1,time:2000}, function(){
         			top.location.reload();
         		});
         	}else{
-        		layer.alert(msg.message, {icon:2});
+        		layer.alert(msg.message, {icon:0});
         	}
         },
         error: function (xhr) {
