@@ -297,7 +297,7 @@ function new_json_encode($array, $options = 0, $depth = 512){
 	if(version_compare(PHP_VERSION,'5.4.0','<')) {
 	    $jsonstr = json_encode($array);
 	}else{
-	    $jsonstr = json_encode($array, $options, $depth);
+	    $jsonstr = $depth ? json_encode($array, $options, $depth) : json_encode($array, $options);
 	}   
 	return $jsonstr;
 }
