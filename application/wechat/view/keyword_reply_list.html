@@ -2,11 +2,11 @@
 <title>关键字回复 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 消息回复 <span class="c-gray en">&gt;</span> 关键字回复 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 消息回复 <span class="c-gray en">&gt;</span> 关键字回复 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <div class="page-container">
   <div class="sub_menu"><a href="<?php echo U('init');?>" class="on">关键字回复</a> <a href="<?php echo U('reply_list', array('type'=>2));?>">自动回复</a> <a href="<?php echo U('reply_list', array('type'=>3));?>">关注回复</a></div>
   <div class="cl mt-15 tb-top"> <span class="l">
-  <a href="<?php echo U('add');?>" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加关键字回复</a> <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
+  <a href="<?php echo U('add');?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontianjia"></i> 添加关键字回复</a> <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a> 
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
   <form method="post" action="<?php echo U('del');?>" id="myform">
   <table class="table table-border table-bg table-hover">

@@ -135,6 +135,7 @@ class database extends common {
 	 */
 	public function export_list() {
 		function_exists('set_time_limit') && set_time_limit(0);
+		if(!function_exists('gzopen')) return_json(array('status'=>0, 'message'=>'检测到未安装zlib扩展，请先安装!'));
         if(isset($_POST['dosubmit'])){ 
 			$tables = isset($_POST['tables']) ? $_POST['tables'] : '';
 			if(!$tables) return_json(array('status'=>0, 'message'=>'请指定要备份的表！'));
@@ -215,6 +216,7 @@ class database extends common {
 	 */
 	public function import() {
 		function_exists('set_time_limit') && set_time_limit(0);
+		if(!function_exists('gzopen')) return_json(array('status'=>0, 'message'=>'检测到未安装zlib扩展，请先安装!'));
 		if(isset($_GET['time'])) {
             $filename  = $_GET['random'].'-'.date('Ymd-His', intval($_GET['time'])) . '-*.sql*';
 			$path  = $this->config['path'].$filename;

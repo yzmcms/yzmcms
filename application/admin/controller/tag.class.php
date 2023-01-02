@@ -134,7 +134,7 @@ class tag extends common {
 
 
 	/**
-	 * 管理内容
+	 * 关联内容
 	 */
 	public function content() {
 		$id = input('get.id', 0, 'intval');
@@ -166,7 +166,7 @@ class tag extends common {
         }
         $_GET = array_map('htmlspecialchars', $_GET);
         $total = $content->where($where)->total();
-        $page = new page($total, 8);
+        $page = new page($total, 0);
         $data = $content->where($where)->order('id DESC')->limit($page->limit())->select();
 		include $this->admin_tpl('tag_content');
 		

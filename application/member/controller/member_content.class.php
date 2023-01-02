@@ -406,7 +406,7 @@ class member_content extends common{
 		$fields = $fieldstr = array();
 		foreach($modelinfo as $val){
 			if($val['isadd'] == 0) continue;
-			$fieldtype = $val['fieldtype'];
+			$fieldtype = $val['fieldtype']=='decimal' ? 'input' : $val['fieldtype'];
 			if($data){
 				$val['defaultvalue'] = isset($data[$val['field']]) ? $data[$val['field']] : '';
 			}

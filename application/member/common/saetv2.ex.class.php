@@ -183,7 +183,7 @@ class SaeTOAuthV2 {
 	 *  - 当$type为token时： array('refresh_token'=>...)
 	 * @return array
 	 */
-	function getAccessToken( $type = 'code', $keys ) {
+	function getAccessToken( $type = 'code', $keys = array() ) {
 		$params = array();
 		$params['client_id'] = $this->client_id;
 		$params['client_secret'] = $this->client_secret;

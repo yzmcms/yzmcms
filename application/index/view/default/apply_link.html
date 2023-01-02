@@ -21,7 +21,7 @@
 	 				当前位置：<a href="{SITE_URL}">首页</a>&gt; 申请友情链接
 	 			</span>
 	 		</div>
-		  <form action="{U('link/index/post')}" method="post" onsubmit="return checkall()">
+		  <form action="{U('link/index/post')}" method="post" onsubmit="return checkall(this)">
 		    <table class='yzm-table'>
 		        <tr>
 		            <td class="yzm-table-title">网站名称<span class="red">*</span></td>
@@ -72,28 +72,40 @@
 			</form> 
 		 </div>
 		 <script type="text/javascript">
-		 	function checkall(){
-		 		if($("input[name='name']").val()==''){
-		 			layer.msg("网站名称不能为空!", {icon:2});
-		 			return false;
-		 		}
-		 		if($("input[name='url']").val()==''){
-		 			layer.msg("网站地址不能为空!", {icon:2});
-		 			return false;
-		 		}
-		 		if($("input[name='username']").val()==''){
-		 			layer.msg("站长姓名不能为空!", {icon:2});
-		 			return false;
-		 		}
-		 		if($("input[name='email']").val()==''){
-		 			layer.msg("站长邮箱不能为空!", {icon:2});
-		 			return false;
-		 		}
-		 		if($("input[name='code']").val()==''){
-		 			layer.msg("验证码不能为空!", {icon:2});
-		 			return false;
-		 		}
-		 		return true;
+		 	function checkall(obj){
+				if(obj.name.value==""){
+					layer.msg("网站名称不能为空！", {icon:2});
+					return false;
+				}
+				if(obj.url.value==""){
+					layer.msg("网站地址不能为空！", {icon:2});
+					return false;
+				}
+				if(obj.username.value==""){
+					layer.msg("站长姓名不能为空！", {icon:2});
+					return false;
+				}
+				if(obj.email.value==""){
+					layer.msg("站长邮箱不能为空！", {icon:2});
+					return false;
+				}
+				$.ajax({
+					type: "POST",
+					url: "{U('link/index/post')}", 
+					data: $(obj).serialize(),
+					dataType: "json", 
+					success: function (msg) {
+						if(msg.status == 1){
+							layer.msg(msg.message, {icon:1}, function(){
+								location.reload();
+							});
+						}else{
+							$(".yzm-code").attr('src',$(".yzm-code").attr('src') + '?' + Math.random());
+							layer.msg(msg.message, {icon:2});
+						}
+					}
+				})		 
+				return false;
 		 	}
 		 </script>		  	
  		{m:include "index","footer"} 

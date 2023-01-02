@@ -139,6 +139,20 @@ class index{
 
 
 	/**
+	 * 下载远程图片
+	 * 请求方式：POST
+	 * @param contnet
+	 * @return {0错误;1正确;}
+	 */	
+	public function down_remote_img(){
+		if(!isset($_SESSION['adminid']) && !isset($_SESSION['_userid'])) return_json(array('status'=>0, 'message'=>L('login_website')));
+		$content = isset($_POST['content']) ? trim($_POST['content']) : return_json(array('status'=>0, 'message'=>L('lose_parameters')));
+
+		return_json(array('status'=>1, 'message'=>L('operation_success'), 'data'=>down_remote_img($content))); 
+	}
+
+
+	/**
 	 * 私有方法，检查是否登录
 	 */	
 	private function _check_login(){

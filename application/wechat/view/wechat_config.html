@@ -1,9 +1,8 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
 <title>微信配置 - YzmCMS内容管理系统</title>
-<style>.input-text{height:27px;padding:2px}.select-box{height:28px;line-height:20px}</style>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 微信配置<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 微信配置<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <article class="page-container">
 <div class="formdoby_info"> 
 	  <fieldset>
@@ -13,7 +12,7 @@
 				<tr>
 					<td width="120"><span class="c-red">*</span> 微信URL</td> 
 					<td class="yzm-explain-box">
-						<input type="text" name="field" readonly value="<?php echo U('wechat/index/init');?>" class="input-text w_420">
+						<input type="text" name="field" readonly value="<?php echo U('wechat/index/init');?>" class="input-text disabled w_420">
 						<span class="yzm-explain">复制此URL到微信公众号后台开发者中心</span>
 					</td>
 				</tr>

@@ -2,7 +2,7 @@
 <title>素材管理 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 素材管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 素材管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <div class="page-container">
 	<div> 
     <form action="<?php echo U('search');?>" method="get" id="search">
@@ -28,11 +28,11 @@
 		</select>
 	</span>
 	MEDIA_ID：<input type="text" name="media_id" class="input-text" style="width:200px" value="<?php if(isset($_GET['media_id'])) echo $_GET['media_id'];?>">
-    <button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+    <button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
 	 </form>
 	</div>
   <div class="cl mt-15 tb-top"> <span class="l">
-  <a href="<?php echo U('add');?>" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加素材</a> <a href="<?php echo U('add_news');?>" class="btn btn-success radius"><i class="Hui-iconfont">&#xe600;</i> 添加图文素材</a> 
+  <a href="<?php echo U('add');?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontianjia"></i> 添加素材</a> <a href="<?php echo U('add_news');?>" class="btn btn-success radius"><i class="yzm-iconfont yzm-icontianjia"></i> 添加图文素材</a> 
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
   <form method="post" action="<?php echo U('del');?>" id="myform">
   <table class="table table-border table-bg table-hover">

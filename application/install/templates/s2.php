@@ -20,9 +20,9 @@
     <div class="server">
       <table width="100%">
         <tr>
-          <td class="td1">环境检测</td>
-          <td class="td1" width="25%">推荐配置</td>
-          <td class="td1" width="25%">当前状态</td>
+          <td class="td1" width="25%">环境检测</td>
+          <td class="td1" width="15%">推荐配置</td>
+          <td class="td1" width="35%">当前状态</td>
           <td class="td1" width="25%">最低要求</td>
         </tr>
         <tr>
@@ -50,6 +50,12 @@
           <td>不限制</td>
         </tr>
         <tr>
+          <td>伪静态</td>
+          <td>开启</td>
+          <td><?php echo $rewrite_module; ?></td>
+          <td>开启</td>
+        </tr>
+        <tr>
           <td>SESSION</td>
           <td>开启</td>
           <td><?php echo $session; ?></td>
@@ -70,8 +76,8 @@
       </table>
       <table width="100%">
         <tr>
-          <td class="td1">目录、文件权限检查</td>
-          <td class="td1" width="25%">写入</td>
+          <td class="td1" width="40%">目录、文件权限检查</td>
+          <td class="td1" width="35%">写入</td>
           <td class="td1" width="25%">读取</td>
         </tr>
 <?php

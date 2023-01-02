@@ -12,7 +12,7 @@
 		 更新时间：<input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
      至 <input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d'); ?>">    	
     内容标题：
-     <input type="text" name="searinfo" class="input-text" style="width:180px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button> 
+     <input type="text" name="searinfo" class="input-text" style="width:180px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button> 
 	 </form>	
   </div>
   <form method="post" action="" id="myform">
@@ -36,7 +36,7 @@
 			<td class="text-l">
 			<?php 
 			if($val['thumb']){
-				echo '<span style="color:#0a6999;margin-right:3px" onmouseover="yzm_img_browse(this, \''.$val['thumb'].'\')" onmouseout="layer.closeAll(\'tips\')"><i class="Hui-iconfont">&#xe646;</i></span>';
+				echo '<span style="color:#0a6999;font-size:14px;vertical-align:middle;" onmouseover="yzm_img_browse(this, \''.$val['thumb'].'\')" onmouseout="layer.closeAll(\'tips\')" class="yzm-iconfont yzm-icontupian1 pointer"></span>';
 			}
 			?>
 			<a href="<?php echo $val['url'];?>" target="_blank" ><?php echo $val['title'];?></a>

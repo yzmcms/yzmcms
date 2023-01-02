@@ -110,7 +110,7 @@ class db_mysqli{
 	private function filter_field($arr, $primary = true){	
 		$fields = $this->get_fields();	
 		foreach($arr as $k => $v){
-			if(!in_array($k, $fields)) unset($arr[$k]);
+			if(!in_array($k, $fields, true)) unset($arr[$k]);
 		}
 		if($primary){
 			$p = $this->get_primary();
@@ -563,6 +563,7 @@ class db_mysqli{
 	 * @return boolean
 	 */
 	public function table_exists($table) {
+		$table = C('db_prefix').str_replace(C('db_prefix'), '', $table);
 		$tables = $this->list_tables();
 		return in_array($table, $tables);
 	}

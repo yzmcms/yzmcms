@@ -49,19 +49,49 @@ function toreply(obj){
 }
 
 function check_comm(obj){
-    var content = obj.content.value;
-	if(content === ''){
-	    alert('你不打算说点什么吗？');
+	if(obj.content.value === ''){
+	    layer.msg('你不打算说点什么吗？', {icon:2});
 		return false;
 	}
-	return true;
+	$.ajax({
+		type: "POST",
+		url: $(obj).attr("action"), 
+		data: $(obj).serialize(),
+		dataType: "json", 
+		success: function (msg) {
+			if(msg.status == 1){
+				layer.msg(msg.message, {icon:1}, function(){
+					location.reload();
+				});
+			}else{
+				$(obj).find('img').attr('src',$(obj).find('img').attr('src') + '?' + Math.random());
+				layer.msg(msg.message, {icon:2});
+			}
+		}
+	})		 
+	return false;
 }
 
 function check_rep(obj){
-    var content = obj.content.value;
-	if(content === ''){
-	    alert('你不打算说点什么吗？');
+	if(obj.content.value === ''){
+	    layer.msg('你不打算说点什么吗？', {icon:2});
 		return false;
 	}
-	return true;
+	$.ajax({
+		type: "POST",
+		url: $(obj).attr("action"), 
+		data: $(obj).serialize(),
+		dataType: "json", 
+		success: function (msg) {
+			if(msg.status == 1){
+				layer.msg(msg.message, {icon:1}, function(){
+					location.reload();
+				});
+			}else{
+				$(obj).find('img').attr('src',$(obj).find('img').attr('src') + '?' + Math.random());
+				layer.msg(msg.message, {icon:2});
+			}
+		}
+	})		 
+	return false;
 }

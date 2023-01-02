@@ -17,8 +17,8 @@
 <div class="yzm-container-box">
 	<div class="yzm-header">
 		<div class="yzm-logo">
-		 <a href="{SITE_URL}">YzmCMS内容管理系统</a>
-		 <!-- <a href="{SITE_URL}"><img src="{STATIC_URL}images/logo.png" title="{$site[site_name]}" alt="{$site[site_name]}"></a> -->
+		 <!-- 调用站点Logo标签，请用：{$site[site_logo]} -->
+		 <a href="{SITE_URL}"><img src="{STATIC_URL}images/yzm_logo.png" title="{$site[site_name]}" alt="{$site[site_name]}">YzmCMS内容管理系统</a>
 		</div>
 		<div class="yzm-search">
 		<form method="get" action="{U('search/index/init')}" target="_blank">

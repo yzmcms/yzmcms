@@ -62,7 +62,7 @@ class category extends common {
 					<td class='text-l'>\$parentoff\$spacer<a href='\$catlink' class='yzm_text_link'>\$name</a></td>
 					<td>\$cattype</td>
 					<td>\$catmodel</td>
-					<td><a href='\$pclink' target='_blank'> <i class='Hui-iconfont'>&#xe6f1;</i> 访问</a> \$domain</td>
+					<td><a href='\$pclink' target='_blank'> <i class='yzm-iconfont yzm-iconlianjie'></i> 访问</a> \$domain</td>
 					<td>\$display</td>
 					<td>\$member_publish</td>
 					<td class='td-manage'>\$string</td>

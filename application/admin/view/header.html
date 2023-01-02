@@ -1,19 +1,28 @@
 <header class="navbar-wrapper">
 	<div class="navbar navbar-fixed-top">
-		<div class="container-fluid cl"> <a class="logo navbar-logo f-l mr-10 hidden-xs" href="<?php echo U('init');?>" title="<?php echo YZMCMS_SOFTNAME;?>"><?php echo YZMCMS_SOFTNAME;?></a> <a class="logo navbar-logo-m f-l mr-10 visible-xs" href="<?php echo U('init');?>" ><?php echo YZMCMS_SOFTNAME;?> <?php echo YZMCMS_VERSION;?></a> <span class="logo navbar-slogan f-l mr-10 hidden-xs"><?php echo YZMCMS_VERSION;?></span> <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:;">&#xe667;</a>
+		<div class="container-fluid cl"> <a class="logo navbar-logo f-l mr-10 hidden-xs" href="<?php echo U('init');?>" title="<?php echo YZMCMS_SOFTNAME;?>"><?php echo YZMCMS_SOFTNAME;?></a> <a class="logo navbar-logo-m f-l mr-10 visible-xs" href="<?php echo U('init');?>" ><?php echo YZMCMS_SOFTNAME;?> <?php echo YZMCMS_VERSION;?></a> <span class="logo navbar-slogan f-l mr-10 hidden-xs"><?php echo YZMCMS_VERSION;?></span> <a aria-hidden="false" class="nav-toggle yzm-iconfont yzm-iconcaidan visible-xs" href="javascript:;"></a>
 			<nav class="nav navbar-nav">
 				<ul class="cl">
-					<li><a href="<?php echo SITE_URL;?>" target="_blank" title="站点首页">站点首页</a></li>
+					<?php $siteid = get_siteid(); ?>
+					<li class="dropDown dropDown_hover"><a href="javascript:;" class="dropDown_A"><i class="yzm-iconfont yzm-iconcaidan f14"></i> <?php if($siteid){ echo get_site($siteid, 'name');}else{ echo '默认站点'; }?> <i class="yzm-iconfont yzm-iconxiangxia"></i></a>
+						<ul class="dropDown-menu menu radius box-shadow">
+							<li><a href="javascript:;" onclick="yzm_change_site(0)">默认站点</a></li>
+							<?php foreach(get_site() as $val){ ?>
+							<li><a href="javascript:;" onclick="yzm_change_site(<?php echo $val['siteid'] ?>)"><?php echo $val['name'] ?></a></li>
+							<?php } ?>
+						</ul>
+					</li>
+					<li><a href="<?php echo $siteid ? get_site($siteid, 'site_url') : SITE_URL;?>" target="_blank" title="站点首页">站点首页</a></li>
 					<li><a href="<?php echo U('member/index/init');?>" target="_blank" title="会员中心">会员中心</a></li>
 				</ul>
 			</nav>
 			<nav id="Hui-userbar" class="nav navbar-nav navbar-userbar hidden-xs">
 				<ul class="cl">
-					<li><a href="javascript:;" onclick="yzm_lock_screen()" title="锁屏"><i class="Hui-iconfont">&#xe60e;</i> 锁屏</a></li>
+					<li><a href="javascript:;" onclick="yzm_lock_screen()" title="锁屏"><i class="yzm-iconfont yzm-iconlock-line"></i> 锁屏</a></li>
 					<li><a href="http://www.yzmask.com" target="_blank" title="技术支持">技术支持</a></li>
 					<li><a href="javascript:;" onclick="yzm_clear()" title="清除缓存">清除缓存</a></li>
 					<li><?php echo $_SESSION['admininfo']['rolename'];?></li>
-					<li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A"><?php echo $_SESSION['adminname'];?> <i class="Hui-iconfont">&#xe6d5;</i></a>
+					<li class="dropDown dropDown_hover"> <a href="#" class="dropDown_A"><?php echo $_SESSION['adminname'];?> <i class="yzm-iconfont yzm-iconxiangxia"></i></a>
 						<ul class="dropDown-menu menu radius box-shadow">
 							<li><a href="javascript:;" onclick="yzm_open('修改资料','<?php echo U('admin_manage/public_edit_info');?>','630','420')" title="修改资料">修改资料</a></li>
 							<li><a href="javascript:;" onclick="yzm_open('修改密码','<?php echo U('admin_manage/public_edit_pwd');?>','630','420')" title="修改密码">修改密码</a></li>
@@ -21,8 +30,8 @@
 							<li><a href="<?php echo U('public_logout');?>" title="退出">退出</a></li>
 						</ul>
 					</li>
-					<li id="Hui-msg"> <a data-title="未读消息"  _href="<?php echo U('guestbook/guestbook/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" title="未读消息"><span class="badge badge-danger"><?php echo $total;?></span><i class="Hui-iconfont" style="font-size:18px">&#xe68a;</i></a> </li>
-					<li id="Hui-skin" class="dropDown right dropDown_hover"> <a href="javascript:;" class="dropDown_A" title="换肤"><i class="Hui-iconfont" style="font-size:18px">&#xe62a;</i></a>
+					<li id="Hui-msg"> <a data-title="未读消息"  _href="<?php echo U('guestbook/guestbook/init');?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)" title="未读消息"><span class="badge badge-danger"><?php echo $total;?></span><i class="yzm-iconfont yzm-iconxiaoxi1" style="font-size:18px"></i></a> </li>
+					<li id="Hui-skin" class="dropDown right dropDown_hover"> <a href="javascript:;" class="dropDown_A" title="换肤"><i class="yzm-iconfont yzm-iconpifu" style="font-size:16px"></i></a>
 						<ul class="dropDown-menu menu radius box-shadow">
 							<li><a href="javascript:;" data-val="default" title="默认（黑色）">默认（黑色）</a></li>
 							<li><a href="javascript:;" data-val="blue" title="蓝色">蓝色</a></li>

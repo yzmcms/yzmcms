@@ -2,19 +2,27 @@
 <title>微信消息 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 发送消息 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 发送消息 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <article class="page-container">
 	<div class="formdoby_normal"> 
 		<form method="post" onsubmit="return dosub(this)">
 			<ul>
 				<?php		
 					foreach($message as $value){
-					   $str = $value['issystem'] ? '<span style="color:#de4c1c">管理员</span>' : '<img src="'.$data['headimgurl'].'" height="25"> '.$data['nickname'];
+						if($value['issystem']){
+							 $str = '<span style="color:#de4c1c">管理员</span>';
+						}else{
+							$str = $data['nickname'] ? '<img src="'.$data['headimgurl'].'" height="25"> '.$data['nickname'] : ($data['remark'] ? '【'.$data['remark'].'】' : '【'.$openid.'】');
+						}
 					   echo '<li>'.$str.'&nbsp;&nbsp;'.date("Y-m-d H:i:s",$value['inputtime']).'<br>';
 					   echo '<span style="color:#0072c6">'.htmlspecialchars($value['content']).'</span></li>';
 					}
 				?>
+				 <?php if($data['nickname']){?>
 				 <li>发送给 &nbsp;&nbsp;<img src="<?php echo $data['headimgurl']?>" height="25"> <?php echo $data['nickname']?>：</li>
+				 <?php }else{?>
+				 <li>发送给 &nbsp;&nbsp;<?php echo $data['remark'] ? '【'.$data['remark'].'】' : '【'.$openid.'】'?>：</li>
+				 <?php }?>
 				 <li>
 				  <input type="hidden" name="openid" value="<?php echo $data['openid']?>">
 				  <textarea class="textarea" name="content" id="content"></textarea>

@@ -90,6 +90,9 @@ class admin_content extends common {
 		$db = D($tablename);
 		$data = $db->where(array('id'=>$id))->find();
 		extract($data);
+
+		//跳转链接检测
+		$flag==7 && redirect($url);
 		
 		//阅读收费检测
 		$allow_read = true;
@@ -101,14 +104,11 @@ class admin_content extends common {
 			$par[] = $issystem ? 0 : $userid;
 			$pay_url = U('member/member_pay/spend_point', 'par='.string_auth(join('|',$par)));
 		} 
-		
-		//SEO相关设置
-		$site = get_config();
-		$seo_title = $title.get_seo_suffix();
 
 		//内容分页
+		$page_section = '';
 		if(strpos($content, '_yzm_content_page_') !== false){
-			$content = content::content_page($content);
+			$content = content::content_page($content, (isset($_GET['page']) ? intval($_GET['page']) : 0), $page_section);
 		}	
 		
 		//内容关键字
@@ -121,6 +121,10 @@ class admin_content extends common {
 		$next = $db->field('title,url')->where(array('id>'=>$id , 'status'=>'1', 'catid'=>$catid))->order('id ASC')->find();
 		$pre = $pre ? '<a href="'.$pre['url'].'">'.$pre['title'].'</a>' : '已经是第一篇';
 		$next = $next ? '<a href="'.$next['url'].'">'.$next['title'].'</a>' : '已经是最后一篇';
+
+		//SEO相关设置
+		$site = get_config();
+		$seo_title = $title.$page_section.get_seo_suffix();
 		
 		include template('index', $template);
 	}

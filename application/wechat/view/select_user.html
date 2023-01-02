@@ -35,7 +35,7 @@
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='3'){?> selected <?php }?> value="3">微信昵称</option>	
 		</select>
 	</span>
-     <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+     <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
 	 </form>
 	</div>
   <form method="post" action="" id="myform" class="mt-10">
@@ -58,8 +58,14 @@
 		?>
 		  <tr class="text-c">
 			<td><input type="checkbox" class="checkbox" value="<?php echo $val['openid']?>" name="ids[]"></td>
-			<td class="text-l"><img src="<?php echo $val['headimgurl'];?>" height="25" class="radius"> <?php echo $val['nickname'];?></td>
-			<td><?php echo $val['remark'];?></td>
+			<?php if($val['nickname']){ ?>
+			<td class="text-l">
+				<img src="<?php echo $val['headimgurl'];?>" height="25" class="radius"> <?php echo $val['nickname'];?>
+			</td>
+			<?php }else{ ?>
+			<td>/</td>
+			<?php } ?>
+			<td><?php echo $val['remark'] ? $val['remark'] : '/';?></td>
 			<td><?php echo $this->get_groupname($wechat_group, $val['groupid']);?></td>
 			<td><?php echo $val['sex']==2 ? '女' : ($val['sex'] ? '男' : '未知');?></td>
 			<td><?php echo $val['province'];?>-<?php echo $val['city'];?></td>

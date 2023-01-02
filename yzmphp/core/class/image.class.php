@@ -29,6 +29,8 @@ class image {
 		$this->watermark_enable = $watermark_enable;
 		$this->w_pos = C('watermark_position');
 		$this->w_img = YZMPHP_PATH.'common/data/water/'.C('watermark_name');
+		$this->w_minwidth = get_config('watermark_minwidth');
+		$this->w_minheight = get_config('watermark_minheight');
     }
 
 	public function set($w_img, $w_pos, $w_minwidth = 300, $w_minheight = 300, $w_quality = 90, $w_pct = 100) {

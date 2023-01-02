@@ -55,9 +55,7 @@ class common{
 		if($_SESSION['roleid'] == 1) return true;
 		if(strpos(ROUTE_A, 'public_') === 0) return true;
 		$r = D('admin_role_priv')->where(array('m'=>ROUTE_M,'c'=>ROUTE_C,'a'=>ROUTE_A,'roleid'=>$_SESSION['roleid']))->find();
-		if(!$r) {
-			!is_ajax() ? showmsg(L('no_permission_to_access'), 'stop') : return_json(array('status'=>0, 'message'=>L('no_permission_to_access')));
-		}
+		if(!$r) return_message(L('no_permission_to_access'), 0);
 	}
 
 
@@ -68,10 +66,7 @@ class common{
 		if(ROUTE_A == '' || ROUTE_A == 'init' || strpos(ROUTE_A, '_list') || in_array(ROUTE_A, array('login', 'public_home'))) {
 			return false;
 		}else {
-			$adminid = $_SESSION['adminid'];
-			$adminname = $_SESSION['adminname'];
-			$url = 'm='.ROUTE_M.'&c='.ROUTE_C.'&a='.ROUTE_A;
-			D('admin_log')->insert(array('module'=>ROUTE_M,'action'=>ROUTE_C,'adminname'=>$adminname,'adminid'=>$adminid,'querystring'=>$url,'logtime'=>SYS_TIME,'ip'=>self::$ip));
+			D('admin_log')->insert(array('module'=>ROUTE_M,'controller'=>ROUTE_C,'adminname'=>$_SESSION['adminname'],'adminid'=>$_SESSION['adminid'],'querystring'=>http_build_query($_GET),'logtime'=>SYS_TIME,'ip'=>self::$ip));
 		}		
 	}
 	
@@ -84,13 +79,7 @@ class common{
 		if(!$admin_prohibit_ip) return true;
 		$arr = explode(',', $admin_prohibit_ip);
 		foreach($arr as $val){
-			//是否是IP段
-			if(strpos($val,'*') !== false){ 
-				if(strpos(self::$ip, str_replace('.*', '', $val)) !== false) showmsg('你在IP禁止段内,禁止访问！', 'stop');
-			}else{
-				//不是IP段,用绝对匹配
-				if(self::$ip == $val) showmsg('IP地址绝对匹配,禁止访问！', 'stop');
-			}
+			if(check_ip_matching($val, self::$ip)) return_message('你在后台禁止登录IP名单内,禁止访问！', 0);
 		}
  	}
 
@@ -114,7 +103,7 @@ class common{
 		if(strpos(ROUTE_A, 'public_') === 0) return true;
 		if(HTTP_REFERER && strpos(HTTP_REFERER, SERVER_PORT.HTTP_HOST) !== 0){
 			$arr = explode(':', HTTP_HOST);
-			if(strpos(HTTP_REFERER, SERVER_PORT.$arr[0]) !== 0) showmsg('非法来源，拒绝访问！', 'stop');
+			if(strpos(HTTP_REFERER, SERVER_PORT.$arr[0]) !== 0) return_message('非法来源，拒绝访问！', 0);
 		}
 		return true;
  	}
@@ -127,7 +116,7 @@ class common{
 		if(!is_post()) return true;
 		if(strpos(ROUTE_A, 'public_') === 0 || (ROUTE_C =='index' && ROUTE_A =='login')) return true;
 		if(isset($_POST['yzm_csrf_token']) && $_SESSION['yzm_csrf_token']!='' && ($_SESSION['yzm_csrf_token'] == $_POST['yzm_csrf_token']))  return true;
-		is_ajax() ? return_json(array('status'=>0, 'message'=>L('token_error'))) : showmsg(L('token_error'), 'stop');
+		return_message(L('token_error'), 0);
  	}
 	
 

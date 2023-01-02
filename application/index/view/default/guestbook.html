@@ -64,6 +64,7 @@
 	            <td class="yzm-table-title">留言内容<span class="red">*</span></td>
 	            <td><textarea name="bookmsg" class="yzm-textarea"></textarea></td>
 	        </tr>
+	        {if $site['words_code']}
 	        <tr>
 	            <td class="yzm-table-title">验证码<span class="red">*</span></td>
 	            <td>
@@ -71,6 +72,7 @@
 	            	<img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="yzm-code" title="看不清？点击更换">
 	            </td>
 	        </tr>
+	        {/if}
 	        <tr>
 	            <td></td>
 	            <td><input type="submit" name="dosubmit" value="确认提交" class="yzm-submit"></td>
@@ -119,12 +121,25 @@
 			if(obj.bookmsg.value==""){
 				layer.msg("留言内容不能为空！", {icon:2});
 				return false;
-			}
-			if(obj.code.value==""){
-				layer.msg("验证码不能为空！", {icon:2});
-				return false;
-			}		
-			return true;
+			}	
+			layer.msg('正在发布留言，请稍后……', {icon:16, time:0, shade:0.3});
+			$.ajax({
+				type: "POST",
+				url: "{U('guestbook/index/init')}", 
+				data: $(obj).serialize(),
+				dataType: "json", 
+				success: function (msg) {
+					if(msg.status == 1){
+						layer.msg(msg.message, {icon:1}, function(){
+							location.reload();
+						});
+					}else{
+						$(".yzm-code").attr('src',$(".yzm-code").attr('src') + '?' + Math.random());
+						layer.msg(msg.message, {icon:2});
+					}
+				}
+			})		 
+			return false;
 		}
 	</script>
 {m:include "index","footer"}

@@ -27,7 +27,7 @@ class page{
      */
 	public function __construct($total_rows, $list_rows = 10, $parameter = array()){
 		$this->total_rows = intval($total_rows);	
-		$this->list_rows = intval($list_rows);
+		$this->list_rows = $list_rows ? intval($list_rows) : $this->_get_page_size();
 		$this->total_page = ceil($this->total_rows/$this->list_rows); 
 		$this->now_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 		$this->now_page = $this->now_page>0 ? $this->now_page : 1;
@@ -138,7 +138,22 @@ class page{
 	 */
 	public function limit(){
 		return $this->start_rows().','.$this->list_rows();
-	}	
+	}
+
+
+	/**
+	 * 设置每页展示条数
+	 */
+	public function page_size($sizes = array(10, 20, 30, 40, 50, 100)){
+		if(!is_array($sizes)) return '';
+		$string = '<select name="page_size" class="select" data-url="'.$this->url.'" onchange="yzm_page_size(this)">';
+		foreach ($sizes as $val) {
+			$select = $this->list_rows==$val ? 'selected' : '';
+			$string .= '<option value="'.$val.'" '.$select.'>'.$val.L('article_page').'</option>';
+		}
+		$string .= '</select>';
+		return $string;
+	}
 	
 	
 	/**
@@ -170,7 +185,7 @@ class page{
 	 * 跳转到指定页
 	 */
 	public function getjump(){
-		return '<span class="jumpbox">'.L('jump_to').'<input type="text" name="page" placeholder="'.L('page_number').'" onkeypress="return yzm_page_jump(this)" class="input-text jumppage" data-url="'.$this->url.'">页</span>';
+		return '<span class="jumpbox">'.L('jump_to').'<input type="text" name="page" placeholder="'.L('page_number').'" onkeypress="return yzm_page_jump(this)" class="input-text jumppage" data-url="'.$this->url.'">'.L('page').'</span>';
 	}	
 	
 	
@@ -180,6 +195,20 @@ class page{
 	public function getfull($show_jump = true){
 		if($this->total_rows == 0) return '';
 	    return $this->gethome().$this->getpre().$this->getlist().$this->getnext().$this->getend().($show_jump ? $this->getjump() : '');
+	}
+
+
+	/**
+	 * 获取每页展示条数
+	 */
+	private function _get_page_size(){
+		$page_size_c = intval(get_cookie('page_size'));
+		$page_size = isset($_GET['page_size']) ? intval($_GET['page_size']) : $page_size_c;
+
+		if($page_size>0 && $page_size!=$page_size_c) {
+			set_cookie('page_size', $page_size);
+		}
+		return $page_size>0 ? $page_size : 10;
 	}
 
 
@@ -202,7 +231,10 @@ class page{
 		$pos = strpos($request_url, '?');
 		if($pos !== false){
 			list($request_url, $parameter) = explode('?', $request_url);
-			$parameter = '?'.$parameter;
+			if($parameter){
+				parse_str($parameter, $vars);  
+				$parameter = '?'.http_build_query($vars);
+			}
 			$request_url = trim($request_url, '/');
 		}
 

@@ -51,7 +51,7 @@ class content_model {
 		
 		//远程图片本地化
 		// if(isset($data['grab_img'])){
-		// 	$data['content'] = grab_image($data['content']);
+		// 	$data['content'] = down_remote_img($data['content']);
 		// }
 		
 		//自动提取缩略图
@@ -127,7 +127,7 @@ class content_model {
 		
 		//远程图片本地化
 		// if(isset($data['grab_img'])){
-		// 	$data['content'] = grab_image($data['content']);
+		// 	$data['content'] = down_remote_img($data['content']);
 		// }
 		
 		//自动提取缩略图

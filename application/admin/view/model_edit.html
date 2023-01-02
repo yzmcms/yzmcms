@@ -1,7 +1,6 @@
 <?php include $this->admin_tpl('meta');?>
 <title>编辑模型 - YzmCMS内容管理系统</title>
 <style>
-.disabled{background:#ededed;}
 .exp{margin:0px 0px 0px 125px;color:#555;font-size:12px;}
 .exp span{color:#056ef4}
 </style>
@@ -21,7 +20,7 @@
 			 <li class="yzm-explain-box"><label><span class="c-red">*</span>模型别名：</label>
 			 	<input type="text" class="input" name="alias" placeholder="如：shop" value="<?php echo $data['alias'];?>">
 			 	<span class="yzm-explain">模型别名与模型表名规则相同，<br>区别在于模型别名可重复</span>
-			 	<p class="exp" style="color:red;margin-top:3px"><i class="yzm-iconfont yzm-iconshuoming2"></i>  模型别名与栏目模板关连：</p>
+			 	<p class="exp" style="color:red;margin-top:3px"><i class="yzm-iconfont yzm-iconshuoming"></i>  模型别名与栏目模板关连：</p>
 			 	<p class="exp">频道页模板规则是：<span>category_模型别名.html</span> 或 <span>category_模型别名_*.html</span></p>
 			 	<p class="exp">列表页模板规则是：<span>list_模型别名.html</span> 或 <span>list_模型别名_*.html</span></p>
 			 	<p class="exp">内容页模板规则是：<span>show_模型别名.html</span> 或 <span>show_模型别名_*.html</span></p>

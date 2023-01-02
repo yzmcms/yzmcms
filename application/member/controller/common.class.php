@@ -29,7 +29,8 @@ class common{
 	private function check_member() {
 		if(ROUTE_M =='member' && ROUTE_C =='index' && in_array(ROUTE_A, array('login', 'register'))) {
 			if(isset($_SESSION['_userid']) && $_SESSION['_userid'] && $_SESSION['_userid']==intval(get_cookie('_userid'))){
-				showmsg(L('login_success'), U('member/index/init'), 1);
+				$referer = isset($_GET['referer']) && !empty($_GET['referer']) ? urldecode($_GET['referer']) : U('member/index/init');
+				showmsg(L('login_success'), $referer, 1);
 			}
 			return true;
 		} else {

@@ -12,7 +12,7 @@ select{background:#fff}
 .tb-top{margin-bottom:5px}
 .label, .badge{font-weight:normal;}
 .input-text, .btn, .input-text.size-M, .btn.size-M{font-size:13px;}
-.disabled{cursor:not-allowed;background-color:#eee;}
+.disabled{cursor:not-allowed;background-color:#f5f5f5;}
 .yzm-menubox{width:200px;overflow:hidden;position:absolute;top:44px;bottom:0;left:0;}
 .table-bordered th,.table-bordered td{border-left:none}
 .yzm-table-box{overflow-y:auto;box-sizing:border-box;}
@@ -36,11 +36,13 @@ select{background:#fff}
 .formdoby ul li .label_box{width:auto;margin-right:10px}
 .formdoby ul li .input{height:28px;line-height:28px;width:60%;margin-left:5%;padding:0px 3px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}
 .formdoby ul li .span_input{display:inline-block;width:60%;margin-left:5%;padding:0px 3px;text-align:left;}
-.formdoby ul li select{height:28px;line-height:28px;width:61%;margin-left:5%;padding:0px 3px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;vertical-align:middle}
+.formdoby ul li select{height:28px;line-height:28px;width:61%;margin-left:5%;padding:1px 6px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;vertical-align:middle}
 .formdoby ul li .input:focus{border-color:#409eff;box-shadow: 0 0 12px #409eff;outline:medium none;transition:all 0.218s ease 0s;}
 .dosubmit{border:0px;outline:none;height:35px;line-height:35px;width:60%;cursor:pointer;font-size:13px;transition:background 0.3s}
 .m_left_21{margin-left:21%;}
 .h35{height:35px;}
+.f14{font-size:14px}
+.upload-btn{height:31px}
 .w_60{width:60px !important;}
 .w_80{width:80px !important;}
 .w_100{width:100px !important;}
@@ -50,7 +52,7 @@ select{background:#fff}
 .w_420{width:420px !important;}
 .label_radio{margin-right:10px}
 .pad_bot_0{padding-bottom:0px;}
-.btn-mini{padding:3px 9px;font-size:12px;border-radius:2px;display:inline-block}
+.btn-mini{padding:3px 9px;font-size:12px;border-radius:2px;display:inline-block;cursor:pointer;}
 .btn-mini:hover{text-decoration:none}
 .btn-disabled{border:1px solid #d3d1d1;color:#bdbcbc;cursor:not-allowed;}
 .select optgroup {background:#f0f0f0}
@@ -82,7 +84,7 @@ select{background:#fff}
 .formdoby_normal ul li .label_radio{width:auto;margin-right:10px}
 .formdoby_normal ul li .input{width:230px;height:28px;line-height:28px;padding:0px 6px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}
 .formdoby_normal ul li .span_textarea{width:35%;display:inline-block;padding:0px 3px;text-align:left;}
-.formdoby_normal ul li select{height:28px;line-height:28px;padding:0px 3px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;vertical-align:middle}
+.formdoby_normal ul li select{height:28px;line-height:28px;padding:1px 6px;border:1px solid #dadada;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;vertical-align:middle}
 .formdoby_normal ul li .input:focus{border-color:#409eff;box-shadow: 0 0 12px #409eff;outline:medium none;transition:all 0.218s ease 0s;}
 .formdoby_normal ul li:last-child{border-bottom:none}
 
@@ -121,6 +123,7 @@ select{background:#fff}
 #page .page_right .nopage:hover{background:#f4f4f5;border: 1px solid #f4f4f5;color:#bcb8b8;}
 #page .jumpbox{margin-left:5px;}
 #page .jumppage{width:50px;height:28px;line-height:28px;margin:0 5px;border-radius:3px;font-size: 12px}
+#page .select{width:auto;padding:4px 5px}
 
 .yzmcms_small{margin-left:10px}
 .thumb{height:120px;width:180px;float:right;position:relative;right:0px;top:-80px;}
@@ -139,6 +142,8 @@ select{background:#fff}
 .footer_btn.footer_border{border-top:1px solid #d8d8d8;padding:10px 20px;}
 .footer_btn input{padding:0 25px}
 .footer_border input{padding:0 20px;}
+.footer_btn_large{position:fixed;z-index:999;left:10px;bottom:10px;background:#fff;padding:15px;width:100%;box-sizing: border-box}
+.footer_btn_large input{height:35px;width:100px;margin-right:5px;}
 
 .lock-desktop{height:100%;width:100%;position:absolute;top:0;left:0;z-index:9000;background-color:#001d47;background-image:url("../images/yzm-background.jpg");background-size:100% 100%;background-repeat:no-repeat;background-position:50% 50%;text-align:center;}
 .lockuser{height:135px;width:135px;margin:10px auto;overflow:hidden;}

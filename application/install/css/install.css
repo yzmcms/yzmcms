@@ -80,15 +80,14 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display
 .s1{color:#ff0000;}
 
 body{font:12px/1.5;color:#333;background:url(../images/bg.png);}
-a:link{color:#246EA5;text-decoration:none;}
+a{color:#1890ff;text-decoration:none;}
 a:hover{text-decoration:underline;}
-a:visited{color:#762e9c;}
 .wrap{margin:50px auto 100px;box-shadow:0 0 10px #ccc;width:850px;background:#fff;overflow: hidden;border-radius: 4px;}
 /*.header{background:#246fa6 url(../images/header.png) 0 0 repeat-x;}*/
 .header{height:80px;box-shadow:0 3px 3px #ddd;position:relative;color:#fff;background:#282b33}
 .main{padding-top:35px;}
 .footer{text-align:center;padding:15px 0;color:#fff;background: #333;position: fixed;bottom:0;width: 100%}
-.footer a{color:#77bbfa;text-decoration:none;}
+.footer a{color:#77bbfa}
 .bottom{padding:0 0 25px;}
 /*
 ===================
@@ -131,7 +130,7 @@ pre{white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;whit
 */
 .server{padding:20px 20px 10px 155px;font-size:13px;color:#555}
 .server table{margin-bottom:20px;}
-.server td{padding:3px 5px;}
+.server td{padding:5px 5px;}
 .server .td1{color:#000;}
 .server .input,.server .select{border:1px solid #e3e9ef;padding:3px 5px;width:250px;font-size: 12px;height: 23px;line-height: 23px;background-color: #fff;border-radius: 3px;outline:none;}
 .server .input:hover{border:1px solid #75a1f0; }

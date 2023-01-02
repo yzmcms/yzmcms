@@ -3,7 +3,7 @@
 <link href="<?php echo STATIC_URL;?>plugin/editable/css/jquery-editable.css" rel="stylesheet"/>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 账单管理 <span class="c-gray en">&gt;</span> 消费记录管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 账单管理 <span class="c-gray en">&gt;</span> 消费记录管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <div class="page-container">
   <div class="sub_menu"><a href="<?php echo U('pay');?>">入账记录</a> <a href="<?php echo U('pay_spend');?>"  class="on">消费记录</a> <a href="<?php echo U('recharge');?>">在线充值</a></div>
   <div> 
@@ -27,11 +27,11 @@
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='3'){?> selected <?php }?> value="3">备注说明</option>	
 		</select>
 	</span>
-      <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+      <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
 	 </form>	
   </div>
   <div class="cl mt-15 tb-top"> <span class="l">
-  <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
+  <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a> 
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
   <form method="post" action="<?php echo U('pay_spend_del');?>" id="myform">
   <table class="table table-border table-bg table-hover yzm-table-sort">

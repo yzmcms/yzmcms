@@ -11,6 +11,7 @@
     <link href="{STATIC_URL}css/yzm-mobile-category.css?v=yzmcms" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="{STATIC_URL}js/yzm-mobile-simpler-sidebar.min.js"></script>
+	<script type="text/javascript" src="{STATIC_URL}plugin/layer/layer.js"></script>
 </head>
 
 <body>
@@ -19,7 +20,7 @@
         {m:include "mobile","header"}
         <div class="yzm-guestbook">
             <h3>我要留言</h3>
-            <form action="{U('guestbook/index/init')}" method="post" name="guest" onSubmit="return checksubmit()">
+            <form action="{U('guestbook/index/init')}" method="post" onSubmit="return checkall(this)">
                 <input type="text" name="title" placeholder="请输入留言主题（必填）" autofocus="autofocus" required="required" class="yzm-input" />
                 <input type="text" name="name" placeholder="请输入联系人（必填）" required="required" class="yzm-input"/>
                 <p>其他信息：</p>
@@ -28,31 +29,45 @@
                 <input type="tel" name="qq" placeholder="QQ（选填）" class="yzm-input"/>
                 <input type="text" name="address" placeholder="地址（选填）" class="yzm-input"/>
                 <textarea name="bookmsg" placeholder="请输入留言内容（必填）" /></textarea>
-                <img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" style="cursor:pointer;" title="看不清？点击更换">
+                {if $site['words_code']}
+                <img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="yzm-code" title="看不清？点击更换">
                 <input name="code" type="text" required="required" placeholder="请输入验证码" class="yzm-input">
-                <input type="hidden" name="mobile" value="mobile" />
+                {/if}
                 <input type="submit" name="dosubmit" class="yzm-submit" value="提 交" />
             </form>
         </div>
         <script type="text/javascript">
-        function checksubmit() {
-            if (document.guest.title.value == "") {
-                alert("留言主题不能为空！");
-                return false;
-            }
-            if (document.guest.name.value == "") {
-                alert("联系人不能为空！");
-                return false;
-            }
-            if (document.guest.bookmsg.value == "") {
-                alert("留言内容不能为空！");
-                return false;
-            }
-            if (document.guest.code.value == "") {
-                alert("验证码不能为空！");
-                return false;
-            }
-            return true;
+        function checkall(obj) {
+            if(obj.title.value==""){
+				layer.msg("留言主题不能为空！", {icon:2});
+				return false;
+			}
+			if(obj.name.value==""){
+				layer.msg("联系人不能为空！", {icon:2});
+				return false;
+			}
+			if(obj.bookmsg.value==""){
+				layer.msg("留言内容不能为空！", {icon:2});
+				return false;
+			}
+			layer.msg('正在发布留言，请稍后……', {icon:16, time:0, shade:0.3});
+			$.ajax({
+				type: "POST",
+				url: "{U('guestbook/index/init')}", 
+				data: $(obj).serialize(),
+				dataType: "json", 
+				success: function (msg) {
+					if(msg.status == 1){
+						layer.msg(msg.message, {icon:1}, function(){
+							location.reload();
+						});
+					}else{
+						$(".yzm-code").attr('src',$(".yzm-code").attr('src') + '?' + Math.random());
+						layer.msg(msg.message, {icon:2});
+					}
+				}
+			})		 
+			return false;
         }
         </script>
         {m:include "mobile","footer"}

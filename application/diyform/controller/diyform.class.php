@@ -37,7 +37,7 @@ class diyform extends common{
 			$tablename = isset($_POST['tablename']) ? strip_tags($_POST['tablename']) : '';
 			if(!$tablename) return_json(array('status'=>0,'message'=>'表名称不能为空！'));			
 			$model = D('model');
-			if($model->table_exists(C('db_prefix').$tablename)) return_json(array('status'=>0,'message'=>'表名已存在！'));	
+			if($model->table_exists($tablename)) return_json(array('status'=>0,'message'=>'表名已存在！'));	
 			$_POST['setting'] = json_encode(array('show_template'=>$_POST['show_template'], 
 			'check_code'=> intval($_POST['check_code']), 'sendmail'=> intval($_POST['sendmail']), 'allowvisitor'=>intval($_POST['allowvisitor'])));
 			$_POST['type'] = 1;

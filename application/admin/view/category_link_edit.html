@@ -31,7 +31,7 @@
 					<label class="form-label col-xs-4 col-sm-2">栏目图片：</label>
 					<div class="formControls col-xs-8 col-sm-9">
 						<input class="input-text" type="text" name="catimg" style="width:400px" id="uploadfile" value="<?php echo $data['catimg']; ?>" onmouseover="yzm_img_preview('uploadfile', this.value)"  onmouseout="layer.closeAll();">
-						<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M));?>')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+						<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M));?>')" class="btn btn-primary radius upload-btn"><i class="yzm-iconfont yzm-iconshangchuan"></i> 浏览文件</a>
 					</div>
 				</div>
 				<div class="row cl">
@@ -77,15 +77,13 @@
 			</div>
 
 		</div>
-		<div class="row cl">
-			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-2">
-				<input type="hidden" name="type" value="<?php echo $type;?>">
-				<input type="hidden" name="catid" value="<?php echo $catid;?>">
-				<input type="hidden" name="cpath" value="<?php echo $data['arrparentid'];?>">
-				<input type="hidden" name="dosubmit" value="1">
-				<input class="dosubmit w_100 btn-primary radius" type="submit" value="提交">
-			 	<input class="btn w_100 btn-default radius h35" type="button" value="取消" onclick="yzmcms_close()">
-			</div>
+		<div class="footer_btn_large">
+			<input type="hidden" name="type" value="<?php echo $type;?>">
+			<input type="hidden" name="catid" value="<?php echo $catid;?>">
+			<input type="hidden" name="cpath" value="<?php echo $data['arrparentid'];?>">
+			<input type="hidden" name="dosubmit" value="1">
+			<input class="btn btn-primary radius" type="submit" value="提 交">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
 		</div>
 	</form>
 </div>

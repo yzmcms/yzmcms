@@ -2,7 +2,7 @@
 <title>会员中心设置 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 会员中心设置 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 会员中心设置 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <div class="page-container">
 	<form class="form form-horizontal" method="post" action="" onsubmit="return check_all(this)">
 		<div id="tab_system" class="HuiTab">
@@ -102,7 +102,7 @@
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">QQ登录 回调地址：</label>
 					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
-						<input type="text" name="qq_callback" readonly value="<?php echo U('member/other/qq_login');?>" class="input-text" style="width:50%">
+						<input type="text" name="qq_callback" readonly value="<?php echo U('member/other/qq_login');?>" class="input-text disabled" style="width:50%">
 						<span class="yzm-explain">QQ登录回调地址不可修改，请复制该地址到你的腾讯开放平台</span>
 					</div>
 				</div>
@@ -121,7 +121,7 @@
 				<div class="row cl">
 					<label class="form-label col-xs-4 col-sm-2">微博登录 回调地址：</label>
 					<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
-						<input type="text" name="weibo_callback" readonly value="<?php echo U('member/other/weibo_login');?>" class="input-text" style="width:50%">
+						<input type="text" name="weibo_callback" readonly value="<?php echo U('member/other/weibo_login');?>" class="input-text disabled" style="width:50%">
 						<span class="yzm-explain">微博登录回调地址不可修改，请复制该地址到你的新浪微博开放平台</span>
 					</div>
 				</div>

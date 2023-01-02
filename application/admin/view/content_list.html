@@ -3,7 +3,7 @@
 <link href="<?php echo STATIC_URL;?>plugin/editable/css/jquery-editable.css" rel="stylesheet"/>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 内容列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 内容列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <div class="page-container">
   <div> 
     <form action="<?php echo U('search');?>" method="get" id="search">
@@ -49,18 +49,18 @@
 		<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo 'selected';} ?> value="2">发布人</option>	
 		</select>
 	</span>
-     <input type="text" name="searinfo" class="input-text search" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+     <input type="text" name="searinfo" class="input-text search" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
 	 </form>	
   </div>
   <div class="cl mt-15 tb-top"> 
   <span class="l">
-  <a href="javascript:;" onclick="yzm_open_full('添加内容','<?php echo U('add', array('modelid'=>$modelid));?>')" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加内容</a>
-  <a href="javascript:;" onclick="yzm_dels('ids', 1)" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> 
-  <a href="javascript:;" onclick="baidu_push()" class="btn btn-secondary radius">推送至百度</a> 
-  <a href="javascript:;" onclick="attribute_operation('移动分类', '<?php echo U('remove', array('modelid' => $modelid))?>')" class="btn btn-primary radius">移动分类</a> 
-  <a href="javascript:;" onclick="attribute_operation('复制内容', '<?php echo U('copy', array('modelid' => $modelid))?>')" class="btn btn-primary radius">复制内容</a> 
-  <a href="javascript:;" onclick="attribute_operation('增加属性', '<?php echo U('attribute_operation', array('modelid' => $modelid, 'op' => 1))?>')" class="btn btn-success radius">增加属性</a> 
-  <a href="javascript:;" onclick="attribute_operation('删除属性', '<?php echo U('attribute_operation', array('modelid' => $modelid, 'op' => 0))?>')" class="btn btn-warning radius">删除属性</a> 
+  <a href="javascript:;" onclick="yzm_open_full('添加内容','<?php echo U('add', array('modelid'=>$modelid));?>')" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontianjia"></i> 添加内容</a>
+  <a href="javascript:;" onclick="yzm_dels('ids', 1)" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a> 
+  <a href="javascript:;" onclick="baidu_push()" class="btn btn-secondary radius"><i class="yzm-iconfont yzm-iconfabusekuai"></i> 推送至百度</a> 
+  <a href="javascript:;" onclick="attribute_operation('移动分类', '<?php echo U('remove', array('modelid' => $modelid))?>')" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconyidong"></i> 移动分类</a> 
+  <a href="javascript:;" onclick="attribute_operation('复制内容', '<?php echo U('copy', array('modelid' => $modelid))?>')" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconfuzhi"></i> 复制内容</a> 
+  <a href="javascript:;" onclick="attribute_operation('增加属性', '<?php echo U('attribute_operation', array('modelid' => $modelid, 'op' => 1))?>')" class="btn btn-success radius"><i class="yzm-iconfont yzm-icontianjia"></i> 增加属性</a> 
+  <a href="javascript:;" onclick="attribute_operation('删除属性', '<?php echo U('attribute_operation', array('modelid' => $modelid, 'op' => 0))?>')" class="btn btn-warning radius"><i class="yzm-iconfont yzm-iconshanchu"></i> 删除属性</a> 
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
   <form method="post" action="<?php echo U('del');?>" id="myform">
   <input type="hidden" name="modelid" value="<?php echo $modelid;?>">
@@ -89,7 +89,7 @@
 			<td class="text-l">
 			<?php 
 			if($val['thumb']){
-				echo '<span style="color:#0a6999;margin-right:3px" onmouseover="yzm_img_browse(this, \''.$val['thumb'].'\')" onmouseout="layer.closeAll(\'tips\')"><i class="Hui-iconfont">&#xe646;</i></span>';
+				echo '<span style="color:#0a6999;font-size:14px;vertical-align:middle;" onmouseover="yzm_img_browse(this, \''.$val['thumb'].'\')" onmouseout="layer.closeAll(\'tips\')" class="yzm-iconfont yzm-icontupian1 pointer"></span>';
 			}
 			?>
 			<a href="<?php echo $val['url'] ? $val['url'] : U('admin_content/public_preview', array('catid'=>$val['catid'],'id'=>$val['id']));?>" target="_blank" ><?php echo title_color($val['title'], $val['color']);?></a>
@@ -126,7 +126,7 @@
 			</td>
 			<td>
 				<?php echo $val['username']; if(!$val['issystem']){ ?>
-				<span style="color:blue;" onmouseover="yzm_tips=layer.tips('会员发布', this)" onmouseout="layer.close(yzm_tips);"><i class="Hui-iconfont">&#xe60d;</i><span>
+				<span style="color:blue;" onmouseover="yzm_tips=layer.tips('会员发布', this)" onmouseout="layer.close(yzm_tips);"><i class="yzm-iconfont yzm-iconyonghu"></i><span>
 				<?php } ?>
 			</td>
 			<td><?php echo date('Y-m-d H:i:s', $val['updatetime'])?></td>
@@ -135,8 +135,8 @@
 			</td>
 			<td><?php echo $val['is_push'] ? '已推送' : '<span class="c-red">未推送</span>';?></td>
 			<td>
-				<a title="编辑" href="javascript:;" onclick="yzm_open_full('编辑内容','<?php echo U('edit',array('modelid'=>$modelid,'id'=>$val['id']));?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
-				<a title="预览" href="<?php echo $val['url'];?>" class="ml-5" target="_blank" style="text-decoration:none"><i class="Hui-iconfont">&#xe695;</i></a>
+				<a title="编辑" href="javascript:;" onclick="yzm_open_full('编辑内容','<?php echo U('edit',array('modelid'=>$modelid,'id'=>$val['id']));?>')" class="ml-5" style="text-decoration:none"><i class="yzm-iconfont yzm-iconbianji2"></i></a> 
+				<a title="预览" href="<?php echo $val['url'];?>" class="ml-5" target="_blank" style="text-decoration:none"><i class="yzm-iconfont yzm-iconyulan2"></i></a>
 			</td>
 		  </tr>		
 		<?php 

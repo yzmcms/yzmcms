@@ -449,7 +449,7 @@
                     showError(file.statusText);
                 } else {
                     $wrap.text(lang.uploadPreview);
-                    if ('|png|jpg|jpeg|bmp|gif|'.indexOf('|'+file.ext.toLowerCase()+'|') == -1) {
+                    if ('|png|jpg|jpeg|bmp|gif|webp|'.indexOf('|'+file.ext.toLowerCase()+'|') == -1) {
                         $wrap.empty().addClass('notimage').append('<i class="file-preview file-type-' + file.ext.toLowerCase() + '"></i>' +
                             '<span class="file-title">' + file.name + '</span>');
                     } else {

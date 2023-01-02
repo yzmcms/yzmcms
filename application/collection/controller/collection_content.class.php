@@ -219,7 +219,7 @@ class collection_content extends common {
 			$article = collection::get_content($v['url']);
 			if($data['sourcecharset'] == 'gbk') $article = array_iconv($article);	
 			$article = collection::get_filter_html($article, $this->get_config($data));
-			if($data['down_attachment']) $article['content'] = grab_image($article['content'], $this->get_baseurl($v['url']));
+			if($data['down_attachment']) $article['content'] = down_remote_img($article['content'], $this->get_baseurl($v['url']));
 			$collection_content->update(array('status'=>1, 'data'=>array2string($article)), array('id'=>$v['id']));
 			$i++;	
 		}

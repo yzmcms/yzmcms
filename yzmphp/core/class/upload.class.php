@@ -10,7 +10,7 @@
 class upload {
 	
 	private $filepath = './uploads/';     //指定上传文件保存的路径
-	private $allowtype = array('gif', 'jpg', 'png', 'jpeg');  //充许上传文件的类型
+	private $allowtype = array('png', 'jpg', 'jpeg', 'gif');  //充许上传文件的类型
 	private $maxsize = 2097152;  //上传文件的最大值 2M
 	private $israndname = true;  //是否随机重命名， true随机， false不随机
 	private $originname;   //原文件名称
@@ -45,12 +45,12 @@ class upload {
 	 * 判断错误信息
 	 */
 	private function geterror(){
-		$str = '上传文件'.$this->originname.'时出错：';
+		$str = '上传文件【'.$this->originname.'】时出错：';
 		switch($this->errornum){
 			case -5: $str .= '必须指定上传文件的路径'; break;
 			case -4: $str .= '创建上传文件目录失败，请检查权限'; break;
 			case -3: $str .= '文件移动时出错'; break;
-			case -2: $str .= '文件过大，不能超过'.$this->maxsize.'个字节'; break;
+			case -2: $str .= '文件过大，不能超过'.sizecount($this->maxsize); break;
 			case -1: $str .= '未充许的类型'; break;
 			case 1: $str .= '上传文件超过了php.ini中upload_max_filesize限制的值'; break;
 			case 2: $str .= '上传文件超过了HTML表单中MAX_FILE_SIZE选项指定的值'; break;

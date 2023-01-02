@@ -10,7 +10,7 @@
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
 			 <li><label><span class="c-red">*</span>配置名称：</label>
-			 	<input type="text" class="input" placeholder="必须为英文拼音或数字,如：qq" name="name" disabled="disabled" value="<?php echo $data['name'];?>">
+			 	<input type="text" class="input disabled" placeholder="必须为英文拼音或数字,如：qq" name="name" disabled="disabled" value="<?php echo $data['name'];?>">
 			 </li>
 			 <li><label><span class="c-red">*</span>配置类型</label>
 			 <span class="span_input" >
@@ -27,8 +27,8 @@
 				<span class="span_input"><?php echo $this->public_gethtml($fieldtype, $data['value'], $data['setting']);?></span>
 			</li>
 			<li><label>简洁说明：</label>
-				<input type="text" class="input" style="width:488px" placeholder="例如：这个是站点QQ" name="title" value="<?php echo $data['title'];?>">
-			</li>
+			 	<textarea name="title" class="textarea w_420" placeholder="例如：这个是站点QQ"><?php echo $data['title'];?></textarea>
+			 </li>
 			 <li><label>状态</label>
 			 <span class="span_input">
 			 	<label class="label_radio"><input name="status" type="radio" value="1" <?php if($data['status']=='1') echo 'checked';?>> 启用</label>

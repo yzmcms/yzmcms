@@ -2,9 +2,9 @@
 <title>字段管理 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 字段管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> <?php echo get_model($modelid, 'name');?> <span class="c-gray en">&gt;</span> 字段管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <div class="page-container">
-	<div class="cl tb-top"> <span class="l"><a href="<?php echo U('add', array('modelid'=>$modelid));?>" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe600;</i> 添加字段</a></span></div>
+	<div class="cl tb-top"> <span class="l"><a href="<?php echo U('add', array('modelid'=>$modelid));?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontianjia"></i> 添加字段</a></span></div>
 	<form action="<?php echo U('order');?>" method="post">
 	<table class="table table-border table-bg table-hover">
 		<thead>

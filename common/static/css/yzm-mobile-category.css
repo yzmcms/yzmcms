@@ -90,6 +90,9 @@ a:hover{color:#2196f3;}
 .yzm-article-img ul li span{color:#868686;font-size:14px;}
 
 .yzm-img-ul img{max-width:100%}
+.yzm-price{color:#fd6161;line-height:35px;font-size:18px;margin-bottom:15px;display:inline-block;}
+.yzm-addshopping{cursor:pointer; background: #df3033;border-radius: 3px;display: block;width: 130px;height: 35px;line-height: 35px;text-align: center;color: #fff;transition: 0.3s;font-size: 13px;}
+.yzm-addshopping:hover{background: #ed1316}
 
 /*评论区*/
 .yzm-content-box{margin-top:20px}
@@ -133,7 +136,7 @@ a:hover{color:#2196f3;}
 .yzm-guestbook textarea{border:1px solid #dddddd;font-size:14px;padding:3px 3px;width:100%;height:100px;line-height:25px;margin-bottom:15px;outline:none;color:#454545;border-radius:3px}
 .yzm-guestbook .yzm-input:focus,
 .yzm-guestbook textarea:focus{transition: all 0.218s ease 0s;border: 1px solid #2196f3;}
-.yzm-guestbook .yzm-submit{width:100%;margin:0 auto;background:#2196f3;color:#fff;cursor:pointer;border:none;}
+.yzm-guestbook .yzm-submit{width:100%;margin:0 auto;background:#2196f3;color:#fff;cursor:pointer;border:none;outline:none}
 
 .yzm-back{height:35px;width:35px;position:fixed;bottom:50px;right:10px;z-index:999}
 .yzm-back a{display: table-cell;vertical-align:middle;text-align: center;height:35px;width:35px;background:#2196f3;}

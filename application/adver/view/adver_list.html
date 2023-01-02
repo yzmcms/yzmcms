@@ -2,12 +2,12 @@
 <title>广告管理 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 广告管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 广告管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <div class="page-container">
   <div class="cl tb-top"> 
 	  <span class="l">
-	  <a class="btn btn-primary radius" onclick="yzm_open('添加广告','<?php echo U('add');?>','700','500')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加广告</a>
-	  <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  
+	  <a class="btn btn-primary radius" onclick="yzm_open('添加广告','<?php echo U('add');?>','700','500')" href="javascript:;"><i class="yzm-iconfont yzm-icontianjia"></i> 添加广告</a>
+	  <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a>  
 	  </span> 
 	  <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> 
   </div>
@@ -38,8 +38,8 @@
 			<td><?php echo $val['end_time']==0 || $val['end_time']>SYS_TIME ? '正常' : '<span class="c-red">已过期</span>';?></td>
 			<td><?php echo date('Y-m-d H:i:s', $val['inputtime'])?></td>
 			<td>
-				<a title="编辑广告" href="javascript:;" onclick="yzm_open('编辑广告','<?php echo U('edit', array('id'=>$val['id']));?>','700','500')" class="yzm-box-img btn-primary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
-				<a title="复制标签" href="javascript:;" onclick="yzm_copy('{adver(<?php echo $val['id']?>)}')" class="yzm-box-img btn-success"><i class="Hui-iconfont">&#xe6ea;</i> 复制</a>
+				<a title="编辑广告" href="javascript:;" onclick="yzm_open('编辑广告','<?php echo U('edit', array('id'=>$val['id']));?>','700','500')" class="yzm-box-img btn-primary"><i class="yzm-iconfont yzm-iconbianji1"></i> 编辑</a> 
+				<a title="复制标签" href="javascript:;" onclick="yzm_copy('{adver(<?php echo $val['id']?>)}')" class="yzm-box-img btn-success"><i class="yzm-iconfont yzm-iconfuzhi"></i> 复制</a>
 			</td>
 		  </tr>		
 		<?php 

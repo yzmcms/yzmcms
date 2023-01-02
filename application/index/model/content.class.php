@@ -1,5 +1,4 @@
 <?php
-
 /**
  * 内容模型处理   
  * 
@@ -41,11 +40,12 @@ class content {
 	/**
 	 * 内容分页处理
 	 */
-	public static function content_page($content) {
+	public static function content_page($content, $page, &$page_section) {
 		$arr = explode('_yzm_content_page_', $content);
-		$page = isset($_GET['page']) ? max(intval($_GET['page']), 1) : 1;
+		$page = max($page, 1);
 		$total_page = count($arr);
 		$off = $page-1<$total_page ? $page-1 : $total_page-1;
+		$page_section = '_'.L('section').($off+1).L('page');
 
 		$pages = '<div id="page">';
 		if(URL_MODEL == 3){

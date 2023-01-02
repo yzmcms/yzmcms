@@ -131,9 +131,9 @@ function get_copyfrom($modelid = 1){
 	$arr = array('网络', '原创');
 	$db = get_model($modelid);
 	if(!$db) return $arr;
-	$res = D($db)->field('copyfrom')->group('copyfrom')->order('id DESC')->limit(100)->select();
+	$res = D($db)->field('copyfrom')->order('id DESC')->limit(100)->select();
 	$res = yzm_array_column($res, 'copyfrom');
-	return array_unique(array_merge($res, $arr));
+	return array_unique(array_merge(array_filter($res), $arr));
 }
 
 
@@ -364,7 +364,7 @@ function select_category($name="parentid", $value="0", $root="", $member_publish
 		
 		$val['html_disabled'] = 0;
 		if($parent_disabled){
-			if($val['id'] != $val['arrchildid']) $val['html_disabled'] = 1;
+			if(strpos($val['arrchildid'], ',')) $val['html_disabled'] = 1;
 		}
 		if($disabled){
 			if($val['type'] != 0) $val['html_disabled'] = 1;
@@ -378,6 +378,75 @@ function select_category($name="parentid", $value="0", $root="", $member_publish
 
 	$html .= '</select>';
 	return $html;
+}
+
+
+/**
+ * 下载远程图片
+ * @param  string $content   
+ * @param  string $targeturl 
+ * @return string
+ */
+function down_remote_img($content, $targeturl = ''){
+	preg_match_all("/(src)=([\"|']?)([^ \"'>]+\.(gif|jpg|jpeg|bmp|png|webp))\\2/i", $content, $img_array);
+	$img_array = isset($img_array[3]) ? array_unique($img_array[3]) : array();
+	
+	if($img_array) {
+		$path =  C('upload_file').'/'.date('Ym/d');
+		$urlpath = SITE_PATH.$path;
+		$imgpath =  YZMPHP_PATH.$path;
+		if(!is_dir($imgpath)) @mkdir($imgpath, 0777, true);
+	}
+
+	$down_ignore_domain = get_config('down_ignore_domain');
+	$down_ignore_domain = $down_ignore_domain ? explode(',', $down_ignore_domain) : array();
+	array_push($down_ignore_domain, HTTP_HOST);
+
+	foreach($img_array as $value){
+
+		foreach($down_ignore_domain as $ignore_domain){
+		    if(stristr($value, $ignore_domain)) continue 2;
+		}
+
+		$val = $value;		
+		if(strpos($value, 'http') === false){
+			if(!$targeturl) continue;
+			$value = $targeturl.$value;
+		}
+		if(strpos($value, '?')){ 
+			$value = explode('?', $value);
+			$value = $value[0];
+		}	
+		$ext = fileext($value);
+		if(!is_img($ext)) continue;
+		$imgname = date('YmdHis').rand(100,999).'.'.$ext;
+		$filename = $imgpath.'/'.$imgname;
+		$urlname = $urlpath.'/'.$imgname;
+		
+		ob_start();
+		readfile($value);
+		$data = ob_get_contents();
+		ob_end_clean();
+		$len = $data ? file_put_contents($filename, $data) : 0;
+		if($len){  
+			$arr = array(
+				'originname' => '远程下载-'.basename($value),
+				'filename' => $imgname,
+				'filepath' => $urlpath.'/',
+				'filesize' => $len,
+				'fileext' => $ext,
+				'module' => ROUTE_M,
+				'isimage' => 1,
+				'userid' => isset($_SESSION['adminid']) ? $_SESSION['adminid'] : $_SESSION['_userid'],
+				'username' => isset($_SESSION['adminname']) ? $_SESSION['adminname'] : $_SESSION['_username'],
+				'uploadtime' => SYS_TIME,
+				'uploadip' => getip()
+			);
+			D('attachment')->insert($arr);                       
+			$content = str_replace($val, $urlname, $content);
+		}
+	}
+	return $content;
 }
 
 
@@ -471,9 +540,8 @@ function get_site($siteid = 0, $parameter = ''){
  * @return boolean
  */
 function is_childid($data){
-	if(!isset($data['catid']) || !isset($data['arrchildid'])) return false;
-	$data['catid'] = strval($data['catid']);
-	return $data['catid']!=$data['arrchildid'];
+	if(!isset($data['arrchildid'])) return false;
+	return strpos($data['arrchildid'], ',');
 }
 
 
@@ -559,7 +627,7 @@ function get_childcat($catid, $is_show = false, $limit = 0){
  */
 function get_location($catid, $is_mobile=false, $self=true, $symbol=' &gt; '){
 	$catid = intval($catid);
-	$data = explode(',', get_category($catid, 'arrparentid'));
+	$data = $catid ? explode(',', get_category($catid, 'arrparentid')) : array();
 	if($is_mobile){
 		$str = '<a href="'.U('mobile/index/init').'">首页</a>';
 		foreach($data as $v){
@@ -571,7 +639,7 @@ function get_location($catid, $is_mobile=false, $self=true, $symbol=' &gt; '){
 		foreach($data as $v){
 			if($v) $str .= $symbol.'<a href="'.get_category($v, 'pclink').'">'.get_category($v, 'catname').'</a>';
 		}
-		if($self) $str .= $symbol.'<a href="'.get_category($catid, 'pclink').'">'.get_category($catid, 'catname').'</a>';
+		if($catid && $self) $str .= $symbol.'<a href="'.get_category($catid, 'pclink').'">'.get_category($catid, 'catname').'</a>';
 	}
 
     return $str;	
@@ -720,7 +788,7 @@ function set_mapping($m) {
             $mapping['^'.str_replace('/', '\/', $val['catdir']).'$'] = $m.'/index/lists/catid/'.$val['catid'];
             if($val['type']) continue;  
             $mapping['^'.str_replace('/', '\/', $val['catdir']).'\/list_(\d+)$'] = $m.'/index/lists/catid/'.$val['catid'].'/page/$1';
-            if($val['catid']!=$val['arrchildid']) continue; 
+            if(strpos($val['arrchildid'], ',')) continue; 
             $mapping['^'.str_replace('/', '\/', $val['catdir']).'\/(\d+)$'] = $m.'/index/show/catid/'.$val['catid'].'/id/$1';             
         }
         //结合自定义URL规则
@@ -771,6 +839,51 @@ function get_memberinfo($userid, $additional=false){
 		$memberinfo = array_merge($memberinfo, $data);
 	}
 	return $memberinfo;
+}
+
+
+/**
+ * 获取内容总数
+ * @param   $modelid 
+ * @param   $catid   
+ * @return  int 
+ */
+function content_total($modelid, $catid = 0){
+	$where = array('modelid' => $modelid);
+	if($catid) $where['catid'] = $catid;
+	return D('all_content')->where($where)->total();
+}
+
+
+/**
+ * 获取自定义多选字段生成的value值
+ * 调用方式如：get_field_val($systems, 'systems', $modelid)
+ * @param   $value  
+ * @param   $field   
+ * @param   $modelid 
+ * @return  string          
+ */
+function get_field_val($value, $field, $modelid){
+	$modelinfo = getcache($modelid.'_model');
+	if($modelinfo === false){
+		if(!D('model')->where(array('modelid' => $modelid))->find()) return $value;
+		$modelinfo = D('model_field')->where(array('modelid' => $modelid, 'disabled' => 0))->order('listorder ASC,fieldid ASC')->select();
+		setcache($modelid.'_model', $modelinfo);
+	}
+
+	$data = yzm_array_column($modelinfo, null, 'field');
+	if(!isset($data[$field])) return $value;
+	$arr = string2array($data[$field]['setting']);
+
+	$data = array();
+	foreach($arr as $val){
+		$varr = explode(':', $val);
+		if(isset($varr[1])){
+			$data[$varr[0]] = $varr[1];  
+		}
+	}
+	if(!$data) return $value;
+	return isset($data[$value]) ? $data[$value] : $value;
 }
 
 

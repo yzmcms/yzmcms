@@ -79,7 +79,7 @@ class param {
 	 */	
 	private function pathinfo_url(){
 		if(!isset($_GET['s'])) return false;
-		$_SERVER['PATH_INFO'] = $_GET['s'];
+		if(is_string($_GET['s'])) $_SERVER['PATH_INFO'] = $_GET['s'];
 		unset($_GET['s']);
 		if (isset($_SERVER['PATH_INFO']) && !empty($_SERVER['PATH_INFO'])){
 			$_SERVER['PATH_INFO'] = str_ireplace(array(C('url_html_suffix'), 'index.php'), '', $_SERVER['PATH_INFO']);
@@ -102,7 +102,8 @@ class param {
 	 */	
 	private function mapping($rules){
 		if(!is_array($rules)) return;
-		$pathinfo = trim($_SERVER['PATH_INFO'], '/');
+		$pathinfo = is_string($_SERVER['PATH_INFO']) ? trim($_SERVER['PATH_INFO'], '/') : '';
+		if(!$pathinfo) return;
 		foreach ($rules as $k=>$v) {
 			$reg = '/'.$k.'/i';
 			if(preg_match($reg, $pathinfo)){

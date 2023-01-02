@@ -11,6 +11,9 @@ $action = isset($_GET['action']) ? $_GET['action'] : '';
 define('IN_YZMPHP', true); 
 define('IN_YZMCMS', true); 
 include("yzm_action.php");
+$CONFIG['imageMaxSize'] = get_config('upload_maxsize')*1024;
+$CONFIG['imageAllowFiles'] = array_map('handle_suffix', explode('|', get_config('upload_image_types')));
+$CONFIG['fileAllowFiles'] = array_map('handle_suffix', explode('|', get_config('upload_image_types').'|'.get_config('upload_types')));
 
 switch ($action) {
     case 'config':

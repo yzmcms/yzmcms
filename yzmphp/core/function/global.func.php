@@ -145,6 +145,7 @@ function remove_xss($string) {
  * @return string
  */
 function safe_replace($string) {
+	if(!is_string($string)) return $string;
 	$string = trim($string);
 	$string = str_replace('%20','',$string);
 	$string = str_replace('%27','',$string);
@@ -207,6 +208,28 @@ function get_address($ip, $is_array = false){
 	}else{
 		return $is_array&&is_array($arr) ? $arr : '未知';
 	}
+}
+
+
+/**
+ * 检查IP是否匹配
+ * @param  $ip_vague 要检查的IP或IP段，IP段(*)表示
+ * @param  $ip       被检查IP
+ * @return boolean
+ */
+function check_ip_matching($ip_vague, $ip = ''){
+	empty($ip) && $ip = getip();
+	if(strpos($ip_vague,'*') === false){
+		return $ip_vague == $ip;
+	}
+	if(count(explode('.', $ip_vague)) != 4) return false;
+	$min_ip = str_replace('*', '0', $ip_vague);
+	$max_ip = str_replace('*', '255', $ip_vague);
+	$ip = ip2long($ip);
+	if($ip>=ip2long($min_ip) && $ip<=ip2long($max_ip)){  
+		return true; 
+	}
+	return false;
 }
 
 
@@ -293,7 +316,7 @@ function new_html_special_chars($string, $filter = array()) {
  * @param  integer $options
  * @param  integer $depth 
  */
-function new_json_encode($array, $options = 0, $depth = 512){
+function new_json_encode($array, $options = 0, $depth = 0){
 	if(version_compare(PHP_VERSION,'5.4.0','<')) {
 	    $jsonstr = json_encode($array);
 	}else{
@@ -332,9 +355,9 @@ function trim_script($str) {
 */
 function string2array($data) {
 	$data = trim($data);
-	if($data == '') return array();
+	if(empty($data)) return array();
 	
-	if(strpos($data, '{\\')===0) $data = stripslashes($data);
+	if(version_compare(PHP_VERSION,'5.4.0','<')) $data = stripslashes($data);
 	$array = json_decode($data, true);
 	return is_array($array) ? $array : array();
 }
@@ -348,10 +371,10 @@ function string2array($data) {
 * @return	string	返回字符串，如果，data为空，则返回空
 */
 function array2string($data, $isformdata = 1) {
-	if($data == '' || empty($data)) return '';
+	if(empty($data)) return '';
 	
 	if($isformdata) $data = new_stripslashes($data);
-	if (version_compare(PHP_VERSION,'5.4.0','<')){
+	if(version_compare(PHP_VERSION,'5.4.0','<')){
 		return addslashes(json_encode($data));
 	}else{
 		return json_encode($data, JSON_UNESCAPED_UNICODE|JSON_FORCE_OBJECT);
@@ -393,6 +416,7 @@ function yzm_array_column($array, $column_key, $index_key = null){
  * @param $email
  */
 function is_email($email) {
+	if(!is_string($email)) return false;
 	return strlen($email) > 6 && preg_match("/^[\w\-\.]+@[\w\-\.]+(\.\w+)+$/", $email);
 }
 
@@ -402,7 +426,7 @@ function is_email($email) {
  * @param $mobile
  */
 function is_mobile($mobile) {
-	return preg_match('/1[3456789]{1}\d{9}$/',$mobile);
+	return is_string($mobile) && preg_match('/1[3456789]{1}\d{9}$/',$mobile);
 }
 
 
@@ -430,6 +454,7 @@ function is_badword($string) {
  * @return 	TRUE or FALSE
  */
 function is_username($username) {
+	if(!is_string($username)) return false;
 	$strlen = strlen($username);
 	if(is_badword($username) || !preg_match("/^[a-zA-Z0-9_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]+$/", $username)){
 		return false;
@@ -457,7 +482,7 @@ function is_username($username) {
  * @return 	TRUE or FALSE
  */
 function is_password($password) {
-	$strlen = strlen($password);
+	$strlen = is_string($password) ? strlen($password) : 0;
 	if($strlen >= 6 && $strlen <= 20) return true;
 	return false;
 }
@@ -475,9 +500,17 @@ function fileext($filename) {
 
 
 /**
+ * 是否为图片格式
+ */
+function is_img($ext) {
+	return in_array(strtolower($ext), array('png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico'));
+}
+
+
+
+/**
  * IE浏览器判断
  */
-
 function is_ie() {
 	$useragent = strtolower($_SERVER['HTTP_USER_AGENT']);
 	if((strpos($useragent, 'opera') !== false) || (strpos($useragent, 'konqueror') !== false)) return false;
@@ -666,8 +699,8 @@ function string_auth($string, $operation = 'ENCODE', $key = '', $expiry = 0) {
  * @return string
  */
 function match_img($content){
-    preg_match('/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg]))[\'|\"].*?[\/]?>/', $content, $match);
-    return !empty($match) ? $match[1] : ''; 
+    preg_match("/(src)=([\"|']?)([^ \"'>]+\.(gif|jpg|jpeg|bmp|png|webp))\\2/i", $content, $match);
+    return isset($match[3]) ? $match[3] : ''; 
 }
 
 
@@ -678,8 +711,8 @@ function match_img($content){
  * @return string $content 处理后的内容
  */
 function grab_image($content, $targeturl = ''){
-	preg_match_all('/<[img|IMG].*?src=[\'|\"](.*?(?:[\.gif|\.jpg]))[\'|\"].*?[\/]?>/', $content, $img_array); 
-    $img_array = isset($img_array[1]) ? array_unique($img_array[1]) : array();
+	preg_match_all("/(src)=([\"|']?)([^ \"'>]+\.(gif|jpg|jpeg|bmp|png|webp))\\2/i", $content, $img_array);
+	$img_array = isset($img_array[3]) ? array_unique($img_array[3]) : array();
 	
 	if($img_array) {
 		$path =  C('upload_file').'/'.date('Ym/d');
@@ -688,7 +721,7 @@ function grab_image($content, $targeturl = ''){
 		if(!is_dir($imgpath)) @mkdir($imgpath, 0777, true);
 	}
 	
-	foreach($img_array as $key=>$value){
+	foreach($img_array as $value){
 		$val = $value;		
 		if(strpos($value, 'http') === false){
 			if(!$targeturl) return $content;
@@ -699,8 +732,8 @@ function grab_image($content, $targeturl = ''){
 			$value = $value[0];
 		}	
 		$ext = fileext($value);
-		if(!in_array($ext, array('jpg', 'png', 'gif', 'jpeg'))) continue;
-		$imgname = date("YmdHis").rand(1,9999).'.'.$ext;
+		if(!is_img($ext)) continue;
+		$imgname = date('YmdHis').rand(100,999).'.'.$ext;
 		$filename = $imgpath.'/'.$imgname;
 		$urlname = $urlpath.'/'.$imgname;
 		
@@ -708,7 +741,7 @@ function grab_image($content, $targeturl = ''){
 		readfile($value);
 		$data = ob_get_contents();
 		ob_end_clean();
-		file_put_contents($filename, $data);
+		$data && file_put_contents($filename, $data);
 	 
 		if(is_file($filename)){                         
 			$content = str_replace($val, $urlname, $content);
@@ -1144,6 +1177,18 @@ function showmsg($msg, $gourl = '', $limittime = 3){
 		debug::message();
 	}
 	exit;
+}
+
+
+/**
+ * 根据请求方式自动返回信息
+ * @param   $message 
+ * @param   $status  
+ * @return  void           
+ */
+function return_message($message, $status = 1){
+	is_ajax() && return_json(array('status'=>$status, 'message'=>$message));
+	showmsg($message, $status ? '' : 'stop');
 }
 
 

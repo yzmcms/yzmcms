@@ -10,7 +10,7 @@
 			 <li><label>下单时间</label> <?php echo date('Y-m-d H:i:s', $data['addtime']);?></li>
 			 <li><label>下单IP</label> <?php echo $data['ip'];?></li>
 			 <li><label>支付方式</label> <?php echo $this->paytype[$data['paytype']]?></li>
-			 <li><label><span class="c-red">*</span>订单金额</label><input type="text" class="input" required name="money" value="<?php echo $data['money'];?>" style="width:100px"> 元</li>
+			 <li><label><span class="c-red">*</span>订单金额</label> <input type="text" class="input" required name="money" value="<?php echo $data['money'];?>" style="width:100px"> 元</li>
 			 <li><label>订单详情</label> <?php echo $data['desc'];?></li>
 		</ul>
 		<div class="footer_btn">

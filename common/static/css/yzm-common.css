@@ -41,7 +41,7 @@ a:hover{color:#1eaff1;}
 .yzm-header{height:100px;padding:10px 0;width:1170px;margin:0 auto;}
 .yzm-logo{float:left;margin-top:30px;width:370px;}
 .yzm-logo a{color: #2196f3;font-size: 30px;overflow: hidden;display: block;height:35px;line-height:35px;text-overflow: ellipsis;white-space: nowrap;}
-.yzm-logo img{width:165px;height:55px}
+.yzm-logo img{height:35px;float:left}
 .yzm-search{float:left;margin-left:130px;margin-top:30px;}
 .searchtxt .searchmenu .searchselected{background-image:url(../images/icon2.png);background-repeat:no-repeat;}
 .searchtxt{float:left;width:450px;height:36px;border:2px solid #2196f3;border-right:0;position:relative;z-index:100;background:#fff;}

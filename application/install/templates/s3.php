@@ -191,11 +191,11 @@
                         return false;
                     }
                     if(obj.manager_pwd.value.length < 6 || obj.manager_pwd.value.length > 20){
-                        layer.msg('密码长度为6-20位!', {icon:2});
+                        layer.msg('管理员密码长度必须为6-20位!', {icon:2});
                         return false;
                     }
                     if(obj.manager_pwd.value !== obj.manager_ckpwd.value){
-                        layer.msg('两次密码值不相等!', {icon:2});
+                        layer.msg('管理员两次密码值不相等!', {icon:2});
                         return false;
                     }
                     if(!TestDbPwd()){

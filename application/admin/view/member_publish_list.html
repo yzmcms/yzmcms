@@ -2,7 +2,7 @@
 <title>稿件管理 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 稿件管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 稿件管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <div class="page-container">
 	<div> 
 	<form action="<?php echo U('init');?>" method="get" id="search">
@@ -37,10 +37,10 @@
 		<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo 'selected';} ?> value="2">发布人</option>	
 		</select>
 	</span>
-	 <input type="text" name="searinfo" class="input-text search" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+	 <input type="text" name="searinfo" class="input-text search" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
 	 </form>	
 	</div>
-	<div class="cl mt-15 tb-top"> <span class="l"><a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe6a7;</i> 通过审核</a> <a href="javascript:;" onclick="yzm_dels('ids', 1)" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a> <a href="javascript:;" onclick="show_rejection()" class="btn btn-warning radius"><i class="Hui-iconfont">&#xe6dd;</i> 退稿</a></span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
+	<div class="cl mt-15 tb-top"> <span class="l"><a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontongguo"></i> 通过审核</a> <a href="javascript:;" onclick="yzm_dels('ids', 1)" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a> <a href="javascript:;" onclick="show_rejection()" class="btn btn-warning radius"><i class="yzm-iconfont yzm-iconshanchu"></i> 退稿</a></span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
   <form method="post" action="<?php echo U('del');?>" id="myform">
   <table class="table table-border table-bg table-hover yzm-table-sort">
     <thead>
@@ -66,7 +66,7 @@
 			<td class="text-l">
 			<?php
 			if($val['thumb']){
-			 echo '<span style="color:#0a6999;margin-right:3px" onmouseover="yzm_img_browse(this, \''.$val['thumb'].'\')" onmouseout="layer.closeAll(\'tips\')"><i class="Hui-iconfont">&#xe646;</i></span>';
+			 echo '<span style="color:#0a6999;font-size:14px;vertical-align:middle;" onmouseover="yzm_img_browse(this, \''.$val['thumb'].'\')" onmouseout="layer.closeAll(\'tips\')" class="yzm-iconfont yzm-icontupian1 pointer"></span>';
 			}
 			?>	
 			<a href="<?php echo U('public_preview', array('catid'=>$val['catid'], 'id'=>$val['id']));?>" target="_blank" ><?php echo $val['title'];?></a>	
@@ -77,8 +77,8 @@
 			<td><?php echo get_model($val['modelid'], 'name')?></td>
 			<td><?php echo $val['status']=='0' ? '<span class="label radius">未审核</span>' : ($val['status']=='1' ? '<span class="label label-success radius">已通过</span>' :'<span class="label label-danger radius">已退稿</span>');?></td>
 			<td>
-				<a title="编辑" href="javascript:;" onclick="yzm_open_full('编辑内容','<?php echo U('admin/content/edit',array('modelid'=>$val['modelid'],'id'=>$val['id']));?>')" class="ml-5" style="text-decoration:none"><i class="Hui-iconfont">&#xe6df;</i></a> 
-				<a title="预览" href="<?php echo U('public_preview', array('catid'=>$val['catid'], 'id'=>$val['id']));?>" class="ml-5" target="_blank" style="text-decoration:none"><i class="Hui-iconfont">&#xe695;</i></a>
+				<a title="编辑" href="javascript:;" onclick="yzm_open_full('编辑内容','<?php echo U('admin/content/edit',array('modelid'=>$val['modelid'],'id'=>$val['id']));?>')" class="ml-5" style="text-decoration:none"><i class="yzm-iconfont yzm-iconbianji2"></i></a> 
+				<a title="预览" href="<?php echo U('public_preview', array('catid'=>$val['catid'], 'id'=>$val['id']));?>" class="ml-5" target="_blank" style="text-decoration:none"><i class="yzm-iconfont yzm-iconyulan2"></i></a>
 			</td>
 		  </tr>		
 		<?php 

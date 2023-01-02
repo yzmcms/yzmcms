@@ -18,7 +18,7 @@
 				<input type="text" class="input-text" value=""  name="title" onblur="check_title()">
 				<input type="hidden" name="color" id="color">
 				<img src="<?php echo STATIC_URL;?>images/colors.png" title="设置颜色" id="colors">
-				<div class="yzm-content-error hidden"><i class="Hui-iconfont pointer" onclick="$('.yzm-content-error').addClass('hidden')">&#xe6a6;</i> 标题重复，但仍然可继续发布！</div>
+				<div class="yzm-content-error hidden"><i class="yzm-iconfont yzm-iconshanchu pointer" onclick="$('.yzm-content-error').addClass('hidden')"></i> 标题重复，但仍然可继续发布！</div>
 			</div>
 
 		</div>
@@ -31,13 +31,13 @@
 				<label>推荐[4] <input name="flag[]" type="checkbox" value="4"/></label>&nbsp;&nbsp;
 				<label>热点[5] <input name="flag[]" type="checkbox" value="5"/></label>&nbsp;&nbsp;
 				<label>幻灯[6] <input name="flag[]" type="checkbox" value="6"/></label>&nbsp;&nbsp;
-				<label>跳转[7] <input name="flag[]" type="checkbox" value="7" onclick="toggle()"/></label>&nbsp;&nbsp;
+				<label>跳转[7] <input name="flag[]" type="checkbox" value="7" onclick="toggle(this)"/></label>&nbsp;&nbsp;
 			</div>
 		</div>
 		<div class="row cl" style="display:none;" id="url">
-			<label class="form-label col-xs-4 col-sm-2">跳转URL：</label>
+			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>跳转URL：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value=""  name="url" placeholder="格式为“http://开头”">
+				<input type="text" class="input-text" value="" errortips="跳转URL不能为空！" name="url" placeholder="格式为“http://开头”">
 			</div>
 		</div>
 		<div class="row cl">
@@ -60,7 +60,7 @@
 			<div class="formControls col-xs-8 col-sm-9 skin-minimal">
 			<div class="Hui-tags" style="width:88%;float:left;margin-right:5px;">
 				<div class="Hui-tags-editor cl" style="padding: 5px 0 5px 24px;">
-				<i class="Hui-tags-icon Hui-iconfont" style="top:5px">&#xe64b;</i>
+				<i class="Hui-tags-icon yzm-iconfont yzm-icontags" style="top:5px"></i>
 					<div id="tag_default"></div>
 					<div class="Hui-tags-iptwrap" style="width:50%">
 						<input type="text" class="Hui-tags-input" maxlength="20" value="" id="tag_input" onblur="change_keyword()">
@@ -131,7 +131,7 @@
 						}
 					?>
 				</datalist>
-				<span class="yzmcms_small">点击量：<input type="text" class="input-text" style="width:150px" value="<?php echo rand(10,99);?>"  name="click"></span>  
+				<span class="yzmcms_small">点击量：<input type="text" class="input-text" style="width:150px" value="<?php echo get_config('content_click_random') ? rand(50,150) : 0;?>"  name="click"></span>  
 				<span class="yzmcms_small">作者昵称：<input type="text" class="input-text" style="width:150px" value="<?php echo $_SESSION['admininfo']['nickname'] ? $_SESSION['admininfo']['nickname'] : '管理员'; ?>"  name="nickname"></span>  
 			</div>
 		</div>
@@ -140,14 +140,19 @@
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>内容：</label>
 			<div class="formControls col-xs-8 col-sm-9"> 
 			<?php echo form::editor('content', '', 'width:100%;height:400px', false);?>
-			<label title="提取内容第一张图片为缩略图"><input name="auto_thum" type="checkbox" value="1" <?php if(get_cookie('auto_thum')) echo 'checked';?> />提取内容第一张图片为缩略图</label>
+			<div class="mt-5">
+				<?php if(!get_config('auto_down_imag')){ ?>
+				<span class="btn-mini btn-default mr-5" onclick="down_remote_img()">下载远程图片</span>
+				<?php }?>
+				<label title="提取内容第一张图片为缩略图"><input name="auto_thum" type="checkbox" value="1" <?php if(get_cookie('auto_thum')) echo 'checked';?> />提取内容第一张图片为缩略图</label>
+			</div>
 			</div>
 		</div>
 		<div class="footer_btn footer_border">
 			<input type="hidden" name="status" value="1">
-			<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(1)"><i class="Hui-iconfont">&#xe603;</i> 保存发布</button>
-			<button name="dosubmit" class="btn btn-secondary radius" type="submit" onclick="set_status(0)"><i class="Hui-iconfont">&#xe632;</i> 保存草稿</button>
-			<button name="continuity" class="btn btn-success radius" type="submit" onclick="set_status(1)"><i class="Hui-iconfont">&#xe603;</i> 保存后继续发布</button>
+			<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(1)"><i class="yzm-iconfont yzm-iconfabusekuai"></i> 保存发布</button>
+			<button name="dosubmit" class="btn btn-secondary radius" type="submit" onclick="set_status(0)"><i class="yzm-iconfont yzm-iconbaocun"></i> 保存草稿</button>
+			<button name="continuity" class="btn btn-success radius" type="submit" onclick="set_status(1)"><i class="yzm-iconfont yzm-iconfabusekuai"></i> 保存后继续发布</button>
 			<?php if(!isset($_GET['catid'])){ ?>
 			<button onclick="yzm_content_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
 			<?php }else{ ?>
@@ -173,7 +178,8 @@
 		$("input[name='status']").val(s);	
 	}
 	
-	function toggle(){ 
+	function toggle(obj){ 
+		$(obj).prop("checked") ? $("#url .input-text").addClass('required') : $("#url .input-text").removeClass('required');
         $("#url").toggle();
     }
 	
@@ -264,6 +270,35 @@
 			$("#color").val('');
 		}
 	});
+
+	function down_remote_img(){
+		var ue = UE.getEditor('content');
+		var content = ue.getContent();
+		if(content == ''){
+			layer.msg('内容不能为空！', {icon:2,time: 2000});
+			return false;
+		}
+
+		layer.msg('正在下载远程图片……', { icon: 16, shade: 0.21, time:false });
+		$.ajax({
+            type: "POST",
+            url: "<?php echo U('api/index/down_remote_img');?>", 
+            data: {content: content},
+		    dataType: "json", 
+            success: function (msg) {
+				if(msg.status){
+					ue.setContent(msg.data);
+					layer.msg('下载远程图片完成！', {icon:1,time:1000});
+				}
+            },
+	        error: function (xhr) {
+	            if(xhr.status != 200){
+	                layer.alert('下载远程图片时出错，xhr状态码：'+xhr.status);
+	                return false;
+	            }
+	        }
+        })
+	}
 </script>
 
 </body>

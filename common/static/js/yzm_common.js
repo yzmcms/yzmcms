@@ -146,7 +146,7 @@ function yzm_img_cropper(cid, url){
 function yzm_img_preview(id, src){
 	if(src == '') return;
 	var ext = src.substr(src.lastIndexOf(".")+1);
-	if(['png', 'jpg', 'jpeg', 'gif'].indexOf(ext.toLowerCase()) === -1) return;
+	if(['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico'].indexOf(ext.toLowerCase()) === -1) return;
 	layer.tips('<img src="'+yzm_htmlspecialchars(src)+'" style="max-width:180px;max-height:250px" >', '#'+id, {
 	  tips: [1, '#fff']
 	});	
@@ -157,7 +157,7 @@ function yzm_img_preview(id, src){
 function yzm_img_browse(obj, src){
 	if(src == '') return;
 	var ext = src.substr(src.lastIndexOf(".")+1);
-	if(['png', 'jpg', 'jpeg', 'gif'].indexOf(ext.toLowerCase()) === -1) return;
+	if(['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico'].indexOf(ext.toLowerCase()) === -1) return;
 	layer.tips('<img src="'+yzm_htmlspecialchars(src)+'" style="max-width:180px;max-height:250px">', obj, {
 	  tips: [1, '#fff']
 	});	
@@ -216,6 +216,20 @@ function yzm_win_open(url,name,w,h) {
 			location.reload();
 		}
 	},1000);
+}
+
+
+//设置每页展示条数
+function yzm_page_size(obj) {
+	var url = $(obj).data('url').replace("PAGE", 1);
+	if(url.indexOf('page_size')<0){
+		var page_size = url.indexOf('page_size')<0 ? (url.indexOf('?')<0 ? '?' : '&')+'page_size='+obj.value : '';
+		url = url+page_size;
+	}else{
+		url = url.replace(/\/page_size\/[0-9]*/i, '/page_size/'+obj.value);
+		url = url.replace(/page_size=[0-9]*/i, 'page_size='+obj.value);
+	}
+	window.location.href = url;
 }
 
 

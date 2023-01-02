@@ -9,6 +9,12 @@ defined('IN_YZMPHP') or exit('Access Denied');
 yzm_base::load_model('content', 'index', 0);
 
 class index{
+
+	public $page = 0;
+
+	public function __construct() {
+		isset($_GET['page']) && $this->page = intval($_GET['page']);
+	}
 	
 	/**
 	 * 首页
@@ -49,8 +55,8 @@ class index{
 
 		//SEO相关设置
 		$site = get_config();
-		if(isset($_GET['page'])){
-			$seo_title = $seo_title ? $seo_title.'_第'.intval($_GET['page']).'页' : $catname.'_第'.intval($_GET['page']).'页'.get_seo_suffix();
+		if($this->page){
+			$seo_title = $seo_title ? $seo_title.'_'.L('section').$this->page.L('page') : $catname.'_'.L('section').$this->page.L('page').get_seo_suffix();
 		}else{
 			$seo_title = $seo_title ? $seo_title : $catname.get_seo_suffix();
 		}
@@ -83,6 +89,9 @@ class index{
 			showmsg(L('content_not_existent'),'stop');
 		}
 		extract($data);
+
+		//跳转链接检测
+		$flag==7 && redirect($url);
 		
 		//会员组权限检测
 		if($groupids_view) {
@@ -102,16 +111,13 @@ class index{
 			$pay_url = U('member/member_pay/spend_point', 'par='.string_auth(join('|',$par)));
 		} 
 		
-		//SEO相关设置
-		$site = get_config();
-		$seo_title = $title.get_seo_suffix();
-		
 		//更新点击量
 		$db->update('`click` = `click`+1', array('id' => $id));
 
 		//内容分页
+		$page_section = '';
 		if(strpos($content, '_yzm_content_page_') !== false){
-			$content = content::content_page($content);
+			$content = content::content_page($content, $this->page, $page_section);
 		}	
 		
 		//内容关键字
@@ -124,6 +130,10 @@ class index{
 		$next = $db->field('title,url')->where(array('id>'=>$id , 'status'=>'1', 'catid'=>$catid))->order('id ASC')->find();
 		$pre = $pre ? '<a href="'.$pre['url'].'">'.$pre['title'].'</a>' : L('already_is_first');
 		$next = $next ? '<a href="'.$next['url'].'">'.$next['title'].'</a>' : L('already_is_last');
+
+		//SEO相关设置
+		$site = get_config();
+		$seo_title = $title.$page_section.get_seo_suffix();
 		
 		include template('index', $template);
 	}

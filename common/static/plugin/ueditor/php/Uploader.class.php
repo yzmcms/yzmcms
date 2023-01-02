@@ -98,7 +98,7 @@ class Uploader
 
         //检查文件大小是否超出限制
         if (!$this->checkSize()) {
-            $this->stateInfo = $this->getStateInfo("ERROR_SIZE_EXCEED");
+            $this->stateInfo = $this->getStateInfo("ERROR_SIZE_EXCEED").'('.sizecount($this->config["maxSize"]).')';
             return;
         }
 

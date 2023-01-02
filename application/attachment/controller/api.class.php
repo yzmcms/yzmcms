@@ -49,11 +49,7 @@ class api{
 		$filetype = isset($_POST['filetype']) ? intval($_POST['filetype']) : 1;
 		$module = isset($_POST['module']) ? htmlspecialchars($_POST['module']) : '';
 		$option = array();
-		if($filetype == 1){
-			$option['allowtype'] = array('gif', 'jpg', 'png', 'jpeg');
-		}else{
-			$option['allowtype'] = $this->_get_upload_types();
-		}
+		$option['allowtype'] = $this->_get_upload_types($filetype);
 
 		$upload_type = C('upload_type', 'host');
 		yzm_base::load_model($upload_type, '', 0);
@@ -96,12 +92,7 @@ class api{
 		$s = round(get_config('upload_maxsize')/1024, 2).'MB';  //允许上传附件大小
 		$originname = isset($_GET['originname']) ? safe_replace(trim($_GET['originname'])) : '';
 		$uploadtime = isset($_GET['uploadtime']) ? htmlspecialchars($_GET['uploadtime']) : '';
-		
-		if($t == 1){
-			$type = 'png,gif,jpg,jpeg';
-		}else{
-			$type = join(',', $this->_get_upload_types());
-		}
+		$type = join(',', $this->_get_upload_types($t));
 		
 		$where = array();
 		if(!$this->isadmin) $where['userid'] = $this->userid;
@@ -216,7 +207,7 @@ class api{
 		$arr['filesize'] = $fileinfo['filesize'];
 		$arr['fileext'] = $fileinfo['filetype'];
 		$arr['module'] = $fileinfo['module'];
-		$arr['isimage'] = in_array($fileinfo['filetype'], array('gif', 'jpg', 'png', 'jpeg')) ? 1 : 0;
+		$arr['isimage'] = is_img($fileinfo['filetype']) ? 1 : 0;
 		$arr['downloads'] = 0;
 		$arr['userid'] = $this->userid;
 		$arr['username'] = $this->username;
@@ -230,9 +221,9 @@ class api{
 	/**
 	 * 获取上传类型
 	 */	
-	private function _get_upload_types(){
-		$arr = explode('|', get_config('upload_types'));
-		$allow = array('gif', 'jpg', 'png', 'jpeg', 'webp', 'zip', 'rar', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'txt', 'csv', 'mp4', 'avi', 'wmv', 'rmvb', 'flv', 'mp3', 'wma', 'wav', 'amr', 'ogg', 'torrent');
+	private function _get_upload_types($type){
+		$arr = explode('|', ($type==1 ? get_config('upload_image_types') : get_config('upload_types')));
+		$allow = array('png', 'gif', 'jpg', 'jpeg', 'webp', 'bmp', 'ico', 'zip', 'rar', '7z', 'gz', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'txt', 'csv', 'mp3', 'mp4', 'avi', 'wmv', 'rmvb', 'flv', 'wma', 'wav', 'amr', 'ogg', 'ogv', 'webm', 'swf', 'mkv', 'torrent');
 		foreach($arr as $key => $val){
 			if(!in_array($val, $allow)) unset($arr[$key]);
 		}
@@ -244,7 +235,7 @@ class api{
 	/**
 	 * 加载模板
 	 */	
-	public static function admin_tpl($file = 'Undefined', $m = '') {
+	public static function admin_tpl($file = 'undefined', $m = '') {
 		$m = empty($m) ? ROUTE_M : $m;
 		if(empty($m)) return false;
 		return APP_PATH.$m.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.$file.'.html';

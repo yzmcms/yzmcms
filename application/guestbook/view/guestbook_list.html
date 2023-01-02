@@ -2,7 +2,7 @@
 <title>留言管理 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 留言管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 留言管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <div class="page-container">
   <div> 
 		<form action="<?php echo U('search');?>" method="get">
@@ -28,14 +28,14 @@
 				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo "selected";} ?> value="2">联系人</option>		
 			</select>
 		</span>
-		 <input type="text" name="searinfo"  class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+		 <input type="text" name="searinfo"  class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
 		</form>	
   </div>
 
 	<div class="cl mt-15 tb-top"> 
 		<span class="l">
-			<a href="javascript:;" onclick="yzm_dels('id', 1)" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>
-			<a href="javascript:;" onclick="set_read()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe70b;</i> 标识已读</a>
+			<a href="javascript:;" onclick="yzm_dels('id', 1)" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a>
+			<a href="javascript:;" onclick="set_read()" class="btn btn-success radius"><i class="yzm-iconfont yzm-iconyoujian"></i> 标识已读</a>
 		</span>
 	</div>
 	<form method="post" action="<?php echo U('del');?>" id="myform">
@@ -59,7 +59,7 @@
 			<tr class="text-c">
 				<td><input type="checkbox" value="<?php echo $val['id']?>" name="id[]"></td>
 				<td><?php echo $val['id']?></td>
-				<td style="text-align:left"><a href="javascript:;" onclick="yzm_open_full('查看留言','<?php echo U('read',array('id'=>$val['id']));?>')" ><?php echo $val['title'];?></a> <span class="yzmcms_small"><?php echo $val['ispc'] ? '<i class="Hui-iconfont" title="来自PC端">&#xe64f;</i>' : '<i class="Hui-iconfont" title="来自移动端">&#xe696;</i>';?></span></td>
+				<td style="text-align:left"><a href="javascript:;" onclick="yzm_open_full('查看留言','<?php echo U('read',array('id'=>$val['id']));?>')" ><?php echo $val['title'];?></a> <span class="yzmcms_small"><?php echo $val['ispc'] ? '<i class="yzm-iconfont yzm-icondiannao" title="来自PC端"></i>' : '<i class="yzm-iconfont yzm-icontel" title="来自移动端"></i>';?></span></td>
 				<td style="text-align:left"><?php echo $val['name'];?></td>
 				<td><?php echo $val['ip'];?></td>
 				<td><?php echo date('Y-m-d H:i:s',$val['booktime']);?></td>

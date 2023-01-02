@@ -16,7 +16,7 @@ class index{
 	private $siteid,$siteinfo;
 	
 	public function __construct(){
-		if(!get_config('is_link')) showmsg(L('close_apply_link'), 'stop');
+		if(!get_config('is_link')) return_message(L('close_apply_link'), 0);
 		$this->siteid = get_siteid();
 		$this->siteinfo = array();
 		if($this->siteid){
@@ -41,20 +41,21 @@ class index{
 	 * 添加友情链接
 	 */
  	public function post() {
- 		if(isset($_POST['dosubmit'])) {
+ 		if(is_post()) {
 			
 			new_session_start();
+			!isset($_POST['code']) && return_message(L('code_error'), 0);
 			if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
 				$_SESSION['code'] = '';
-				showmsg(L('code_error'));
+				return_message(L('code_error'), 0);
 			}
 			$_SESSION['code'] = '';
 			
-			if($_POST['name']=='') showmsg(L('lose_parameters'), 'stop');
+			if($_POST['name']=='') return_message(L('lose_parameters'), 0);
  			if($_POST['url']=='' || !preg_match('/^(http|https)?:\/\/(.*)/i', $_POST['url'])){
- 				showmsg(L('lose_parameters'), 'stop');
+ 				return_message(L('lose_parameters'), 0);
  			}
-			if($_POST['email']=='' || !is_email($_POST['email'])) showmsg(L('mail_format_error'), 'stop');
+			if($_POST['email']=='' || !is_email($_POST['email'])) return_message(L('mail_format_error'), 0);
 			
 			if(!preg_match('/^(http|https)?:\/\/(.*)/i', $_POST['logo']))  $_POST['logo'] = '';
 					
@@ -71,7 +72,7 @@ class index{
 			
 			);										
 			D('link')->insert($data, true);
-			showmsg(L('apply_link_success'));
+			return_message(L('apply_link_success'));
 		}
 	}
 

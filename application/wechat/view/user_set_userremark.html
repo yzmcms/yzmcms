@@ -9,7 +9,7 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>	
-			<li><label>微信昵称：</label><span class="span_input"><?php echo $data['nickname'];?></span></li>
+			<li><label>微信昵称：</label><span class="span_input"><?php echo $data['nickname'] ? $data['nickname'] : '/';?></span></li>
 			<li><label>备注名称：</label><span class="span_input"><input type="text" name="remark" class="input" value="<?php echo $data['remark'];?>"></span></li>				
 		</ul>
 		<div class="footer_btn">

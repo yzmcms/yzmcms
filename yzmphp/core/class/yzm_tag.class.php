@@ -213,6 +213,7 @@ class yzm_tag{
 	 */
 	public function relation($data) {
 		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 1;
+		$relation = isset($data['relation']) ? intval($data['relation']) : $modelid;
 		$id = isset($data['id']) ? intval($data['id']) : 0;
 		$field = isset($data['field']) ? $data['field'] : '*';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
@@ -228,13 +229,16 @@ class yzm_tag{
 			$tagid[] = $val['tagid'];
 		}
 		
-		$res = $tag_content->field('aid')->where('modelid='.$modelid.' AND tagid IN ('.implode(',', $tagid).')')->group('aid')->limit($limit+1)->order('aid DESC')->select();
+		$limit = $modelid==$relation ? $limit+1 : $limit;
+		$res = $tag_content->field('aid')->where('modelid='.$relation.' AND tagid IN ('.implode(',', $tagid).')')->group('aid')->limit($limit)->order('aid DESC')->select();
 		$ids = array();
 		foreach($res as $val){
-			if($val['aid'] == $id) continue;	//去除当前的内容ID
+			if($modelid==$relation && $val['aid']==$id) continue;	//去除当前的内容ID
 			$ids[] = $val['aid'];
 		}
 		if(empty($ids)) return false;
+
+		if($modelid!=$relation && !$this->_set_model($relation)) return false;
 		return $this->db->field($field)->where('status=1 AND id IN ('.implode(',', $ids).')')->order('id DESC')->limit($limit)->select();
 	}	
 	
@@ -346,6 +350,7 @@ class yzm_tag{
 	 */
 	public function search($data) {
 		$siteid = isset($data['siteid']) ? intval($data['siteid']) : 0;
+		$catid = isset($data['catid']) ? intval($data['catid']) : 0;
 		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 0;
 		$keyword = isset($data['keyword']) ? $data['keyword'] : '';
 		$field = isset($data['field']) ? $data['field'] : '*';
@@ -353,8 +358,10 @@ class yzm_tag{
 		$order = isset($data['order']) ? $data['order'] : 'id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
 
-		switch(ROUTE_A) {
+		$action = in_array(ROUTE_A,array('init', 'tag', 'archives')) ? ROUTE_A : 'init';
+		switch($action) {
 			case 'init' :
+				$cat_where = $catid ? ' AND catid = '.$catid : '';
 				if($modelid){
 					if(!$this->_set_model($modelid)) return false;
 					$db = $this->db;
@@ -362,9 +369,9 @@ class yzm_tag{
 					foreach(explode(',', $search) as $val){
 					    $whereor[] = "`{$val}` LIKE '%$keyword%'";
 					}
-					$where = '`status` = 1 AND ('.join(' OR ', $whereor).')';
+					$where = '`status` = 1'.$cat_where.' AND ('.join(' OR ', $whereor).')';
 				}else{
-					$where = 'siteid = '.$siteid." AND `status` = 1 AND `title` LIKE '%$keyword%'";
+					$where = 'siteid = '.$siteid.$cat_where." AND `status` = 1 AND `title` LIKE '%$keyword%'";
 					$db = D('all_content');
 				}
 
@@ -436,9 +443,12 @@ class yzm_tag{
 	public function get($data) {
 		if(!isset($data['sql'])) return false;
 		$sql = $data['sql'];
+		$where = isset($data['where']) ? ' WHERE '.$data['where'] : '';
 		$order = isset($data['order']) ? ' ORDER BY '.$data['order'] : '';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
+
 		$db = D('admin');
+		$sql = $sql.$where;
 		if(isset($data['page'])){
 			yzm_base::load_sys_class('page','',0);
 			$countsql = 'SELECT COUNT(*) AS total FROM ('.$sql.') T';

@@ -2,7 +2,7 @@
 <title>添加轮播 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 添加轮播 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 添加轮播 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <article class="page-container">
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return checkall()">
@@ -15,7 +15,7 @@
 			 </li> 
 			 <li><label><span class="c-red">*</span>轮播图：</label>
 				<input class="input-text" type="text" name="image" value="<?php echo $data['image'];?>" style="width:400px" id="uploadfile" onmouseover="yzm_img_preview('uploadfile', this.value)"  onmouseout="layer.closeAll();">
-				<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M));?>')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>
+				<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M));?>')" class="btn btn-primary radius upload-btn"><i class="yzm-iconfont yzm-iconshangchuan"></i> 浏览文件</a>
 			 </li>			 
 			 <li><label>轮播分类：</label>			
 				 <select  name="typeid" style="width:230px;" id="typeid">

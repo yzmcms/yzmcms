@@ -172,7 +172,7 @@ class index{
 		
 		$fields = $fieldstr = array();
 		foreach($modelinfo as $val){
-			$fieldtype = $val['fieldtype'];
+			$fieldtype = $val['fieldtype']=='decimal' ? 'input' : $val['fieldtype'];
 			if($data){
 				$val['defaultvalue'] = isset($data[$val['field']]) ? $data[$val['field']] : '';
 			}

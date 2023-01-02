@@ -16,7 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 define('APPDIR', _dir_path(substr(dirname(__FILE__), 0, -8)));
 define('SITEDIR', dirname(APPDIR).DIRECTORY_SEPARATOR);
-define("VERSION", 'YzmCMS V6.6');
+define("VERSION", 'YzmCMS V6.7');
 
 if(is_file(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock')){
     exit("YzmCMS程序已运行安装，如果你确定要重新安装，请先从FTP中删除 cache/install.lock！");
@@ -61,8 +61,7 @@ switch ($step) {
         }
 
         $phpv = @ phpversion();
-        $os = PHP_OS;
-        $os = php_uname();
+        $os = php_uname('s');
         $tmp = function_exists('gd_info') ? gd_info() : array();
         $server = $_SERVER["SERVER_SOFTWARE"];
         $name = $_SERVER["SERVER_NAME"];
@@ -88,6 +87,12 @@ switch ($step) {
 				$mysql = '<span class="correct_span error_span">&radic;</span> 未安装PDO和MYSQLI';
 				$err++;
 			}
+        }
+        if (!in_array(check_url($domain.'admin'), array('200', '550')) && strstr(gethostbyname($_SERVER['HTTP_HOST']), $_SERVER['SERVER_ADDR'])){
+            $rewrite_module = '<span class="correct_span error_span">&radic;</span> 未开启伪静态，<a href="https://www.yzmcms.com/dongtai/121.html" target="_blank">查看官网教程</a>';
+            $err++;
+        } else {
+            $rewrite_module = '<span class="correct_span">&radic;</span> 已开启';
         }
         if (ini_get('file_uploads')) {
             $uploadSize = '<span class="correct_span">&radic;</span> ' . ini_get('upload_max_filesize');
@@ -317,4 +322,18 @@ function is_ssl() {
         return true;
     }
     return false;
+}
+
+function check_url($url){
+    if(!function_exists('curl_init')) return 0;
+    $curl = curl_init($url);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
+    curl_setopt($curl, CURLOPT_NOSIGNAL, true); 
+    curl_setopt($curl, CURLOPT_TIMEOUT, 1); 
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+    $output = curl_exec($curl);
+    $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+    curl_close($curl);
+    return $httpcode;
 }

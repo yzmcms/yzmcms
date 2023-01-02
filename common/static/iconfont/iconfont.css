@@ -1,10 +1,17 @@
 @font-face {
   font-family: "yzm-iconfont"; /* Project id 1712616 */
-  src: url('iconfont.woff2?t=1658816290389') format('woff2'),
-       url('iconfont.woff?t=1658816290389') format('woff'),
-       url('iconfont.ttf?t=1658816290389') format('truetype');
+  src: url('iconfont.woff2?t=1669289901750') format('woff2'),
+       url('iconfont.woff?t=1669289901750') format('woff'),
+       url('iconfont.ttf?t=1669289901750') format('truetype');
 }
 .yzm-iconfont{font-family:"yzm-iconfont" !important;font-style:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+.yzm-iconpifu:before{content: "\e640";}
+.yzm-icontuwen:before{content: "\e642";}
+.yzm-iconyulan1:before{content: "\e668";}
+.yzm-iconcaidan:before{content: "\eaf1";}
+.yzm-iconfuzhi:before{content: "\e656";}
+.yzm-icontupian:before{content: "\e8d3";}
+.yzm-icontupian1:before{content: "\e88b";}
 .yzm-iconvip:before{content: "\e65f";}
 .yzm-iconyidong:before{content: "\e727";}
 .yzm-iconchart-scatter:before{content: "\e78e";}

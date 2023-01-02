@@ -88,6 +88,13 @@ class sql{
 		$sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `$field` int(10) UNSIGNED NOT NULL DEFAULT $defaultvalue";
 		self::sql_exec($sql);			
 	}
+
+
+	public static function sql_add_field_decimal($tablename, $field, $defaultvalue='0.00'){
+		self::set_tablename($tablename);
+		$sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `$field` decimal(8,2) unsigned NOT NULL DEFAULT $defaultvalue";
+		self::sql_exec($sql);			
+	}
 	
 
 	public static function sql_del_field($tablename, $field){

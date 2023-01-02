@@ -179,7 +179,7 @@ class form {
 	 */
 	public static function image($name, $val = '', $style = '', $iscropper = false, $attribute = '') {	
 		$style = $style ? $style : 'width:370px';		
-		$string = '<input type="hidden" name="'.$name.'_attid" id="'.$name.'_attid" value="0"><input class="input-text uploadfile" type="text" name="'.$name.'"  value="'.$val.'"  onmouseover="yzm_img_preview(\''.$name.'\', this.value)" onmouseout="layer.closeAll();" id="'.$name.'" style="'.$style.'" '.$attribute.'> <a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name), false).'\')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>';
+		$string = '<input type="hidden" name="'.$name.'_attid" id="'.$name.'_attid" value="0"><input class="input-text uploadfile" type="text" name="'.$name.'"  value="'.$val.'"  onmouseover="yzm_img_preview(\''.$name.'\', this.value)" onmouseout="layer.closeAll();" id="'.$name.'" style="'.$style.'" '.$attribute.'> <a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name), false).'\')" class="btn btn-primary radius upload-btn"><i class="yzm-iconfont yzm-iconshangchuan"></i> 浏览文件</a>';
 		
 		if($iscropper) $string = $string .' '.form::cropper($name);
 		return $string;
@@ -206,7 +206,7 @@ class form {
 			}
 		}					
 		$string .= 	'</ul></fieldset>
-				<a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name, 'n'=>$n), false).'\')" class="btn btn-primary radius upload-btn mt-5"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a> <a href="javascript:;" onclick="yzm_add_attachment(\''.$name.'\')" class="btn btn-secondary radius upload-btn mt-5"><i class="Hui-iconfont">&#xe6ab;</i> 添加远程地址</a>';
+				<a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name, 'n'=>$n), false).'\')" class="btn btn-primary radius upload-btn mt-5"><i class="yzm-iconfont yzm-iconshangchuan"></i> 浏览文件</a> <a href="javascript:;" onclick="yzm_add_attachment(\''.$name.'\')" class="btn btn-secondary radius upload-btn mt-5"><i class="yzm-iconfont yzm-icontianjia"></i> 添加远程地址</a>';
 		
 		return $string;
 	}
@@ -219,7 +219,7 @@ class form {
 	 * @param $spec  	裁剪规则，1：4*3, 2:3*2, 3:1*1, 4:2*3
 	 */
 	public static function cropper($cid, $spec=2) {		
-		$string = '<a href="javascript:;" onclick="yzm_img_cropper(\''.$cid.'\', \''.U('attachment/api/img_cropper', array('spec'=>$spec), false).'\')" class="btn btn-secondary radius upload-btn"><i class="Hui-iconfont">&#xe6bc;</i> 裁剪图片</a>';
+		$string = '<a href="javascript:;" onclick="yzm_img_cropper(\''.$cid.'\', \''.U('attachment/api/img_cropper', array('spec'=>$spec), false).'\')" class="btn btn-secondary radius upload-btn"><i class="yzm-iconfont yzm-iconcaijian"></i> 裁剪图片</a>';
 		
 		return $string;
 	}
@@ -235,7 +235,7 @@ class form {
 	 */
 	public static function attachment($name, $val = '', $style='', $attribute='') {
 		$style = $style ? $style : 'width:370px';		
-		$string = '<input type="hidden" name="'.$name.'_attid" id="'.$name.'_attid" value="0"><input class="input-text uploadfile" type="text" name="'.$name.'"  value="'.$val.'"  id="'.$name.'" style="'.$style.'" '.$attribute.'> <a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name, 't'=>2), false).'\')" class="btn btn-primary radius upload-btn"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a>';
+		$string = '<input type="hidden" name="'.$name.'_attid" id="'.$name.'_attid" value="0"><input class="input-text uploadfile" type="text" name="'.$name.'"  value="'.$val.'"  id="'.$name.'" style="'.$style.'" '.$attribute.'> <a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name, 't'=>2), false).'\')" class="btn btn-primary radius upload-btn"><i class="yzm-iconfont yzm-iconshangchuan"></i> 浏览文件</a>';
 		
 		return $string;
 	}	
@@ -261,7 +261,7 @@ class form {
 			}
 		}					
 		$string .= 	'</ul></fieldset>
-				<a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name, 'n'=>$n, 't'=>2), false).'\')" class="btn btn-primary radius upload-btn mt-5"><i class="Hui-iconfont">&#xe642;</i> 浏览文件</a> <a href="javascript:;" onclick="yzm_add_attachment(\''.$name.'\')" class="btn btn-secondary radius upload-btn mt-5"><i class="Hui-iconfont">&#xe6ab;</i> 添加远程地址</a>';
+				<a href="javascript:;" onclick="yzm_upload_att(\''.U('attachment/api/upload_box', array('module'=>ROUTE_M, 'pid'=>$name, 'n'=>$n, 't'=>2), false).'\')" class="btn btn-primary radius upload-btn mt-5"><i class="yzm-iconfont yzm-iconshangchuan"></i> 浏览文件</a> <a href="javascript:;" onclick="yzm_add_attachment(\''.$name.'\')" class="btn btn-secondary radius upload-btn mt-5"><i class="yzm-iconfont yzm-icontianjia"></i> 添加远程地址</a>';
 		
 		return $string;
 	}

@@ -41,7 +41,7 @@ class diyform_field extends common{
 			
 		   if(!preg_match('/^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/', $_POST['field'])) showmsg('字段名格式不正确！');
 		   
-		   $files = array('input','textarea','number','datetime','image','images','attachment','attachments','select','radio','checkbox');
+		   $files = array('input','textarea','number','decimal','datetime','image','images','attachment','attachments','select','radio','checkbox');
 		   if(!in_array($_POST['fieldtype'], $files))  showmsg(L('illegal_parameters'), 'stop');
 		   
 		   $_POST['issystem'] = 0;	
@@ -64,6 +64,8 @@ class diyform_field extends common{
 			   sql::sql_add_field_mediumtext($this->modeltable, $_POST['field']);  
 		   }else if($_POST['fieldtype'] == 'number'){
 			   sql::sql_add_field_int($this->modeltable, $_POST['field'], intval($_POST['defaultvalue']));  
+		   }else if($_POST['fieldtype'] == 'decimal'){
+			   sql::sql_add_field_decimal($this->modeltable, $_POST['field']); 
 		   }else{
 			   sql::sql_add_field($this->modeltable, $_POST['field'], $_POST['defaultvalue'], $_POST['maxlength']);  
 		   }

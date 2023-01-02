@@ -28,11 +28,13 @@
             </div>
             <div class="yzm-content">
                 <ul class="yzm-down-info">
-                    <img src="{get_thumb($thumb)}" title="{$title}" alt="{$title}">
-                    <li><strong>库存:</strong> {$stock} </li>
+                    <li><img src="{get_thumb($thumb)}" title="{$title}" alt="{$title}"></li>
+                    <li><span class="yzm-price">￥{$price}</span> </li>
+                    <li><span data-shopid="{$id}" class="yzm-addshopping" onclick="alert('购物车功能，需购买官方插件后使用！')">添加购物车</span> </li>
+                    <!-- <li><strong>库存:</strong> {$stock} </li>
                     <li><strong>品牌:</strong> {$brand} </li>
                     <li><strong>型号:</strong> {$standard} </li>
-                    <li><strong>产地:</strong> {$yieldly} </li>
+                    <li><strong>产地:</strong> {$yieldly} </li> -->
                 </ul>
                 {if $allow_read}
                     {$content}

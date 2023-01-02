@@ -69,7 +69,7 @@ class message extends wechat_common{
 			
 			$wechat_message = D('wechat_message');
 			
-			$data = D('wechat_user')->field('openid, nickname, headimgurl')->where(array('openid' => $openid))->find();
+			$data = D('wechat_user')->field('openid, nickname, headimgurl, remark')->where(array('openid' => $openid))->find();
 			$wechat_message->update(array('isread'=>1), array('openid' => $openid));
 			$message = $wechat_message->field('issystem, inputtime, content')->where(array('openid' => $openid))->order('id ASC')->select();
 			include $this->admin_tpl('send_message');	
@@ -108,7 +108,7 @@ class message extends wechat_common{
 		global $wechat_user;
 		$wechat_user = isset($wechat_user) ? $wechat_user : D('wechat_user');
         $data = $wechat_user->field('nickname, headimgurl, remark')->where(array('openid' => $openid))->find();
-		return '<img src="'.$data['headimgurl'].'" height="25" title="'.$data['remark'].'"> '.$data['nickname'];
+		return $data['nickname'] ? '<img src="'.$data['headimgurl'].'" height="25" title="'.$data['remark'].'"> '.$data['nickname'] : ($data['remark'] ? $data['remark'] : $openid);
     }
 
 }

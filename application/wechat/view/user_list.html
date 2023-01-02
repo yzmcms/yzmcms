@@ -2,7 +2,7 @@
 <title>微信用户管理 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 微信用户 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 微信管理 <span class="c-gray en">&gt;</span> 微信用户 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <div class="page-container">
 	<div> 
     <form action="<?php echo U('search');?>" method="get" id="search">
@@ -45,11 +45,11 @@
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='4'){?> selected <?php }?> value="4">用户备注</option>	
 		</select>
 	</span>
-     <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="Hui-iconfont">&#xe665;</i> 搜索</button>
+     <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
 	 </form>
 	</div>
 	<form method="post" action="<?php echo U('move_user_group');?>" id="myform">
-	<div class="cl mt-15 tb-top"> <span class="l"><a href="javascript:;" onclick="member_remove()" class="btn btn-primary radius"><i class="Hui-iconfont">&#xe67a;</i> 移动分组</a> <a href="javascript:;" onclick="synchronization()" class="btn btn-success radius"><i class="Hui-iconfont">&#xe68f;</i> 同步微信服务器用户</a></span></div>
+	<div class="cl mt-15 tb-top"> <span class="l"><a href="javascript:;" onclick="member_remove()" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconyidong"></i> 移动分组</a> <a href="javascript:;" onclick="synchronization()" class="btn btn-success radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 同步微信服务器用户</a></span></div>
 	<table class="table table-border table-bg table-hover yzm-table-sort">
 		<thead>
 			<tr class="text-c">
@@ -73,8 +73,14 @@
 			<tr class="text-c">
 				<td><input type="checkbox" class="checkbox" value="<?php echo $val['openid']?>" name="ids[<?php echo $val['wechatid']?>]"></td>
 				<td><?php echo $val['openid'];?></td>
-				<td class="text-l"><img src="<?php echo $val['headimgurl'];?>" height="25" class="radius"> <?php echo $val['nickname'];?></td>
-				<td><?php echo $val['remark'];?></td>
+				<?php if($val['nickname']){ ?>
+				<td class="text-l">
+					<img src="<?php echo $val['headimgurl'];?>" height="25" class="radius"> <?php echo $val['nickname'];?>
+				</td>
+				<?php }else{ ?>
+				<td>/</td>
+				<?php } ?>
+				<td><?php echo $val['remark'] ? $val['remark'] : '/';?></td>
 				<td><?php echo $this->get_groupname($wechat_group, $val['groupid']);?></td>
 				<td><?php echo $val['sex']==2 ? '女' : ($val['sex'] ? '男' : '未知');?></td>
 				<td><?php echo $val['province'];?>-<?php echo $val['city'];?></td>

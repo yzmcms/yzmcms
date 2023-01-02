@@ -126,10 +126,10 @@ if(isset($_SESSION['roleid'])) define('IN_YZMADMIN', true);
 
 /**
  * 处理扩展名后缀
- * @param  string $type 
+ * @param  string $str 
  */
-function handle_suffix($type){
-    return substr($type, 1);
+function handle_suffix($str){
+   return $str ? '.'.$str : '';
 }
 
 
@@ -162,7 +162,7 @@ function attachment_write($info){
     $arr['filesize'] = $info['size'];
     $arr['fileext'] = ltrim($info['type'], '.');
     $arr['module'] = $param->route_m();
-    $arr['isimage'] = in_array($arr['fileext'], array('gif', 'jpg', 'png', 'jpeg')) ? 1 : 0;
+    $arr['isimage'] = is_img($arr['fileext']) ? 1 : 0;
     $arr['downloads'] = 0;
     $arr['userid'] = isset($_SESSION['adminid']) ? $_SESSION['adminid'] : (isset($_SESSION['_userid']) ? $_SESSION['_userid'] : 0);
     $arr['username'] = isset($_SESSION['adminname']) ? $_SESSION['adminname'] : (isset($_SESSION['_username']) ? $_SESSION['_username'] : '');
@@ -217,7 +217,7 @@ function ue_file_upload($fieldName, $config, $base64, $document_root){
 	        return json_encode($info);
 	    }
 
-	    $option['allowtype'] = array_map('handle_suffix', $config['allowFiles']);
+	    $option['allowtype'] = explode('|', get_config('upload_image_types'));
 	    $upload = new $upload_type($option);
 	    if($upload->uploadfile($fieldName)){
 	        $fileinfo = $upload->getnewfileinfo();

@@ -2,7 +2,7 @@
 <title>修改资料 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span>修改资料 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span>修改资料 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <article class="page-container">
 <div class="formdoby_info"> 
 	<form action="" method="post" onsubmit="return check_all()">
@@ -45,7 +45,7 @@
 				<tr>
 					<td>邮箱</td>
 					<td>
-					<input type="email" name="email" value="<?php echo $data['email']; ?>" class="input-text w_300"> <?php if($data['email_status']) echo '<i class="Hui-iconfont" title="已验证" style="color:#2cbac1;font-size:16px">&#xe6a9;</i>'; ?>
+					<input type="email" name="email" value="<?php echo $data['email']; ?>" class="input-text w_300"> <?php if($data['email_status']) echo '<i class="yzm-iconfont yzm-iconqiyong" title="已验证" style="color:#2cbac1;font-size:16px"></i>'; ?>
 					</td>
 				</tr>
 				<tr>
@@ -57,13 +57,13 @@
 				<tr>
 					<td>账户余额</td>
 					<td>
-					<input type="text" name="amount" value="<?php echo $data['amount']; ?>" disabled class="input-text w_100"> *  更改金钱已移动至「<a data-title="在线充值" style="color:#1890ff" _href="<?php echo U('member/recharge',array('username'=>$data['username']));?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
+					<input type="text" name="amount" value="<?php echo $data['amount']; ?>" disabled class="input-text disabled w_100"> *  更改金钱已移动至「<a data-title="在线充值" style="color:#1890ff" _href="<?php echo U('member/recharge',array('username'=>$data['username']));?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
 					</td>
 				</tr>
 				<tr>
 					<td>积分点数</td>
 					<td>
-					<input type="text" name="point" value="<?php echo $data['point']; ?>" disabled class="input-text w_100"> *  更改积分已移动至「<a data-title="在线充值" style="color:#1890ff" _href="<?php echo U('member/recharge',array('username'=>$data['username']));?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
+					<input type="text" name="point" value="<?php echo $data['point']; ?>" disabled class="input-text disabled w_100"> *  更改积分已移动至「<a data-title="在线充值" style="color:#1890ff" _href="<?php echo U('member/recharge',array('username'=>$data['username']));?>" onclick="Hui_admin_tab(this)" href="javascript:void(0)">在线充值</a>」
 					</td>
 				</tr>
 				<tr>
@@ -113,7 +113,7 @@
 				<tr>
 					<td>高级功能</td>
 					<td>
-					<a href="<?php echo U('login_user', array('userid'=>$userid,'yzm_csrf_token'=>$_SESSION['yzm_csrf_token']));?>" target="_blank" style="color:#1890ff"><i class="Hui-iconfont">&#xe62c;</i> 登录到此用户会员中心</a>
+					<a href="<?php echo U('login_user', array('userid'=>$userid,'yzm_csrf_token'=>$_SESSION['yzm_csrf_token']));?>" target="_blank" style="color:#1890ff"><i class="yzm-iconfont yzm-iconyonghu"></i> 登录到此用户会员中心</a>
 					</td>
 				</tr>			
 			</table>

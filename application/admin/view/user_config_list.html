@@ -2,17 +2,17 @@
 <title>自定义配置 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span> 自定义配置 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 系统管理 <span class="c-gray en">&gt;</span> 自定义配置 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <div class="page-container">
   <div class="explain light"> 
      <p><span class="yzm-iconfont yzm-iconshuoming"></span>用户可以根据需要自己添加配置，所添加的配置信息与系统配置信息等效.</p>
   </div>
   <div class="cl mt-15 tb-top"> 
 	  <span class="l">
-	  <a class="btn btn-primary radius" onclick="yzm_open('添加配置','<?php echo U('user_config_add');?>','700','450')" href="javascript:;"><i class="Hui-iconfont">&#xe600;</i> 添加配置</a>
-	  <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="Hui-iconfont">&#xe6e2;</i> 批量删除</a>  
-	  <a href="<?php echo U('user_config_export');?>" class="btn btn-success radius"><i class="Hui-iconfont">&#xe644;</i> 导出配置</a>  
-	  <a onclick="yzm_open('导入配置','<?php echo U('user_config_import');?>','550','300')" href="javascript:;" class="btn btn-warning radius"><i class="Hui-iconfont">&#xe645;</i> 导入配置</a>  
+	  <a class="btn btn-primary radius" onclick="yzm_open('添加配置','<?php echo U('user_config_add');?>','700','500')" href="javascript:;"><i class="yzm-iconfont yzm-icontianjia"></i> 添加配置</a>
+	  <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a>  
+	  <a href="<?php echo U('user_config_export');?>" class="btn btn-success radius"><i class="yzm-iconfont yzm-icondaochu"></i> 导出配置</a>  
+	  <a onclick="yzm_open('导入配置','<?php echo U('user_config_import');?>','550','300')" href="javascript:;" class="btn btn-warning radius"><i class="yzm-iconfont yzm-icondaochu"></i> 导入配置</a>  
 	  </span> 
 	  <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> 
   </div>
@@ -37,7 +37,15 @@
 		    <td><input type="checkbox" value="<?php echo $val['id']?>" name="id[]"></td>
 			<td><?php echo $val['name']?></td>
 			<td><?php echo $val['fieldtype']?></td>
-			<td><?php echo str_cut(htmlspecialchars($val['value']),80); ?></td>
+			<td>
+				<?php 
+					if($val['fieldtype'] == 'image'){
+						echo '<span style="color:#0a6999;font-size:14px;vertical-align:middle;" onmouseover="yzm_img_browse(this, \''.$val['value'].'\')" onmouseout="layer.closeAll(\'tips\')" class="yzm-iconfont yzm-icontupian1 pointer"></span> '.$val['value'];
+					}else{
+						echo str_cut(htmlspecialchars($val['value']),80); 
+					}
+				?>
+			</td>
 			<td><?php echo $val['title'] ? htmlspecialchars($val['title']) : '无';?></td>
 			<td>
 				<?php if($val['status']){ ?>
@@ -47,8 +55,8 @@
 				<?php } ?>
 			</td>
 			<td>
-				<a title="编辑配置" href="javascript:;" onclick="yzm_open('编辑配置','<?php echo U('user_config_edit',array('id'=>$val['id']));?>','700','450')" class="yzm-box-img btn-primary"><i class="Hui-iconfont">&#xe6df;</i> 编辑</a> 
-				<a title="复制标签" href="javascript:;" onclick="yzm_copy('{$site[<?php echo $val['name']?>]}')" class="yzm-box-img btn-success"><i class="Hui-iconfont">&#xe6ea;</i> 复制</a>
+				<a title="编辑配置" href="javascript:;" onclick="yzm_open('编辑配置','<?php echo U('user_config_edit',array('id'=>$val['id']));?>','700','500')" class="yzm-box-img btn-primary"><i class="yzm-iconfont yzm-iconbianji1"></i> 编辑</a> 
+				<a title="复制标签" href="javascript:;" onclick="yzm_copy('{$site[<?php echo $val['name']?>]}')" class="yzm-box-img btn-success"><i class="yzm-iconfont yzm-iconfuzhi"></i> 复制</a>
 			</td>
 		  </tr>		
 		<?php 

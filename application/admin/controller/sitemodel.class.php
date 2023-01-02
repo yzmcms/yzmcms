@@ -54,7 +54,7 @@ class sitemodel extends common {
 			$tablename = isset($_POST['tablename']) ? strip_tags($_POST['tablename']) : '';
 			if(!$tablename) return_json(array('status'=>0,'message'=>'模型表名不能为空！'));			
 			$model = D('model');
-			if($model->table_exists(C('db_prefix').$tablename)) return_json(array('status'=>0,'message'=>'模型表名已存在！'));	
+			if($model->table_exists($tablename)) return_json(array('status'=>0,'message'=>'模型表名已存在！'));	
 			$_POST['issystem'] = $_POST['type'] = 0;
 			$_POST['alias'] = trim($_POST['alias']);
 			$_POST['inputtime'] = SYS_TIME;

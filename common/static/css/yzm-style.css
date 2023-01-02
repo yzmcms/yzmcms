@@ -205,10 +205,17 @@
 .yzm-product-list img:hover{transform: scale(1.1);}
 .yzm-product-right{float: right; width: 270px;}
 .yzm-product-title{font-size: 16px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 35px}
-.yzm-product-price{color: #fd6161; line-height: 35px}
+.yzm-product-price{color:#fd6161;line-height:35px}
 .yzm-product-stock{line-height: 35px}
 .yzm-product-details{background: #fd6161; border-radius: 3px; display: block; width: 130px; height: 35px; line-height: 35px; text-align: center; color: #fff; transition: 0.3s; font-size: 16px;}
 .yzm-product-details:hover{color: #fff; opacity: 0.8}
+.yzm-price{color:#fd6161;line-height:35px;font-size:18px;margin-bottom:15px;display:inline-block;}
+.yzm-addshopping{cursor:pointer; background: #df3033;border-radius: 3px;display: block;width: 130px;height: 35px;line-height: 35px;text-align: center;color: #fff;transition: 0.3s;font-size: 13px;}
+.yzm-addshopping:hover{background: #ed1316}
+.yzm-shopping-box{position:fixed;bottom:50px;right:60px;border:1px solid #ddd;padding:15px;border-radius: 5px;box-shadow: 0px 0px 20px 3px rgba(51,51,51,0.3);transition: all 0.3s;}
+.yzm-shopping-box:hover{box-shadow: 0px 0px 20px 5px rgba(0,0,0,0.3);}
+.yzm-shopping-box img{width:30px}
+.yzm-shopping-box .shopping_number{position: absolute;top: -10px;right: -10px;background: #e94b35;color: #fff;border-radius: 100%;height: 28px;width: 28px;text-align: center;line-height: 28px;font-size: 16px;font-weight: bold;}
 .yzm-image{width: 100%; height: 450px; line-height: 450px; text-align: center; border: 1px solid #ddd; background: #f9f8f8}
 .yzm-image img{width: 600px; height: 450px; overflow: hidden;}
 .yzm-switch{width: 100%; height: 87px; border: 1px solid #ddd; margin: 5px auto;}

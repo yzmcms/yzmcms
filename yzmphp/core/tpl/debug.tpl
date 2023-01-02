@@ -25,7 +25,8 @@
 			}
 		}		
 		echo '<div style="margin-top:5px;">［其他信息］</div>';
-		echo '<div style="padding-left:20px">服务器信息：'.$_SERVER['SERVER_SOFTWARE'].'</div>';
+		echo '<div style="padding-left:20px">WEB服务器：'.$_SERVER['SERVER_SOFTWARE'].'</div>';
+		echo '<div style="padding-left:20px">PHP版本：'.PHP_VERSION.'</div>';
 		echo '<div style="padding-left:20px">路由信息：模块( '.ROUTE_M.' )，控制器( '.ROUTE_C.' )，方法( '.ROUTE_A.' )，参数( '.$parameter.' )</div>';
 		if(session_id()) {
 			echo '<div style="padding-left:20px">会话信息：'.session_name().' = '.session_id().'</div>';

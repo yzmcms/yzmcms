@@ -24,7 +24,7 @@ class content_form {
 			$string = '';
 			foreach($modelinfo as $val){
 				$fieldtype = $val['fieldtype'];
-				if($fieldtype == 'input' || $fieldtype == 'number'){
+				if($fieldtype == 'input' || $fieldtype == 'number' || $fieldtype == 'decimal'){
 						$errortips = !empty($val['errortips']) ? $val['errortips'] : '必填项不能为空';
 						$required = $val['isrequired'] ? ' required" errortips="'.$errortips : '';
 						$string .= $this->tag_start($val['name'], $val['isrequired']).'<input type="text" class="input-text'.$required.'" value="'.$val['defaultvalue'].'" name="'.$val['field'].'" placeholder="'.$val['tips'].'">'.$this->tag_end();		   
@@ -54,7 +54,7 @@ class content_form {
 		$string = '';
 		foreach($modelinfo as $val){
 			$fieldtype = $val['fieldtype'];
-			if($fieldtype == 'input' || $fieldtype == 'number'){
+			if($fieldtype == 'input' || $fieldtype == 'number' || $fieldtype == 'decimal'){
 					$required = $val['isrequired'] ? ' required="required" ' : '';
 					$string .= $this->tag_start($val['name'], $val['isrequired']).'<input type="text" class="input-text" value="'.$data[$val['field']].'" '.$required.' name="'.$val['field'].'" placeholder="'.$val['tips'].'">'.$this->tag_end();		   
 			}elseif($fieldtype == 'textarea'){

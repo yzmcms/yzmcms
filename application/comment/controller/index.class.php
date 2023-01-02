@@ -29,14 +29,15 @@ class index{
 	 * 发布评论
 	 */
 	public function init(){	
- 		if(isset($_POST['dosubmit'])) {
-			if(empty($_POST['content'])) showmsg('评论内容不能为空！', 'stop');
+ 		if(is_post()) {
+			if(empty($_POST['content'])) return_message('评论内容不能为空！', 0);
 			
 			$site = array_merge(get_config(), $this->siteinfo);
 			if($site['comment_code']){
+				!isset($_POST['code']) && return_message(L('code_error'), 0);
 				if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
 					$_SESSION['code'] = '';
-					showmsg(L('code_error'), '', 1);
+					return_message(L('code_error'), 0);
 				}
 				$_SESSION['code'] = '';
 			}
@@ -48,7 +49,6 @@ class index{
 			}
 			
 			$ip = getip();
-			
 			if($userid) $this->_check_auth($userid, $username, $ip);
 			
 			$_POST = new_html_special_chars($_POST);
@@ -67,7 +67,7 @@ class index{
 			$_POST['status'] = !$site['comment_check']; 
 			$_POST['total'] = 1;
 
-			if(empty($_POST['url'])) showmsg(L('illegal_parameters'), 'stop');
+			if(empty($_POST['url'])) return_message(L('illegal_parameters'), 0);
 			
 			//评论回复
 			if($_POST['reply']){
@@ -98,11 +98,7 @@ class index{
 				$comment_data->insert($_POST, false, false);
 			}
 			
-			if($_POST['status']){
-				showmsg('评论成功！', '', 2);
-			}else{
-				showmsg('评论成功，待管理员审核后显示！', '', 2);
-			}
+			return_message($_POST['status']?'评论成功！':'评论成功，待管理员审核后显示！');
 				
 		}
 	}
@@ -112,13 +108,13 @@ class index{
 	 * 更多评论
 	 */
 	public function more(){
-		$sign = isset($_GET['sign']) ? trim($_GET['sign']) : showmsg(L('lose_parameters'), 'stop');
+		$sign = isset($_GET['sign']) ? trim($_GET['sign']) : return_message(L('lose_parameters'), 0);
 		list($modelid, $id) = explode('_', $sign);
 		$tabname = get_model($modelid);
-		if(!$tabname) showmsg(L('illegal_parameters'), 'stop');
+		if(!$tabname) return_message(L('illegal_parameters'), 0);
 		$id = intval($id);
 		$content_data = D($tabname)->field('catid,status,title,url,inputtime,updatetime,keywords,description')->where(array('id'=>$id))->find();
-		if(!$content_data || $content_data['status'] != 1) showmsg(L('illegal_parameters'), 'stop');
+		if(!$content_data || $content_data['status'] != 1) return_message(L('illegal_parameters'), 0);
 		$commentid = $this->_get_commentid($modelid, $content_data['catid'], $id);
 
 		yzm_base::load_sys_class('page','',0);
@@ -163,10 +159,19 @@ class index{
 	protected function _check_auth($userid, $username, $ip){
 		$groupid = intval(get_cookie('_groupid'));
 		$groupinfo = get_groupinfo($groupid);
-		if(strpos($groupinfo['authority'], '2') === false) showmsg('你没有权限发布评论，请升级会员组！', 'stop');
+		if(strpos($groupinfo['authority'], '2') === false) return_message('你没有权限发布评论，请升级会员组！', 0);
+
+		// IP黑名单验证
+		$blacklist_ip = get_config('blacklist_ip');
+		if($blacklist_ip){
+			$arr = explode(',', $blacklist_ip);
+			foreach($arr as $val){
+				if(check_ip_matching($val, $ip)) return_message('IP黑名单用户，禁止评论！', 0);
+			}
+		}
 
 		$inputtime = D('comment')->field('inputtime')->where(array('userid'=>$userid))->order('id DESC')->one();
-		if($inputtime && ($inputtime+5>=SYS_TIME)) showmsg('评论过快，请稍后再试！', 'stop');
+		if($inputtime && ($inputtime+5>=SYS_TIME)) return_message('评论过快，请稍后再试！', 0);
 		
 		$pay = D('pay');
 		$comment_point = get_config('comment_point');

@@ -11,7 +11,7 @@
 
 class index{
 
-	private $siteid,$siteinfo;
+	private $siteid,$siteinfo,$ip;
 	
 	public function __construct(){
 		$ismobile = ismobile() ? true : false;
@@ -39,21 +39,23 @@ class index{
 	 */
 	public function init(){	
 		new_session_start();
-		if(!get_config('is_words')) showmsg('管理员已关闭留言功能！', 'stop');
+		if(!get_config('is_words')) return_message('管理员已关闭留言功能！', 0);
 		
- 		if(isset($_POST['dosubmit'])) {
-			
-			if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
+ 		if(is_post()) {
+			if(get_config('words_code')){
+				!isset($_POST['code']) && return_message(L('code_error'), 0);
+				if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
+					$_SESSION['code'] = '';
+					return_message(L('code_error'), 0);
+				}
 				$_SESSION['code'] = '';
-				showmsg(L('code_error'), '', 2);
 			}
-			$_SESSION['code'] = '';
 
 			$this->_check($_POST);
 			
 			$_POST['siteid'] = $this->siteid;
 			$_POST['booktime'] = SYS_TIME;
-			$_POST['ip'] = getip();
+			$_POST['ip'] = $this->ip;
 			$_POST['ispc'] = ismobile() ? 0 : 1;
 			$_POST['ischeck'] = $_POST['isread'] = $_POST['replyid'] = 0;
 			D('guestbook')->insert($_POST, true);
@@ -61,7 +63,7 @@ class index{
 			//发送邮件通知
 			$this->_sendmail($_POST);
 			
-			showmsg('留言成功，请耐心等待管理员审核！');
+			return_message('留言成功，请耐心等待管理员审核！');
 		}else{
 			$site = array_merge(get_config(), $this->siteinfo);
 
@@ -76,21 +78,31 @@ class index{
 	 */
 	private function _check($data){
 		if(empty($data['title']) || empty($data['bookmsg']) || empty($data['name'])){
-			showmsg('留言必填项不能为空！', '', 2);
+			return_message('留言必填项不能为空！', 0);
+		}
+
+		// IP黑名单验证
+		$this->ip = getip();
+		$blacklist_ip = get_config('blacklist_ip');
+		if($blacklist_ip){
+			$arr = explode(',', $blacklist_ip);
+			foreach($arr as $val){
+				if(check_ip_matching($val, $this->ip)) return_message('IP黑名单用户，禁止访问！', 0);
+			}
 		}
 
 		// 开启重复验证
 		$res = D('guestbook')->field('title,name,bookmsg')->order('id DESC')->find();
 		if($res && $data['title']==$res['title'] && $data['bookmsg']==$res['bookmsg']){
-			showmsg('请勿重复提交！', '', 2);
+			return_message('请勿重复提交！', 0);
 		}
 
 		// 开启中文验证
-		if(get_config('is_words_chinese')){
-			if(!preg_match("/([\x{4e00}-\x{9fa5}]+)/u", $data['title']) || !preg_match("/([\x{4e00}-\x{9fa5}]+)/u", $data['bookmsg'])){
-				showmsg('请填写有意义的内容！', '', 2);
-			}
-		}
+		// if(get_config('is_words_chinese')){
+		// 	if(!preg_match("/([\x{4e00}-\x{9fa5}]+)/u", $data['title']) || !preg_match("/([\x{4e00}-\x{9fa5}]+)/u", $data['bookmsg'])){
+		// 		return_message('请填写有意义的内容！', 0);
+		// 	}
+		// }
 		
 		return true;
 	}
