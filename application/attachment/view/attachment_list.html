@@ -45,7 +45,7 @@
 		  <tr class="text-c">
 			<td><input type="checkbox" value="<?php echo $val['id']?>" name="id[]"></td>
 			<td><?php echo $val['id']?></td>
-			<td><?php echo $val['module']?></td>
+			<td><?php echo $val['module'] ? $val['module'] : '/' ?></td>
 			<td>
 				<?php 
 				$src = $val['isimage'] ? $val['filepath'].$val['filename'] : (in_array($val['fileext'], array('zip', 'rar')) ? STATIC_URL.'images/ext/rar.png' : STATIC_URL.'images/ext/blank.png'); 

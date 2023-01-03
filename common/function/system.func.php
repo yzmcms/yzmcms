@@ -430,6 +430,7 @@ function down_remote_img($content, $targeturl = ''){
 		$len = $data ? file_put_contents($filename, $data) : 0;
 		if($len){  
 			$arr = array(
+				'siteid' => get_siteid(),
 				'originname' => '远程下载-'.basename($value),
 				'filename' => $imgname,
 				'filepath' => $urlpath.'/',
