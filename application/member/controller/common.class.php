@@ -34,18 +34,19 @@ class common{
 			}
 			return true;
 		} else {
-			$this->userid = $userid = intval(get_cookie('_userid'));
-			if(!isset($_SESSION['_userid']) || !$_SESSION['_userid'] || $userid != $_SESSION['_userid']){
-				showmsg(L('login_website'), U('member/index/login'), 1);
+			$this->userid = intval(get_cookie('_userid'));
+			if(!isset($_SESSION['_userid']) || !$_SESSION['_userid'] || $this->userid != $_SESSION['_userid']){
+				$referer = isset($_GET['referer']) && !empty($_GET['referer']) ? urldecode($_GET['referer']) : '';
+				showmsg(L('login_website'), url_referer(1, $referer), 1);
 			}
 
 			$this->db = D('member');
-			$this->memberinfo = $this->db->where(array('userid'=>$userid))->find();
+			$this->memberinfo = $this->db->where(array('userid'=>$this->userid))->find();
 			
 			//如果用户不存在或者不是正常状态，即停止
 			if(empty($this->memberinfo) ||  $this->memberinfo['status'] != '1') showmsg('账号异常！', 'stop');
 			
-			$data = D('member_detail')->where(array('userid'=>$userid))->find();
+			$data = D('member_detail')->where(array('userid'=>$this->userid))->find();
 			if(!$data) $data = array();
 			
 			$this->memberinfo = array_merge($this->memberinfo, $data);

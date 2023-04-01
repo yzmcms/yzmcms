@@ -604,6 +604,7 @@ function format_time($date = 0, $type = 1) {
  * @return string	返回大小
  */
 function sizecount($size, $prec = 2) {
+	$size = intval($size);
 	$arr = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB');
 	$pos = 0;
 	while ($size >= 1024) {
@@ -1307,7 +1308,7 @@ function write_log($message, $filename = '', $ext = '.log', $path = '') {
  * @return bool
  */
 function write_error_log($err_arr, $path = '') {
-	if(!C('error_log_save')) return false;
+	if(!C('error_log_save') || defined('CLOSE_WRITE_LOG')) return false;
 	$err_arr = is_array($err_arr) ? $err_arr : array($err_arr);
 	$message[] = date('Y-m-d H:i:s');
 	$message[] = get_url();

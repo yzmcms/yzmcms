@@ -27,8 +27,8 @@
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='news'){?> selected <?php }?> value="news">图文</option>	
 		</select>
 	</span>
-	MEDIA_ID：<input type="text" name="media_id" class="input-text" style="width:200px" value="<?php if(isset($_GET['media_id'])) echo $_GET['media_id'];?>">
-    <button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+	MEDIA_ID：<input type="text" name="media_id" class="input-text" style="width:200px" value="<?php if(isset($_GET['media_id'])) echo $_GET['media_id'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+    <a href="<?php echo U('init');?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</a>
 	 </form>
 	</div>
   <div class="cl mt-15 tb-top"> <span class="l">

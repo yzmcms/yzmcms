@@ -393,7 +393,7 @@ class yzm_tag{
 				return $search_data;
 			case 'tag' : 
 				$tagid = isset($_GET['id']) ? intval($_GET['id']) : 0;
-				$where = array('tagid' => $tagid);
+				$where = array('siteid'=>$siteid,'tagid'=>$tagid);
 				$db = D('tag_content');
 
 				if(isset($data['page'])){

@@ -151,7 +151,7 @@ class databack{
             foreach ($result as $row) {
                 $sql = "INSERT INTO `{$table}` VALUES (";
 				foreach($row as $v){
-					$sql .= $v ? "'".str_replace("\r\n", '\r\n', addslashes($v))."'," : "'',";
+                    $sql .= $v ? "'".str_replace(array("\r\n", "\n"), '\n', addslashes($v))."'," : ($v===null ? 'NULL,' : "'".$v."',");
 				}
 				$sql = trim($sql, ',').");\n";
                 if(false === $this->write($sql)){

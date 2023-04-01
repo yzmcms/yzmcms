@@ -24,7 +24,8 @@
 				<option <?php if(isset($_GET['type']) && $_GET['type']=='2'){?> selected <?php }?> value="2">登录IP</option>	
 				</select>
 			</span>
-			<input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+			<input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+			<a href="<?php echo U('admin_login_log_list');?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</a>
 		</form>	
 	</div>
   <div class="cl mt-15 tb-top"> <span class="l"><a href="javascript:;" onclick="yzm_del('<?php echo U('del_login_log',array('dosubmit'=>1));?>')" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 删除一个月之前记录</a></span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>

@@ -117,12 +117,12 @@ class reply extends common{
 				$where['updatetime>'] = strtotime($_GET["start"]);
 				$where['updatetime<'] = strtotime($_GET["end"]);
 			}
-			if($_GET['searinfo']) $where['title'] = '%'.safe_replace(trim($_GET['searinfo'])).'%';
+			if($_GET['searinfo']) $where['title'] = '%'.safe_replace($_GET['searinfo']).'%';
 		}
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
 		$total = $model_db->where($where)->total();
 		$page = new page($total, 7);
-		$data = $model_db->field('id, title, url, thumb, flag, catid, readpoint, updatetime')->where($where)->order('id DESC')->limit($page->limit())->select();
+		$data = $model_db->field('id, title, url, thumb, flag, catid, readpoint, inputtime, updatetime')->where($where)->order('id DESC')->limit($page->limit())->select();
 		include $this->admin_tpl('select_article');
 	}
 

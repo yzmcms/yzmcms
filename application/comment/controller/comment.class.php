@@ -47,14 +47,14 @@ class comment extends common {
 		if(isset($_GET['dosubmit'])){
 			$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 0;
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
-			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 			$status = isset($_GET["status"]) ? intval($_GET["status"]) : 99 ;
 			if($modelid) $where .= ' AND modelid = '.$modelid;
 			if($status != 99) $where .= ' AND status = '.$status;
 			if(isset($_GET["start"]) && $_GET["start"] != '' && $_GET["end"]){		
 				$where .= ' AND inputtime BETWEEN '.strtotime($_GET["start"]).' AND '.strtotime($_GET["end"]);
 			}
-			if($searinfo != ''){
+			if($searinfo){
 				if($type == '1'){
 					$where .= ' AND title LIKE \'%'.$searinfo.'%\'';
 				}elseif($type == '2'){

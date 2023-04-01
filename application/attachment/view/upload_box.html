@@ -109,8 +109,11 @@ $(function(){
 		
 		var string = '';
 		var strs, tits; 
-		strs = att_status.split("|");
-		tits = att_titles.split("|");
+		strs = att_status.split('|');
+		tits = att_titles.split('|');
+		tits.forEach(function(val,index,tits){
+		    tits[index] = val.substring(0, val.lastIndexOf('.'));
+		});
 		var title = parent.$("input[name='title']").val();
 		for (i=0;i<strs.length;i++ ){ 
 			var alt = title ? title+'-'+(i+1) : tits[i];

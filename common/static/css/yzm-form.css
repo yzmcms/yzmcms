@@ -17,7 +17,8 @@
 .yzm-textarea{border:1px solid #ced4da;color:#495057;box-sizing:border-box;border-radius:3px;padding:8px 12px;width:100%;height:120px;outline:none}
 .yzm-input-text:focus,
 .yzm-textarea:focus{transition: all 0.218s ease 0s;border: 1px solid #2196f3;}
-.yzm-select{background: #fff none repeat scroll 0 0;border-color: #ddd;border-image: none;border-style: solid;border-width: 1px;height: 30px;line-height: 30px;margin-right: 2px;min-width: 100px;outline: none}
+.yzm-select{background: #fff none repeat scroll 0 0;border-color: #ddd;border-image: none;border-style: solid;border-width: 1px;height: 30px;line-height: 30px;margin-right: 2px;min-width: 100px;outline: none;padding: 0 5px}
+.yzm-checkbox,.yzm-radio{margin-right:2px}
 .fieldset_list{border: 1px solid #d8d8d8;margin: 10px 0}
 .fieldset_list legend{font-size: 13px;color: #666;background-color: #f9f9f9;border: 1px solid #d8d8d8;padding: 0 15px;height: 25px;line-height: 25px;width: 56px;margin-bottom: 0px;}
 .fieldset_tip{text-align: center;font-size: 13px;margin-top: 5px;margin-bottom: 10px;}
@@ -28,8 +29,7 @@
 .file_ul li a:hover{text-decoration:none;opacity:0.8}
 .file_ul li a.danger{background:#f56c6c;}
 .file_ul li a.danger:hover{background:#f78989;}
-.radio{margin-right: 3px;}
-.option_label{margin-right: 8px;}
+.option_label{margin-right: 8px;cursor: pointer}
 .red{color: red;margin-left: 5px}
 .codeimg{cursor: pointer;margin-left: 20px;vertical-align: middle;}
 .uploadfile{height: 25px;line-height: 25px;width: 330px;padding: 3px 5px;border-radius: 2px;border: 1px solid #dadada;outline: none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}

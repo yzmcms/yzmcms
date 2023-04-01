@@ -49,7 +49,7 @@ a:hover{color:#1eaff1;}
 .searchtxt .searchmenu .searchselected{color:#666;cursor:pointer;font-size:14px;height:36px;line-height:36px;padding-left:15px;width:60px;background-position: 55px -85px;}
 .searchtxt .searchmenu .searchopen{background-position:55px -113px}
 .searchtxt .searchmenu .searchtab{display:none; position:absolute;top:36px;left:-2px;width:75px;border:2px solid #2196f3;border-top:0;background:#fff;z-index:100;}
-.searchtxt .searchmenu .searchtab li{height:28px;line-height:28px;color:#666;font-size:14px;cursor:pointer;padding-left:15px}
+.searchtxt .searchmenu .searchtab li{height:28px;line-height:28px;color:#666;font-size:14px;cursor:pointer;padding-left:15px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding-right:6px}
 .searchtxt .searchmenu .searchtab li.selected{background:#edf3fc;color:#018dbc;}
 .searchtxt input{float:left;border:0;background:#fff;color:#666;padding:7px 8px;width:350px;height:22px;line-height:22px;margin:0;outline:medium none;}
 .searchbtn{float:left;}

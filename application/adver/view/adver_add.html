@@ -63,21 +63,21 @@
 
 	function dosub(obj){
 		 if(obj.title.value==''){
-			 layer.msg('广告名称不能为空！');
+			 layer.msg('广告名称不能为空！', {icon:2});
 			 return false;
 		 }
 		 if(obj.url.value==''){
-			 layer.msg('链接地址不能为空！');
+			 layer.msg('链接地址不能为空！', {icon:2});
 			 return false;
 		 }
 		 if($("input[name='type']:checked").val()=='3'){
 			 if(obj.img.value==''){
-				 layer.msg('图像地址不能为空！');
+				 layer.msg('图像地址不能为空！', {icon:2});
 				 return false;
 			 }
 		 }else{
 			 if(obj.text.value==''){
-				 layer.msg('广告值不能为空！');
+				 layer.msg('广告值不能为空！', {icon:2});
 				 return false;
 			 }
 		 }

@@ -59,7 +59,7 @@ class collection {
 		$end = str_replace(array("\r", "\n"), "", $end);		
 		
         $html = explode(trim($start), $html);
-		if(is_array($html)) $html = explode(trim($end), $html[1]);
+		if(is_array($html) && isset($html[1])) $html = explode(trim($end), $html[1]);
 		return trim($html[0]);
     }
 	

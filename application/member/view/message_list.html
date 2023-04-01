@@ -19,13 +19,15 @@
 		</select>
 	 </span>
 	 <span class="select-box inline">
-		<select name="type" class="select">
-			<option value="0">全部</option>
-			<option value="1" <?php if(isset($_GET['type']) && $_GET['type']=='1'){?> selected <?php }?>>收件人</option>
-			<option value="2" <?php if(isset($_GET['type']) && $_GET['type']=='2'){?> selected <?php }?>>发件人</option>
-		</select>
+	 	<select name="type" class="select">
+	 	<option <?php if(isset($_GET['type']) && $_GET['type']=='1'){?> selected <?php }?> value="1">收件人</option>
+	 	<option <?php if(isset($_GET['type']) && $_GET['type']=='2'){?> selected <?php }?> value="2">发件人</option>	
+	 	<option <?php if(isset($_GET['type']) && $_GET['type']=='3'){?> selected <?php }?> value="3">消息标题</option>	
+	 	<option <?php if(isset($_GET['type']) && $_GET['type']=='4'){?> selected <?php }?> value="4">消息内容</option>	
+	 	</select>
 	 </span>
-      用户名：<input type="text" name="username" class="input-text" style="width:170px" value="<?php if(isset($_GET['username'])) echo $_GET['username'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+	 	<input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+      <a href="<?php echo U('init');?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</a>
 	 </form>	
   </div>
   <div class="cl mt-15 tb-top"> <span class="l">
@@ -37,8 +39,8 @@
     <thead>
       <tr class="text-c">
         <th width="25"><input type="checkbox"></th>
-				<th>标题</th>
-				<th>内容</th>
+				<th>消息标题</th>
+				<th>消息内容</th>
 				<th width="100">发件人</th>
 				<th width="100">收件人</th>
 				<th width="50">状态</th>
@@ -55,7 +57,7 @@
 			<td><?php echo $val['content']?></td>
 			<td><?php echo $val['send_from']?></td>
 			<td><?php echo $val['send_to']?></td>
-			<td><?php echo $val['isread'] ? '<span class="c-blue">已读</span>' : '<span class="c-red">未读</span>';?></td>
+			<td><?php echo $val['isread'] ? '<span class="label label-success radius">已读</span>' : '<span class="label label-danger radius">未读</span>';?></td>
 			<td><?php echo date("Y-m-d",$val['message_time'])?><br><?php echo date("H:i:s",$val['message_time'])?></td>
 		  </tr>		
 		<?php 

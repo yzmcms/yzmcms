@@ -33,9 +33,12 @@ class banner extends common {
 	public function cat_add() {
 
 		if(isset($_POST['dosubmit'])) {
-			$typeid = D('banner_type')->insert($_POST, true);
+			$name = input('post.name', '', 'trim');
+			$r = D('banner_type')->field('tid')->where(array('name'=>$name))->one();
+			if($r) return_json(array('status'=>0,'message'=>'分类名称已存在！'));
+			$typeid = D('banner_type')->insert(array('name'=>$name), true);
 			if($typeid){
-                $html = "<option value='{$typeid}' selected>{$_POST['name']}</option>";
+                $html = "<option value='{$typeid}' selected>{$name}</option>";
 				return_json(array('status'=>1,'message'=>L('operation_success'),'html'=>$html));
 			}else{
 				return_json(array('status'=>0,'message'=>L('operation_failure')));
@@ -115,6 +118,20 @@ class banner extends common {
 				showmsg(L('operation_failure'));
 			}
 		}
+	}
+
+
+	/**
+	 * 排序
+	 */
+	public function order() {
+		if(isset($_POST["order_id"])){
+			$banner = D('banner');
+			foreach($_POST['order_id'] as $key=>$val){
+				$banner->update(array('listorder'=>$_POST['listorder'][$key]),array('id'=>intval($val)));
+			}
+		}
+		showmsg(L('operation_success'), '', 1);
 	}
 
 

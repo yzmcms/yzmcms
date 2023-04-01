@@ -40,7 +40,7 @@
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>栏　　目：</label>
-			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box"><?php echo select_category('catid', $data['catid'], '≡ 请选择栏目 ≡', 0, '', true, true); ?></span> </div>
+			<div class="formControls col-xs-8 col-sm-9"> <span class="select-box"><?php echo select_category('catid', $data['catid'], '≡ 请选择栏目 ≡', 0, '', true, true, $modelid); ?></span> </div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2">TAG标签：</label>
@@ -185,7 +185,7 @@
 	
 	function yzm_content_close(){
 		if(UE.getEditor('content').getContent()!=''){
-			layer.confirm('内容未保存，确定要关闭吗？',function(index){
+			layer.confirm('内容未保存，确定要关闭吗？', {title:"操作提示"}, function(index){
 				yzmcms_close();
 			});
 		}else{

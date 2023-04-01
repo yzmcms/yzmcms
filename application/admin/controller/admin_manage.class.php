@@ -20,12 +20,30 @@ class admin_manage extends common {
 	 */
 	public function init() {
 		$roleid = isset($_GET['roleid']) ? intval($_GET['roleid']) : 0;
-
 		$where = $roleid ? array('roleid' => $roleid) : array();
+		if(isset($_GET['dosubmit'])){	
+			$type = isset($_GET['type']) ? intval($_GET['type']) : 1;
+			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			if(isset($_GET['start']) && isset($_GET['end']) && $_GET['start']) {
+				$where['addtime>='] = strtotime($_GET['start']);
+				$where['addtime<='] = strtotime($_GET['end']);
+			}
+			if($searinfo){
+				if($type == '1')
+					$where['adminname'] = '%'.$searinfo.'%';
+				elseif($type == '2')
+					$where['email'] = '%'.$searinfo.'%';
+				elseif($type == '3')
+					$where['realname'] = '%'.$searinfo.'%';
+				else
+					$where['addpeople'] = '%'.$searinfo.'%';
+			}			
+		}
 		$admin = D('admin');
 		$total = $admin->where($where)->total();
 		$page = new page($total, 15);
 		$data = $admin->where($where)->order('adminid DESC')->limit($page->limit())->select();
+		$role_data = D('admin_role')->field('roleid,rolename')->where(array('disabled'=>0))->order('roleid ASC')->limit(100)->select();
 		
 		include $this->admin_tpl('admin_list');
 	}
@@ -37,11 +55,11 @@ class admin_manage extends common {
 	public function delete() {
 		if(!isset($_GET['yzm_csrf_token']) || !check_token($_GET['yzm_csrf_token'])) showmsg(L('token_error'), 'stop');
 		$adminid = intval($_GET['adminid']);
-		if($adminid == '1' || $adminid == $_SESSION['adminid']) showmsg('不能删除ID为1的管理员，或不能删除自己！', 'stop');
+		if($adminid == '1' || $adminid == $_SESSION['adminid']) return_json(array('status'=>0,'message'=>'不能删除ID为1的管理员，或不能删除自己！'));
 		$roleid = D('admin')->field('roleid')->where(array('adminid'=>$adminid))->one();
-		if($roleid < $_SESSION['roleid']) showmsg('无权删除该管理员！', 'stop');
+		if($roleid < $_SESSION['roleid']) return_json(array('status'=>0,'message'=>'无权删除该管理员！'));
 		D('admin')->delete(array('adminid'=>$adminid));
-		showmsg(L('operation_success'), '', 1);
+		return_json(array('status'=>1,'message'=>L('operation_success')));
 	}
 	
 	

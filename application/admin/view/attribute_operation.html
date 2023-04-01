@@ -1,31 +1,46 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
-<title>内容属性操作 - YzmCMS内容管理系统</title>
+<title>内容属性/状态操作 - YzmCMS内容管理系统</title>
 </head>
 <body>
 <article class="page-container">
-
     <form class="form form-horizontal" onsubmit="return dosub(this)" method="post">
+		<?php if($t==1){ ?>
 		<div class="row cl">
-			<label class="form-label col-xs-3"><span class="c-red">*</span>属性：</label>
+			<label class="form-label col-xs-3"><span class="c-red">*</span>变更类型：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-                <label class="mr-10">置顶[1] <input name="flag[]" type="checkbox" value="1"/></label>
-                <label class="mr-10">头条[2] <input name="flag[]" type="checkbox" value="2"/></label>
-                <label class="mr-10">特荐[3] <input name="flag[]" type="checkbox" value="3"/></label>
-                <label class="mr-10">推荐[4] <input name="flag[]" type="checkbox" value="4"/></label><br>
-                <label class="mr-10">热点[5] <input name="flag[]" type="checkbox" value="5"/></label>
-                <label class="mr-10">幻灯[6] <input name="flag[]" type="checkbox" value="6"/></label>
+				<label class="radio mr-10"><input type="radio" name="op" value="1"> 新增属性</label>
+				<label class="radio"><input type="radio" name="op" value="0"> 删除属性</label>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-3"><span class="c-red">*</span>选择属性：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<label class="mr-10">置顶[1] <input name="flag[]" type="checkbox" value="1"/></label>
+				<label class="mr-10">头条[2] <input name="flag[]" type="checkbox" value="2"/></label>
+				<label class="mr-10">特荐[3] <input name="flag[]" type="checkbox" value="3"/></label>
+				<label class="mr-10">推荐[4] <input name="flag[]" type="checkbox" value="4"/></label><br>
+				<label class="mr-10">热点[5] <input name="flag[]" type="checkbox" value="5"/></label>
+				<label class="mr-10">幻灯[6] <input name="flag[]" type="checkbox" value="6"/></label>
+				<input type="hidden" class="input-text" value=""  name="ids" id="ids">
+			</div>
+		</div>
+		<?php }else{ ?>
+		<div class="row cl">
+			<label class="form-label col-xs-3"><span class="c-red">*</span>内容状态：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<label class="radio mr-10"><input type="radio" name="status" value="1"> 正常</label>
+				<label class="radio"><input type="radio" name="status" value="0"> 草稿</label>
 			</div>
 		</div>
 		<div class="row cl">
 			<label class="form-label col-xs-3"><span class="c-red">*</span>内容ID：</label>
 			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text" value=""  name="ids" id="ids">
-				<input type="hidden" class="input-text" value="<?php echo $modelid; ?>"  name="modelid">
-				<input type="hidden" class="input-text" value="<?php echo $op; ?>"  name="op">
+				<input type="text" class="input-text disabled" value=""  name="ids" id="ids" readonly >
 			</div>
 		</div>
+		<?php } ?>
 		<div class="footer_btn">
-			<input type="hidden" name="dosubmit" value="1">
+			<input type="hidden" class="input-text" value="<?php echo $modelid; ?>" name="modelid">
 			<input class="btn btn-primary radius" type="submit" value="确 定">
 			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
 		</div>
@@ -42,7 +57,7 @@ function dosub(obj){
 	}
 	$.ajax({
 		type: 'POST',
-		url: '<?php echo U('attribute_operation')?>', 
+		url: '<?php echo U(ROUTE_A)?>', 
 		data: $(obj).serialize(),
 		dataType: "json", 
 		success: function (msg) {

@@ -48,7 +48,7 @@ class user extends wechat_common{
 			$status = isset($_GET["status"]) ? intval($_GET["status"]) : 99;
 			$groupid = isset($_GET["groupid"]) ? intval($_GET["groupid"]) : 99;
 			$sex = isset($_GET["sex"]) ? intval($_GET["sex"]) : 99;
-			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
 
 			if($groupid != 99) {
@@ -67,7 +67,7 @@ class user extends wechat_common{
 				$where .= " AND `subscribe_time` >= '".strtotime($_GET['start'])."' AND `subscribe_time` <= '".strtotime($_GET['end'])."' ";
 			}
 			
-			if($searinfo != ''){
+			if($searinfo){
 				if($type == '1')
 					$where .= ' AND wechatid = \''.$searinfo.'\'';
 				elseif($type == '2')

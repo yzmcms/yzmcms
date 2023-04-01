@@ -54,7 +54,7 @@
 <script type="text/javascript">
 
 function wechat_menu_del(){
-	layer.confirm('确认要删除所有菜单吗？',function(index){
+	layer.confirm('确认要删除所有菜单吗？', {title:"操作提示"}, function(index){
 		$.ajax({
 		    type: 'GET',
 		    url: '<?php echo U('delete_menu');?>', 

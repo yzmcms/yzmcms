@@ -126,7 +126,7 @@ function downfile($url, $md5){
         $content = @file_get_contents($url);
     }
 
-    if(!$content) return array('status'=>0, 'message'=>'官方升级包不存在！');
+    if(!$content) return array('status'=>0, 'message'=>'升级包不存在，请重试！');
 
     $filename = explode('/', $url);    
     $filename = end($filename);

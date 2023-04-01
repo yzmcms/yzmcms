@@ -185,7 +185,7 @@
 	
 	function yzm_content_close(){
 		if(UE.getEditor('content').getContent()!=''){
-			layer.confirm('内容未保存，确定要关闭吗？',function(index){
+			layer.confirm('内容未保存，确定要关闭吗？', {title:"操作提示"}, function(index){
 				yzmcms_close();
 			});
 		}else{

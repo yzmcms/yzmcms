@@ -38,8 +38,8 @@ class member_message extends common{
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){	
 			$isread = isset($_GET["isread"]) ? intval($_GET["isread"]) : '99';
-			$type = isset($_GET["type"]) ? intval($_GET["type"]) : 0;
-			$username = isset($_GET["username"]) ? safe_replace($_GET["username"]) : '';
+			$type = isset($_GET["type"]) ? intval($_GET["type"]) : 1;
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 
 			if($isread < 99){
 				$where .= ' AND isread = '.$isread;
@@ -49,11 +49,16 @@ class member_message extends common{
 				$where .= " AND `message_time` >= '".strtotime($_GET["start"])."' AND `message_time` <= '".strtotime($_GET["end"])."' ";
 			}
 			
-			if($username && $type){
-				if($type == '1')
-					$where .= ' AND send_to LIKE \'%'.$username.'%\'';
-				else
-					$where .= ' AND send_from LIKE \'%'.$username.'%\'';
+			if($searinfo){
+				if($type == '1'){
+					$where .= ' AND send_to LIKE \'%'.$searinfo.'%\'';
+				}elseif($type == '2'){
+					$where .= ' AND send_from LIKE \'%'.$searinfo.'%\'';
+				}elseif($type == '3'){
+					$where .= ' AND subject LIKE \'%'.$searinfo.'%\'';
+				}else{
+					$where .= ' AND content LIKE \'%'.$searinfo.'%\'';
+				}
 			}			
 		}
 		$_GET = array_map('htmlspecialchars', $_GET);

@@ -225,7 +225,7 @@
 	});
 	
 	function yzm_clear_log(){
-		layer.confirm('确认要清除错误日志吗？',function(index){
+		layer.confirm('确认要清除错误日志吗？', {title:"操作提示"}, function(index){
 	        $.ajax({
 	            type: 'GET',
 	            url: '<?php echo U('public_clear_log');?>', 

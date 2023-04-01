@@ -26,9 +26,11 @@
 			<select name="type" class="select">
 				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='1'){echo "selected";} ?> value="1">留言主题</option>
 				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo "selected";} ?> value="2">联系人</option>		
+				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='3'){echo "selected";} ?> value="3">IP地址</option>		
 			</select>
 		</span>
-		 <input type="text" name="searinfo"  class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+		 <input type="text" name="searinfo"  class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+		 <a href="<?php echo U('init');?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</a>
 		</form>	
   </div>
 
@@ -43,12 +45,12 @@
 		<thead>
 			<tr class="text-c">
 				<th width="35"><input type="checkbox"></th>
-				<th width="50">ID<?php echo field_order('id');?></th>
+				<!-- <th width="50">ID<?php echo field_order('id');?></th> -->
+				<th width="70">状态<?php echo field_order('isread');?></th>
 				<th style="text-align:left">留言主题</th>
 				<th width="200" style="text-align:left">联系人</th>
 				<th width="100">IP地址<?php echo field_order('ip');?></th>
 				<th width="150">留言日期<?php echo field_order('booktime');?></th>
-				<th width="70">状态<?php echo field_order('isread');?></th>
 				<th width="70">审核<?php echo field_order('ischeck');?></th>	
 			</tr>
 		</thead>
@@ -58,12 +60,13 @@
 			 ?>
 			<tr class="text-c">
 				<td><input type="checkbox" value="<?php echo $val['id']?>" name="id[]"></td>
-				<td><?php echo $val['id']?></td>
+				<!-- <td><?php echo $val['id']?></td> -->
+				<td><?php echo $val['isread'] ? '<span class="label label-success radius">已读</span>' : '<span class="label label-danger radius">未读</span>'; ?></td>
 				<td style="text-align:left"><a href="javascript:;" onclick="yzm_open_full('查看留言','<?php echo U('read',array('id'=>$val['id']));?>')" ><?php echo $val['title'];?></a> <span class="yzmcms_small"><?php echo $val['ispc'] ? '<i class="yzm-iconfont yzm-icondiannao" title="来自PC端"></i>' : '<i class="yzm-iconfont yzm-icontel" title="来自移动端"></i>';?></span></td>
 				<td style="text-align:left"><?php echo $val['name'];?></td>
 				<td><?php echo $val['ip'];?></td>
 				<td><?php echo date('Y-m-d H:i:s',$val['booktime']);?></td>
-				<td><?php echo $val['isread'] ? '已读' : '<span class="c-red">未读</span>'; ?></td>
+				
 				<td>
 					<?php if($val['ischeck']){ ?>
 					<span class="yzm-status-enable" data-field="ischeck" data-id="<?php echo $val['id']?>" onclick="yzm_change_status(this,'<?php echo U('toggle');?>')"><i class="yzm-iconfont">&#xe81f;</i>是</span>

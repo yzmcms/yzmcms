@@ -31,7 +31,7 @@
 				<td><?php echo $val['name'];?></td>
 				<td><?php echo $val['tablename'];?></td>
 				<td><?php echo $val['alias'];?></td>
-				<td><?php echo $val['description'] ? htmlspecialchars($val['description']) : '无';?></td>
+				<td><?php echo $val['description'] ? $val['description'] : '无';?></td>
 				<td><?php echo $val['isdefault'] ? '<span class="c-red">是</span>' : '否';?></td>
 				<td><?php echo $val['issystem'] ? '<span class="c-green">是</span>' : '否';?></td>
 				<td>
@@ -44,7 +44,7 @@
 				<td class="td-manage">
 					<a title="字段管理"  class="btn-mini btn-primary ml-5" href="<?php echo U('model_field/init',array('modelid'=>$val['modelid']));?>" style="text-decoration:none">字段管理</a> 
 					<a title="编辑"  class="btn-mini btn-success ml-5" href="javascript:;" onclick="yzm_open('编辑模型','<?php echo U('edit',array('modelid'=>$val['modelid']));?>','650','485')" style="text-decoration:none">编辑</a> 
-					<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('modelid'=>$val['modelid']));?>')"  class="btn-mini btn-danger ml-5" style="text-decoration:none">删除</a>
+					<a title="删除" href="javascript:;" onclick="yzm_confirm('<?php echo U('delete',array('modelid'=>$val['modelid']));?>', '确定要删除【<?php echo $val['name'];?>】模型吗？<br><span style=\'color:#ee3b3b\'><span class=\'yzm-iconfont yzm-iconshuoming\'></span> 删除模型将删除该模型下的所有数据！</span>')"  class="btn-mini btn-danger ml-5" style="text-decoration:none">删除</a>
 					<a title="导出" href="<?php echo U('export',array('modelid'=>$val['modelid']));?>"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">导出</a>
 				</td>
 			</tr>

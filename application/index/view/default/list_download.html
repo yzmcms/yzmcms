@@ -29,7 +29,7 @@
 							<span class="yzm-down-date">日期:{date('Y-m-d H:i:s',$v['updatetime'])}</span>
 							<a href="{$v[url]}" target="_blank">{title_color($v['title'], $v['color'])}</a>
 						</div>
-						<p class="yzm-down-info"><em>{$v[classtype]}</em> | {$v[copytype]} | 大小：{$v[filesize]} | 平台：{$v[systems]} | 点击：{$v[click]}</p>
+						<p class="yzm-down-info"><em>{$v[classtype]}</em> | {$v[copytype]} | 大小：{sizecount($v['filesize'])} | 平台：{$v[systems]} | 点击：{$v[click]}</p>
 						<p class="yzm-down-desc">{$v[description]}</p>
 					</div>
 				 </div>	

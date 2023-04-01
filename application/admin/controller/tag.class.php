@@ -30,14 +30,14 @@ class tag extends common {
 		if(isset($_GET['dosubmit'])){
 			$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
 			$type = isset($_GET['type']) ? intval($_GET['type']) : 1;
-			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 
 			if($catid)	$where['catid'] = $catid;		
 			if(isset($_GET['start']) && isset($_GET['end']) && $_GET['start']) {
 				$where['inputtime>='] = strtotime($_GET['start']);
 				$where['inputtime<='] = strtotime($_GET['end']);
 			}
-			if($searinfo != ''){
+			if($searinfo){
 				if($type == 1){
 					$where['tag'] = '%'.$searinfo.'%';
 				}elseif($type == 2){
@@ -140,7 +140,7 @@ class tag extends common {
 		$id = input('get.id', 0, 'intval');
 		$modelinfo = get_site_modelinfo();
 		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : get_default_model('modelid');
-		$tabname = get_model($modelid);
+		$tabname = $modelid ? get_model($modelid) : showmsg('模型为空或不存在！', 'stop');
         $catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
         $content = D($tabname);
         $where = '1=1';
@@ -186,11 +186,12 @@ class tag extends common {
 			if(!$id) return_json(array('status'=>0,'message'=>L('operation_failure')));
 
 			$tag_content = D('tag_content');
+			$siteid = get_siteid();
 			foreach ($_POST['ids'] as $id => $catid) {
 				$is_exist = $tag_content->field('tagid')->where(array('modelid'=>$modelid,'aid'=>$id,'tagid'=>$tagid))->one();
 				if($operation){
 					if($is_exist) continue;
-					$tag_content->insert(array('modelid'=>$modelid,'catid'=>$catid,'aid'=>$id,'tagid'=>$tagid), false, false);
+					$tag_content->insert(array('siteid'=>$siteid,'modelid'=>$modelid,'catid'=>$catid,'aid'=>$id,'tagid'=>$tagid), false, false);
 				}else{
 					if(!$is_exist) continue;
 					$tag_content->delete(array('modelid'=>$modelid,'aid'=>$id,'tagid'=>$tagid));

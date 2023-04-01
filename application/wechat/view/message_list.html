@@ -28,7 +28,7 @@
 				<td><?php echo $this->get_userinfo($val['openid']);?></td>
 				<td><a href="<?php echo U('send_message',array('openid'=>$val['openid']));?>" style="text-decoration:none"><?php echo htmlspecialchars($val['content']);?></a></td>
 				<td><?php echo date("Y-m-d H:i:s",$val['inputtime'])?></td>
-				<td><?php echo $val['isread'] ? '已读' : '<span class="c-red">未读</span>';?></td>
+				<td><?php echo $val['isread'] ? '<span class="label label-success radius">已读</span>' : '<span class="label label-danger radius">未读</span>';?></td>
 				<td class="td-manage"><a href="<?php echo U('send_message',array('openid'=>$val['openid']));?>" class="btn-mini btn-primary ml-5" style="text-decoration:none">查看/回复</a></td>
 			</tr>			  
 			<?php 

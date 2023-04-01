@@ -235,8 +235,7 @@ class index extends common{
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
 		if(isset($_POST['dosubmit'])){
-			$filename = $_FILES['user_pic']['name'];
-			if($filename == '') showmsg('请上传头像！');
+			if(!isset($_FILES['user_pic']['name']) || empty($_FILES['user_pic']['name'])) showmsg('请上传头像！');
 			$upload = yzm_base::load_sys_class('upload');
 			if($upload->uploadfile('user_pic')){
 				$fileinfo = $upload->getnewfileinfo();
@@ -244,7 +243,7 @@ class index extends common{
 				D('member_detail')->update(array('userpic'=>$picname),array('userid'=>$this->userid));
 				D('comment')->update(array('userpic'=>$picname),array('userid'=>$this->userid));
 				$userpic = YZMPHP_PATH.ltrim($userpic, SITE_PATH);
-				if(is_file($userpic)) @unlink($userpic); 
+				if(is_img(fileext($userpic)) && is_file($userpic)) @unlink($userpic); 
 				showmsg('更新头像成功！','',1);
 			}else{
 				showmsg($upload->geterrormsg());

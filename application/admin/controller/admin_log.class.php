@@ -49,7 +49,7 @@ class admin_log extends common {
 		$where = array();
 		if(isset($_GET['dosubmit'])){	
 			$type = isset($_GET['type']) ? intval($_GET['type']) : 1;
-			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 			if(isset($_GET['adminname']) && $_GET['adminname']){
 				$where['adminname'] = $_GET['adminname'];
 			}
@@ -57,7 +57,7 @@ class admin_log extends common {
 				$where['logtime>='] = strtotime($_GET['start']);
 				$where['logtime<='] = strtotime($_GET['end']);
 			}
-			if($searinfo != ''){
+			if($searinfo){
 				if($type == '1')
 					$where['module'] = $searinfo;
 				elseif($type == '2')
@@ -83,7 +83,7 @@ class admin_log extends common {
 		if(isset($_GET['dosubmit'])){	
 			$loginresult = isset($_GET['loginresult']) ? intval($_GET['loginresult']) : 99;
 			$type = isset($_GET['type']) ? intval($_GET['type']) : 1;
-			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 			if($loginresult != 99){
 				$where['loginresult'] = $loginresult;
 			}
@@ -91,7 +91,7 @@ class admin_log extends common {
 				$where['logintime>='] = strtotime($_GET['start']);
 				$where['logintime<='] = strtotime($_GET['end']);
 			}
-			if($searinfo != ''){
+			if($searinfo){
 				if($type == '1')
 					$where['adminname'] = $_SESSION['roleid']>1 ? $_SESSION['adminname'] : $searinfo;
 				else

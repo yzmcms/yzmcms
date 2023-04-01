@@ -49,6 +49,15 @@ function isimg(url){
 }
 
 
+function sizecount(size){
+    var units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+    for(var i = 0; size >= 1024 && i < 5; i++) {
+        size = size / 1024;
+    };
+    return size.toFixed(2) + units[i];
+}
+
+
 function yzm_att_del(url, name){
     layer.confirm('确认要删除 “ ' + name +' ” 吗？',function(index){
         $.ajax({
@@ -80,7 +89,7 @@ jQuery(function() {
     uploader.on( 'fileQueued', function( file ) {
         var $li = $(
                 '<div id="' + file.id + '" class="yzm-file-item">' +
-                    '<div class="yzm-file-name">' + file.name + '<span class="yzm-per"></span></div>' +
+                    '<span class="yzm-file-name" title="' + file.name + '">' + file.name + '</span><span class="yzm-file-size">（' + sizecount(file.size) + '）</span><span class="yzm-per"></span>' +
                 '</div>'
                 );
         $list.append( $li );
@@ -135,13 +144,7 @@ jQuery(function() {
         if (type == "Q_EXCEED_NUM_LIMIT") {
             layer.msg("本次最多允许上传" + yzm_uploader_config.fileNumLimit + "个文件！", {icon:2});
         } else if (type == "F_EXCEED_SIZE") {
-            var maxSize = yzm_uploader_config.fileSingleSizeLimit;
-            var units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-            for(var i = 0; maxSize >= 1024 && i < 5; i++) {
-                maxSize = maxSize / 1024;
-            };
-            maxSizeStr = Math.round(maxSize, 2) + units[i];
-            layer.msg("单文件大小不能超过" + maxSizeStr + "！", {icon:2});
+            layer.msg("单文件大小不能超过" + sizecount(yzm_uploader_config.fileSingleSizeLimit) + "！", {icon:2});
         } else if (type == "F_DUPLICATE") {
             layer.msg("不允许上传重复文件！", {icon:2});
         } else if (type == "Q_TYPE_DENIED") {

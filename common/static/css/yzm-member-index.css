@@ -98,8 +98,8 @@ textarea{width:615px;height:80px;padding:2px 3px;border-radius:2px;border:1px so
 .submit:hover{background-color:#4ca5ec;}
 .btn-danger{background-color:#f56c6c;border-color:#f56c6c}
 .btn-danger:hover{background:#f78989;border-color:#f78989}
-.radio{margin-right:3px;}
-.option_label{margin-right:8px;}
+.option_label{margin-right:8px;cursor:pointer}
+.yzm-checkbox,.yzm-radio{margin-right:2px}
 
 .required{color:#fd6161;margin-left:-12px;margin-right:3px;vertical-align:middle;font-weight:bold;}
 .main_cont table{}

@@ -108,7 +108,7 @@ class index{
 			$par[] = $readpoint;
 			$par[] = $paytype;
 			$par[] = $issystem ? 0 : $userid;
-			$pay_url = U('member/member_pay/spend_point', 'par='.string_auth(join('|',$par)));
+			$pay_url = U('member/member_pay/spend_point', 'par='.string_auth(join('|',$par))).'?referer='.urlencode($url);
 		} 
 		
 		//更新点击量

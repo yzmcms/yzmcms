@@ -201,7 +201,7 @@ class api{
 	private function _att_write($fileinfo){
 		$arr = array();
 		$arr['siteid'] = get_siteid();
-		$arr['originname'] = strlen($fileinfo['originname'])<50 ? htmlspecialchars($fileinfo['originname']) : htmlspecialchars(str_cut($fileinfo['original'], 45));
+		$arr['originname'] = strlen($fileinfo['originname'])<50 ? htmlspecialchars($fileinfo['originname']) : htmlspecialchars(str_cut($fileinfo['originname'], 45));
 		$arr['filename'] = $fileinfo['filename'];
 		$arr['filepath'] = $fileinfo['filepath'];
 		$arr['filesize'] = $fileinfo['filesize'];

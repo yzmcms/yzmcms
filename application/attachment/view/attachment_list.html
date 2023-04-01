@@ -13,7 +13,8 @@
 		 上传者：<input type="text" name="username" placeholder="上传者" style="width:135px" class="input-text" value="<?php if(isset($_GET['username'])) echo $_GET['username'];?>">
 		 时间：<input type="text" class="input-text laydate-icon" style="width:125px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
 		 至 <input type="text" class="input-text laydate-icon" style="width:125px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d'); ?>">
-		 类型：<input type="text" name="fileext" placeholder="如：jpg" style="width:135px" class="input-text" value="<?php if(isset($_GET['fileext'])) echo $_GET['fileext'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+		 类型：<input type="text" name="fileext" placeholder="如：jpg" style="width:135px" class="input-text" value="<?php if(isset($_GET['fileext'])) echo $_GET['fileext'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+		 <a href="<?php echo U('init');?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</a>
 		 </form>	
   </div>
   <div class="cl mt-15 tb-top"> 

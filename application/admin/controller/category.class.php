@@ -52,7 +52,7 @@ class category extends common {
 			$v['member_publish'] = $v['member_publish'] ? '<span class="yzm-status-enable" data-field="member_publish" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe81f;</i>是</span>' : '<span class="yzm-status-disable" data-field="member_publish" data-id="'.$v['id'].'" onclick="yzm_change_status(this,\''.U('public_change_status').'\')"><i class="yzm-iconfont">&#xe601;</i>否</span>';
 			$v['string'] = '<a title="增加子类" href="javascript:;" onclick="yzm_open(\'增加栏目\',\''.U('add',array('modelid'=>$v['modelid'],'type'=>$v['type'],'catid'=>$v['id'])).'\',800,500)" class="btn-mini btn-primary ml-5" style="text-decoration:none">增加子类</a> 
 			<a title="编辑栏目" href="javascript:;" onclick="yzm_open(\'编辑栏目\',\''.U('edit',array('type'=>$v['type'],'catid'=>$v['id'])).'\',800,500)" class="btn-mini btn-success ml-5" style="text-decoration:none">编辑</a> 
-			<a title="删除" href="javascript:;" onclick="yzm_del(\''.U('delete',array('type'=>$v['type'],'catid'=>$v['id'])).'\')" class="btn-mini btn-danger ml-5" style="text-decoration:none">删除</a>';
+			<a title="删除" href="javascript:;" onclick="yzm_confirm(\''.U('delete',array('type'=>$v['type'],'catid'=>$v['id'])).'\', \'确定要删除【'.$v['name'].'】吗？\', 1)" class="btn-mini btn-danger ml-5" style="text-decoration:none">删除</a>';
 			
 			$array[] = $v;
 		}	
@@ -96,16 +96,17 @@ class category extends common {
 		$type = isset($_GET['type']) ? intval($_GET['type']) : 0;
 		
 		$data = $this->db->field('arrparentid,arrchildid')->where(array('catid'=>$catid))->find();
-		if(strpos($data['arrchildid'],',')){
-			 showmsg('分类删除失败：该分类下有子分类！');
-		}		
+		if(strpos($data['arrchildid'],',')) return_json(array('status'=>0,'message'=>'请先删除该分类下的子分类！'));
+		
+		$allid = D('all_content')->field('allid')->where(array('catid'=>$catid))->one();
+		if($allid) return_json(array('status'=>0,'message'=>'请将该分类下的内容删除或移动到其他分类！'));
 		if($this->db->delete(array('catid'=>$catid))){
 			 if($type==1) D('page')->delete(array('catid' => $catid)); 
 			 $this->repairs($data['arrparentid']);
 			 $this->delcache();
-			 showmsg('分类删除成功！','',1);
+			 return_json(array('status'=>1,'message'=>L('operation_success')));
 		}else{
-			 showmsg('分类删除失败！');
+			 return_json(array('status'=>0,'message'=>L('operation_failure')));
 		}
 	}
 	
@@ -122,6 +123,7 @@ class category extends common {
 
 			if($_POST['domain']) $this->set_domain();
 
+			$_POST['catname'] = trim($_POST['catname']);
 			$_POST['catdir'] = trim($_POST['catdir'], ' /');
 
 			if($type != 2){   //非外部链接
@@ -195,8 +197,6 @@ class category extends common {
 		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : get_default_model('modelid');
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
 		if(isset($_POST['dosubmit'])) { 
-			if($_POST['domain']) $this->set_domain();
-
 			$type = isset($_POST['type']) ? intval($_POST['type']) : 0;
 			$catnames = explode("\r\n", $_POST['catnames']);	
 			if($_POST['parentid']=='0') {
@@ -210,6 +210,8 @@ class category extends common {
 				if(strpos($val, '|')){
 					list($_POST['catname'], $_POST['catdir']) = explode('|', $val);
 				}
+				$_POST['catname'] = trim($_POST['catname']);
+				$_POST['catdir'] = trim($_POST['catdir']);
 
 				$res = $this->db->field('catid')->where(array('siteid'=>self::$siteid, 'catdir'=>$_POST['catdir']))->one();
 				if($res) continue;
@@ -258,7 +260,8 @@ class category extends common {
 		if(isset($_POST['dosubmit'])) {
 			if($_POST['domain']) $this->set_domain();
 
-			$catid = isset($_POST['catid']) ? strval(intval($_POST['catid'])) : 0;  
+			$catid = isset($_POST['catid']) ? strval(intval($_POST['catid'])) : 0;
+			$_POST['catname'] = trim($_POST['catname']);
 			$_POST['catdir'] = trim($_POST['catdir'], ' /');
 			
 			if($_POST['parentid']=='0') {

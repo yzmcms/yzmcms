@@ -28,13 +28,13 @@ class role extends common {
 	 */
 	public function delete() {
 		$roleid = intval($_GET['roleid']);
-		if(in_array($roleid, array(1, 2, 3))) showmsg('不能删除系统角色！', 'stop');
+		if(in_array($roleid, array(1, 2, 3))) return_json(array('status'=>0,'message'=>'不能删除系统角色！'));
 		if(D('admin')->where(array('roleid' => $roleid))->total() > 0){
-			showmsg('请先删除该角色下的管理员！', 'stop');
+			return_json(array('status'=>0,'message'=>'请先删除该角色下的管理员！'));
 		}else{
 			D('admin_role')->delete(array('roleid'=>$roleid));
 		}	
-		showmsg(L('operation_success'), '', 1);
+		return_json(array('status'=>1,'message'=>L('operation_success')));
 	}
 	
 	

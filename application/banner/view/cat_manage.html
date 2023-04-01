@@ -4,8 +4,8 @@
 <body>
 <article class="page-container">
 <div class="formdoby_normal"> 
-	<form method="post" action="" id="myform" onsubmit="return checkall(this)">
-		<button name="dosubmit" class="btn size-S btn-danger radius" type="submit">批量删除</button>
+	<form method="post" action="<?php echo U('cat_manage');?>" id="myform">
+		<a href="javascript:;" onclick="yzm_dels('id', 1)" class="btn size-S btn-danger radius">批量删除</a>
 		<table class="table table-border table-bg table-hover mt-5 yzm-table-sort">
 			<thead>
 				<tr>
@@ -27,41 +27,11 @@
 				}
 				?>
 		</table>
+		<?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
 		
 	</form>
 </div>
 </article>
 <?php include $this->admin_tpl('footer','admin');?> 
-<script type="text/javascript">
-
-function checkall(obj){
-		if ($("input[name='id[]']:checked").length<1){
-		   layer.alert('请勾选信息！');
-		   return false;
-		}
-
-		layer.confirm('确认要删除吗？',function(index){
-			$.ajax({
-				type: 'POST',
-				url: '<?php echo U('cat_manage');?>', 
-				data: $(obj).serialize(),
-				dataType: "json", 
-				success: function (msg) {
-					if(msg.status == 1){
-						layer.msg(msg.message, {icon:1,time:2000}, function(){
-							parent.location.reload();     
-						})  
-					}else{
-						layer.msg(msg.message, {icon:2});
-					}
-				}
-			})
-		});
-		
-		 
-		return false;
-
-}
-</script>
 </body>
 </html>

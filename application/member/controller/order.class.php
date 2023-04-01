@@ -50,7 +50,7 @@ class order extends common{
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){
 
-			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 			$status = isset($_GET["status"]) ? intval($_GET["status"]) : 99;
 			$t_type = isset($_GET["t_type"]) ? intval($_GET["t_type"]) : 0;
 			$type = isset($_GET["type"]) ? intval($_GET["type"]) : 1;
@@ -61,7 +61,7 @@ class order extends common{
 				$where .= ' AND `type` = '.$t_type;
 			}
 				
-			if($searinfo != ''){
+			if($searinfo){
 				if($type == '1')
 					$where .= ' AND username LIKE \'%'.$searinfo.'%\'';
 				else

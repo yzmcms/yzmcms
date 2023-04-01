@@ -33,7 +33,7 @@
 				<td><?php echo $val['type'] ? '临时二维码' : '<span class="c-red">永久二维码</span>';?></td>
 				<td><?php if($val['expire_time'] >= 3600){echo ($val['expire_time']/3600).'小时';}elseif($val['expire_time'] >= 60){ echo ($val['expire_time']/60).'分钟';}else{ echo'永久';}?></td>
 				<td><?php echo $val['ticket'];?></td>
-				<td><?php echo $val['remarks'];?></td>
+				<td><span title="<?php echo $val['remarks'];?>"><?php echo $val['remarks'] ? str_cut($val['remarks'], 60) : '无';?></span></td>
 				<td class="td-manage"><a title="编辑" href="javascript:;" onclick="yzm_open('编辑场景','<?php echo U('edit',array('id'=>$val['id']));?>',660,400)" style="text-decoration:none"  class="btn-mini btn-primary ml-5">编辑</a> <a target="_blank" href="https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=<?php echo urlencode($val['ticket']);?>" class="btn-mini btn-success ml-5" style="text-decoration:none">查看二维码</a></td>
 			</tr>			  
 			<?php 

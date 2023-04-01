@@ -16,7 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 define('APPDIR', _dir_path(substr(dirname(__FILE__), 0, -8)));
 define('SITEDIR', dirname(APPDIR).DIRECTORY_SEPARATOR);
-define("VERSION", 'YzmCMS V6.7');
+define("VERSION", 'YzmCMS V6.8');
 
 if(is_file(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock')){
     exit("YzmCMS程序已运行安装，如果你确定要重新安装，请先从FTP中删除 cache/install.lock！");
@@ -55,7 +55,9 @@ switch ($step) {
         exit();
 
     case '2':
-
+        header("Expires: Mon, 26 Jul 2000 08:00:00 GMT");
+        header("Cache-Control: no-cache");
+        header("Pragma: no-cache");
         if (phpversion() < 5) {
             die('本系统需要PHP5+MYSQL >=5.0环境，当前PHP版本为：' . phpversion());
         }
@@ -242,6 +244,10 @@ switch ($step) {
         @touch(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock');
         if(is_file(SITEDIR.'install.php')) @unlink(SITEDIR.'install.php');
 		if(is_file(SITEDIR.'index.html')) @unlink(SITEDIR.'index.html');
+        $files = glob(SITEDIR.'cache/cache_file/*.cache.php');
+        foreach ($files as $v){
+            @unlink($v);
+        }
         exit;
 }
 

@@ -100,7 +100,7 @@ class adver extends common {
 			return $data['text'];
 		}		
 			
-		return '<a href="'.$data['url'].'" target="_blank" title="'.$data['title'].'"><img src="'.$data['img'].'"></a>';
+		return '<a href="'.$data['url'].'" target="_blank" title="'.$data['title'].'"><img src="'.safe_replace($data['img']).'"></a>';
 	}
 
 }

@@ -20,7 +20,7 @@ class config extends common{
      */	
 	public function init(){
 		$data = get_config();
-		$modelinfo = get_modelinfo();
+		$modelinfo = get_site_modelinfo();
 		include $this->admin_tpl('wechat_config');
     }
 	

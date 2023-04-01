@@ -141,6 +141,7 @@ function yzmcms_pinyin() {
 	for(var i=0; i<lines.length; i++){
 		if(lines[i] == '') continue;
 		if(lines[i].indexOf('|') < 0){
+			lines[i] = lines[i].trim();
 			var pinyin = codefans_net_CC2PY(lines[i]);
 			lines[i] = lines[i]+'|'+pinyin.toLowerCase();
 		}else{

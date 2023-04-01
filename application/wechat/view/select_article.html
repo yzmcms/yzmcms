@@ -12,7 +12,8 @@
 		 更新时间：<input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
      至 <input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d'); ?>">    	
     内容标题：
-     <input type="text" name="searinfo" class="input-text" style="width:180px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button> 
+     <input type="text" name="searinfo" class="input-text" style="width:180px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button> 
+     <!-- <a href="<?php echo U(ROUTE_A);?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</a> -->
 	 </form>	
   </div>
   <form method="post" action="" id="myform">
@@ -68,7 +69,7 @@
 			?>	
 			</td>
 			<td><?php echo get_catname($val['catid']);?></td>
-			<td><?php echo date('Y-m-d H:i:s', $val['updatetime'])?></td>
+			<td><span title="<?php echo '发布时间：'.date('Y-m-d H:i:s', $val['inputtime'])."\r\n更新时间：".date('Y-m-d H:i:s', $val['updatetime'])?>"><?php echo date('Y-m-d H:i:s', $val['updatetime'])?></span></td>
 		  </tr>		
 		<?php 
 		}

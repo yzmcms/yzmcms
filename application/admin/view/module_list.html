@@ -27,7 +27,7 @@
 			<td><?php echo $modules[$d]['version']?></td>
 			<td><?php echo $modules[$d]['installdate']?></td>
 			<td><?php echo $modules[$d]['updatedate']?></td>
-			<td><?php if ($modules[$d]['iscore']) {?><span class="yzm-box-img btn-disabled">禁止</span><?php } else {?><span><a href="javascript:void(0);" onclick="uninstall('<?php echo $d?>','<?php echo U('uninstall',array('module'=>$d));?>')" class="yzm-box-img btn-danger">卸载</a></span><?php }?></td>
+			<td><?php if ($modules[$d]['iscore']) {?><span class="yzm-box-img btn-disabled">禁止</span><?php } else {?><span><a href="javascript:void(0);" onclick="yzm_confirm('<?php echo U('uninstall',array('module'=>$d));?>', '确定要卸载【<?php echo $modules[$d]['name']?>】模块吗？',)" class="yzm-box-img btn-danger">卸载</a></span><?php }?></td>
 		  </tr>		
 		<?php 
 			}else{
@@ -56,15 +56,6 @@
   <span class="page_right"><?php echo $page->getfull();?></span></div>
 </div>
 <?php include $this->admin_tpl('footer');?>
-<script type="text/javascript">
-function uninstall(m, url){
-	var symbol = url.indexOf('?')<0 ? '?' : '&';
-	url += symbol+'yzm_csrf_token='+yzm_csrf_token;
-	layer.confirm('确认要卸载 '+m+' 模块吗？',function(index){
-		window.location.href = url;
-	});
-}
-</script>
 
 </body>
 </html>

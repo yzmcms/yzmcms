@@ -30,7 +30,7 @@ class admin_content extends common {
 		$where = 'siteid='.get_siteid().' AND issystem=0';
 		if(isset($_GET['dosubmit'])){	
 		
-			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
 
 			if(isset($_GET["status"]) && $_GET["status"] != '99'){
@@ -49,7 +49,7 @@ class admin_content extends common {
 				$where .= ' AND updatetime BETWEEN '.strtotime($_GET["start"]).' AND '.strtotime($_GET["end"]);
 			}
 
-			if($searinfo != ''){
+			if($searinfo){
 				if($type == '1')
 					$where .= ' AND title LIKE \'%'.$searinfo.'%\'';
 				else
@@ -102,7 +102,7 @@ class admin_content extends common {
 			$par[] = $readpoint;
 			$par[] = $paytype;
 			$par[] = $issystem ? 0 : $userid;
-			$pay_url = U('member/member_pay/spend_point', 'par='.string_auth(join('|',$par)));
+			$pay_url = U('member/member_pay/spend_point', 'par='.string_auth(join('|',$par))).'?referer='.urlencode($url);
 		} 
 
 		//内容分页

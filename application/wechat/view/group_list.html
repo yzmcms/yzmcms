@@ -22,7 +22,7 @@
 				<td><?php echo $val['id'];?></td>
 				<td><?php echo $val['name'];?></td>
 				<td><?php echo $val['count'];?></td>
-				<td class="td-manage"><a title="编辑" href="javascript:;" onclick="yzm_open('编辑分组','<?php echo U('edit',array('id'=>$val['id']));?>',450,250)" style="text-decoration:none" class="btn-mini btn-primary ml-5">编辑</a> <a title="删除" href="javascript:;" onclick="wechat_group_del('<?php echo U('delete',array('id'=>$val['id']));?>', '<?php echo $val['name'];?>')" style="text-decoration:none" class="btn-mini btn-danger ml-5">删除</a></td>
+				<td class="td-manage"><a title="编辑" href="javascript:;" onclick="yzm_open('编辑分组','<?php echo U('edit',array('id'=>$val['id']));?>',450,250)" style="text-decoration:none" class="btn-mini btn-primary ml-5">编辑</a> <a title="删除" href="javascript:;" onclick="yzm_confirm('<?php echo U('delete',array('id'=>$val['id']));?>', '确认要删除【<?php echo $val['name'];?>】组吗？<br>删除分组后，该分组内的用户自动进入默认分组！')" style="text-decoration:none" class="btn-mini btn-danger ml-5">删除</a></td>
 			</tr>			  
 			<?php 
 			   }		 
@@ -32,14 +32,5 @@
 	<?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
 </div>
 <?php include $this->admin_tpl('footer', 'admin');?>
-<script type="text/javascript">
-
-function wechat_group_del(url, name){
-	layer.confirm('确认要删除 “'+ name +'” 组吗？删除分组后，该分组内的用户自动进入默认分组！',function(index){
-		location.href = url;
-	});
-}
-
-</script>
 </body>
 </html>

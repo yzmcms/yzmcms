@@ -23,6 +23,11 @@ class diyform extends common{
 		$total = $model->where(array('type'=>1))->total();
 		$page = new page($total, 15);
 		$data = $model->where(array('type'=>1))->order('modelid DESC')->limit($page->limit())->select();
+		$tables = $model->list_tables();
+		foreach($data as $key => $val){
+			$val['lasttime'] = in_array(C('db_prefix').$val['tablename'], $tables) ? D($val['tablename'])->field('inputtime')->order('id DESC')->one() : 0;
+			$data[$key] = $val;
+		}
 		include $this->admin_tpl('diyform_list');
 	}
 	
@@ -38,6 +43,7 @@ class diyform extends common{
 			if(!$tablename) return_json(array('status'=>0,'message'=>'表名称不能为空！'));			
 			$model = D('model');
 			if($model->table_exists($tablename)) return_json(array('status'=>0,'message'=>'表名已存在！'));	
+			$_POST = new_html_special_chars($_POST);
 			$_POST['setting'] = json_encode(array('show_template'=>$_POST['show_template'], 
 			'check_code'=> intval($_POST['check_code']), 'sendmail'=> intval($_POST['sendmail']), 'allowvisitor'=>intval($_POST['allowvisitor'])));
 			$_POST['type'] = 1;
@@ -61,7 +67,7 @@ class diyform extends common{
 		$model = D('model');
 		if(isset($_POST['dosubmit'])) {
 			$modelid = isset($_POST['modelid']) ? intval($_POST['modelid']) : 0;
-			
+			$_POST = new_html_special_chars($_POST);
 			$data = array('name'=>$_POST["name"],
 				'description'=>$_POST["description"],
 				'disabled'=>$_POST["disabled"],
@@ -109,7 +115,8 @@ class diyform extends common{
 	 * @param $pre 模板前缀
 	 */
 	private function select_template($style, $pre = '') {
-			$files = glob(APP_PATH.'index'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.C('site_theme').DIRECTORY_SEPARATOR.$pre.'*.html');
+			$site_theme = self::$siteid ? get_site(self::$siteid, 'site_theme') : C('site_theme');
+			$files = glob(APP_PATH.'index'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.$site_theme.DIRECTORY_SEPARATOR.$pre.'*.html');
 			$files = @array_map('basename', $files);
 			$templates = array();
 			if(is_array($files)) {
@@ -119,7 +126,7 @@ class diyform extends common{
 				}
 			}
 			
-			$tem_style = APP_PATH.'index'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.C('site_theme').DIRECTORY_SEPARATOR.'config.php';
+			$tem_style = APP_PATH.'index'.DIRECTORY_SEPARATOR.'view'.DIRECTORY_SEPARATOR.$site_theme.DIRECTORY_SEPARATOR.'config.php';
 			if(is_file($tem_style)){
 				$templets = require($tem_style);			
 				return array_merge($templates, $templets[$style]);

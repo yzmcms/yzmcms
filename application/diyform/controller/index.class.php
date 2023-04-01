@@ -72,12 +72,12 @@ class index{
 	 * 自定义表单提交
 	 */	
 	public function post(){	
-		if(isset($_POST['dosubmit'])){
+		if(is_post()) {
 
 			if($this->modelinfo['check_code']){
 				if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
 					$_SESSION['code'] = '';
-					showmsg(L('code_error'));
+					return_message(L('code_error'), 0);
 				}
 				$_SESSION['code'] = '';
 			}
@@ -85,9 +85,9 @@ class index{
 			$field_check = $this->_get_model_str($this->modelid, true);
 			foreach($field_check as $k => $v){
 				if($v['isrequired']){
-					if(!isset($_POST[$k])) showmsg(L('lose_parameters'), 'stop');
+					if(!isset($_POST[$k])) return_message(L('lose_parameters'), 0);
 					$length = is_array($_POST[$k]) ? (empty($_POST[$k]) ? 0 : 1) : strlen($_POST[$k]);
-					if(!$length) showmsg($v['errortips']);
+					if(!$length) return_message($v['errortips'], 0);
 				}
 			}
 
@@ -103,7 +103,7 @@ class index{
 			$tablename = D($this->modelinfo['tablename']);
 			$id = $tablename->insert($_POST);
 			
-			if(!$id) showmsg(L('operation_failure'), 'stop');
+			if(!$id) return_message(L('operation_failure'), 0);
 			D('model')->update('`items`=`items`+1', array('modelid'=>$this->modelid));
 
 			//发送邮件通知
@@ -112,7 +112,7 @@ class index{
 				'您的网站-表单（'.$this->modelinfo['name'].'）有新的消息，<a href="'.get_config('site_url').'">请查看</a>！<br> <b>'.get_config('site_name').'</b>');
 			}
 			
-			showmsg(L('operation_success'), '', 1);
+			return_message(L('operation_success'));
 		}
 	}
 	
@@ -125,11 +125,14 @@ class index{
 		new_session_start();
 		$data = D('model')->where(array('modelid'=>$this->modelid))->find();
 		if(!$data || $data['type']!=1 || $data['disabled']==1){
-			showmsg('表单不存在或已禁用!', 'stop');
+			return_message('表单不存在或已禁用！', 0);
 		}
 		
 		$setting = json_decode($data['setting'], true);
-		if(!$setting['allowvisitor'] && empty($_SESSION['_userid'])) showmsg('请登录会员！', url_referer(), 2);
+		if(!$setting['allowvisitor'] && empty($_SESSION['_userid'])) {
+			is_ajax() && return_json(array('status'=>0, 'message'=>'请登录会员！'));
+			showmsg('请登录会员！', url_referer(), 2);
+		}
 		
 		$this->modelinfo = array_merge($data, $setting);
 	}

@@ -36,7 +36,7 @@
 					<a title="权限管理" href="<?php echo U('role_priv',array('roleid'=>$val['roleid']));?>"  class="btn-mini btn-primary ml-5" style="text-decoration:none">权限管理</a>
 					<a title="成员管理" href="<?php echo U('admin_manage/init/',array('roleid'=>$val['roleid']));?>"  class="btn-mini btn-success ml-5" style="text-decoration:none">成员管理</a>
 					<a title="编辑" href="javascript:;" onclick="yzm_open('角色编辑','<?php echo U('edit',array('roleid'=>$val['roleid']));?>','600','350')"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">编辑</a>
-					<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('delete',array('roleid'=>$val['roleid']));?>')"  class="btn-mini btn-danger ml-5" style="text-decoration:none">删除</a>
+					<a title="删除" href="javascript:;" onclick="yzm_confirm('<?php echo U('delete',array('roleid'=>$val['roleid']));?>', '确定要删除【<?php echo $val['rolename'];?>】角色吗？', 1)"  class="btn-mini btn-danger ml-5" style="text-decoration:none">删除</a>
 				<?php } ?>
 				</td>
 			</tr>

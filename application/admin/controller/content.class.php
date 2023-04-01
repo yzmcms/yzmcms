@@ -58,7 +58,7 @@ class content extends common {
 		$where = $this->_all_priv() ? '1=1' : 'userid='.$_SESSION['adminid'];
 		if(isset($_GET['dosubmit'])){	
 		
-			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
 
 			if(isset($_GET["status"]) && $_GET["status"] != '99'){
@@ -77,7 +77,7 @@ class content extends common {
 				$where .= ' AND FIND_IN_SET('.intval($_GET["flag"]).',flag)';
 			}
 
-			if($searinfo != ''){
+			if($searinfo){
 				if($type == '1')
 					$where .= ' AND title LIKE \'%'.$searinfo.'%\'';
 				else
@@ -241,15 +241,18 @@ class content extends common {
 	 * 移动分类
 	 */
 	public function remove() {
-		if(isset($_POST['dosubmit'])) {
+		if(is_post()) {
 			$ids = safe_replace($_POST['ids']);
 			$ids_arr = explode(',', $ids);
 			$catid = intval($_POST['catid']);
 			$db = D($this->content->tabname);
 			foreach ($ids_arr as $id) {
-				$url = get_content_url($catid, $id);
-				$db->update(array('catid' => $catid, 'url' => $url), array('id'=>$id));
-				D('all_content')->update(array('catid' => $catid, 'url' => $url), array('modelid'=>$this->content->modelid, 'id'=>$id));
+				$data = array('catid'=>$catid);
+				$res = $db->field('flag')->where(array('id' => $id))->find();
+				if($res && !strstr($res['flag'], '7')) $data['url'] = get_content_url($catid, $id);
+
+				$db->update($data, array('id'=>$id));
+				D('all_content')->update($data, array('modelid'=>$this->content->modelid, 'id'=>$id));
 			}
 			return_json(array('status' => 1, 'message' => '操作成功'));
 		}else{
@@ -264,7 +267,7 @@ class content extends common {
 	 * 复制内容
 	 */
 	public function copy() {
-		if(isset($_POST['dosubmit'])) {
+		if(is_post()) {
 			$ids = safe_replace($_POST['ids']);
 			$ids_arr = array_reverse(explode(',', $ids));
 			$catid = intval($_POST['catid']);
@@ -298,16 +301,16 @@ class content extends common {
 	
 
 	/**
-	 * 增加/删除 内容属性
+	 * 内容属性变更
 	 */
 	public function attribute_operation(){
-		if(isset($_POST['dosubmit'])) {
-			$op = isset($_POST['op']) ? intval($_POST['op']) : 1;
+		if(is_post()) {
+			$op = isset($_POST['op']) ? intval($_POST['op']) : return_json(array('status' => 0, 'message' => '请选择属性变更类型！'));
 			$ids = safe_replace($_POST['ids']);
 			$ids_arr = explode(',', $ids);
 			$ids_arr = array_map('intval', $ids_arr);
 			$flag = isset($_POST['flag']) && is_array($_POST['flag']) ? $_POST['flag'] : array();
-			if(!$flag) return_json(array('status' => 0, 'message' => '请勾选信息！'));
+			if(!$flag) return_json(array('status' => 0, 'message' => '请选择要操作的属性！'));
 
 			$db = D($this->content->tabname);
 			foreach($ids_arr as $id){
@@ -327,8 +330,33 @@ class content extends common {
 			return_json(array('status' => 1, 'message' => '操作成功'));
 			
 		}else{
+			$t = 1;
 			$modelid = $this->content->modelid;
-			$op = isset($_GET['op']) ? intval($_GET['op']) : 1;
+			include $this->admin_tpl('attribute_operation');	
+		}
+	}
+
+
+	/**
+	 * 内容状态变更
+	 */
+	public function status_operation(){
+		if(is_post()) {
+			$ids = safe_replace($_POST['ids']);
+			$ids_arr = explode(',', $ids);
+			$status = isset($_POST['status']) ? intval($_POST['status']) : return_json(array('status' => 0, 'message' => '请选择内容状态！'));
+			$db = D($this->content->tabname);
+			foreach ($ids_arr as $id) {
+				$issystem = $db->field('issystem')->where(array('id' => $id))->one();
+				if(!$issystem) continue;
+				$db->update(array('status'=>$status), array('id'=>$id));
+				D('all_content')->update(array('status'=>$status), array('modelid'=>$this->content->modelid, 'id'=>$id));
+			}
+			return_json(array('status' => 1, 'message' => '操作成功'));
+			
+		}else{
+			$t = 2;
+			$modelid = $this->content->modelid;
 			include $this->admin_tpl('attribute_operation');	
 		}
 	}

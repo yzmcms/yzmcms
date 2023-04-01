@@ -23,7 +23,8 @@
 			<option <?php if(isset($_GET['type']) && $_GET['type']=='thumb'){?> selected <?php }?> value="thumb">缩略图</option>	
 		</select>
 	</span>
-    <button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+    <button name="dosubmit" class="btn btn-success radius" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+    <a href="<?php echo U(ROUTE_A);?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</a>
 	 </form>
 	</div>
   <form method="post" action="" id="myform" class="mt-10">

@@ -36,7 +36,8 @@
 				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='3'){echo "selected";} ?> value="3">发布人</option>		
 			</select>
 		</span>
-		 <input type="text" name="searinfo"  class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+		 <input type="text" name="searinfo"  class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+		 <a href="<?php echo U('init');?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</a>
 		 </form>	
   </div>
 	<div class="cl mt-15 tb-top"> <span class="l"><a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontongguo"></i> 通过审核</a> <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a></span></div>

@@ -14,5 +14,5 @@ return array(
 	'setting' => '',	                //模块设置	
 	'listorder' => '0',	                //模块排序
 	'disabled' => '0',	                //是否禁用模块，1为禁用，0为启用
-	'updatedate' => '2020-05-17',		//模块更新日期
+	'updatedate' => '2023-02-10',		//模块更新日期
 );

@@ -12,10 +12,11 @@ function yzm_del(url){
 	var is_ajax = arguments[1] || 0;
 	var symbol = url.indexOf('?')<0 ? '?' : '&';
 	url += symbol+'yzm_csrf_token='+yzm_csrf_token;
-	layer.confirm('确认要删除吗？',function(index){
+	layer.confirm('确认要删除吗？', {title:"操作提示"}, function(index){
 		if(!is_ajax){
 			window.location.href = url;
 		}else{
+			layer.msg('正在操作中……', {icon:16, time:0, shade:0.3});
 			$.ajax({
 		        type: "GET",
 		        url: url, 
@@ -39,13 +40,14 @@ function yzm_del(url){
 function yzm_dels(name){
 	var is_ajax = arguments[1] || 0;
 	if ($("input[name='"+name+"[]']:checked").length<1){
-	   layer.alert('请勾选信息！');
+	   layer.alert('请选择要操作的记录！', {title:"操作提示"});
 	   return false;
 	}	
-	layer.confirm('确认要删除吗？',function(index){
+	layer.confirm('确认要删除吗？', {title:"操作提示"}, function(index){
 		if(!is_ajax){
 			$("#myform").submit();
 		}else{
+			layer.msg('正在操作中……', {icon:16, time:0, shade:0.3});
 			$.ajax({
 		        type: "POST",
 		        url: $("#myform").attr("action"), 
@@ -56,6 +58,34 @@ function yzm_dels(name){
 		        		layer.msg(msg.message, {icon:1,time:1000},function(){
 							window.location.reload();
 						});
+		        	}else{
+		        		layer.msg(msg.message, {icon:2,time:2500});
+		        	}
+		        }
+		    })
+		}
+	});
+}
+
+
+//确认窗口
+function yzm_confirm(url, title, is_ajax) {
+	var symbol = url.indexOf('?')<0 ? '?' : '&';
+	url += symbol+'yzm_csrf_token='+yzm_csrf_token;
+	layer.confirm(title, {title:"操作提示"}, function(index){
+		if(!is_ajax){
+			window.location.href = url;
+		}else{
+			layer.msg('正在操作中……', {icon:16, time:0, shade:0.3});
+			$.ajax({
+		        type: "GET",
+		        url: url, 
+			    dataType: "json", 
+		        success: function (msg) {
+		        	if(msg.status == 1){
+		        		layer.msg(msg.message, {icon:1,time:1000},function(){
+		        			window.location.reload();
+		        		});
 		        	}else{
 		        		layer.msg(msg.message, {icon:2,time:2500});
 		        	}

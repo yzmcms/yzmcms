@@ -95,8 +95,8 @@ class menu extends wechat_common{
 			foreach($_POST['id'] as $key=>$val){
 				$wechat_menu->update(array('listorder'=>$_POST['listorder'][$key]),array('id'=>intval($val)));
 			}
-			showmsg(L('operation_success'),'',1);
 		}
+		showmsg(L('operation_success'),'',1);
 	}
 	
 

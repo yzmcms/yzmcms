@@ -29,7 +29,7 @@ class link extends common{
 			$status = isset($_GET['status']) ? intval($_GET['status']) : 99;
 			$linktype = isset($_GET['linktype']) ? intval($_GET['linktype']) : 99;
 			$type = isset($_GET['type']) ? intval($_GET['type']) : 1;
-			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 
 			if($status != 99) $where['status'] = $status;
 			if($linktype != 99)  $where['linktype'] = $linktype;
@@ -37,7 +37,7 @@ class link extends common{
 				$where['addtime>='] = strtotime($_GET['start']);
 				$where['addtime<='] = strtotime($_GET['end']);
 			}
-			if($searinfo != ''){
+			if($searinfo){
 				if($type == '1')
 					$where['name'] = '%'.$searinfo.'%';
 				elseif($type == '2')
@@ -137,8 +137,8 @@ class link extends common{
 			foreach($_POST['order_id'] as $key=>$val){
 				$link->update(array('listorder'=>$_POST['listorder'][$key]),array('id'=>intval($val)));
 			}
-			showmsg(L('operation_success'), '', 1);
 		}
+		showmsg(L('operation_success'), '', 1);
 	}
 	
 	

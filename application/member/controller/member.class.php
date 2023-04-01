@@ -47,7 +47,7 @@ class member extends common{
 			$status = isset($_GET["status"]) ? intval($_GET["status"]) : 99;
 			$vip = isset($_GET["vip"]) ? intval($_GET["vip"]) : 99;
 			$groupid = isset($_GET["groupid"]) ? intval($_GET["groupid"]) : 0;
-			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
 
 			if($status != 99) {
@@ -66,7 +66,7 @@ class member extends common{
 				$where .= " AND `regdate` >= '".strtotime($_GET['start'])."' AND `regdate` <= '".strtotime($_GET['end'])."' ";
 			}
 			
-			if($searinfo != ''){
+			if($searinfo){
 				if($type == '1')
 					$where .= ' AND username LIKE \'%'.$searinfo.'%\'';
 				elseif($type == '2')
@@ -145,7 +145,7 @@ class member extends common{
 			
 			if(isset($_POST['del_userpic']) && $_POST['del_userpic'] == '1' && $_POST['userpic']){		
 				$userpic = YZMPHP_PATH.ltrim($_POST['userpic'], SITE_PATH);
-				if(in_array(fileext($userpic), array('jpg', 'jpeg', 'png', 'gif')) && is_file($userpic)) @unlink($userpic); 
+				if(is_img(fileext($userpic)) && is_file($userpic)) @unlink($userpic); 
 				$_POST['userpic'] = '';	
 				D('comment')->update(array('userpic'=>''),array('userid'=>$userid));
 			}
@@ -311,7 +311,7 @@ class member extends common{
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){
 
-			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 			$capital_type = isset($_GET["capital_type"]) ? intval($_GET["capital_type"]) : 99;
 			$type = isset($_GET["type"]) ? intval($_GET["type"]) : 1;
 			
@@ -319,7 +319,7 @@ class member extends common{
 				$where .= $capital_type == 1 ? ' AND `type`=1' : ' AND `type`=2';
 			}
 				
-			if($searinfo != ''){
+			if($searinfo){
 				if($type == '1'){
 					$where .= ' AND username LIKE \'%'.$searinfo.'%\'';
 				}elseif($type == '2'){
@@ -385,7 +385,7 @@ class member extends common{
 		$where = '1=1';
 		if(isset($_GET['dosubmit'])){	
 		
-			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 			$capital_type = isset($_GET["capital_type"]) ? intval($_GET["capital_type"]) : 1;
 			$type = isset($_GET["type"]) ? intval($_GET["type"]) : 1;
 			
@@ -393,7 +393,7 @@ class member extends common{
 				$where .= $capital_type == '1' ? ' AND `type`=1' : ' AND `type`=2';
 			}
 			
-			if($searinfo != ''){
+			if($searinfo){
 				if($type == '1'){
 					$where .= ' AND username LIKE \'%'.$searinfo.'%\'';
 				}elseif($type == '2'){

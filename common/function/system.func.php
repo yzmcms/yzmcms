@@ -247,13 +247,13 @@ function adver($id){
 	global $adver;
 	$adver = isset($adver) ? $adver : D('adver');
 	$data = $adver->field('start_time, end_time, code')->where(array('id'=>$id))->find();
-	if(!$data)  return '广告位不存在！';
+	if(!$data)  return '广告位不存在';
 	if($data['start_time']!=0 && $data['start_time']>SYS_TIME){
-		return '广告未开始！';
+		return '广告未开始';
 	}
 	
 	if($data['end_time']!=0 && $data['end_time']<SYS_TIME){
-		return '广告已过期！';
+		return '广告已过期';
 	}
 	return $data['code'];
 }
@@ -431,7 +431,7 @@ function down_remote_img($content, $targeturl = ''){
 		if($len){  
 			$arr = array(
 				'siteid' => get_siteid(),
-				'originname' => '远程下载-'.basename($value),
+				'originname' => '远程下载-'.htmlspecialchars(basename($value)),
 				'filename' => $imgname,
 				'filepath' => $urlpath.'/',
 				'filesize' => $len,
@@ -607,7 +607,7 @@ function get_catname($catid){
  */
 function get_childcat($catid, $is_show = false, $limit = 0){
 	$catid = intval($catid);
-    $data = get_category(0, '', true);
+    $data = get_category();
 	$r = array();
 	foreach($data as $v){
 		if(!$v['display'] && !$is_show) continue;

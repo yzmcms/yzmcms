@@ -10,11 +10,10 @@
 <body>
 <article class="page-container">
 	<form action="" method="get" id="search" onchange="do_search()" onsubmit="return do_search()">
+		 <input type="hidden" name="dosubmit" value="1">
 		 <span class="select-box inline" style="padding:2px 5px"><?php echo select_category('catid', $catid, '绑定栏目'); ?></span>
-    	 <input type="text" name="searinfo" class="input-text" placeholder="请输入关键字" style="width:200px;height:27px;line-height:27px" value="<?php echo $searinfo;?>">
-    	 <input type="hidden" name="dosubmit" value="1">
-    	 <button class="btn btn-success size-S" type="button" onclick="do_search()"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button> 
-    	 <button class="btn btn-primary size-S" type="button" onclick="do_reset()"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</button> 
+    	 <input type="text" name="searinfo" class="input-text" placeholder="请输入关键字" style="width:200px;height:27px;line-height:27px" value="<?php echo $searinfo;?>"><button class="btn btn-success size-S btn-search" type="button" onclick="do_search()"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button> 
+    	 <button class="btn btn-primary size-S radius" type="button" onclick="do_reset()"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</button> 
 	</form>	
 	<div class="yzm_tags">	
 			<?php 

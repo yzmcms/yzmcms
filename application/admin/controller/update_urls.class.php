@@ -58,7 +58,7 @@ class update_urls extends common {
 			foreach($catinfo as $val){
 				if($val['type'] == 2 || $val['domain']) continue;  
 				if($url_mode==1 || $url_mode==3){
-					if($val['arrparentid']!='0'){
+					if(strstr($val['arrparentid'], ',')){
 						$arr = explode(',', $val['arrparentid']);
 						$parents_domain = get_category($arr[1], 'domain');
 						$pclink = $parents_domain ? $parents_domain.$val['catdir'].'/' : $site_url.$val['catdir'].'/';
@@ -89,7 +89,7 @@ class update_urls extends common {
 		$total = isset($_POST['total']) ? intval($_POST['total']) : 0;
 		$pagesize = 50;
 
-		$modelid_arr = getcache('update_content_url_'.$_SESSION['adminid']);
+		$modelid_arr = getcache('update_content_url_'.$_SESSION['adminid']) ? getcache('update_content_url_'.$_SESSION['adminid']) : array();
 		if(!$modelid_arr){
 			if($modelid){
 				$modelid_arr[] = $modelid;

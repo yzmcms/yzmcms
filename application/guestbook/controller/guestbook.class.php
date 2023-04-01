@@ -44,18 +44,21 @@ class guestbook extends common {
 			$ischeck = isset($_GET['ischeck']) ? intval($_GET['ischeck']) : 99;
 			$isread = isset($_GET['isread']) ? intval($_GET['isread']) : 99;
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
-			$searinfo = isset($_GET['searinfo']) ? safe_replace(trim($_GET['searinfo'])) : '';
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 
 			if($ischeck != 99) $where .= ' AND ischeck = '.$ischeck;
 			if($isread != 99) $where .= ' AND isread = '.$isread;
 			if(isset($_GET["start"]) && $_GET["start"] != '' && $_GET["end"]){		
 				$where .= ' AND booktime BETWEEN '.strtotime($_GET["start"]).' AND '.strtotime($_GET["end"]);
 			}
-			if($searinfo != ''){
-				if($type == '1')
+			if($searinfo){
+				if($type == '1'){
 					$where .= ' AND title LIKE \'%'.$searinfo.'%\'';
-				else
+				}elseif($type == '2'){
 					$where .= ' AND name LIKE \'%'.$searinfo.'%\'';
+				}else{
+					$where .= ' AND ip LIKE \'%'.$searinfo.'%\'';
+				}
 			}			
 		}		
 		$_GET = array_map('htmlspecialchars', $_GET);
@@ -73,18 +76,28 @@ class guestbook extends common {
 	public function read() {
 		$guestbook = D('guestbook');
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
- 		if(isset($_POST['dosubmit'])) {
+ 		if(is_post()) {
 			$_POST['name'] = $_SESSION['adminname'];
 			$_POST['booktime'] = SYS_TIME;
 			$_POST['ip'] = getip();
 			$guestbook->insert($_POST, true);
-			showmsg("回复成功！", '', 1);
+			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}else{
 			$guestbook->update(array('isread'=>'1'),array('id'=>$id));
 			$data = $guestbook->where(array('id'=>$id))->find();
-			$reply = $guestbook->field('booktime,bookmsg')->where(array('replyid'=>$id))->select(); //管理员回复
+			$reply = $guestbook->field('id,name,booktime,bookmsg,ip')->where(array('replyid'=>$id))->select(); //管理员回复
 			include $this->admin_tpl('guestbook_read');
 		}
+	}
+
+
+	/**
+	 * 删除回复
+	 */
+	public function del_reply(){
+		$id = input('get.id', 0, 'intval');
+		D('guestbook')->delete(array('id'=>$id));
+		return_json(array('status'=>1,'message'=>L('operation_success')));
 	}
 	
 	

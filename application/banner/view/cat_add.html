@@ -34,10 +34,12 @@ function checkall(obj){
 		    dataType: "json", 
             success: function (msg) {
 				if(msg.status == 1){
-					parent.$('#typeid').append(msg.html);
-					parent.layer.close(parent.layer.getFrameIndex(window.name));
+					layer.msg(msg.message, {icon:1,time:1500}, function(){
+						parent.$('#typeid').append(msg.html);
+						parent.layer.close(parent.layer.getFrameIndex(window.name));
+					});
 			    }else{
-					layer.msg(msg.message);
+					layer.msg(msg.message, {icon:2});
 				}
             }
         })		 

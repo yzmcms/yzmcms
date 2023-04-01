@@ -238,13 +238,13 @@ class content_model {
 			if(!$val) continue;
 			$tagid = $tag->field('id')->where(array('siteid'=>$siteid, 'tag'=>$val))->one();
 			if($tagid){
-				$total = $tag_content->where(array('tagid' => $tagid))->total();
-				$tag->update(array('total' => $total+1), array('id' => $tagid));
+				$total = $tag_content->where(array('siteid'=>$siteid,'tagid'=>$tagid))->total();
+				$tag->update(array('total'=>$total+1), array('id'=>$tagid));
 			}else{
 				$tagid = $tag->insert(array('siteid'=>$siteid, 'catid'=>$catid, 'tag'=>$val, 'total'=>1, 'inputtime'=>SYS_TIME));
 			}
 			
-			$tag_content->insert(array('modelid' => $this->modelid, 'catid' => $catid, 'tagid' => $tagid, 'aid' => $aid), false, false);
+			$tag_content->insert(array('siteid'=>$siteid, 'modelid'=>$this->modelid, 'catid'=>$catid, 'tagid'=>$tagid, 'aid'=>$aid), false, false);
 		}
 	}   	
 

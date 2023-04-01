@@ -45,7 +45,8 @@
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='4'){?> selected <?php }?> value="4">用户备注</option>	
 		</select>
 	</span>
-     <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+     <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+     <a href="<?php echo U('init');?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</a>
 	 </form>
 	</div>
 	<form method="post" action="<?php echo U('move_user_group');?>" id="myform">
@@ -115,7 +116,7 @@
 	}
 
 	function synchronization(){
-		layer.confirm('第一次同步数据后，本地数据会自动和微信同步（已认证的公众号），不建议频繁使用！',function(index){
+		layer.confirm('第一次同步数据后，本地数据会自动和微信同步（已认证的公众号），<br>不建议频繁使用本功能！', {title:"操作提示"}, function(index){
 			yzm_open('同步微信服务器用户','<?php echo U('synchronization');?>',600,300);
 		});
 	}

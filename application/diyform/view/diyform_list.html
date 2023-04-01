@@ -18,6 +18,7 @@
 		<th>表名</th>
 		<th>简介</th>
 		<th>创建时间</th>
+		<th>最后提交</th>
 		<th>状态</th>
 		<th>管理操作</th>
       </tr>
@@ -27,17 +28,18 @@
 		foreach($data as $val){
 		?>
 		  <tr class="text-c">
-			<td><?php echo $val['name'].' ('.$val['items'].'条数据)';?></td>
+			<td><a href="<?php echo U('diyform_info/init', array('modelid'=>$val['modelid']))?>" style="text-decoration:none"><?php echo $val['name'].' ('.$val['items'].'条数据)';?></a></td>
 			<td><?php echo $val['tablename'];?></td>
-			<td><?php echo htmlspecialchars(str_cut($val['description'],30)); ?></td>
+			<td><?php echo $val['description'] ? str_cut($val['description'],30) : '无'; ?></td>
 			<td><?php echo date('Y-m-d H:i:s',$val['inputtime'])?></td>
+			<td><?php echo $val['lasttime'] ? date('Y-m-d H:i:s',$val['lasttime']) : '无'?></td>
 			<td><?php echo $val['disabled'] ? '<span class="c-red">禁用</span>' : '启用';?></td>
 			<td>
-			<a href="<?php echo U('diyform_info/init', array('modelid'=>$val['modelid']))?>"  class="btn-mini btn-success ml-5" style="text-decoration:none">信息列表</a> 
+			<a href="<?php echo U('diyform_info/init', array('modelid'=>$val['modelid']))?>"  class="btn-mini btn-success" style="text-decoration:none">信息列表</a> 
 			<a href="<?php echo U('index/show', array('modelid'=>$val['modelid']))?>" target="_blank"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">前台浏览</a>
 			<a href="<?php echo U('diyform_field/init', array('modelid'=>$val['modelid']))?>"  class="btn-mini btn-primary ml-5" style="text-decoration:none">字段管理</a>
 			<a href="javascript:;" onclick="yzm_open('编辑表单','<?php echo U('edit', array('modelid'=>$val['modelid']));?>','700','505')"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">修改</a>
-			<a href="javascript:;" onclick="yzm_del('<?php echo U('del',array('modelid'=>$val['modelid']));?>')"  class="btn-mini btn-danger ml-5" style="text-decoration:none">删除</a>
+			<a href="javascript:;" onclick="yzm_confirm('<?php echo U('del',array('modelid'=>$val['modelid']));?>', '确定要删除【<?php echo $val['name'];?>】吗？')"  class="btn-mini btn-danger ml-5" style="text-decoration:none">删除</a>
 			</td>
 		  </tr>		
 		<?php 
