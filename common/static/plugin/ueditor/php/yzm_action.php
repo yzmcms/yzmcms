@@ -217,7 +217,7 @@ function ue_file_upload($fieldName, $config, $base64, $document_root){
 	        return json_encode($info);
 	    }
 
-	    $option['allowtype'] = explode('|', get_config('upload_image_types'));
+	    $option['allowtype'] = explode('|', isset($config['isFile']) ? get_config('upload_types') : get_config('upload_image_types'));
 	    $upload = new $upload_type($option);
 	    if($upload->uploadfile($fieldName)){
 	        $fileinfo = $upload->getnewfileinfo();
