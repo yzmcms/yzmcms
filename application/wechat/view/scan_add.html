@@ -11,7 +11,7 @@
 		<ul>
 			<li><label><span class="c-red">*</span>场景ID：</label>
 				<input type="text" class="input" style="width:300px" name="scan" value="">
-				<p class="exp">场景ID必须为英文、数字或下划线，且长度为1-20位。</p>
+				<p class="exp">场景ID必须为英文、数字或下划线，且长度为1-30位。</p>
 			</li>
 			<li><label>场景分类：</label>
 				<label><input class="radio" type="radio" name="type" value="1" checked="checked"> 临时二维码</label>
@@ -54,9 +54,9 @@
 	});
 
 	function dosub(obj){
-		 var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/;	
-		 if(obj.scan.value.length<1 || obj.scan.value.length>20){
-		 	layer.msg('场景ID长度必须为1-20位！', {icon:2});
+		 var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,29}$/;	
+		 if(obj.scan.value.length<1 || obj.scan.value.length>30){
+		 	layer.msg('场景ID长度必须为1-30位！', {icon:2});
 		 	return false;
 		 }
 		 if(!reg.test(obj.scan.value)){

@@ -12,8 +12,10 @@ define('IN_YZMPHP', true);
 define('IN_YZMCMS', true); 
 include("yzm_action.php");
 $CONFIG['imageMaxSize'] = get_config('upload_maxsize')*1024;
-$CONFIG['imageAllowFiles'] = array_map('handle_suffix', explode('|', get_config('upload_image_types')));
-$CONFIG['fileAllowFiles'] = array_map('handle_suffix', explode('|', get_config('upload_image_types').'|'.get_config('upload_types')));
+$imageAllowFiles = handle_upload_types(1);
+$fileAllowFiles = array_merge($imageAllowFiles, handle_upload_types(2));
+$CONFIG['imageAllowFiles'] = array_map('handle_suffix', $imageAllowFiles);
+$CONFIG['fileAllowFiles'] = array_map('handle_suffix', $fileAllowFiles);
 
 switch ($action) {
     case 'config':

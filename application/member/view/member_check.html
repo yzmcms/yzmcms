@@ -6,7 +6,7 @@
 <div class="page-container">
   <div class="cl tb-top"> <span class="l">
   <a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontongguo"></i> 通过审核</a>
-  <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a> 
+  <a href="javascript:;" onclick="yzm_dels('ids', 1)" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a> 
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
   <form method="post" action="<?php echo U('del');?>" id="myform">
   <table class="table table-border table-bg table-hover yzm-table-sort">
@@ -55,12 +55,11 @@
 <?php include $this->admin_tpl('footer', 'admin');?>
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
 <script type="text/javascript">
-
-
+	
 //通过审核
 function adopt(){
 	if ($("input[name='ids[]']:checked").length<1){
-	   layer.alert('请勾选信息！');
+	   layer.alert('请选择要操作的内容！');
 	   return false;
 	}	
 	document.getElementById('myform').action='<?php echo U('adopt');?>';

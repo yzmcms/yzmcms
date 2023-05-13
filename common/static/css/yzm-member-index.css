@@ -78,9 +78,9 @@ a:hover{color:#33aecc;text-decoration:underline;}
 
 
 select{ background: #fff none repeat scroll 0 0;border-color: #ddd;border-image: none;border-style: solid;border-width: 1px;height: 30px;line-height: 30px;margin-right:2px;min-width:120px;outline:none;}
+select optgroup{background: #f0f0f0;font-style: normal;font-weight: normal;color: #333}
 textarea{width:615px;height:80px;padding:2px 3px;border-radius:2px;border:1px solid #e3eaef;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;font-size:12px;margin:10px 0}
 .input,.yzm-input-text{height:30px;line-height:30px;width:320px;padding:1px 5px;border-radius:3px;border:1px solid #e3eaef;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;font-size:13px}
-.select optgroup {background:#f0f0f0}
 .date{height:30px !important;line-height: 30px;padding:1px 5px !important;border-radius: 2px !important;width:320px !important;border:1px solid #e3eaef !important;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}
 .w370{width:370px;}
 .w660{width:660px;}

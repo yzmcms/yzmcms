@@ -16,6 +16,7 @@ yzm_base::load_common('lib/sql'.EXT, 'admin');
 class model_field extends common {
 	
 	public $modelid;
+	public $modeltype;
 	public $modeltable;
 	public $modelname;
 	public function __construct() {
@@ -30,8 +31,15 @@ class model_field extends common {
 	 */
 	public function init() {
 		$modelid = $this->modelid;
-		$model_field = D('model_field'); 
-		$data = $model_field->where(array('modelid' => 0),array('modelid' => $this->modelid))->order('listorder ASC,fieldid ASC')->select();	
+		$model_field = D('model_field');
+
+		// 0:内容模型,1:自定义表单模型,2:单页模型
+		if($this->modeltype){
+			$data = $model_field->where(array('modelid' => $this->modelid))->order('listorder ASC,fieldid ASC')->select();
+		}else{
+			$data = $model_field->where(array('modelid' => 0),array('modelid' => $this->modelid))->order('listorder ASC,fieldid ASC')->select();
+		}
+			
 		include $this->admin_tpl('model_field_list');
 	}
 
@@ -43,7 +51,7 @@ class model_field extends common {
 
 		if(isset($_POST['dosubmit'])) {
 			
-		   if(!preg_match('/^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/', $_POST['field'])) showmsg('字段名格式不正确！');
+		   if(!preg_match('/^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,29}$/', $_POST['field'])) showmsg('字段名格式不正确！');
 		   
 		   $files = array('input','textarea','number','decimal','datetime','image','images','attachment','attachments','select','radio','checkbox','editor', 'editor_mini');
 		   if(!in_array($_POST['fieldtype'], $files))  showmsg(L('illegal_parameters'), 'stop');
@@ -62,16 +70,18 @@ class model_field extends common {
 		   		   
 		   if($_POST['minlength']) $_POST['isrequired'] = 1;
 
-		   if($_POST['fieldtype'] == 'textarea' || $_POST['fieldtype'] == 'images' || $_POST['fieldtype'] == 'attachments'){
-			   sql::sql_add_field_mediumtext($this->modeltable, $_POST['field']);  
+		   if($_POST['fieldtype'] == 'input' || $_POST['fieldtype'] == 'datetime'){
+		   		sql::sql_add_field($this->modeltable, $_POST['field']);  
+		   }else if($_POST['fieldtype'] == 'textarea' || $_POST['fieldtype'] == 'images' || $_POST['fieldtype'] == 'attachments'){
+				sql::sql_add_field_mediumtext($this->modeltable, $_POST['field']);  
 		   }else if($_POST['fieldtype'] == 'editor' || $_POST['fieldtype'] == 'editor_mini'){
-			   sql::sql_add_field_text($this->modeltable, $_POST['field']);  
+				sql::sql_add_field_text($this->modeltable, $_POST['field']);  
 		   }else if($_POST['fieldtype'] == 'number'){
-			   sql::sql_add_field_int($this->modeltable, $_POST['field'], intval($_POST['defaultvalue'])); 
+				sql::sql_add_field_int($this->modeltable, $_POST['field'], intval($_POST['defaultvalue'])); 
 		   }else if($_POST['fieldtype'] == 'decimal'){
-			   sql::sql_add_field_decimal($this->modeltable, $_POST['field']); 
+				sql::sql_add_field_decimal($this->modeltable, $_POST['field']); 
 		   }else{
-			   sql::sql_add_field($this->modeltable, $_POST['field'], $_POST['defaultvalue'], $_POST['maxlength']);  
+				sql::sql_add_field($this->modeltable, $_POST['field'], $_POST['defaultvalue'], $_POST['maxlength']);  
 		   }
 
 		   D('model_field')->insert($_POST); 
@@ -150,13 +160,35 @@ class model_field extends common {
 		}
 	}
 
+
+	/**
+	 * ajax修改状态
+	 */
+	public function public_change_status() {
+		if(is_post()){
+			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+			$data = D('model_field')->field('modelid,issystem')->where(array('fieldid' => $id))->find();
+			if($data['issystem']) return_json(array('status'=>0,'message'=>'系统字段不允许修改！'));
+
+			$disabled = $value ? 0 : 1;
+			if(D('model_field')->update(array('disabled' => $disabled), array('fieldid' => $id))){
+				delcache($data['modelid'].'_model');
+				return_json(array('status'=>1,'message'=>L('operation_success')));
+			}else{
+				return_json();
+			}
+		}
+	}
+
 	
 	/**
 	 * 获取模型信息
 	 */
 	public function public_set_modelinfo() {
-		$data = D('model')->field('name,tablename')->where(array('modelid'=>$this->modelid))->find();
+		$data = D('model')->field('name,tablename,type')->where(array('modelid'=>$this->modelid))->find();
 		if($data){
+			$this->modeltype = $data['type'];
 			$this->modelname = $data['name'];
 			$this->modeltable = $data['tablename'];
 		}else{

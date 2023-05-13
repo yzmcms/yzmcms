@@ -50,7 +50,7 @@
   </div>
   <div class="cl mt-15 tb-top"> <span class="l">
   <a href="javascript:;" onclick="yzm_open('添加用户','<?php echo U('add');?>','630','420')" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontianjia"></i> 添加用户</a>
-  <a href="javascript:;" onclick="yzm_dels('ids')" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a> 
+  <a href="javascript:;" onclick="yzm_dels('ids', 1)" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a> 
   <a href="javascript:;" onclick="lock()" class="btn btn-warning radius"><i class="yzm-iconfont yzm-iconlock-line"></i> 锁定用户</a>
   <a href="javascript:;" onclick="unlock()" class="btn btn-success radius"><i class="yzm-iconfont yzm-iconjiesuo"></i> 解锁用户</a>
   </span> <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> </div>
@@ -78,7 +78,16 @@
 		  <tr class="text-c">
 			<td><input type="checkbox" value="<?php echo $val['userid']?>" name="ids[]"></td>
 			<td><?php echo $val['userid']?></td>
-			<td class="text-l"><?php if($val['vip']) echo '<img src="'.STATIC_URL.'images/vip.png" height="23" title="vip会员"> ';?><?php if($val['status'] == 2) echo '<img src="'.STATIC_URL.'images/lock.png" height="18" title="用户已锁定"> '; echo '<a href="'.U('edit',array('userid'=>$val['userid'])).'" style="text-decoration:none"><img src="'.$avatar.'" height="25" class="radius" onmouseover="yzm_img_browse(this, \''.$avatar.'\')" onmouseout="layer.closeAll(\'tips\')"> '.$val['username'];?></a></td>
+			<td class="text-l">
+				<?php if($val['vip']){ ?>
+				<img src="<?php echo STATIC_URL; ?>images/vip.png" height="23" title="<?php echo "vip会员\r\n过期时间：".date('Y-m-d H:i:s', $val['overduedate']);?>">
+				<?php } ?>
+				<?php if($val['status'] == 2){ ?>
+				<img src="<?php echo STATIC_URL; ?>images/lock.png" height="18" title="用户已锁定">
+				<?php } ?>
+				<?php echo '<a href="'.U('edit',array('userid'=>$val['userid'])).'" style="text-decoration:none"><img src="'.$avatar.'" height="25" class="radius" onmouseover="yzm_img_browse(this, \''.$avatar.'\')" onmouseout="layer.closeAll(\'tips\')"> '.$val['username'].'</a>';
+				?>
+			</td>
 			<td class="text-l"><?php echo $val['email_status'] ? $val['email'].' <span style="color:green;text-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);" title="已验证">「验」</span>' : $val['email'];?> <?php if($val['status'] == 0) echo '<span style="color:#c7254e;text-shadow:1px 1px 3px rgba(0, 0, 0, 0.3);" title="待审核">「审」</span>'; ?></td>
 			<td><span title="经验：<?php echo $val['experience']?>"><?php echo get_groupname($val['groupid']);?></span></td>
 			<td><span title="<?php echo '注册时间：'.date('Y-m-d H:i:s', $val['regdate']).' ('.$val['regip'].")\r\n最后登录：".($val['lastdate'] ? date("Y-m-d H:i:s",$val['lastdate']).' ('.$val['lastip'].')' : '从未登录');?>"><?php echo $val['lastdate'] ? date("Y-m-d H:i:s",$val['lastdate']) : '从未登录';?></span></td>
@@ -107,7 +116,7 @@
 
 	function lock(){
 		if ($("input[name='ids[]']:checked").length<1){
-		   layer.alert('请勾选信息！');
+		   layer.alert('请选择要操作的内容！');
 		   return false;
 		}	
 		document.getElementById('myform').action='<?php echo U('lock')?>';
@@ -116,7 +125,7 @@
 
 	function unlock(){
 		if ($("input[name='ids[]']:checked").length<1){
-		   layer.alert('请勾选信息！');
+		   layer.alert('请选择要操作的内容！');
 		   return false;
 		}	
 		document.getElementById('myform').action='<?php echo U('unlock')?>';

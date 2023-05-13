@@ -42,11 +42,11 @@
 					if($val['fieldtype'] == 'image'){
 						echo '<span style="color:#0a6999;font-size:14px;vertical-align:middle;" onmouseover="yzm_img_browse(this, \''.$val['value'].'\')" onmouseout="layer.closeAll(\'tips\')" class="yzm-iconfont yzm-icontupian1 pointer"></span> '.$val['value'];
 					}else{
-						echo str_cut(htmlspecialchars($val['value']),80); 
+						echo str_cut($val['value'],80); 
 					}
 				?>
 			</td>
-			<td><?php echo $val['title'] ? htmlspecialchars($val['title']) : '无';?></td>
+			<td><?php echo $val['title'] ? $val['title'] : '无';?></td>
 			<td>
 				<?php if($val['status']){ ?>
 				<span class="yzm-status-enable" data-field="status" data-id="<?php echo $val['id']?>" onclick="yzm_change_status(this,'<?php echo U('public_change_status');?>')"><i class="yzm-iconfont">&#xe81f;</i>是</span>

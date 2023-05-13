@@ -6,16 +6,18 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label><span class="c-red">*</span>表单名称</label>
-			 	<input type="text" class="input" name="name" value="">
+			 <li class="yzm-explain-box"><label><span class="c-red">*</span>表单名称</label>
+			 	<input type="text" class="input" name="name" value="" placeholder="如：用户信息表单">
+			 	<span class="yzm-explain">给表单起一个名称，<br>例如：用户信息表单</span>
 			 </li>
-			 <li><label><span class="c-red">*</span>表名</label>
-			 	<input type="text" class="input" name="tablename" value="">
+			 <li class="yzm-explain-box"><label><span class="c-red">*</span>表名</label>
+			 	<input type="text" class="input" name="tablename" value="" placeholder="如：info">
+			 	<span class="yzm-explain">表名只能由英文字母、数字<br>和下划线组成，例如：info</span>
 			 </li>
-			 <li><label>表单状态</label>
+			 <li><label>启用</label>
 			 <span class="span_input">
-			 	<label class="label_radio"><input name="disabled" type="radio" value="0" checked> 启用</label>
-			 	<label class="label_radio"><input name="disabled" type="radio" value="1"> 禁用</label>
+			 	<label class="label_radio"><input name="disabled" type="radio" value="0" checked> 是</label>
+			 	<label class="label_radio"><input name="disabled" type="radio" value="1"> 否</label>
 			 </span>
 			 </li>
 			 <li><label>开启验证码</label>
@@ -65,26 +67,26 @@
 <?php include $this->admin_tpl('footer', 'admin');?>
 <script type="text/javascript">
 	function dosub(obj){
-		 var reg = /^[A-Za-z]+$/;	
+		 var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,29}$/;	
 		 if(obj.name.value==''){
-			 layer.msg('表单名称不能为空！');
+			 layer.msg('表单名称不能为空！', {icon:2});
 			 return false;
 		 }
-		 if(obj.tablename.value==''){
-			 layer.msg('表名不能为空！');
-			 return false;
+		 if(obj.tablename.value.length<1 || obj.tablename.value.length>30){
+		 	layer.msg('表名长度必须为1-30位！', {icon:2});
+		 	return false;
 		 }
 		 if(!reg.test(obj.tablename.value)){
-			layer.msg('表名只能为英文或拼音！');
+			layer.msg('表名必须为英文、数字或下划线！', {icon:2});
 			return false;
 		 }
 		 
 		if($("select[name='list_template']").val()==''){
-			layer.msg('请选择列表页模板！');
+			layer.msg('请选择列表页模板！', {icon:2});
 			return false;
 		}
 		if($("select[name='show_template']").val()==''){
-			layer.msg('请选择显示页模板！');
+			layer.msg('请选择显示页模板！', {icon:2});
 			return false;
 		}		 
 		 

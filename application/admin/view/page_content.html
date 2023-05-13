@@ -1,30 +1,32 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
 <title>单页内容 - YzmCMS内容管理系统</title>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
 <script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/ueditor.config.js"></script>
 <script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/ueditor.all.min.js"> </script>
 <script type="text/javascript" charset="utf-8" src="<?php echo STATIC_URL;?>plugin/ueditor/lang/zh-cn/zh-cn.js"></script>
+<style>
+	.date{height:30px;padding:4px;width:265px;font-size:13px}
+</style>
 </head>
 <body>
 <nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 栏目管理 <span class="c-gray en">&gt;</span> 单页内容 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <article class="page-container pad_bot_0">
-<div class="formdoby_normal"> 
+<div> 
 	<form method="post" onsubmit="return dosub(this)">
-		<ul>
-			 <li><label><span class="c-red">*</span>单页标题：</label>
-			 	<input type="text" class="input" name="title" value="<?php echo $data['title'];?>" placeholder="请输入单页标题">
-			 </li>
-			 <li><label>单页简介：</label>
-			 	<span class="span_input"><textarea name="introduce" class="textarea" style="width:85%" placeholder="可以简单的描述一下这个栏目"><?php echo $data['introduce'];?></textarea></span>
-			 </li>			
-			 <li><label>单页内容：</label>
-			 	<span class="span_input"><?php echo form::editor('content', $data['content']);?></span>
-			 </li>			
-			 <li>
-			 	<input type="hidden" name="catid" value="<?php echo $data['catid'];?>"><input type="hidden" name="dosubmit" value="1">
+		 <div class="yzm-form-item">
+		 	<label class="yzm-form-item-label"><em class="c-red">*</em>单页标题：</label><div class="yzm-form-item-content"><input type="text" class="input-text" name="title" value="<?php echo $data['title'];?>" placeholder="请输入单页标题"></div>
+		 </div>
+		 <?php echo $string;?>			
+		 <div class="yzm-form-item">
+		 	<label class="yzm-form-item-label">单页内容：</label><div class="yzm-form-item-content"><?php echo form::editor('content', $data['content']);?></div>
+		 </div>
+		 <div class="yzm-form-item">
+			<label class="yzm-form-item-label"></label><div class="yzm-form-item-content">
+				<input type="hidden" name="catid" value="<?php echo $data['catid'];?>">
 				<input class="dosubmit w_100 btn-primary radius" name="dosubmit" type="submit" value="提交">
-			 	<input class="btn w_100 btn-default radius h35" type="button" value="后退" onclick="window.history.go(-1)">
-			 </li>
-		</ul>
+				<input class="btn w_100 btn-default radius h35" type="button" value="后退" onclick="window.history.go(-1)">
+			</div>
+		</div>
 	</form>
 </div>
 </article>
@@ -34,7 +36,18 @@
 		 if(obj.title.value==''){
 			 layer.msg('单页标题不能为空！', {icon:2});
 			 return false;
-		 }			 
+		 }
+		 var check = true;
+		 $(".required").each(function(){
+		 	if($(this).val() == ''){
+		 	  layer.msg($(this).attr('errortips'), {icon:2,time: 2000});
+		 	  $(this).focus();
+		 	  check = false;
+		 	  return false;
+		 	}
+		 })
+		 if(!check) return false;
+		 return true;	 
 	}
 </script> 
 

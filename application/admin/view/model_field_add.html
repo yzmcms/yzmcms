@@ -123,10 +123,10 @@
 	
 	function check_field(){ 
 		var res = false;	
-		var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/;	
+		var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,29}$/;	
 		var filed = $("input[name='field']").val();
-		if(filed.length<1 || filed.length>20){
-			layer.msg('字段名长度必须为1-20位！', {icon:2});
+		if(filed.length<1 || filed.length>30){
+			layer.msg('字段名长度必须为1-30位！', {icon:2});
 			return false;
 		}
         if(!reg.test(filed)){

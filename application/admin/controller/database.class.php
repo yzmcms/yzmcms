@@ -21,7 +21,7 @@ class database extends common {
 		parent::__construct();
 		$this->config = array(
 			'path'     => YZMPHP_PATH.'cache'.DIRECTORY_SEPARATOR.'databack'.DIRECTORY_SEPARATOR, //备份文件目录
-			'part'     => 3145728, //3MB
+			'part'     => 31457280, //30MB
 			'compress' => 1,    //是否压缩
 			'level'    => 4,	//压缩水平
         );

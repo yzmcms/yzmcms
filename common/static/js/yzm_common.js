@@ -69,9 +69,16 @@ function yzm_dels(name){
 
 
 //确认窗口
-function yzm_confirm(url, title, is_ajax) {
+function yzm_confirm(url, title, is_ajax, is_filter) {
+	if (is_ajax == undefined || is_ajax == null) {
+		is_ajax = false;
+	}
+	if (is_filter == undefined || is_filter == null) {
+		is_filter = true;
+	}
 	var symbol = url.indexOf('?')<0 ? '?' : '&';
 	url += symbol+'yzm_csrf_token='+yzm_csrf_token;
+	title = is_filter ? yzm_htmlspecialchars(title) : title;
 	layer.confirm(title, {title:"操作提示"}, function(index){
 		if(!is_ajax){
 			window.location.href = url;
@@ -98,25 +105,19 @@ function yzm_confirm(url, title, is_ajax) {
 
 //打开页面
 function yzm_open(title,url,w,h){
-	if (title == null || title == '') {
-		title=false;
-	};
-	if (url == null || url == '') {
-		url="404.html";
-	};
-	if (w == null || w == '') {
-		w=($(window).width() * 0.8);
-	};
-	if (h == null || h == '') {
-		h=($(window).height() * 0.8);
-	};
+	if (w == undefined || w == null) {
+		w = ($(window).width() * 0.8);
+	}
+	if (h == undefined || h == null) {
+		h = ($(window).height() * 0.8);
+	}
 	layer.open({
 		type: 2,
 		area: [w+'px', h +'px'],
 		fix: false, 
 		// maxmin: true,
 		shade:0.4,
-		title: title,
+		title: yzm_htmlspecialchars(title),
 		content: url
 	});
 } 
@@ -126,7 +127,7 @@ function yzm_open(title,url,w,h){
 function yzm_open_full(title,url){
 	var index = layer.open({
 		type: 2,
-		title: title,
+		title: yzm_htmlspecialchars(title),
 		content: url
 	});
 	layer.full(index);
@@ -237,8 +238,12 @@ function yzm_htmlspecialchars(str)  {
 
 //新窗口打开
 function yzm_win_open(url,name,w,h) {
-	if(!w) w=screen.width;
-	if(!h) h=screen.height;
+	if (w == undefined || w == null) {
+		w = screen.width;
+	}
+	if (h == undefined || h == null) {
+		h = screen.height;
+	}
 	var winobj = window.open(url,name,"width=" + w + ",height=" + h + ",toolbar=no,menubar=no,scrollbars=yes,resizable=yes,location=no,status=no");
 	var loop = setInterval(function(){
 		if(winobj.closed){

@@ -32,13 +32,13 @@
 			<td><input type="checkbox" value="<?php echo $val['nodeid']?>" name="id[]"></td>
 			<td><?php echo $val['nodeid']?></td>
 			<td><?php echo $val['name']?></td>
-			<td><?php echo date('Y-m-d H:i:s',$val['lastdate'])?></td>
+			<td><?php echo $val['lastdate'] ? date('Y-m-d H:i:s',$val['lastdate']) : '从未采集';?></td>
 			<td>
 			<a href="<?php echo U('collection_list_url', array('id'=>$val['nodeid']));?>">[采集网址]</a>
             <a href="<?php echo U('collection_article_content', array('id'=>$val['nodeid']));?>">[采集内容]</a>
             <a href="<?php echo U('collection_list', array('keyword'=>$val['nodeid'], 'type'=>1, 'dosubmit'=>1));?>" class="c-red">[内容发布]</a>
 			</td>
-			<td><?php echo $val['sourcecharset']?></td>
+			<td><?php echo htmlspecialchars($val['sourcecharset']);?></td>
 			<td>
 			<a href="<?php echo U('collection_test', array('id'=>$val['nodeid']));?>"  class="btn-mini btn-success ml-5" style="text-decoration:none">测试采集</a>
 			<a href="<?php echo U('edit', array('id'=>$val['nodeid']));?>"  class="btn-mini btn-primary ml-5" style="text-decoration:none">修改</a>

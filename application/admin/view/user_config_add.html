@@ -59,9 +59,9 @@
 
 
 	function dosub(obj){
-		var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/;	
-		if(obj.name.value.length<1 || obj.name.value.length>20){
-			layer.msg('配置名称长度必须为1-20位！', {icon:2});
+		var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,29}$/;	
+		if(obj.name.value.length<1 || obj.name.value.length>30){
+			layer.msg('配置名称长度必须为1-30位！', {icon:2});
 			return false;
 		}
 		if(!reg.test(obj.name.value)){

@@ -11,15 +11,16 @@
 		 <input type="hidden" value="search_list" name="a">
 		 原名称：<input type="text" name="originname" placeholder="附件原名" style="width:135px" class="input-text" value="<?php if(isset($_GET['originname'])) echo $_GET['originname'];?>">
 		 上传者：<input type="text" name="username" placeholder="上传者" style="width:135px" class="input-text" value="<?php if(isset($_GET['username'])) echo $_GET['username'];?>">
-		 时间：<input type="text" class="input-text laydate-icon" style="width:125px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
-		 至 <input type="text" class="input-text laydate-icon" style="width:125px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d'); ?>">
-		 类型：<input type="text" name="fileext" placeholder="如：jpg" style="width:135px" class="input-text" value="<?php if(isset($_GET['fileext'])) echo $_GET['fileext'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
+		 上传时间：<input type="text" class="input-text laydate-icon" style="width:175px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
+		 至 <input type="text" class="input-text laydate-icon" style="width:175px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d H:i:s'); ?>">
+		 附件类型：<input type="text" name="fileext" placeholder="如：jpg" style="width:135px" class="input-text" value="<?php if(isset($_GET['fileext'])) echo $_GET['fileext'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
 		 <a href="<?php echo U('init');?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</a>
 		 </form>	
   </div>
   <div class="cl mt-15 tb-top"> 
 	  <span class="l">
-	  <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a>  
+	  <a href="javascript:;" onclick="yzm_dels('id', 1)" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a>
+	  <a href="javascript:;" onclick="yzm_count()" class="btn btn-success radius"><i class="yzm-iconfont yzm-iconchart-line"></i> 附件统计</a>
 	  </span> 
 	  <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> 
   </div>
@@ -66,7 +67,7 @@
 			<td><?php echo $val['uploadip']?></td>
 			<td>
 				<a title="点击预览" href="javascript:;" <?php echo $click;?> class="yzm-box-img btn-primary"><i class="yzm-iconfont yzm-iconyulan"></i> 预览</a> 
-				<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('del_one',array('id'=>$val['id']));?>')" class="yzm-box-img btn-danger ml-5"><i class="yzm-iconfont yzm-iconshanchu2"></i> 删除</a>
+				<a title="删除" href="javascript:;" onclick="yzm_del('<?php echo U('del_one',array('id'=>$val['id']));?>', 1)" class="yzm-box-img btn-danger ml-5"><i class="yzm-iconfont yzm-iconshanchu2"></i> 删除</a>
 			</td>
 		  </tr>		
 		<?php 
@@ -82,11 +83,28 @@
 <?php include $this->admin_tpl('footer', 'admin');?>
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
 <script type="text/javascript">
-	var start = {elem:'#start',format:'YYYY-MM-DD',min:'1999-01-01',max:'2099-01-01',istime:false,istoday:false,choose:function(datas){end.min = datas;end.start = datas}
+	var start = {elem:'#start',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){end.min = datas;end.start = datas}
 	};
-	var end = {elem:'#end',format:'YYYY-MM-DD',min:'1999-01-01',max:'2099-01-01',istime:false,istoday:false,choose:function(datas){start.max = datas;}};
+	var end = {elem:'#end',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){start.max = datas;}};
 	laydate(start);
 	laydate(end);
+
+	function yzm_count(){
+			layer.msg('正在统计中……', {icon:16, time:0, shade:0.3});
+			$.ajax({
+	        type: "GET",
+	        url: "<?php echo U('public_count');?>", 
+		    	dataType: "json", 
+	        success: function (msg) {
+	        	if(msg.status == 1){
+	        		var message = '文件总计：'+msg.data.total+'个（'+msg.data.total_size+'）<br>图像文件：'+msg.data.img_total+'个（'+msg.data.img_size+'，空间占比：'+msg.data.img_proportion+'%）<br>其他文件：'+msg.data.att_total+'个（'+msg.data.att_size+'，空间占比：'+msg.data.att_proportion+'%）';
+	        		layer.alert(message, {title:"附件统计"});
+	        	}else{
+	        		layer.msg(msg.message, {icon:2,time:2500});
+	        	}
+	        }
+	    })
+	}
 </script>
 </body>
 </html>

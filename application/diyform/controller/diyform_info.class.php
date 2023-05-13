@@ -39,6 +39,7 @@ class diyform_info extends common{
 	 */
  	public function view() {
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+		$modelid = $this->modelid;
 		$db = D($this->modeltable);
 		$model_data =  D('model_field')->field('field,name,fieldtype')->where(array('modelid'=>$this->modelid))->order('listorder ASC, fieldid ASC')->select();
 		$data = $db->where(array('id' => $id))->find();

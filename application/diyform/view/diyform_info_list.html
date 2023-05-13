@@ -2,7 +2,7 @@
 <title>自定义表单数据管理 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 自定义表单 <span class="c-gray en">&gt;</span> 信息列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 自定义表单 <span class="c-gray en">&gt;</span> <?php echo get_model($modelid, 'name');?> <span class="c-gray en">&gt;</span> 信息列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <div class="page-container">
   <div class="cl tb-top"> 
 	  <span class="l">  
@@ -20,7 +20,7 @@
 		<th>ID</th>
 		<th>用户名</th>
 		<th>用户IP</th>
-		<th>时间</th>
+		<th>发布时间</th>
 		<th>管理操作</th>
       </tr>
     </thead>
@@ -35,7 +35,7 @@
 			<td><?php echo $val['ip']; ?></td>
 			<td><?php echo date('Y-m-d H:i:s',$val['inputtime'])?></td>
 			<td>
-			<a href="javascript:;" onclick="yzm_open('查看详细','<?php echo U('view', array('modelid'=>$modelid,'id'=>$val['id']));?>')"  class="btn-mini btn-primary ml-5"  style="text-decoration:none">查看详细</a>
+			<a href="javascript:;" onclick="yzm_open('查看详情','<?php echo U('view', array('modelid'=>$modelid,'id'=>$val['id']));?>')"  class="btn-mini btn-primary ml-5"  style="text-decoration:none">查看详情</a>
 			</td>
 		  </tr>		
 		<?php 

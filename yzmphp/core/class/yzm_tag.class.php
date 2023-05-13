@@ -50,7 +50,7 @@ class yzm_tag{
 		if(isset($data['where']) && $data['where']){
 			$where = 'status=1'.$catid.' AND '.$data['where'];
 		}else{
-			$thumb = isset($data['thumb']) ? " AND thumb != ''" : '';
+			$thumb = isset($data['thumb']) ? ($data['thumb'] ? " AND thumb <> ''" : " AND thumb = ''") : '';
 			$flag = isset($data['flag']) ? " AND FIND_IN_SET('".intval($data['flag'])."',flag)" : '';
 			$where = 'status=1'.$catid.$thumb.$flag;
 		}
@@ -121,7 +121,7 @@ class yzm_tag{
 			$where = 'status=1'.$catid.' AND '.$data['where'];
 		}else{
 			$day = isset($data['day']) ? ' AND updatetime>'.(SYS_TIME - intval($data['day'])*86400) : '';
-			$thumb = isset($data['thumb']) ? " AND thumb != ''" : '';
+			$thumb = isset($data['thumb']) ? ($data['thumb'] ? " AND thumb <> ''" : " AND thumb = ''") : '';
 			$where = 'status=1'.$catid.$day.$thumb;
 		}
 		
@@ -163,7 +163,7 @@ class yzm_tag{
 		if(isset($data['where'])){
 			$where = $data['where'];
 		}else{
-			$where .= isset($data['thumb']) ? " AND logo != ''" : '';
+			$where .= isset($data['thumb']) ? ($data['thumb'] ? " AND logo <> ''" : " AND logo = ''") : '';
 		}
 		return D('link')->field($field)->where($where)->order($order)->limit($limit)->select();
 	}	

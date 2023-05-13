@@ -65,7 +65,7 @@
 //导入选中
 function collection_content_import(){
 	if ($("input[name='id[]']:checked").length<1){
-	   layer.alert('请勾选信息！');
+	   layer.alert('请选择要操作的内容！');
 	   return false;
 	}	
 	document.getElementById('myform').action='<?php echo U('collection_content_import');?>';

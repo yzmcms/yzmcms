@@ -37,7 +37,8 @@ class category extends common {
 		$array = array();
 		foreach($data as $v) {
 			if($v['type']=="0"){ 
-				$v['catlink'] = U('content/add', array('modelid'=>$v['modelid'],'catid'=>$v['id'])); 
+				$string = 'yzm_open_full("添加内容", "'.U('content/add', array('modelid'=>$v['modelid'],'catid'=>$v['id'])).'")'; 
+				$v['catlink'] = "javascript:;' onclick='".$string;
 			}elseif($v['type']=="1"){ 
 				$v['catlink'] = U('page_content', array('catid'=>$v['id']));
 			}else{ 
@@ -178,8 +179,10 @@ class category extends common {
 				$tablename = $default_model ? $default_model['alias'] : '模型别名';
 				include $this->admin_tpl('category_add');
 			}else if($type == 1){
-				$category_temp = $this->select_template('category_temp', 'category_', 'page');
-				$tablename = 'page';
+				$page_data = D('model')->field('modelid,alias')->where(array('type'=>2))->order('modelid ASC')->find();
+				$alias = $page_data ? $page_data['alias'] : 'page';
+				$category_temp = $this->select_template('category_temp', 'category_', $alias);
+				$tablename = $alias;
 				include $this->admin_tpl('category_page');
 			}else{
 				include $this->admin_tpl('category_link');
@@ -313,8 +316,10 @@ class category extends common {
 				$tablename = $default_model ? $default_model['alias'] : '模型别名';
 				include $this->admin_tpl('category_edit');
 			}else if($type == 1){
-				$category_temp = $this->select_template('category_temp', 'category_', 'page');
-				$tablename = 'page';
+				$page_data = D('model')->field('modelid,alias')->where(array('type'=>2))->order('modelid ASC')->find();
+				$alias = $page_data ? $page_data['alias'] : 'page';
+				$category_temp = $this->select_template('category_temp', 'category_', $alias);
+				$tablename = $alias;
 				include $this->admin_tpl('category_page_edit');
 			}else{
 				include $this->admin_tpl('category_link_edit');
@@ -328,12 +333,17 @@ class category extends common {
 	 * 单页内容
 	 */
 	public function page_content() {
-		if(isset($_POST['dosubmit'])) {
+		yzm_base::load_sys_class('form','',0);
+		yzm_base::load_common('lib/page_form'.EXT, 'admin');
+		$page_form = new page_form();
+
+		if(is_post()) {
 			$catid = isset($_POST['catid']) ? intval($_POST['catid']) : showmsg(L('illegal_operation'), 'stop');
-			
+			$notfilter_field = $page_form->get_notfilter_field();
 			foreach($_POST as $_k=>$_v) {
-				if($_k == 'content') continue;
-				$_POST[$_k] = strip_tags($_v);
+				if(!in_array($_k, $notfilter_field)) {
+					$_POST[$_k] = !is_array($_POST[$_k]) ? new_html_special_chars($_v) : $page_form->content_dispose($_v);
+				}
 			}
 			
 			$_POST['updatetime'] = SYS_TIME;
@@ -347,7 +357,8 @@ class category extends common {
 		
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : showmsg(L('illegal_operation'), 'stop');
 		$data = D('page')->where(array('catid' => $catid))->find();
-		yzm_base::load_sys_class('form','',0);
+		
+		$string = $page_form->content_edit($data);
 		include $this->admin_tpl('page_content');
 	}
 

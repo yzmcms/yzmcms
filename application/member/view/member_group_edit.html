@@ -1,5 +1,8 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
 <title>修改组别 - YzmCMS内容管理系统</title>
+<style>
+	.formdoby_normal ul li .label_box{width:auto;margin-right:10px;}
+</style>
 </head>
 <body>
 <article class="page-container">
@@ -18,7 +21,7 @@
 			 </li>
 			 <li class="yzm-explain-box"><label><span class="c-red">*</span>会员组图标：</label>
 			 	<input type="text" class="input" name="icon"  value="<?php echo $data['icon']; ?>">
-			 	<span class="yzm-explain">图标放置在/common/static/images/icon/</span>
+			 	<span class="yzm-explain">会员组图标需放在<br>/common/static/images/icon/</span>
 			 </li>
 			 <li><label>组别权限：</label>
 			 <span class="span_input">
@@ -26,6 +29,7 @@
 				<label class="label_box"><input type="checkbox" <?php if(strpos($data['authority'], '2') !== false) echo 'checked="checked"'?> name="authority[]" value="2"> 发表评论</label>
 				<label class="label_box"><input type="checkbox" <?php if(strpos($data['authority'], '3') !== false) echo 'checked="checked"'?> name="authority[]" value="3"> 发表内容</label>
 				<label class="label_box"><input type="checkbox" <?php if(strpos($data['authority'], '4') !== false) echo 'checked="checked"'?> name="authority[]" value="4"> 投稿免审核</label>
+				<label class="label_box"><input type="checkbox" <?php if(strpos($data['authority'], '5') !== false) echo 'checked="checked"'?> name="authority[]" value="5"> 删除站内文件</label>
 			 </span>
 			 </li>
 			 <li><label>简洁描述：</label>

@@ -55,10 +55,13 @@ class content_form {
 		foreach($modelinfo as $val){
 			$fieldtype = $val['fieldtype'];
 			if($fieldtype == 'input' || $fieldtype == 'number' || $fieldtype == 'decimal'){
-					$required = $val['isrequired'] ? ' required="required" ' : '';
-					$string .= $this->tag_start($val['name'], $val['isrequired']).'<input type="text" class="input-text" value="'.$data[$val['field']].'" '.$required.' name="'.$val['field'].'" placeholder="'.$val['tips'].'">'.$this->tag_end();		   
+					$errortips = !empty($val['errortips']) ? $val['errortips'] : '必填项不能为空';
+					$required = $val['isrequired'] ? ' required" errortips="'.$errortips : '';
+					$string .= $this->tag_start($val['name'], $val['isrequired']).'<input type="text" class="input-text'.$required.'" value="'.$data[$val['field']].'" name="'.$val['field'].'" placeholder="'.$val['tips'].'">'.$this->tag_end();		   
 			}elseif($fieldtype == 'textarea'){
-					$string .= $this->tag_start($val['name'], $val['isrequired']).'<textarea name="'.$val['field'].'" class="textarea"  placeholder="'.$val['tips'].'" >'.$data[$val['field']].'</textarea>'.$this->tag_end();
+					$errortips = !empty($val['errortips']) ? $val['errortips'] : '必填项不能为空';
+					$required = $val['isrequired'] ? ' required" errortips="'.$errortips : '';
+					$string .= $this->tag_start($val['name'], $val['isrequired']).'<textarea name="'.$val['field'].'" class="textarea'.$required.'"  placeholder="'.$val['tips'].'" >'.$data[$val['field']].'</textarea>'.$this->tag_end();
 			}elseif($fieldtype == 'select'){
 					$string .= $this->tag_start($val['name'], $val['isrequired']).'<span class="select-box">'.form::select($val['field'],$data[$val['field']],string2array($val['setting'])).'</span>'.$this->tag_end();
 			}elseif($fieldtype == 'radio' || $fieldtype == 'checkbox'){

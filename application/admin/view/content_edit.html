@@ -182,10 +182,14 @@
 		$(obj).prop("checked") ? $("#url .input-text").addClass('required') : $("#url .input-text").removeClass('required');
         $("#url").toggle();
     }
-	
+
+    var is_change = 0;
+    UE.getEditor('content').addListener("contentChange",function(){
+    	is_change ++;
+    });
 	function yzm_content_close(){
-		if(UE.getEditor('content').getContent()!=''){
-			layer.confirm('内容未保存，确定要关闭吗？', {title:"操作提示"}, function(index){
+		if(is_change > 1){
+			layer.confirm('检测到内容已修改，确定要关闭吗？', {title:"操作提示"}, function(index){
 				yzmcms_close();
 			});
 		}else{

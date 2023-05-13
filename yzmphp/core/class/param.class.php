@@ -28,11 +28,7 @@ class param {
 	public function route_m() {
 		$m = isset($_GET['m']) && !empty($_GET['m']) ? $_GET['m'] : (isset($_POST['m']) && !empty($_POST['m']) ? $_POST['m'] : '');
 		$m = $this->safe_deal($m);
-		if (empty($m)) {
-			return $this->route_config['m'];
-		} else {
-			if(is_string($m)) return $m;
-		}
+		return !empty($m) ? $m : $this->route_config['m'];
 	}
 
 	
@@ -42,11 +38,7 @@ class param {
 	public function route_c() {
 		$c = isset($_GET['c']) && !empty($_GET['c']) ? $_GET['c'] : (isset($_POST['c']) && !empty($_POST['c']) ? $_POST['c'] : '');
 		$c = $this->safe_deal($c);
-		if (empty($c)) {
-			return $this->route_config['c'];
-		} else {
-			if(is_string($c)) return $c;
-		}
+		return !empty($c) ? $c : $this->route_config['c'];
 	}
 
 	
@@ -56,11 +48,7 @@ class param {
 	public function route_a() {
 		$a = isset($_GET['a']) && !empty($_GET['a']) ? $_GET['a'] : (isset($_POST['a']) && !empty($_POST['a']) ? $_POST['a'] : '');
 		$a = $this->safe_deal($a);
-		if (empty($a)) {
-			return $this->route_config['a'];
-		} else {
-			if(is_string($a)) return $a;
-		}
+		return !empty($a) ? $a : $this->route_config['a'];
 	}
 
 
@@ -69,7 +57,10 @@ class param {
 	 * 处理m,a,c
 	 */
 	private function safe_deal($str) {
+		if(!is_string($str)) return '';
+		$str = trim($str);
 		if(!MAGIC_QUOTES_GPC) $str = addslashes($str);
+		if (strlen($str) > 128) application::halt('parameter length cannot exceed 128 character.');
 		return str_replace(array('/', '.'), '', $str);
 	}
 	
@@ -89,7 +80,8 @@ class param {
 			$_GET['c'] = isset($pathinfo[1]) ? $pathinfo[1] : '';
 			$_GET['a'] = isset($pathinfo[2]) ? $pathinfo[2] : '';
 
-			for($i = 3; $i<count($pathinfo); $i+=2){
+			$total = count($pathinfo);
+			for($i = 3; $i<$total; $i+=2){
 				if(isset($pathinfo[$i+1])) $_GET[$pathinfo[$i]] = $pathinfo[$i+1];
 			}
 		}

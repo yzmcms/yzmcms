@@ -75,7 +75,7 @@ class index extends common{
 		$info = D('attachment')->where(array('id'=>$id))->find();
 		if($info){
 			echo '<p style="text-align:center;">';
-			echo $info['isimage'] ? '<img src="'.$info['filepath'].$info['filename'].'" style="max-width:100%">' : '<img src="'.(in_array($info['fileext'], array('zip', 'rar')) ? STATIC_URL.'images/ext/rar.png' : STATIC_URL.'images/ext/blank.png').'" title="'.$info['originname'].'"><a style="font-size:14px;display:block;margin-top:20px;" href="'.$info['filepath'].$info['filename'].'">点击下载</a>';
+			echo $info['isimage'] ? '<img src="'.$info['filepath'].$info['filename'].'" style="max-width:100%">' : '<img src="'.(in_array($info['fileext'], array('zip', 'rar')) ? STATIC_URL.'images/ext/rar.png' : STATIC_URL.'images/ext/blank.png').'" title="'.$info['originname'].'"><a style="font-size:14px;display:block;margin-top:20px;" href="'.$info['filepath'].$info['filename'].'" download="'.$info['originname'].'">点击下载</a>';
 			echo '</p>';
 		}
 	}
@@ -91,18 +91,18 @@ class index extends common{
 		$upload_type = C('upload_type', 'host');
 		yzm_base::load_model($upload_type, '', 0);
 		if(!class_exists($upload_type)){
-			showmsg('附件操作类「'.$upload_type.'」不存在！', 'stop');
+			return_json(array('status'=>0,'message'=>'附件操作类「'.$upload_type.'」不存在！'));
 		}
 
 		// PHP5.2不支持 $class::$method();
 		$upload = new $upload_type();
 		$res = $upload->deletefile($info);
-		if(!$res)  showmsg('删除文件「'.$info['filename'].'」失败！', 'stop');
+		if(!$res)  return_json(array('status'=>0,'message'=>'删除文件「'.$info['filename'].'」失败！'));
 
 		if($attachment->delete(array('id' => $id))){
-			showmsg(L('operation_success'), '', 1);
+			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}else{
-			showmsg('删除文件「'.$info['filename'].'」失败！', 'stop');
+			return_json(array('status'=>0,'message'=>'删除文件「'.$info['filename'].'」失败！'));
 		}
 	}
 
@@ -116,7 +116,7 @@ class index extends common{
 			$upload_type = C('upload_type', 'host');
 			yzm_base::load_model($upload_type, '', 0);
 			if(!class_exists($upload_type)){
-				showmsg('附件操作类「'.$upload_type.'」不存在！', 'stop');
+				return_json(array('status'=>0,'message'=>'附件操作类「'.$upload_type.'」不存在！'));
 			}
 
 			// PHP5.2不支持 $class::$method();
@@ -124,11 +124,37 @@ class index extends common{
 			foreach($_POST['id'] as $val){
 				$info = $attachment->field('filepath,filename')->where(array('id'=>$val))->find();
 				$res = $upload->deletefile($info);
-				if(!$res)  showmsg('删除文件「'.$info['filename'].'」失败！', 'stop');
+				if(!$res)  return_json(array('status'=>0,'message'=>'删除文件「'.$info['filename'].'」失败！'));
 				$attachment->delete(array('id' => $val));
 			}
-			showmsg(L('operation_success'), '', 1);
+			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}
+	}
+
+
+	/**
+	 * 附件统计
+	 */
+	public function public_count(){
+		$img_total = D('attachment')->where(array('siteid'=>self::$siteid,'isimage'=>1))->total();
+		$att_total = D('attachment')->where(array('siteid'=>self::$siteid,'isimage'=>0))->total();
+		$total = $img_total+$att_total;
+		
+		$img_size = D('attachment')->field('SUM(filesize)')->where(array('siteid'=>self::$siteid,'isimage'=>1))->one();
+		$att_size = D('attachment')->field('SUM(filesize)')->where(array('siteid'=>self::$siteid,'isimage'=>0))->one();
+		$total_size = $img_size+$att_size;
+
+		$data = array(
+			'img_total' => $img_total,
+			'att_total' => $att_total,
+			'total' => $total,
+			'img_size' => sizecount($img_size),
+			'att_size' => sizecount($att_size),
+			'total_size' => sizecount($total_size),
+			'img_proportion' => $total_size ? round($img_size/$total_size*100, 2) : 0,
+			'att_proportion' => $total_size ? round($att_size/$total_size*100, 2) : 0,
+		);
+		return_json(array('status'=>1,'message'=>L('operation_success'),'data'=>$data));
 	}
 	
 }

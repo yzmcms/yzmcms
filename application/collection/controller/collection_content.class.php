@@ -297,7 +297,7 @@ class collection_content extends common {
 			$id = $content_tabname->insert($data);
 			$url = get_content_url($data['catid'], $id);
 
-			$data['siteid'] = get_siteid();
+			$data['siteid'] = self::$siteid;
 			$data['modelid'] = $modelid;
 			$data['id'] = $id;
 			$data['url'] = $url;

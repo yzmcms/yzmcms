@@ -2,7 +2,7 @@
 <title>添加字段 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt; 自定义表单 <span class="c-gray en">&gt;</span> 字段管理 <span class="c-gray en">&gt;</span> 添加字段 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
+<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt; 自定义表单 <span class="c-gray en">&gt;</span> <?php echo get_model($modelid, 'name');?> <span class="c-gray en">&gt;</span> 字段管理 <span class="c-gray en">&gt;</span> 添加字段 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <article class="page-container">
 <div class="formdoby_info"> 
 	  <fieldset>
@@ -114,10 +114,10 @@
 	
 	function check_field(){ 
 		var res = false;	
-		var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/;	
+		var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,29}$/;	
 		var filed = $("input[name='field']").val();
-		if(filed.length<1 || filed.length>20){
-			layer.msg('字段名长度必须为1-20位！', {icon:2});
+		if(filed.length<1 || filed.length>30){
+			layer.msg('字段名长度必须为1-30位！', {icon:2});
 			return false;
 		}
         if(!reg.test(filed)){

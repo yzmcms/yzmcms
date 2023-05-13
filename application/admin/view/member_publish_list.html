@@ -103,7 +103,7 @@
 	//通过审核
 	function adopt(){
 		if ($("input[name='ids[]']:checked").length<1){
-		   layer.alert('请勾选信息！');
+		   layer.alert('请选择要操作的内容！');
 		   return false;
 		}	
 	    $.ajax({
@@ -122,7 +122,7 @@
 	//退稿
 	function show_rejection() {
 		if ($("input[name='ids[]']:checked").length<1){
-		   layer.alert('请勾选信息！');
+		   layer.alert('请选择要操作的内容！');
 		   return false;
 		}
 		layer.open({

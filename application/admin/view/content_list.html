@@ -19,10 +19,10 @@
 				}
 			?>
 		</select>
-	</span>
+	 </span>
 	 <span class="select-box inline"><?php echo select_category('catid', $catid, '内容分类', 0, '', true, true, $modelid); ?></span>
-     更新时间：<input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
-     至 <input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d'); ?>">
+     更新时间：<input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start']) echo 'value="'.$_GET['start'].'"'; ?>>
+     至 <input type="text" class="input-text laydate-icon" style="width:110px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end']) echo $_GET['end']; else echo date('Y-m-d'); ?>">
      <span class="select-box inline">
 		<select name="flag" class="select">
 		<option value="0">内容属性</option>
@@ -35,7 +35,7 @@
 		<option <?php if(isset($_GET["flag"]) && $_GET["flag"]=='7'){echo 'selected';} ?> value="7">跳转[7]</option>
 		</select>
 	</span>
-     <span class="select-box inline">
+    <span class="select-box inline">
 		<select name="status" class="select">
         <option value="99">状态</option>
 		<option <?php if(isset($_GET["status"]) && $_GET["status"]=='0'){echo 'selected';} ?> value="0">草稿</option>
@@ -43,10 +43,20 @@
 		<option <?php if(isset($_GET["status"]) && $_GET["status"]=='2'){echo 'selected';} ?> value="2">已退稿</option>
 		</select>
 	</span>
+	<span class="select-box inline">
+		<select name="readpoint" class="select">
+        <option value="99">阅读收费</option>
+		<option <?php if(isset($_GET["readpoint"]) && $_GET["readpoint"]=='0'){echo 'selected';} ?> value="0">免费</option>
+		<option <?php if(isset($_GET["readpoint"]) && $_GET["readpoint"]=='1'){echo 'selected';} ?> value="1">付费</option>
+		</select>
+	</span>
     <span class="select-box inline">
 		<select name="type" class="select">
-	    <option <?php if(isset($_GET["type"]) && $_GET["type"]=='1'){echo 'selected';} ?> value="1">内容标题</option>
-		<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo 'selected';} ?> value="2">发布人</option>	
+			<option value="1" <?php if(isset($_GET['type']) && $_GET['type']==1) echo 'selected';?>>标题</option>
+			<option value="2" <?php if(isset($_GET['type']) && $_GET['type']==2) echo 'selected';?>>发布人</option>
+			<option value="3" <?php if(isset($_GET['type']) && $_GET['type']==3) echo 'selected';?>>关键词</option>
+			<option value="4" <?php if(isset($_GET['type']) && $_GET['type']==4) echo 'selected';?>>摘要</option>
+			<option value="5" <?php if(isset($_GET['type']) && $_GET['type']==5) echo 'selected';?>>内容ID</option>
 		</select>
 	</span>
      <input type="text" name="searinfo" class="input-text search" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>

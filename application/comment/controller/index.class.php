@@ -43,7 +43,7 @@ class index{
 			}
 			
 			$userid = $_POST['userid'] = isset($_SESSION['_userid']) ? $_SESSION['_userid']  : 0;
-			$username = $_POST['username'] = isset($_SESSION['_username']) ? $_SESSION['_username'] : '网友';
+			$username = $_POST['username'] = isset($_SESSION['_username']) ? $_SESSION['_username'] : '游客';
 			if(!$userid && !$site['comment_tourist']){
 				is_ajax() && return_json(array('status'=>0, 'message'=>'登录后方可发布评论！'));
 				showmsg('登录后方可发布评论！', url_referer(1, HTTP_REFERER), 1);

@@ -337,38 +337,42 @@ function get_thumb($thumb, $default = ''){
  * @param $modelid  modelid
  * @return string
  */
-function select_category($name="parentid", $value="0", $root="", $member_publish=0, $attribute='', $parent_disabled=true, $disabled=true, $modelid=0){
-	if($root == '') $root="≡ 作为一级栏目 ≡";
+function select_category($name='parentid', $value='0', $root='', $member_publish=0, $attribute='', $parent_disabled=true, $disabled=true, $modelid=0){
+	if($root == '') $root = '≡ 作为一级栏目 ≡';
 	$categorys = array();
 	$html='<select id="select" name="'.$name.'" class="select" '.$attribute.'>';
 	$html.='<option value="0">'.$root.'</option>';
-	
-	if($member_publish){
-		$where = array('member_publish'=>1);
-		$data = D('category')->field('catid,arrparentid')->where($where)->order('listorder ASC,catid ASC')->select(); 
-		$arr = array();
-		foreach($data as $val){
-			$arr[$val['catid']] = $val['arrparentid'];
+
+	$tree = yzm_base::load_sys_class('tree');
+	$data = D('category')->field('catid AS id,catname AS name,parentid,arrparentid,arrchildid,type,modelid,member_publish')->where(array('siteid'=>get_siteid()))->order('listorder ASC,catid ASC')->select(); 
+
+	$arrparentid = array();
+	if($modelid){
+		foreach($data as $catinfo){
+		    if($catinfo['modelid']!=$modelid) continue;
+		    $key = md5($catinfo['arrparentid']);
+			$arrparentid[$key] = isset($arrparentid[$key]) ? $arrparentid[$key].','.$catinfo['id'] : $catinfo['arrparentid'].','.$catinfo['id'];
 		}
-		$arr = array_merge(array_unique(explode(',', join(',', $arr))), array_keys($arr));		
+		$arrparentid = array_unique(explode(',', join(',', $arrparentid)));
 	}
 
-	$where = array('siteid' => get_siteid());
-	if($modelid) $where['modelid'] = $modelid;
-	$tree = yzm_base::load_sys_class('tree');
-	$data = D('category')->field('catid AS id,catname AS name,parentid,arrchildid,type')->where($where)->order('listorder ASC,catid ASC')->select(); 
-	foreach($data as $val){
-		if($member_publish){
-			if(!in_array($val['id'], $arr)) continue;
+	$publish_arr = array();
+	if($member_publish){
+		foreach($data as $catinfo){
+		    if($catinfo['member_publish']==0) continue;
+		    $key = md5($catinfo['arrparentid']);
+			$publish_arr[$key] = isset($publish_arr[$key]) ? $publish_arr[$key].','.$catinfo['id'] : $catinfo['arrparentid'].','.$catinfo['id'];
 		}
+		$publish_arr = array_unique(explode(',', join(',', $publish_arr)));
+	}
+
+	foreach($data as $val){
+		if($modelid && !array_search($val['id'], $arrparentid)) continue;
+		if($member_publish && !array_search($val['id'], $publish_arr)) continue;
 		
 		$val['html_disabled'] = 0;
-		if($parent_disabled){
-			if(strpos($val['arrchildid'], ',')) $val['html_disabled'] = 1;
-		}
-		if($disabled){
-			if($val['type'] != 0) $val['html_disabled'] = 1;
-		} 
+		if($parent_disabled && strpos($val['arrchildid'], ',')) $val['html_disabled'] = 1;
+		if($disabled && $val['type']) $val['html_disabled'] = 1;
 		$categorys[$val['id']] = $val;
 	}
 	$tree->init($categorys);
@@ -537,11 +541,12 @@ function get_site($siteid = 0, $parameter = ''){
 
 /**
  * 是否存在子栏目
- * @param  array  $data 
+ * @param  array  $data 栏目信息或栏目ID
  * @return boolean
  */
 function is_childid($data){
-	if(!isset($data['arrchildid'])) return false;
+	if(is_numeric($data)) $data = get_category($data);
+	if(!is_array($data) || !isset($data['arrchildid'])) return false;
 	return strpos($data['arrchildid'], ',');
 }
 
@@ -655,7 +660,7 @@ function get_location($catid, $is_mobile=false, $self=true, $symbol=' &gt; '){
  * @return string
  */
 function get_model($modelid, $parameter = 'tablename'){
-	$modelinfo = get_modelinfo();
+	$modelinfo = get_modelinfo(1);
 	$modelarr = array();
 	foreach($modelinfo as $val){
 		$modelarr[$val['modelid']] = $val;
@@ -850,7 +855,7 @@ function get_memberinfo($userid, $additional=false){
  * @return  int 
  */
 function content_total($modelid, $catid = 0){
-	$where = array('modelid' => $modelid);
+	$where = array('modelid' => $modelid, 'status' => 1);
 	if($catid) $where['catid'] = $catid;
 	return D('all_content')->where($where)->total();
 }
@@ -899,6 +904,22 @@ function field_order($field){
 	return '<span class="yzm-caret-wrapper '.$str.'">
             <a class="yzm-sort-caret yzm-ascending" href="'.U(ROUTE_A, array_merge($_GET, array('of'=>$field,'or'=>'ASC'))).'" title="正序排列"></a><a class="yzm-sort-caret yzm-descending" href="'.U(ROUTE_A, array_merge($_GET, array('of'=>$field,'or'=>'DESC'))).'" title="倒序排列"></a>
           </span>';
+}
+
+
+/**
+ * 处理上传文件类型
+ * @param $type 1图片类型,2附件类型
+ * @return array 
+ */
+function handle_upload_types($type = 1){
+    $arr = explode('|', ($type==1 ? get_config('upload_image_types') : get_config('upload_types')));
+    $allow = array('png', 'gif', 'jpg', 'jpeg', 'webp', 'bmp', 'ico', 'zip', 'rar', '7z', 'gz', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'txt', 'csv', 'mp3', 'mp4', 'avi', 'wmv', 'rmvb', 'flv', 'wma', 'wav', 'amr', 'ogg', 'ogv', 'webm', 'swf', 'mkv', 'torrent');
+    foreach($arr as $key => $val){
+        if(!in_array($val, $allow)) unset($arr[$key]);
+    }
+    
+    return $arr;
 }
 
 

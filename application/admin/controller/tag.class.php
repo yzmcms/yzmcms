@@ -148,21 +148,28 @@ class tag extends common {
             $searinfo = isset($_GET["searinfo"]) ? safe_replace($_GET["searinfo"]) : '';
             $type = isset($_GET["type"]) ? $_GET["type"] : 1;
 
-            if ($searinfo != '') {
+            if ($catid) {
+                $where .= ' AND catid='.$catid;
+            }
+
+            if(isset($_GET['start']) && $_GET['start'] && $_GET['end']){		
+            	$where .= ' AND updatetime BETWEEN '.strtotime($_GET['start'].' 00:00:00').' AND '.strtotime($_GET['end'].' 23:59:59');
+            }
+
+            if($searinfo){
                 if ($type == '1') {
                     $where .= ' AND `title` LIKE \'%'.$searinfo.'%\'';
                 } elseif($type == '2') {
-                    $where .= ' AND `keywords` LIKE \'%'.$searinfo.'%\'';
+                    $where .= ' AND `username` LIKE \'%'.$searinfo.'%\'';
                 } elseif($type == '3') {
+                    $where .= ' AND `keywords` LIKE \'%'.$searinfo.'%\'';
+                } elseif($type == '4') {
                     $where .= ' AND `description` LIKE \'%'.$searinfo.'%\'';
                 }else {
                     $where .= ' AND id = '.intval($searinfo);
                 }
             }
 
-            if ($catid) {
-                $where .= ' AND catid='.$catid;
-            }
         }
         $_GET = array_map('htmlspecialchars', $_GET);
         $total = $content->where($where)->total();
@@ -186,12 +193,11 @@ class tag extends common {
 			if(!$id) return_json(array('status'=>0,'message'=>L('operation_failure')));
 
 			$tag_content = D('tag_content');
-			$siteid = get_siteid();
 			foreach ($_POST['ids'] as $id => $catid) {
 				$is_exist = $tag_content->field('tagid')->where(array('modelid'=>$modelid,'aid'=>$id,'tagid'=>$tagid))->one();
 				if($operation){
 					if($is_exist) continue;
-					$tag_content->insert(array('siteid'=>$siteid,'modelid'=>$modelid,'catid'=>$catid,'aid'=>$id,'tagid'=>$tagid), false, false);
+					$tag_content->insert(array('siteid'=>self::$siteid,'modelid'=>$modelid,'catid'=>$catid,'aid'=>$id,'tagid'=>$tagid), false, false);
 				}else{
 					if(!$is_exist) continue;
 					$tag_content->delete(array('modelid'=>$modelid,'aid'=>$id,'tagid'=>$tagid));

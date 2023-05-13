@@ -54,6 +54,7 @@ class content extends common {
 		$modelinfo = $this->content->modelarr;
 		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
+		$readpoint = isset($_GET['readpoint']) ? intval($_GET['readpoint']) : 0;
 		$content_db = D($this->content->tabname);
 		$where = $this->_all_priv() ? '1=1' : 'userid='.$_SESSION['adminid'];
 		if(isset($_GET['dosubmit'])){	
@@ -61,27 +62,38 @@ class content extends common {
 			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
 			$type = isset($_GET["type"]) ? $_GET["type"] : 1;
 
-			if(isset($_GET["status"]) && $_GET["status"] != '99'){
-				$where .= ' AND status = '.intval($_GET["status"]);
+			if(isset($_GET['status']) && $_GET['status'] != '99'){
+				$where .= ' AND status = '.intval($_GET['status']);
 			}	
 
 			if($catid){
 				$where .= ' AND catid='.$catid;
 			}
 
-			if(isset($_GET["start"]) && $_GET["start"] != '' && $_GET["end"]){		
-				$where .= ' AND updatetime BETWEEN '.strtotime($_GET["start"]).' AND '.strtotime($_GET["end"]);
+			if($readpoint < 99){
+				$where .= $readpoint ? ' AND readpoint>0' : ' AND readpoint=0';
 			}
 
-			if(isset($_GET["flag"]) && $_GET["flag"] != '0'){
-				$where .= ' AND FIND_IN_SET('.intval($_GET["flag"]).',flag)';
+			if(isset($_GET['start']) && $_GET['start'] && $_GET['end']){		
+				$where .= ' AND updatetime BETWEEN '.strtotime($_GET['start'].' 00:00:00').' AND '.strtotime($_GET['end'].' 23:59:59');
+			}
+
+			if(isset($_GET['flag']) && $_GET['flag'] != '0'){
+				$where .= ' AND FIND_IN_SET('.intval($_GET['flag']).',flag)';
 			}
 
 			if($searinfo){
-				if($type == '1')
-					$where .= ' AND title LIKE \'%'.$searinfo.'%\'';
-				else
-					$where .= ' AND username LIKE \'%'.$searinfo.'%\'';
+				if ($type == '1') {
+				    $where .= ' AND `title` LIKE \'%'.$searinfo.'%\'';
+				} elseif($type == '2') {
+				    $where .= ' AND `username` LIKE \'%'.$searinfo.'%\'';
+				} elseif($type == '3') {
+				    $where .= ' AND `keywords` LIKE \'%'.$searinfo.'%\'';
+				} elseif($type == '4') {
+				    $where .= ' AND `description` LIKE \'%'.$searinfo.'%\'';
+				}else {
+				    $where .= ' AND id = '.intval($searinfo);
+				}
 			}
 
 		}
@@ -102,16 +114,11 @@ class content extends common {
 			$r = $this->content->content_add($_POST);
 			if(!$r) showmsg(L('operation_failure'), 'stop');
 
-			if(!isset($_POST['page_content'])){
-				if(isset($_POST['continuity'])){
-					showmsg(L('operation_success'), U('content/add',array('modelid'=>$this->content->modelid)), 1);
-				}else{
-					echo '<script type="text/javascript">setTimeout("parent.location.reload()",1000);</script>';
-					showmsg(L('operation_success'), U('content/search',array('modelid'=>$this->content->modelid)), 2);
-				}
+			if(isset($_POST['continuity'])){
+				showmsg(L('successfully_published_continue'), U('content/add',array('modelid'=>$this->content->modelid)), 1);
 			}else{
-				$url = isset($_POST['continuity']) ? U('content/add',array('modelid'=>$this->content->modelid,'catid'=>$_POST['catid'])) : U('content/search',array('modelid'=>$this->content->modelid));
-				showmsg(L('operation_success'), $url, 1);
+				echo '<script type="text/javascript">setTimeout("parent.location.reload()",1000);</script>';
+				showmsg(L('successfully_published_content'), U('content/search',array('modelid'=>$this->content->modelid)), 2);
 			}
 		}else{
 			$catid = isset($_GET['catid']) ? intval($_GET['catid']) : intval(get_cookie('catid'));
@@ -254,7 +261,7 @@ class content extends common {
 				$db->update($data, array('id'=>$id));
 				D('all_content')->update($data, array('modelid'=>$this->content->modelid, 'id'=>$id));
 			}
-			return_json(array('status' => 1, 'message' => '操作成功'));
+			return_json(array('status' => 1, 'message' => L('operation_success')));
 		}else{
 			$modelid = $this->content->modelid;
 			include $this->admin_tpl('content_remove');	
@@ -287,12 +294,12 @@ class content extends common {
 					$target_db->update(array('url' => get_content_url($catid, $target_id)), array('id' => $target_id));
 					$res['url'] = get_content_url($catid, $target_id);
 				}
-				$res['siteid'] = get_siteid();
+				$res['siteid'] = self::$siteid;
 				$res['modelid'] = $target_modelid;
 				$res['id'] = $target_id;
 				$all_content->insert($res);
 			}
-			return_json(array('status' => 1, 'message' => '操作成功'));
+			return_json(array('status' => 1, 'message' => L('operation_success')));
 		}else{
 			$modelid = $this->content->modelid;
 			include $this->admin_tpl('content_remove');	
@@ -327,7 +334,7 @@ class content extends common {
 
 				$db->update($where, array('id' => $id));
 			}
-			return_json(array('status' => 1, 'message' => '操作成功'));
+			return_json(array('status' => 1, 'message' => L('operation_success')));
 			
 		}else{
 			$t = 1;
@@ -345,14 +352,16 @@ class content extends common {
 			$ids = safe_replace($_POST['ids']);
 			$ids_arr = explode(',', $ids);
 			$status = isset($_POST['status']) ? intval($_POST['status']) : return_json(array('status' => 0, 'message' => '请选择内容状态！'));
+			$edit_updatetime = isset($_POST['edit_updatetime']) ? intval($_POST['edit_updatetime']) : 1;
+			$new_data = $edit_updatetime ? array('status'=>$status, 'updatetime'=>SYS_TIME) : array('status'=>$status);
 			$db = D($this->content->tabname);
 			foreach ($ids_arr as $id) {
 				$issystem = $db->field('issystem')->where(array('id' => $id))->one();
 				if(!$issystem) continue;
-				$db->update(array('status'=>$status), array('id'=>$id));
-				D('all_content')->update(array('status'=>$status), array('modelid'=>$this->content->modelid, 'id'=>$id));
+				$db->update($new_data, array('id'=>$id));
+				D('all_content')->update($new_data, array('modelid'=>$this->content->modelid, 'id'=>$id));
 			}
-			return_json(array('status' => 1, 'message' => '操作成功'));
+			return_json(array('status' => 1, 'message' => L('operation_success')));
 			
 		}else{
 			$t = 2;

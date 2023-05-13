@@ -40,7 +40,7 @@ class yzm_tpl {
 		$str = preg_replace("/".$this->template_tag_left."\/for".$this->template_tag_right."/", "<?php } ?>",$str);
 
 		$str = preg_replace("/".$this->template_tag_left."\+\+(.+?)".$this->template_tag_right."/", "<?php ++\\1; ?>", $str);
-		$str = preg_replace("/".$this->template_tag_left."\-\-(.+?)".$this->template_tag_right."/", "<?php ++\\1; ?>", $str);
+		$str = preg_replace("/".$this->template_tag_left."\-\-(.+?)".$this->template_tag_right."/", "<?php --\\1; ?>", $str);
 		$str = preg_replace("/".$this->template_tag_left."(.+?)\+\+".$this->template_tag_right."/", "<?php \\1++; ?>", $str);
 		$str = preg_replace("/".$this->template_tag_left."(.+?)\-\-".$this->template_tag_right."/", "<?php \\1--; ?>", $str);
 		$str = preg_replace("/".$this->template_tag_left."loop\s+(\S+)\s+(\S+)".$this->template_tag_right."/", "<?php if(is_array(\\1)) foreach(\\1 as \\2) { ?>", $str);
@@ -49,7 +49,8 @@ class yzm_tpl {
 		$str = preg_replace("/".$this->template_tag_left."([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff:]*\(([^{}]*)\))".$this->template_tag_right."/", "<?php echo \\1;?>", $str); 
 		$str = preg_replace("/".$this->template_tag_left."\\$([a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff:]*\(([^{}]*)\))".$this->template_tag_right."/", "<?php echo \\1;?>", $str);
 		$str = preg_replace("/".$this->template_tag_left."(\\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)".$this->template_tag_right."/", "<?php echo \\1;?>", $str); 
-		$str = preg_replace("/".$this->template_tag_left."([A-Z_\x7f-\xff][A-Z0-9_\x7f-\xff]*)".$this->template_tag_right."/s", "<?php echo \\1;?>", $str ); 
+		$str = preg_replace("/".$this->template_tag_left."([A-Z_\x7f-\xff][A-Z0-9_\x7f-\xff]*)".$this->template_tag_right."/s", "<?php echo \\1;?>", $str); 
+		$str = preg_replace("/".$this->template_tag_left."(\\$[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*)->(\w+)(.*?)".$this->template_tag_right."/", "<?php echo \\1->\\2\\3;?>", $str);
 		$str = preg_replace_callback("/".$this->template_tag_left."(\\$[a-zA-Z0-9_\[\]\'\"\$\x7f-\xff]+)".$this->template_tag_right."/s",  array($this, 'addquote'), $str); 
 		$str = preg_replace_callback("/".$this->template_tag_left."m:(\w+)\s+([^}]+)".$this->template_tag_right."/i", array($this, 'yzm_tag_callback'), $str);
 

@@ -49,13 +49,13 @@
 
 <script type="text/javascript">
 	function dosub(obj){
-		var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,19}$/;	
+		var reg = /^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,29}$/;	
 		if(obj.name.value==''){
 			layer.msg('模型名称不能为空！', {icon:2});
 			return false;
 		}
-		if(obj.alias.value.length<1 || obj.alias.value.length>20){
-			layer.msg('模型别名长度必须为1-20位！', {icon:2});
+		if(obj.alias.value.length<1 || obj.alias.value.length>30){
+			layer.msg('模型别名长度必须为1-30位！', {icon:2});
 			return false;
 		}
 		if(!reg.test(obj.alias.value)){

@@ -128,8 +128,12 @@ if(isset($_SESSION['roleid'])) define('IN_YZMADMIN', true);
  * 处理扩展名后缀
  * @param  string $str 
  */
-function handle_suffix($str){
-   return $str ? '.'.$str : '';
+function handle_suffix($str, $add=1){
+    if($add){
+        return $str ? '.'.$str : '';
+    }else{
+        return $str ? ltrim($str, '.') : '';
+    }
 }
 
 
@@ -140,7 +144,13 @@ function handle_suffix($str){
 function is_https() {
     if(isset($_SERVER['HTTPS']) && ('1' == $_SERVER['HTTPS'] || 'on' == strtolower($_SERVER['HTTPS']))){
         return true;
-    }elseif(isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'] )) {
+    }elseif(isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'])) {
+        return true;
+    }elseif(isset($_SERVER['REQUEST_SCHEME']) && ('https' == strtolower($_SERVER['REQUEST_SCHEME']))) {
+        return true;
+    }elseif(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && ('https' == strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']))) {
+        return true;
+    }elseif(isset($_SERVER['HTTP_X_FORWARDED_SCHEME']) && ('https' == strtolower($_SERVER['HTTP_X_FORWARDED_SCHEME']))) {
         return true;
     }
     return false;
@@ -217,7 +227,7 @@ function ue_file_upload($fieldName, $config, $base64, $document_root){
 	        return json_encode($info);
 	    }
 
-	    $option['allowtype'] = explode('|', isset($config['isFile']) ? get_config('upload_types') : get_config('upload_image_types'));
+        $option['allowtype'] = array_map('handle_suffix', $config['allowFiles'],  array());
 	    $upload = new $upload_type($option);
 	    if($upload->uploadfile($fieldName)){
 	        $fileinfo = $upload->getnewfileinfo();

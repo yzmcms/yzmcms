@@ -36,7 +36,7 @@ class sql{
 		  `click` mediumint(8) unsigned NOT NULL DEFAULT '0',
 		  `content` text NOT NULL,
 		  `copyfrom` varchar(50) NOT NULL DEFAULT '',
-		  `thumb` varchar(100) NOT NULL DEFAULT '',
+		  `thumb` varchar(150) NOT NULL DEFAULT '',
 		  `url` varchar(100) NOT NULL DEFAULT '',
 		  `flag` varchar(12) NOT NULL DEFAULT '' COMMENT '1置顶,2头条,3特荐,4推荐,5热点,6幻灯,7跳转',
 		  `status` tinyint(1) NOT NULL DEFAULT '1',
@@ -62,7 +62,7 @@ class sql{
 	}
 
 
-	public static function sql_add_field($tablename, $field, $defaultvalue='', $maxlength=100){
+	public static function sql_add_field($tablename, $field, $defaultvalue='', $maxlength=255){
 		self::set_tablename($tablename);
 		$sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `$field` varchar($maxlength) NOT NULL DEFAULT '$defaultvalue'";
 		self::sql_exec($sql);			

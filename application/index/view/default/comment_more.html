@@ -30,9 +30,17 @@
 	 				<ul>
 	 					{loop $comment_data $v}
 	 					<li>
+	 						{if $v['userid']}
 	 						<a class="user_pic" href="{U('member/myhome/init', array('userid'=>$v['userid']))}" target="blank"><img src="{if !empty($v['userpic'])}{$v[userpic]}{else}{STATIC_URL}images/default.gif{/if}" height="35" width="35"></a>
+	 						{else}
+	 						<a class="user_pic" href="javascript:;"><img src="{STATIC_URL}images/default.gif" height="35" width="35"></a>
+	 						{/if}
 	 						<div class="yzm-comm-right">
+	 							{if $v['userid']}
 	 							<a class="user_name" href="{U('member/myhome/init', array('userid'=>$v['userid']))}" target="blank">{$v[username]}</a>
+	 							{else}
+	 							<a class="user_name" href="javascript:;">游客</a>
+	 							{/if}
 	 							<p>{nl2br($v['content'])}</p>
 	 							<p><span class="comm_time">{date('Y-m-d H:i:s',$v['inputtime'])}</span> <a href="javascript:toreply('{$v[id]}');" class="comm_a">回复</a></p>
 	 							<div id="rep_{$v[id]}" class="none">

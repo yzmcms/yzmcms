@@ -209,7 +209,7 @@ class member extends common{
 				$member->delete(array('userid'=>$val));
 				$member_detail->delete(array('userid'=>$val));
 			}
-			showmsg(L('operation_success'),'',1);
+			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}
 	}
 

@@ -47,10 +47,10 @@ class system_manage extends common {
 			$config = D('config');
 			foreach($_POST as $key => $value){
 				if(in_array($key, array('error_log_save','site_theme','watermark_enable','watermark_name','watermark_position'))) {
-					$value = safe_replace(trim($value));
+					$value = in_array($key, array('error_log_save','watermark_enable')) ? intval($value) : safe_replace(trim($value));
 					$arr[$key] = $value;
 				}else{
-					if($key!='site_code'){
+					if($key != 'site_code'){
 						$value = htmlspecialchars(trim($value));
 					}
 				}
@@ -114,6 +114,8 @@ class system_manage extends common {
 	public function user_config_add() {
 		if(isset($_POST['dosubmit'])){
 			$config = D('config');
+			$_POST['name'] = trim($_POST['name']);
+			$_POST['value'] = trim($_POST['value']);
 			$res = $config->where(array('name' => $_POST['name']))->find();
 			if($res) return_json(array('status'=>0,'message'=>'配置名称已存在！'));
 			if(empty($_POST['value']))  return_json(array('status'=>0,'message'=>'配置值不能为空！'));
@@ -124,6 +126,8 @@ class system_manage extends common {
 		    }else{
 				$_POST['setting'] = '';
 			}
+
+			$_POST = new_html_special_chars($_POST, array('setting'));
 			
 			if($config->insert($_POST)){
 				delcache('configs');
@@ -142,11 +146,11 @@ class system_manage extends common {
 	public function user_config_edit() {
 		if(isset($_POST['dosubmit'])) {
 			$data = array();
-			$data['title'] = $_POST['title'];
-			$data['value'] = $_POST['value'];
-			$data['status'] = $_POST['status'];
+			$data['title'] = trim($_POST['title']);
+			$data['value'] = trim($_POST['value']);
+			$data['status'] = intval($_POST['status']);
 			
-			if(D('config')->update($data, array('id' => intval($_POST['id'])))){
+			if(D('config')->update($data, array('id' => intval($_POST['id'])), true)){
 				delcache('configs');
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{

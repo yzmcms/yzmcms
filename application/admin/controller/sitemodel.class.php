@@ -19,7 +19,7 @@ class sitemodel extends common {
 	 * 模型列表
 	 */
 	public function init() {
-		$data = D('model')->where(array('siteid'=>self::$siteid, 'type'=>0))->order('modelid ASC')->select();
+		$data = D('model')->where(array('siteid'=>self::$siteid, 'type<>'=>1))->order('modelid ASC')->select();
 		include $this->admin_tpl('model_list');
 	}
 	
@@ -30,10 +30,11 @@ class sitemodel extends common {
 	public function delete() {
 		if(!isset($_GET['yzm_csrf_token']) || !check_token($_GET['yzm_csrf_token'])) showmsg(L('token_error'), 'stop');
 		$modelid = intval($_GET['modelid']);
-		if(in_array($modelid, array(1, 2, 3))) showmsg('不能删除系统模型！');		
 		$model = D('model');		
-		$r = $model->field('tablename')->where(array('modelid'=>$modelid))->find();
-		if($r) sql::sql_delete($r['tablename']); 
+		$r = $model->field('tablename,issystem')->where(array('modelid'=>$modelid))->find();
+		if(!$r) return_json(array('status'=>0,'message'=>'该模型不存在！'));
+		if($r['issystem']) return_json(array('status'=>0,'message'=>'不能删除系统模型！'));
+		sql::sql_delete($r['tablename']); 
 		$model->delete(array('modelid'=>$modelid)); //删除model信息
 		D('model_field')->delete(array('modelid'=>$modelid)); //删除字段
 		D('all_content')->delete(array('modelid'=>$modelid)); //删除全部模型表
@@ -41,7 +42,7 @@ class sitemodel extends common {
 		delcache('modelinfo');
 		delcache('modelinfo_siteid_'.self::$siteid);
 	
-		showmsg(L('operation_success'), '', 1);
+		return_json(array('status'=>1,'message'=>L('operation_success')));
 	}
 	
 	/**
@@ -52,9 +53,10 @@ class sitemodel extends common {
 		if(isset($_POST['dosubmit'])) { 
 			if(!$_POST['name']) return_json(array('status'=>0,'message'=>'模型名称不能为空！'));
 			$tablename = isset($_POST['tablename']) ? strip_tags($_POST['tablename']) : '';
-			if(!$tablename) return_json(array('status'=>0,'message'=>'模型表名不能为空！'));			
+			if(!$tablename) return_json(array('status'=>0,'message'=>'模型表名不能为空！'));	
+			if(!preg_match('/^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,29}$/', $tablename)) showmsg('表名格式不正确！');		
 			$model = D('model');
-			if($model->table_exists($tablename)) return_json(array('status'=>0,'message'=>'模型表名已存在！'));	
+			if($model->table_exists($tablename)) return_json(array('status'=>0,'message'=>'表名已存在！'));	
 			$_POST['issystem'] = $_POST['type'] = 0;
 			$_POST['alias'] = trim($_POST['alias']);
 			$_POST['inputtime'] = SYS_TIME;
@@ -82,6 +84,8 @@ class sitemodel extends common {
 			$modelid = isset($_POST['modelid']) ? intval($_POST['modelid']) : 0;
 			$data = array('name'=>$_POST['name'],'alias'=>trim($_POST['alias']),'description'=>$_POST['description'],'isdefault'=>$_POST['isdefault']);
 			if($_POST['isdefault']){
+				$type = get_model($modelid, 'type');
+				if($type==2) return_json(array('status'=>0,'message'=>'单页模型不可以设置为默认模型！'));
 				$data['disabled'] = 0;
 				$model->update(array('isdefault'=>0), array('siteid'=>self::$siteid));
 			}
@@ -208,8 +212,9 @@ class sitemodel extends common {
 			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
 			$value = $value ? 0 : 1;
 
-			$isdefault = D('model')->field('isdefault')->where(array('modelid' => $id))->one();
-			if($value && $isdefault) return_json(array('status'=>0,'message'=>'默认模型不可以禁用！'));
+			$data = D('model')->field('isdefault,type')->where(array('modelid' => $id))->find();
+			if($value && $data['isdefault']) return_json(array('status'=>0,'message'=>'默认模型不可以禁用！'));
+			if($value && $data['type']==2) return_json(array('status'=>0,'message'=>'单页模型不可以禁用！'));
 			
 			if(D('model')->update(array('disabled'=>$value), array('modelid' => $id))){
 				delcache('modelinfo');
@@ -226,15 +231,18 @@ class sitemodel extends common {
 	 * 添加模型字段
 	 */	
 	private function _add_field($data, $table){
-		if($data['fieldtype'] == 'textarea' || $data['fieldtype'] == 'images'){
-		   sql::sql_add_field_mediumtext($table, $data['field']);  
+		if($data['fieldtype'] == 'input' || $data['fieldtype'] == 'datetime'){
+			sql::sql_add_field($table, $data['field']);  
+		}else if($data['fieldtype'] == 'textarea' || $data['fieldtype'] == 'images' || $data['fieldtype'] == 'attachments'){
+			sql::sql_add_field_mediumtext($table, $data['field']);  
 		}else if($data['fieldtype'] == 'editor' || $data['fieldtype'] == 'editor_mini'){
-		   sql::sql_add_field_text($table, $data['field']);  
+			sql::sql_add_field_text($table, $data['field']);  
 		}else if($data['fieldtype'] == 'number'){
-		   sql::sql_add_field_int($table, $data['field'], intval($data['defaultvalue'])); 
-		   $data['fieldtype'] = 'input';
+			sql::sql_add_field_int($table, $data['field'], intval($data['defaultvalue'])); 
+		}else if($data['fieldtype'] == 'decimal'){
+			sql::sql_add_field_decimal($table, $data['field']); 
 		}else{
-		   sql::sql_add_field($table, $data['field'], $data['defaultvalue'], $data['maxlength']);  
+			sql::sql_add_field($table, $data['field'], $data['defaultvalue'], $data['maxlength']);  
 		}		
 	}
 	

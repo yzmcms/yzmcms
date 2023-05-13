@@ -27,7 +27,7 @@ class admin_content extends common {
 		$modelinfo = get_site_modelinfo();
 		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 0;
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
-		$where = 'siteid='.get_siteid().' AND issystem=0';
+		$where = 'siteid='.self::$siteid.' AND issystem=0';
 		if(isset($_GET['dosubmit'])){	
 		
 			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';

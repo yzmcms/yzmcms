@@ -24,7 +24,7 @@ class api{
 		$this->userid = isset($_SESSION['adminid']) ? $_SESSION['adminid'] : (isset($_SESSION['_userid']) ? $_SESSION['_userid'] : 0);
 		$this->username = isset($_SESSION['adminname']) ? $_SESSION['adminname'] : (isset($_SESSION['_username']) ? $_SESSION['_username'] : '');
 		$this->isadmin = isset($_SESSION['roleid']) ? 1 : 0;
-		$this->groupid = get_cookie('_groupid') ? intval(get_cookie('groupid')) : 0;
+		$this->groupid = get_cookie('_groupid') ? intval(get_cookie('_groupid')) : 0;
 		if(!$this->userid) showmsg(L('login_website'), U('member/index/login'), 1);
 		if($this->isadmin) define('IN_YZMADMIN', true);
 		
@@ -49,7 +49,7 @@ class api{
 		$filetype = isset($_POST['filetype']) ? intval($_POST['filetype']) : 1;
 		$module = isset($_POST['module']) ? htmlspecialchars($_POST['module']) : '';
 		$option = array();
-		$option['allowtype'] = $this->_get_upload_types($filetype);
+		$option['allowtype'] = handle_upload_types($filetype);
 
 		$upload_type = C('upload_type', 'host');
 		yzm_base::load_model($upload_type, '', 0);
@@ -92,7 +92,7 @@ class api{
 		$s = round(get_config('upload_maxsize')/1024, 2).'MB';  //允许上传附件大小
 		$originname = isset($_GET['originname']) ? safe_replace(trim($_GET['originname'])) : '';
 		$uploadtime = isset($_GET['uploadtime']) ? htmlspecialchars($_GET['uploadtime']) : '';
-		$type = join(',', $this->_get_upload_types($t));
+		$type = join(',', handle_upload_types($t));
 		
 		$where = array();
 		if(!$this->isadmin) $where['userid'] = $this->userid;
@@ -177,6 +177,11 @@ class api{
 		$attachment = D('attachment');
 		$info = $attachment->field('userid,filepath,filename')->where(array('id'=>$id))->find();
 		if(!$this->isadmin && $info['userid']!=$this->userid) return_json(array('status'=>0, 'message'=>'无权删除该文件！'));
+		if(!$this->isadmin){
+			if($info['userid']!=$this->userid) return_json(array('status'=>0, 'message'=>'无权删除该文件！'));
+			$groupinfo = get_groupinfo($this->groupid);
+			if(strpos($groupinfo['authority'], '5') === false) return_json(array('status'=>0, 'message'=>'你没有删除文件权限，请升级会员组！'));
+		}
 
 		$upload_type = C('upload_type', 'host');
 		yzm_base::load_model($upload_type, '', 0);
@@ -216,20 +221,6 @@ class api{
 		return D('attachment')->insert($arr);
 	}
 
-	
-	
-	/**
-	 * 获取上传类型
-	 */	
-	private function _get_upload_types($type){
-		$arr = explode('|', ($type==1 ? get_config('upload_image_types') : get_config('upload_types')));
-		$allow = array('png', 'gif', 'jpg', 'jpeg', 'webp', 'bmp', 'ico', 'zip', 'rar', '7z', 'gz', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'pdf', 'txt', 'csv', 'mp3', 'mp4', 'avi', 'wmv', 'rmvb', 'flv', 'wma', 'wav', 'amr', 'ogg', 'ogv', 'webm', 'swf', 'mkv', 'torrent');
-		foreach($arr as $key => $val){
-			if(!in_array($val, $allow)) unset($arr[$key]);
-		}
-		
-		return $arr;
-	}
 	
 
 	/**

@@ -43,16 +43,7 @@
 		<div class="row cl">
 			<label class="form-label col-xs-4 col-sm-2"><span class="c-red">*</span>栏目：</label>
 			<div class="formControls col-xs-8 col-sm-9"> 
-				<?php if(!isset($_GET['catid'])){ ?>
 				<span class="select-box"><?php echo select_category('catid', $catid, '≡ 请选择栏目 ≡', 0, '', true, true, $modelid); ?></span>
-				<?php }else{ ?>
-				<input type="hidden" name="page_content" value="1">
-				<span class="select-box">
-					<select id="select" name="catid" class="select">
-						<option value="<?php echo $catid;?>"><?php echo get_catname($catid);?></option>
-					</select>
-				</span>
-				<?php } ?> 
 			</div>
 		</div>
 		<div class="row cl">
@@ -153,11 +144,7 @@
 			<button name="dosubmit" class="btn btn-primary radius" type="submit" onclick="set_status(1)"><i class="yzm-iconfont yzm-iconfabusekuai"></i> 保存发布</button>
 			<button name="dosubmit" class="btn btn-secondary radius" type="submit" onclick="set_status(0)"><i class="yzm-iconfont yzm-iconbaocun"></i> 保存草稿</button>
 			<button name="continuity" class="btn btn-success radius" type="submit" onclick="set_status(1)"><i class="yzm-iconfont yzm-iconfabusekuai"></i> 保存后继续发布</button>
-			<?php if(!isset($_GET['catid'])){ ?>
 			<button onclick="yzm_content_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
-			<?php }else{ ?>
-			<a href="<?php echo U('category/init');?>" class="btn btn-default radius">&nbsp;&nbsp;关闭&nbsp;&nbsp;</a>
-			<?php } ?>
 		</div>
 		<input type="hidden"  value="10"  name="listorder">
 	</form>

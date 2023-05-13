@@ -40,7 +40,8 @@ class diyform extends common{
  		if(isset($_POST['dosubmit'])) {
 			if(!$_POST['name']) return_json(array('status'=>0,'message'=>'表单名称不能为空！'));
 			$tablename = isset($_POST['tablename']) ? strip_tags($_POST['tablename']) : '';
-			if(!$tablename) return_json(array('status'=>0,'message'=>'表名称不能为空！'));			
+			if(!$tablename) return_json(array('status'=>0,'message'=>'表名称不能为空！'));
+			if(!preg_match('/^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,29}$/', $tablename)) showmsg('表名格式不正确！');		
 			$model = D('model');
 			if($model->table_exists($tablename)) return_json(array('status'=>0,'message'=>'表名已存在！'));	
 			$_POST = new_html_special_chars($_POST);
@@ -98,13 +99,41 @@ class diyform extends common{
 		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 0;
 		
 		$model = D('model');
-		$r = $model->field('tablename')->where(array('modelid'=>$modelid))->find();
-		if($r) sql::sql_delete($r['tablename']);
+		$r = $model->field('tablename,issystem')->where(array('modelid'=>$modelid))->find();
+		if(!$r) return_json(array('status'=>0,'message'=>'该模型不存在！'));
+		if($r['issystem']) return_json(array('status'=>0,'message'=>'不能删除系统模型！'));
+		sql::sql_delete($r['tablename']); 
 		
 		$model->delete(array('modelid'=>$modelid)); 			//删除model信息
 		D('model_field')->delete(array('modelid'=>$modelid)); 	//删除字段
+		delcache('modelinfo');
+		delcache('modelinfo_siteid_'.self::$siteid);
 	
-		showmsg(L('operation_success'), U('init'), 1);
+		return_json(array('status'=>1,'message'=>L('operation_success')));
+	}
+
+
+	/**
+	 * 禁用启用
+	 */
+	public function public_change_status() {
+		if(is_post()){
+			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+			$value = $value ? 0 : 1;
+
+			$data = D('model')->field('isdefault,type')->where(array('modelid' => $id))->find();
+			if($value && $data['isdefault']) return_json(array('status'=>0,'message'=>'默认模型不可以禁用！'));
+			if($value && $data['type']==2) return_json(array('status'=>0,'message'=>'单页模型不可以禁用！'));
+			
+			if(D('model')->update(array('disabled'=>$value), array('modelid' => $id))){
+				delcache('modelinfo');
+				delcache('modelinfo_siteid_'.self::$siteid);
+				return_json(array('status'=>1,'message'=>L('operation_success')));
+			}else{
+				return_json();
+			}
+		}
 	}
 	
 	

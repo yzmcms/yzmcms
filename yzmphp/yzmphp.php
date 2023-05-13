@@ -58,7 +58,7 @@ define('SITE_PATH', str_replace('index.php', '', PHP_FILE));
 //程序URL地址
 define('SITE_URL', SERVER_PORT.HTTP_HOST.SITE_PATH);
 //JS,IMG,CSS等URL地址
-define('STATIC_URL', SITE_URL.'common/static/');
+define('STATIC_URL', SITE_PATH.'common/static/');
 
 if(version_compare(PHP_VERSION,'5.4.0','<')) {
     define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc() ? true : false);

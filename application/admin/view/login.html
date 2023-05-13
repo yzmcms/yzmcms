@@ -4,7 +4,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>后台管理登录 - YzmCMS内容管理系统</title>
-	<link rel="stylesheet" href="<?php echo STATIC_URL;?>admin/yzm_admin/css/yzm.admin.login.css?v=yzmcms" />
+	<link rel="stylesheet" href="<?php echo STATIC_URL;?>admin/yzm_admin/css/yzm.admin.login.css" />
 	<link rel="Shortcut Icon" href="<?php echo STATIC_URL;?>admin/yzm_admin/images/favicon.ico" />
 </head>
 <body>
@@ -22,7 +22,7 @@
 						<span>密码：</span>
 					</li>
 					<li class="yzm-login-item">
-						<img src="<?php echo U('api/index/code');?>" id="codeimg" class="yzm-verifyimg" onclick="this.src=this.src+'?'"/>
+						<img src="<?php echo U('api/index/code');?>" title="点击切换验证码" id="codeimg" class="yzm-verifyimg" onclick="this.src=this.src+'?'"/>
 						<input type="text" name="code" class="yzm-login-input yzm-verify-input" placeholder="请输入验证码">
 						<span>验证码：</span>
 					</li>
@@ -33,6 +33,18 @@
            </form>
 		</div>
 	</div>
+	<ul class="yzm-circles">
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+		<li></li>
+	</ul>
 	<div class="yzm-footer"><p>Powered By <a href="http://www.yzmcms.com" target="_blank" title="<?php echo YZMCMS_SOFTNAME;?>"><?php echo YZMCMS_SOFTNAME;?></a> © 2014-2099 袁志蒙工作室</p></div>
 	<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/jquery/1.8.2/jquery.min.js"></script> 
 	<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/layer/layer.js"></script>
@@ -63,7 +75,9 @@
 							window.location.href = msg.url;
 						});
 				    }else{
-						layer.msg(msg.message, {icon:2});
+						layer.msg(msg.message, {icon:2, time:2000}, function(){
+							$(".yzm-verify-input").val('');
+						});
 					}
 	            }
 	        })		 

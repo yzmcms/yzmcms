@@ -113,9 +113,9 @@ class reply extends common{
 		$where = array();
 		if(isset($_GET['dosubmit'])){
 			if($_GET['catid']) $where['catid'] = intval($_GET['catid']);
-			if(isset($_GET["start"]) && $_GET["start"] != '' && $_GET["end"]){		
-				$where['updatetime>'] = strtotime($_GET["start"]);
-				$where['updatetime<'] = strtotime($_GET["end"]);
+			if(isset($_GET['start']) && $_GET['start'] && $_GET['end']){		
+				$where['updatetime>'] = strtotime($_GET['start'].' 00:00:00');
+				$where['updatetime<'] = strtotime($_GET['end'].' 23:59:59');
 			}
 			if($_GET['searinfo']) $where['title'] = '%'.safe_replace($_GET['searinfo']).'%';
 		}

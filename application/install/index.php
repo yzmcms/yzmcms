@@ -16,7 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 define('APPDIR', _dir_path(substr(dirname(__FILE__), 0, -8)));
 define('SITEDIR', dirname(APPDIR).DIRECTORY_SEPARATOR);
-define("VERSION", 'YzmCMS V6.8');
+define("VERSION", 'YzmCMS V6.9');
 
 if(is_file(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock')){
     exit("YzmCMS程序已运行安装，如果你确定要重新安装，请先从FTP中删除 cache/install.lock！");
@@ -91,7 +91,7 @@ switch ($step) {
 			}
         }
         if (!in_array(check_url($domain.'admin'), array('200', '550')) && strstr(gethostbyname($_SERVER['HTTP_HOST']), $_SERVER['SERVER_ADDR'])){
-            $rewrite_module = '<span class="correct_span error_span">&radic;</span> 未开启伪静态，<a href="https://www.yzmcms.com/dongtai/121.html" target="_blank">查看官网教程</a>';
+            $rewrite_module = '<span class="correct_span error_span">&radic;</span> 未开启，<a href="javascript:;" onclick="javascript:location.reload();">刷新</a>或<a href="https://www.yzmcms.com/dongtai/121.html" target="_blank">查看教程</a>';
             $err++;
         } else {
             $rewrite_module = '<span class="correct_span">&radic;</span> 已开启';
@@ -324,7 +324,13 @@ function random($length, $chars = '1294567890abcdefghigklmnopqrstuvwxyzABCDEFGHI
 function is_ssl() {
     if(isset($_SERVER['HTTPS']) && ('1' == $_SERVER['HTTPS'] || 'on' == strtolower($_SERVER['HTTPS']))){
         return true;
-    }elseif(isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'] )) {
+    }elseif(isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'])) {
+        return true;
+    }elseif(isset($_SERVER['REQUEST_SCHEME']) && ('https' == strtolower($_SERVER['REQUEST_SCHEME']))) {
+        return true;
+    }elseif(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && ('https' == strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']))) {
+        return true;
+    }elseif(isset($_SERVER['HTTP_X_FORWARDED_SCHEME']) && ('https' == strtolower($_SERVER['HTTP_X_FORWARDED_SCHEME']))) {
         return true;
     }
     return false;

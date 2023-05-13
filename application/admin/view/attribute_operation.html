@@ -21,7 +21,6 @@
 				<label class="mr-10">推荐[4] <input name="flag[]" type="checkbox" value="4"/></label><br>
 				<label class="mr-10">热点[5] <input name="flag[]" type="checkbox" value="5"/></label>
 				<label class="mr-10">幻灯[6] <input name="flag[]" type="checkbox" value="6"/></label>
-				<input type="hidden" class="input-text" value=""  name="ids" id="ids">
 			</div>
 		</div>
 		<?php }else{ ?>
@@ -33,13 +32,16 @@
 			</div>
 		</div>
 		<div class="row cl">
-			<label class="form-label col-xs-3"><span class="c-red">*</span>内容ID：</label>
-			<div class="formControls col-xs-8 col-sm-9">
-				<input type="text" class="input-text disabled" value=""  name="ids" id="ids" readonly >
+			<label class="form-label col-xs-3"><span class="c-red">*</span>更新时间：</label>
+			<div class="formControls col-xs-8 col-sm-9 yzm-explain-box">
+				<label class="radio mr-10"><input type="radio" name="edit_updatetime" checked value="1"> 此时此刻</label>
+				<label class="radio"><input type="radio" name="edit_updatetime" value="0"> 不做修改</label>
+				<span class="yzm-explain">此时此刻：内容的更新时间改为此时此刻<br>不做修改：内容的更新时间不做修改</span>
 			</div>
 		</div>
 		<?php } ?>
 		<div class="footer_btn">
+			<input type="hidden" class="input-text" value=""  name="ids" id="ids">
 			<input type="hidden" class="input-text" value="<?php echo $modelid; ?>" name="modelid">
 			<input class="btn btn-primary radius" type="submit" value="确 定">
 			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	

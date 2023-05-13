@@ -42,8 +42,7 @@ switch (htmlspecialchars($_GET['action'])) {
         $config = array(
             "pathFormat" => $CONFIG['filePathFormat'],
             "maxSize" => $CONFIG['fileMaxSize'],
-            "allowFiles" => $CONFIG['fileAllowFiles'],
-            "isFile" => 1
+            "allowFiles" => $CONFIG['fileAllowFiles']
         );
         $fieldName = $CONFIG['fileFieldName'];
         break;

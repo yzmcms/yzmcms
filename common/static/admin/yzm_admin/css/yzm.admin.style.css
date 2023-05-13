@@ -8,6 +8,10 @@
 ::-webkit-scrollbar{width:8px;height:8px}
 ::-webkit-scrollbar-thumb{background:#a2a2a2}
 ::-webkit-scrollbar-track{background:#ebebeb}
+::-webkit-input-placeholder{color:#d9d9d9}
+:-ms-input-placeholder{color:#d9d9d9}
+:-moz-placeholder{color:#d9d9d9;opacity:1}
+::-moz-placeholder{color:#d9d9d9;opacity:1}
 em,i{font-style:normal;}
 select{background:#fff}
 .bg-1{background-color:#fff;}
@@ -31,6 +35,13 @@ select{background:#fff}
 .col-sm-2{width:16.6667%;}
 .yzmcms_a{color:#06c;}
 .pointer{cursor:pointer}
+.yzm-form-item{margin:10px 0;font-size: 13px;}
+.yzm-form-item-label{text-align: right;color: #606266;padding-right: 12px;width: 160px;display: inline-block;vertical-align: top;}
+.yzm-form-item-label em{font: bold 14px/20px tahoma, verdana;color: #F60;vertical-align: middle;display: inline-block;margin-right: 5px;margin-left: -14px;}
+.yzm-form-item-content{width:80%;text-align:left;display:inline-block;color:#606266;}
+.yzm-form-item-small{display:inline-block;width:25%;margin-bottom: 10px;float:left;text-align:right}
+.yzm-form-item-small .yzm-form-item-label{width:30%;}
+.yzm-form-item-small .yzm-form-item-content{width:65%}
 .formdoby{width:80%;margin:0 auto;text-align:center}
 .formdoby ul li{margin-bottom:20px;}
 .formdoby2 ul li{margin-bottom:10px;}
@@ -157,7 +168,8 @@ select{background:#fff}
 .lock-box h5{font-size:14px;font-weight:normal;text-shadow:0 1px 3px #333333}
 .input-box{margin-top:35px;overflow:hidden;box-shadow:0 0 3px 1px #fdf8f8;border-radius:6px}
 .lock-user{font-size:25px;color:#e8e4e4;text-shadow:1px 1px 3px #333333;}
-.lock-text{float:left;background:#fff;height:50px;line-height:48px;width:84%;padding:0 5%;border:none;border-right:none;border-top-left-radius:6px;border-bottom-left-radius:6px;font-size:16px;color:#333;box-sizing:border-box;}
+.lock-text{float:left;background:#fff;height:50px;line-height:48px;width:84%;padding:0 5%;border:1px solid #409eff;border-top-left-radius:6px;border-bottom-left-radius:6px;font-size:16px;color:#333;box-sizing:border-box;transition:border ease-in-out 0.15s,box-shadow ease-in-out 0.15s;}
+.lock-text:focus{border:1px solid #057dfa;box-shadow:inset 0 1px 1px rgba(0,0,0,.075),0 0 8px rgba(102,175,233,.6)}
 .lock-submit{float:left;width:16%;height:50px;line-height:50px;text-align:center;border:none;outline:none;background:#386adb;color:#fff;border-top-right-radius:6px;border-bottom-right-radius:6px;cursor:pointer;transition:all 0.3s;font-size:26px;}
 .lock-submit:hover{background:#1c5ff4}
 .layui-layer-tips{margin-top:-12px !important}
