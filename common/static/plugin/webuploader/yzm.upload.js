@@ -34,7 +34,7 @@ function album_cancel(obj){
 function isimg(url){
 	var sTemp;
 	var b = false;
-	var opt = "png|jpg|gif|jpeg|bmp|webp";
+	var opt = "png|jpg|gif|jpeg|bmp|webp|ico";
 	var s=opt.toUpperCase().split("|");
 	for (var i=0;i<s.length ;i++ ){
 	sTemp = url.substr(url.length-s[i].length-1);
