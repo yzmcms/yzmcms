@@ -208,6 +208,10 @@ class member extends common{
 			foreach($_POST['ids'] as $val){
 				$member->delete(array('userid'=>$val));
 				$member_detail->delete(array('userid'=>$val));
+				D('comment')->delete(array('userid'=>$val));
+				D('favorite')->delete(array('userid'=>$val));
+				D('member_authorization')->delete(array('userid'=>$val));
+				D('member_follow')->delete(array('userid'=>$val));
 			}
 			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}

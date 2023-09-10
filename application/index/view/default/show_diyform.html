@@ -23,15 +23,18 @@
 		 				当前位置：{$location}
 		 			</span>
 		 		</div>
-				<form action="{U('diyform/index/post')}" method="post" onsubmit="return checkall()">
+				<form action="{U('diyform/index/post')}" method="post" onsubmit="return checkall(this)">
 					<input type="hidden" name="modelid" value="{$modelid}">
 					<table class='yzm-table'>
 						{loop $fieldstr $val}		
-						 <tr>{$val}</tr>
+						<tr>
+							<td class="yzm-table-title">{$val[field]}：</td>
+							<td>{$val[form]}</td>
+						</tr>
 						{/loop}
 						{if $modelinfo['check_code']}
 				        <tr>
-				            <td class="yzm-table-title"><span class="required">*</span>验证码</td>
+				            <td class="yzm-table-title"><span class="required">*</span>验证码：</td>
 				            <td>
 				            	<input name="code" type="text" class="yzm-input-text" style="width:100px;">
 				            	<img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="yzm-code" title="看不清？点击更换">
@@ -48,12 +51,12 @@
 		</div>
 	<script type="text/javascript">
 
-		function checkall(){
+		function checkall(obj){
 
 			//form必填字段的验证
 			{loop $field_check $k=>$v}
-				{if ($v['isrequired'] && in_array($v['fieldtype'], array('input', 'textarea')))}
-				if($("{$v[fieldtype]}[name='{$k}']").val()==''){
+				{if $v['isrequired'] && !in_array($v['fieldtype'], array('images','attachments','checkbox','editor','editor_mini'))}
+				if(obj.{$k}.value==''){
 					layer.msg("{$v[errortips]}", {icon:2});
 					return false;
 				}
@@ -61,7 +64,7 @@
 			{/loop}
 				
 			//验证码的验证
-			if($("input[name='code']").val()==''){
+			if(obj.code.value==''){
 				layer.msg("验证码不能为空!", {icon:2});
 				return false;
 			}

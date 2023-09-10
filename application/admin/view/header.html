@@ -3,15 +3,17 @@
 		<div class="container-fluid cl"> <a class="logo navbar-logo f-l mr-10 hidden-xs" href="<?php echo U('init');?>" title="<?php echo YZMCMS_SOFTNAME;?>"><?php echo YZMCMS_SOFTNAME;?></a> <a class="logo navbar-logo-m f-l mr-10 visible-xs" href="<?php echo U('init');?>" ><?php echo YZMCMS_SOFTNAME;?> <?php echo YZMCMS_VERSION;?></a> <span class="logo navbar-slogan f-l mr-10 hidden-xs"><?php echo YZMCMS_VERSION;?></span> <a aria-hidden="false" class="nav-toggle yzm-iconfont yzm-iconcaidan visible-xs" href="javascript:;"></a>
 			<nav class="nav navbar-nav">
 				<ul class="cl">
-					<?php $siteid = get_siteid(); ?>
+					<?php $siteid = get_siteid(); $site_data = get_site();?>
+					<?php if($site_data){ ?>
 					<li class="dropDown dropDown_hover"><a href="javascript:;" class="dropDown_A"><i class="yzm-iconfont yzm-iconcaidan f14"></i> <?php if($siteid){ echo get_site($siteid, 'name');}else{ echo '默认站点'; }?> <i class="yzm-iconfont yzm-iconxiangxia"></i></a>
 						<ul class="dropDown-menu menu radius box-shadow">
 							<li><a href="javascript:;" onclick="yzm_change_site(0)">默认站点</a></li>
-							<?php foreach(get_site() as $val){ ?>
+							<?php foreach($site_data as $val){ ?>
 							<li><a href="javascript:;" onclick="yzm_change_site(<?php echo $val['siteid'] ?>)"><?php echo $val['name'] ?></a></li>
 							<?php } ?>
 						</ul>
 					</li>
+					<?php } ?>
 					<li><a href="<?php echo $siteid ? get_site($siteid, 'site_url') : SITE_URL;?>" target="_blank" title="站点首页">站点首页</a></li>
 					<li><a href="<?php echo U('member/index/init');?>" target="_blank" title="会员中心">会员中心</a></li>
 				</ul>

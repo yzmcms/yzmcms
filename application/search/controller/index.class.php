@@ -32,6 +32,7 @@ class index{
 		}
 		$siteid = $this->siteid;
 		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 0;
+		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
 
 		list($seo_title, $keywords, $description) = get_site_seo($siteid, '‘'.$q.'’的搜索结果', $q);
 		include template($this->module, 'search');	
@@ -50,7 +51,7 @@ class index{
 		$q = $data['tag'];	
 			
 		$siteid = $this->siteid;
-		$modelid = 0;
+		$modelid = $catid = 0;
 		list($seo_title, $keywords, $description) = get_site_seo($siteid, $q, $q);	
 		$seo_title = $data['seo_title'] ? $data['seo_title'] : $seo_title;
 		$keywords = $data['seo_keywords'] ? $data['seo_keywords'] : $keywords;
@@ -67,7 +68,8 @@ class index{
 		$site = array_merge(get_config(), $this->siteinfo);
 		
 		$siteid = $this->siteid;
-		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;  
+		$modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : 1;
+		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
 		$pubtime = isset($_GET['pubtime']) ? intval($_GET['pubtime']) : showmsg(L('lose_parameters'), 'stop');  
 		if(!$pubtime) showmsg(L('illegal_parameters'), 'stop');  
 		$date = date('Y-m', $pubtime);

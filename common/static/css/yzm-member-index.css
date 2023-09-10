@@ -81,6 +81,7 @@ select{ background: #fff none repeat scroll 0 0;border-color: #ddd;border-image:
 select optgroup{background: #f0f0f0;font-style: normal;font-weight: normal;color: #333}
 textarea{width:615px;height:80px;padding:2px 3px;border-radius:2px;border:1px solid #e3eaef;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;font-size:12px;margin:10px 0}
 .input,.yzm-input-text{height:30px;line-height:30px;width:320px;padding:1px 5px;border-radius:3px;border:1px solid #e3eaef;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;font-size:13px}
+.disabled{cursor:not-allowed;background:#f5f5f5;}
 .date{height:30px !important;line-height: 30px;padding:1px 5px !important;border-radius: 2px !important;width:320px !important;border:1px solid #e3eaef !important;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}
 .w370{width:370px;}
 .w660{width:660px;}
@@ -88,7 +89,8 @@ textarea{width:615px;height:80px;padding:2px 3px;border-radius:2px;border:1px so
 .fieldset_list legend{font-size:13px;color:#666;background-color:#f9f9f9;border:1px solid #d8d8d8;padding:0 15px;height:30px;line-height:30px;width:56px;font-weight:bold;margin-bottom:0px;}
 .fieldset_tip{text-align:center;font-size:13px;margin-top:5px;margin-bottom:10px;}
 .file_ul li{margin-bottom:5px;margin-left:10px}
-.file_ul li .input-text{margin-right:10px;height:23px;line-height:23px;width:230px;padding:3px 5px;border:1px solid #ddd;margin-bottom:8px;border-radius:3px}
+.file_ul li .input-text{margin-right:10px;height:23px;line-height:23px;width:230px;padding:3px 5px;border:1px solid #ddd;margin-bottom:8px;border-radius:3px;outline:none}
+.file_ul li .input-text:focus{transition: all 0.218s ease 0s;border: 1px solid #2196f3;}
 .file_ul li .yzm-input-alt{width:180px;}
 .file_ul li a{color:#fff;font-size:12px;padding:4px 6px;background:#2196f3;border-radius:2px;}
 .file_ul li a:hover{text-decoration:none;opacity:0.8}

@@ -41,7 +41,7 @@ class diyform extends common{
 			if(!$_POST['name']) return_json(array('status'=>0,'message'=>'表单名称不能为空！'));
 			$tablename = isset($_POST['tablename']) ? strip_tags($_POST['tablename']) : '';
 			if(!$tablename) return_json(array('status'=>0,'message'=>'表名称不能为空！'));
-			if(!preg_match('/^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,29}$/', $tablename)) showmsg('表名格式不正确！');		
+			if(!preg_match('/^[a-zA-Z]{1}([a-zA-Z0-9]|[_]){0,29}$/', $tablename)) return_json(array('status'=>0,'message'=>'表名格式不正确！'));
 			$model = D('model');
 			if($model->table_exists($tablename)) return_json(array('status'=>0,'message'=>'表名已存在！'));	
 			$_POST = new_html_special_chars($_POST);
@@ -51,6 +51,7 @@ class diyform extends common{
 			$_POST['inputtime'] = SYS_TIME;
 			$model->insert($_POST);
 			sql::sql_create($tablename);
+			$this->_del_cache();
 			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}else{
 			$show_temp = $this->select_template('show_temp', 'show_');
@@ -75,6 +76,7 @@ class diyform extends common{
 				'setting'=>json_encode(array('show_template'=>$_POST['show_template'], 'check_code'=> intval($_POST['check_code']), 'sendmail'=> intval($_POST['sendmail']), 'allowvisitor'=>intval($_POST['allowvisitor'])))
 			);
 			if($model->update($data, array('modelid' => $modelid))){
+				$this->_del_cache($modelid);
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();
@@ -106,8 +108,7 @@ class diyform extends common{
 		
 		$model->delete(array('modelid'=>$modelid)); 			//删除model信息
 		D('model_field')->delete(array('modelid'=>$modelid)); 	//删除字段
-		delcache('modelinfo');
-		delcache('modelinfo_siteid_'.self::$siteid);
+		$this->_del_cache($modelid);
 	
 		return_json(array('status'=>1,'message'=>L('operation_success')));
 	}
@@ -127,8 +128,7 @@ class diyform extends common{
 			if($value && $data['type']==2) return_json(array('status'=>0,'message'=>'单页模型不可以禁用！'));
 			
 			if(D('model')->update(array('disabled'=>$value), array('modelid' => $id))){
-				delcache('modelinfo');
-				delcache('modelinfo_siteid_'.self::$siteid);
+				$this->_del_cache();
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();
@@ -163,6 +163,17 @@ class diyform extends common{
 				return $templates;
 			}
 			
+	}
+
+
+	/**
+	 * 清除缓存
+	 */
+	private function _del_cache($modelid=0){
+		delcache('modelinfo');
+		delcache('modelinfo_all');
+		delcache('modelinfo_siteid_'.self::$siteid);
+		$modelid && delcache($modelid.'_model');
 	}
 
 }

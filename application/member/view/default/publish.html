@@ -10,7 +10,7 @@
             <h3>在线投稿</h3>
         </div>
         <div class="main_cont">
-            <form method="post" action="{U('publish')}" onsubmit="return chcekall()">
+            <form method="post" action="" onsubmit="return chcekall(this)">
                 <table>
                     <tr>
                         <td width="70"><span class="required">*</span>栏目：</td>
@@ -18,7 +18,7 @@
                     </tr>
                     <tr>
                         <td><span class="required">*</span>标题：</td>
-                        <td><input type="text" name="title" value="" required class="input w370"></td>
+                        <td><input type="text" name="title" value="" class="input w370"></td>
                     </tr>
                     <tr>
                         <td>关键字：</td>
@@ -60,20 +60,21 @@
 		if(catid != 0) location.href = '?catid='+catid;
 	}
 	
-	function chcekall(){
-		if($("input[name='title']").val()==''){
+	function chcekall(obj){
+        if(obj.catid.value=='0'){
+            layer.msg("请选择栏目!", {icon:2});
+            return false;
+        }
+
+		if(obj.title.value==''){
 			layer.msg("标题不能为空!", {icon:2});
 			return false;
 		}
-		if($("#select").val()=="0"){
-			layer.msg("请选择栏目!", {icon:2});
-			return false;
-		}
-
+		
 		//form必填字段的验证
 		{loop $field_check $k=>$v}
-			{if ($v['isrequired'] && in_array($v['fieldtype'], array('input', 'textarea')))}
-			if($("{$v[fieldtype]}[name='{$k}']").val()==''){
+			{if $v['isrequired'] && !in_array($v['fieldtype'], array('images','attachments','checkbox','editor','editor_mini'))}
+            if(obj.{$k}.value==''){
 				layer.msg("{$v[errortips]}", {icon:2});
 				return false;
 			}
@@ -84,6 +85,24 @@
 			layer.msg("内容不能为空!", {icon:2});
 			return false;
 		}
+
+        layer.msg('正在发布中...', {icon:16, shade:0.21, time:false});
+        $.ajax({
+            type: "POST",
+            url: "{U('publish')}", 
+            data: $(obj).serialize(),
+            dataType: "json", 
+            success: function (msg) {
+                if(msg.status == 1){
+                    layer.msg(msg.message, {icon:1, time:2000}, function(){
+                        location.href = msg.url;
+                    });
+                }else{
+                    layer.msg(msg.message, {icon:2});
+                }
+            }
+        })       
+        return false;
 	}
 </script>
 {m:include "member","footer"}

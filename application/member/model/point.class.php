@@ -88,13 +88,13 @@ class point {
 
 		if($value == 0) return false;
 		
-		if(!$userid || !$username || $value<0) showmsg(L('illegal_parameters'), 'stop');
+		if(!$userid || !$username || $value<0) return_message(L('illegal_parameters'), 0);
 		$data = D('member')->field('point,amount')->where(array('userid'=>$userid))->find();
 		if($type == '1'){
-			if(($data['point']-$value)<0) showmsg('积分不足本次交易！', 'stop');
+			if(($data['point']-$value)<0) return_message('积分不足本次交易！', 0);
 			$update = '`point`=`point`-'.$value;
 		}else{
-			if(($data['amount']-$value)<0) showmsg('账户余额不足本次交易！', 'stop');
+			if(($data['amount']-$value)<0) return_message('账户余额不足本次交易！', 0);
 			$update = '`amount`=`amount`-'.$value;
 		}
 		
@@ -129,22 +129,21 @@ class point {
 		if(!$data) return false;
 		$exp = $experience+$add;
 		foreach ($data as $k=>$v) {
-			$experience_list[$k] = $v['experience'];
+			$experience_list[$v['groupid']] = $v['experience'];
 		}
 		arsort($experience_list);
 		
 		//如果超出用户组积分设置则为积分最高的用户组
-		if($exp > max($experience_list)) {
-			$new_groupid = key($experience_list);
-		} else {
-			foreach ($experience_list as $k=>$v) {
-				if($exp >= $v) {
-					$new_groupid = $tmp_k;
-					break;
-				}
-				$tmp_k = $k;
-			}
-		}
+		if($exp >= max($experience_list)) {
+            $new_groupid = key($experience_list);
+        } else {
+            foreach ($experience_list as $k=>$v) {
+                if($exp >= $v) {
+                    $new_groupid = $k;
+                    break;
+                }
+            }
+        }
 
 		if($new_groupid != $groupid) {
 			set_cookie('_groupid', $new_groupid, 0, true);

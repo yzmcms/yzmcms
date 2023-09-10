@@ -16,9 +16,10 @@
 		<span class="select-box inline">
 			<select name="type" class="select">
 				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='1'){echo "selected";} ?> value="1">TAG名称</option>
-				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo "selected";} ?> value="2">SEO标题</option>		
-				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='3'){echo "selected";} ?> value="3">SEO关键字</option>		
-				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='4'){echo "selected";} ?> value="4">SEO描述</option>		
+				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo "selected";} ?> value="2">TAGID</option>		
+				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='3'){echo "selected";} ?> value="3">SEO标题</option>		
+				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='4'){echo "selected";} ?> value="4">SEO关键字</option>		
+				<option <?php if(isset($_GET["type"]) && $_GET["type"]=='5'){echo "selected";} ?> value="5">SEO描述</option>		
 			</select>
 		</span>
 		<input type="text" name="searinfo"  class="input-text" style="width:200px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>

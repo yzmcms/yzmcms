@@ -166,7 +166,7 @@ function attachment_write($info){
     $param = yzm_base::load_sys_class('param');
     $arr = array();
     $arr['siteid'] = get_siteid();
-    $arr['originname'] = strlen($info['original'])<50 ? htmlspecialchars($info['original']) : htmlspecialchars(str_cut($info['original'], 45));
+    $arr['originname'] = strlen($info['original'])<50 ? htmlspecialchars($info['original']) : htmlspecialchars(str_cut($info['original'], 50));
     $arr['filename'] = htmlspecialchars($info['title']);
     $arr['filepath'] = $pathinfo['dirname'].'/';
     $arr['filesize'] = $info['size'];

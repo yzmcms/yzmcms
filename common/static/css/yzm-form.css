@@ -24,7 +24,8 @@
 .fieldset_list legend{font-size: 13px;color: #666;background-color: #f9f9f9;border: 1px solid #d8d8d8;padding: 0 15px;height: 25px;line-height: 25px;width: 56px;margin-bottom: 0px;}
 .fieldset_tip{text-align: center;font-size: 13px;margin-top: 5px;margin-bottom: 10px;}
 .file_ul li{margin-bottom:5px;margin-left:10px}
-.file_ul li .input-text{margin-right:10px;height:23px;line-height:23px;width:230px;padding:3px 5px;border:1px solid #ddd;margin-bottom:8px;border-radius:3px}
+.file_ul li .input-text{margin-right:10px;height:23px;line-height:23px;width:230px;padding:3px 5px;border:1px solid #ddd;margin-bottom:8px;border-radius:3px;outline:none}
+.file_ul li .input-text:focus{transition: all 0.218s ease 0s;border: 1px solid #2196f3;}
 .file_ul li .yzm-input-alt{width:180px;}
 .file_ul li a{color:#fff;font-size:12px;padding:4px 6px;background:#2196f3;border-radius:2px;}
 .file_ul li a:hover{text-decoration:none;opacity:0.8}

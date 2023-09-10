@@ -30,12 +30,12 @@
                                 <td class="tar">数据库驱动类型：</td>
                                 <td>
 								<select name="dbtype" id="dbtype" class="select">
-									<option value="pdo" >PDO (推荐)</option>
+									<option value="pdo" >PDO_MYSQL (推荐)</option>
 									<option value="mysqli" >MYSQLI</option>
 									<!-- <option value="mysql" >MYSQL</option> -->
 								</select>
 								</td>
-                                <td><div id="J_install_tip_dbhost"><span class="gray">均支持MySql数据库，推荐使用PDO驱动</span></div></td>
+                                <td><div id="J_install_tip_dbhost"><span class="gray">均支持MySql数据库，推荐使用PDO_MYSQL</span></div></td>
                             </tr>
                             <tr>
                                 <td class="tar">数据库服务器：</td>

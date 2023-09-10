@@ -361,7 +361,13 @@ class yzm_tag{
 		$action = in_array(ROUTE_A,array('init', 'tag', 'archives')) ? ROUTE_A : 'init';
 		switch($action) {
 			case 'init' :
-				$cat_where = $catid ? ' AND catid = '.$catid : '';
+				$cat_where = '';
+				if($catid){
+					$category = get_category($catid);
+					if(!$category) return false;
+					$arrchildid = $category['arrchildid'];
+					$cat_where = strpos($arrchildid, ',') ? ' AND catid IN ('.$arrchildid.')' : ' AND catid='.$arrchildid;
+				}
 				if($modelid){
 					if(!$this->_set_model($modelid)) return false;
 					$db = $this->db;
@@ -371,7 +377,7 @@ class yzm_tag{
 					}
 					$where = '`status` = 1'.$cat_where.' AND ('.join(' OR ', $whereor).')';
 				}else{
-					$where = 'siteid = '.$siteid.$cat_where." AND `status` = 1 AND `title` LIKE '%$keyword%'";
+					$where = 'siteid = '.$siteid.' AND `status` = 1'.$cat_where." AND `title` LIKE '%$keyword%'";
 					$db = D('all_content');
 				}
 

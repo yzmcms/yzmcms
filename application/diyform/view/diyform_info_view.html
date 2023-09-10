@@ -28,7 +28,7 @@
 					$arr = string2array($data[$val['field']]);
 					$va = '';
 					foreach($arr as $v){
-						$va .= '<a href="'.$v['url'].'" title="'.$v['alt'].'"><img src="/common/static/images/ext/rar.png" height="15"> '.$v['alt'].'</a><br>';
+						$va .= '<a href="'.$v['url'].'" download="'.$v['alt'].'.'.fileext($v['url']).'" title="'.$v['alt'].'"><img src="'.STATIC_URL.'images/ext/rar.png" height="15"> '.$v['alt'].'</a><br>';
 					}
 				}elseif($val['fieldtype'] == 'select' || $val['fieldtype'] == 'radio'){
 					$va = get_field_val($data[$val['field']], $val['field'], $modelid);

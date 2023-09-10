@@ -21,7 +21,7 @@ class content_model {
 			$this->modelarr[$val['modelid']] = $val;
 		}
 		$this->modelid = isset($_GET['modelid']) ? intval($_GET['modelid']) : (isset($_POST['modelid']) ? intval($_POST['modelid']) : get_default_model('modelid'));
-		if(!isset($this->modelarr[$this->modelid])) showmsg('模型不存在，请先添加模型！', U('sitemodel/init'));
+		if(!isset($this->modelarr[$this->modelid])) showmsg(L('model_does_not_exist'), U('sitemodel/init'));
 		$this->tabname = $this->modelarr[$this->modelid]['tablename'];
 	}
 
@@ -41,8 +41,8 @@ class content_model {
 		}
 
 		$data['issystem']  = $isimport ? 0 : 1;
-		$data['inputtime'] = strtotime($data['inputtime']);
-		$data['updatetime'] = SYS_TIME;
+		$data['inputtime'] = isset($data['inputtime']) ? strtotime($data['inputtime']) : SYS_TIME;
+		$data['updatetime'] = isset($data['updatetime']) ? strtotime($data['updatetime']) : SYS_TIME;
 		$data['description'] = empty($data['description']) ? str_cut(strip_tags($data['content']),250) : $data['description'];
 		$data['username'] = $_SESSION['adminname'];
 		$data['userid'] = $_SESSION['adminid'];
@@ -101,13 +101,13 @@ class content_model {
 	 */	
  	public function content_edit($data, $id, $isimport = 0) {
 		$content_tabname = D($this->tabname);
-		$r = $content_tabname->field('`username`,`issystem`')->where(array('id'=>$id))->find();
+		$original_data = $content_tabname->field('`userid`,`username`,`issystem`,`status`')->where(array('id'=>$id))->find();
 		if($isimport){
 			$username = safe_replace(get_cookie('_username'));
-			if(!$r || $r['username']!=$username || $r['issystem']==1) return false;
+			if(!$original_data || $original_data['username']!=$username || $original_data['issystem']==1) return false;
 		}
 		
-		unset($data['issystem'], $_POST['username'], $_POST['userid']);
+		unset($data['issystem'], $data['username'], $data['userid']);
 		
 		$notfilter_field = $this->get_notfilter_field();
 		foreach($data as $_k=>$_v) {
@@ -117,8 +117,8 @@ class content_model {
 		}
 		
         $data['status'] = isset($data['status']) ? intval($data['status']) : 0;
-		$data['updatetime'] = SYS_TIME;
-		$data['inputtime'] = strtotime($data['inputtime']);
+		$data['inputtime'] = isset($data['inputtime']) ? strtotime($data['inputtime']) : SYS_TIME;
+		$data['updatetime'] = isset($data['updatetime']) ? strtotime($data['updatetime']) : SYS_TIME;
 		$data['description'] = empty($data['description']) ? str_cut(strip_tags($data['content']),250) : $data['description'];
 		$data['catid'] = intval($data['catid']);
 
@@ -155,6 +155,13 @@ class content_model {
 		$affected = $content_tabname->update($data, array('id' => $id));
 		set_cookie('auto_thum', isset($data['auto_thum']) ? 1 : 0);
 		update_attachment($this->modelid, $id);
+
+		//如果是会员投稿，投稿奖励积分和经验
+		$publish_point = get_config('publish_point');
+		if($data['status']==1 && $original_data['status']!=1 && !$original_data['issystem'] && $publish_point > 0){
+			D('member')->update('`point`=`point`+'.$publish_point.',`experience`=`experience`+'.$publish_point, array('userid' => $original_data['userid']));  
+			D('pay')->insert(array('trade_sn'=>create_tradenum(), 'userid'=>$original_data['userid'], 'username'=>$original_data['username'], 'money'=>$publish_point, 'creat_time'=>SYS_TIME, 'msg'=>'投稿奖励','remarks'=>$data['catid'].'_'.$id, 'type'=>'1', 'status'=>'1', 'ip'=>getip()));		
+		}
 		return $affected;
 
 	}  

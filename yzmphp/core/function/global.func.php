@@ -604,7 +604,7 @@ function format_time($date = 0, $type = 1) {
  * @return string	返回大小
  */
 function sizecount($size, $prec = 2) {
-	$size = intval($size);
+	$size = floatval($size);
 	$arr = array('B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB');
 	$pos = 0;
 	while ($size >= 1024) {
@@ -1186,11 +1186,14 @@ function showmsg($msg, $gourl = '', $limittime = 3){
  * 根据请求方式自动返回信息
  * @param   $message 
  * @param   $status  
+ * @param   $url  
  * @return  void           
  */
-function return_message($message, $status = 1){
-	is_ajax() && return_json(array('status'=>$status, 'message'=>$message));
-	showmsg($message, $status ? '' : 'stop');
+function return_message($message, $status = 1, $url = ''){
+	$data = array('status'=>$status, 'message'=>$message);
+	if($url) $data['url'] = $url;
+	is_ajax() && return_json($data);
+	showmsg($message, $url ? $url : ($status ? '' : 'stop'));
 }
 
 

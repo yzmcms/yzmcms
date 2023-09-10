@@ -181,7 +181,10 @@ class index{
 			}
 			$setting = $val['setting'] ? string2array($val['setting']) : 0;
 			$required = $val['isrequired'] ? '<span class="required">*</span>' : '';
-			$fieldstr[] = '<td class="yzm-table-title">'.$required.$val['name'].'</td><td>'.form::$fieldtype($val['field'], $val['defaultvalue'], $setting).'</td>';	
+			$fieldstr[] = array(
+				'field' => $required.$val['name'],
+				'form' => form::$fieldtype($val['field'], $val['defaultvalue'], $setting)
+			);
 			$fields[$val['field']] = $val['isrequired'] ? array('isrequired'=>1, 'fieldtype'=>$fieldtype, 'errortips'=>$val['errortips'] ? $val['errortips'] : $val['name'].'不能为空！') : array('isrequired'=>0);
 		}
 		

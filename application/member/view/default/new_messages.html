@@ -6,30 +6,30 @@
             <h3>发信息</h3>
         </div>
         <div class="main_cont">
-            <form method="post" action="" onsubmit="return chcekall()">
+            <form method="post" action="" onsubmit="return chcekall(this)">
                 <table>
                     <tr>
-                        <td><span class="required">*</span>收信人：</td>
+                        <td><span class="required">*</span>收件人：</td>
                         <td>
-                        	<input type="text" name="send_to" value="{if isset($data['send_from'])}{$data['send_from']}{/if}" id="username" required class="input">
+                        	<input type="text" name="send_to" value="{if isset($data['send_from'])}{$data['send_from']}{/if}" id="username" class="input">
                         </td>
                     </tr>
                     <tr>
-                        <td><span class="required">*</span>标 题：</td>
+                        <td><span class="required">*</span>主 题：</td>
                         <td>
-                        	<input type="text" name="subject" required value="{if isset($data['subject'])}{$data['subject']}{/if}" class="input">
+                        	<input type="text" name="subject" value="{if isset($data['subject'])}{$data['subject']}{/if}" class="input">
                         </td>
                     </tr>
                     <tr>
                         <td><span class="required">*</span>内 容：</td>
                         <td>
-                        	<textarea name="content" class="textarea" required></textarea>
+                        	<textarea name="content" class="textarea"></textarea>
                         </td>
                     </tr>
                     <tr>
                         <td><span class="required">*</span>验证码：</td>
                         <td> 
-                        	<input type="text" class="input" required name="code" id="code" style="width:150px;"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="yzm-code-img" title="看不清，换一张">
+                        	<input type="text" class="input" name="code" id="code" style="width:150px;"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" class="yzm-code-img" title="看不清，换一张">
                         </td>
                     </tr>
                     <tr>
@@ -44,56 +44,40 @@
     </div>
 </div>
 <script type="text/javascript">
-	$(function() {
-	    $("#username").blur(function() {
-	        checkname();
-	    });
-	})
-	function checkname(){
-		var res = false;
-		if($("#username").val() != ''){
-			$.ajax({   
-				type: "post",   
-				url: "{U('member/index/public_checkname')}",   
-				dataType: "html",
-				async: false,	
-				data: "username="+$('#username').val(), 			
-				success: function(msg){  
-				if(msg == '-1'){
-					res = true;				  
-				}else if(msg == '1'){
-					layer.msg('用户名不存在！', {icon:2, time:2000});		  
-				}else if(msg == '0'){
-					layer.msg('用户名格式不正确！', {icon:2, time:2000});		  
-				}else{
-					layer.msg('未知错误！', {icon:2, time:2000});			  
-				}				 
-				} 
-			});
-			return res;
-		}else{
-			layer.msg('用户名不能为空！', {icon:2, time:2000});
-			return res;
-		}		   
-	}
-
-	function chcekall(){
-	    if(!checkname()){
-	    	return false;
-	    }
-		if($(".error").text()) return false;
-		if($("input[name='subject']").val()==''){
-		  layer.msg('标题不能为空！', {icon:2, time:2000});
+	function chcekall(obj){
+		if(obj.send_to.value==''){
+		  layer.msg('收件人不能为空！', {icon:2, time:2000});
 		  return false;
 		}
-		if($("input[name='content']").val()==''){
+		if(obj.subject.value==''){
+		  layer.msg('主题不能为空！', {icon:2, time:2000});
+		  return false;
+		}
+		if(obj.content.value==''){
 		  layer.msg('内容不能为空！', {icon:2, time:2000});
 		  return false;
 		}
-		if($("input[name='code']").val()==''){
+		if(obj.code.value==''){
 		  layer.msg('验证码不能为空！', {icon:2, time:2000});
 		  return false;
-		}	
+		}
+		$.ajax({
+		    type: "POST",
+		    url: "{U('new_messages')}", 
+		    data: $(obj).serialize(),
+		    dataType: "json", 
+		    success: function (msg) {
+		        if(msg.status == 1){
+		            layer.msg(msg.message, {icon:1, time:2000}, function(){
+		                location.href = msg.url;
+		            });
+		        }else{
+		        	$(".yzm-code-img").attr('src',$(".yzm-code-img").attr('src') + '?' + Math.random());
+		            layer.msg(msg.message, {icon:2});
+		        }
+		    }
+		})       
+		return false;	
 	}
 </script>
 {m:include "member","footer"}

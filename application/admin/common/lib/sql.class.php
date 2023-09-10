@@ -48,8 +48,8 @@ class sql{
 		  `is_push` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否百度推送',
 		  PRIMARY KEY (`id`),
 		  KEY `status` (`status`,`listorder`),
-		  KEY `catid` (`catid`,`status`),
-		  KEY `userid` (`userid`,`status`)
+		  KEY `catid` (`status`,`catid`),
+		  KEY `userid` (`status`,`userid`)
 			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
         self::sql_exec($sql);			
 	}

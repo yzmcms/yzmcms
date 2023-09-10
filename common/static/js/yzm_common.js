@@ -212,14 +212,14 @@ function yzm_delete_li(obj){
 //多文件上下移动
 function yzm_move_li(obj, is_up) {
 	if(is_up){
-		var prevLi = $(obj).parents("li").prev();
+		var prevLi = $(obj).parent("li").prev();
 		if(prevLi.length){
-		    prevLi.before($(obj).parents("li"));
+		    prevLi.before($(obj).parent("li"));
 		}
 	}else{
-	    var nextLi = $(obj).parents("li").next();
+	    var nextLi = $(obj).parent("li").next();
 	    if(nextLi.length){
-	        nextLi.after($(obj).parents("li"));
+	        nextLi.after($(obj).parent("li"));
 	    }
 	}
 }

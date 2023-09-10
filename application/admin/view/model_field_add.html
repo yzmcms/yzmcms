@@ -84,7 +84,18 @@
 					 <label><input type="radio" name="disabled" value="1"> 是</label>
 					 &nbsp;&nbsp;<label><input type="radio" name="disabled" value="0" checked> 否</label>
 					</td>
-				</tr>				
+				</tr>
+				<?php if(isset($select_page)){?>
+				<tr>
+					<td>应用栏目</td> 
+					<td>
+						<span class="select-box inline">
+					 	<?php echo $select_page; ?>
+						</span>
+						<span class="c-red ml-5" style="vertical-align:bottom">(按 Ctrl 可以进行多选)</span>
+					</td>
+				</tr>
+				<?php }?>		
                 <tr>
 					<td></td>
 					<td>

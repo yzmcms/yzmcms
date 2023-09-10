@@ -143,7 +143,7 @@ class tree {
     /**
 	* 同上一方法类似,但允许多选
 	*/
-	public function get_tree_multi($myid, $str, $sid = 0, $adds = ''){
+	public function get_tree_multi($myid, $str, $str2, $sid = 0, $adds = ''){
 		$number=1;
 		$child = $this->get_child($myid);
 		if(is_array($child)){
@@ -161,9 +161,13 @@ class tree {
 				$selected = $this->have($sid,$id) ? 'selected' : '';
 				if(!is_array($a) || isset($a['str'])) return false;
 				@extract($a);
-				eval("\$nstr = \"$str\";");
+				if (empty($html_disabled)) {
+					eval("\$nstr = \"$str\";");
+				} else {
+					eval("\$nstr = \"$str2\";");
+				}
 				$this->ret .= $nstr;
-				$this->get_tree_multi($id, $str, $sid, $adds.$k.'&nbsp;');
+				$this->get_tree_multi($id, $str, $str2, $sid, $adds.$k.'&nbsp;');
 				$number++;
 			}
 		}

@@ -151,6 +151,7 @@
 			<button name="dosubmit" class="btn btn-secondary radius" type="submit" onclick="set_status(0)"><i class="yzm-iconfont yzm-iconbaocun"></i> 保存草稿</button>
 			<?php }else{ ?>
 			<button name="dosubmit" class="btn btn-primary radius" type="submit"><i class="yzm-iconfont yzm-iconbaocun"></i> 修改稿件</button>
+			<button name="dosubmit" class="btn btn-success radius" type="submit" onclick="set_status(1)"><i class="yzm-iconfont yzm-iconfabusekuai"></i> 修改稿件并通过审核</button>
 			<button class="btn btn-danger radius" type="button" onclick="show_rejection()"><i class="yzm-iconfont yzm-iconshanchu"></i> 退稿</button>
 			<?php } ?>
 			<button onclick="yzm_content_close()" class="btn btn-default radius" type="button">&nbsp;&nbsp;关闭&nbsp;&nbsp;</button>
@@ -160,7 +161,18 @@
 </article>
 
 <div id="rejection_mess" style="margin:10px 15px 0 15px;display:none">
-	<textarea name="content_c" class="textarea" style="width:300px;margin-bottom:5px" placeholder="请输入退稿理由，退稿理由将会以短消息方式发送！"></textarea>
+	<textarea name="content_c" class="textarea" style="width:400px;margin-bottom:5px" placeholder="请输入退稿原因，退稿原因将会以短消息方式发送！"></textarea>
+	<select class="select" style="width:170px;height:30px;line-height:30px;display:block;" onchange="change_rejection(this.value)">
+		<option value="">= 快速选择退稿原因 =</option>
+		<option value="不符合投稿格式要求：请注意正文前后署名格式。">不符合投稿格式要求</option>
+		<option value="稿件标题重复或雷同：请根据内容编辑贴切具体的标题。">稿件标题重复或雷同</option>
+		<option value="稿件内容重复：可能与自己发表或同学已发表稿件内容重复，不要投递重复内容。">稿件内容重复</option>
+		<option value="图片无法显示：请将图片上传到本站，不可引用外站图片，图片宽度不可超过800像素。">图片无法显示</option>
+		<option value="内容过于草率：请丰富稿件正文内容，插入对应图片（不可重复插入已在其他稿件出现过的图片）。">内容过于草率</option>
+		<option value="含有较多敏感信息：内容涵盖较多国家党政敏感信息，不适合在我站展示。">含有较多敏感信息</option>
+		<option value="含有编程代码：对网站展示有一定风险或错觉。">含有编程代码</option>
+		<option value="内容中含有广告推广或其他联系方式。">含有广告推广</option>
+	</select>
 </div>
 
 <?php include $this->admin_tpl('footer');?>
@@ -206,7 +218,7 @@
 			yes: function(index, layero){
 				var content_c = $("textarea[name='content_c']").val();
 				if(content_c == ''){
-					layer.msg("请输入退稿理由！", {icon:2,time:2000});
+					layer.msg("请输入退稿原因！", {icon:2,time:2000});
 					return false;
 				}
 			    $.ajax({
@@ -222,6 +234,10 @@
 	           })
 			}
 		});
+	}
+
+	function change_rejection(val) {
+		$("textarea[name='content_c']").val(val);
 	}
 	
 	function checkall(){

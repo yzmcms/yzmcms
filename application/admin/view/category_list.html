@@ -1,6 +1,6 @@
 <?php include $this->admin_tpl('meta');?>
 <title>栏目管理 - YzmCMS内容管理系统</title>
-<style>.parentid,.yzm-tree-toggle{cursor:pointer;user-select:none}</style>
+<style>.parentid,.yzm-tree-toggle{cursor:pointer;user-select:none}.tr_hide{display:none}</style>
 </head>
 <body>
 <nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 内容管理 <span class="c-gray en">&gt;</span> 栏目管理 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
@@ -19,7 +19,13 @@
 			<tr class="text-c">
 				<th width="60">排序</th>
 				<th width="60">栏目ID</th>
-				<th class="text-l"><i class="yzm-iconfont yzm-iconshousuojianhao yzm-tree-toggle" isshow="1" onclick="yzm_tree_toggle(this)"></i> 栏目名称</th>
+				<th class="text-l">
+					<?php if($tree_toggle){ ?>
+					<i class="yzm-iconfont yzm-iconshousuojiahao yzm-tree-toggle" isshow="0" onclick="yzm_tree_toggle(this)"></i>
+					<?php }else{ ?>
+					<i class="yzm-iconfont yzm-iconshousuojianhao yzm-tree-toggle" isshow="1" onclick="yzm_tree_toggle(this)"></i>
+					<?php } ?>栏目名称
+				</th>
 				<th width="80">栏目类型</th>
 				<th width="100">所属模型</th>		
 				<th width="80">链接地址</th>		
@@ -39,18 +45,40 @@
 <?php include $this->admin_tpl('footer');?>
 <script type="text/javascript">
 
-  	function yzm_tree_toggle(obj) {
+	function yzm_set_cookie(name, value, hours) {
+	  var str = name + "=" + encodeURIComponent(value);
+	  if (hours > 0) {
+	    var date = new Date();
+	    var ms = hours * 3600 * 1000;
+	    date.setTime(date.getTime() + ms);
+	    str += "; expires=" + date.toGMTString();
+	  }
+	  str += "; path=/; SameSite=Lax;";
+	  document.cookie = str;
+	}
+
+	function yzm_set_status(){
+        var category_show_status = {};
 		$(".parentid").each(function () {
-            $(this).trigger('click');
+			category_show_status[$(this).attr("catid")] = $(this).attr("action");
         })
+        yzm_set_cookie('category_show_status_<?php echo self::$siteid;?>', JSON.stringify(category_show_status));
+	}
+
+  	function yzm_tree_toggle(obj) {
 		var isshow = $(obj).attr("isshow");
 		if(isshow == "0"){
 			$(obj).attr("isshow", "1");
 			$(obj).removeClass("yzm-iconshousuojiahao").addClass("yzm-iconshousuojianhao");
+			$(".top .parentid").attr('action', 2).html('&#xe653;');
+			$(".child").removeClass("tr_hide");
 		}else{
 			$(obj).attr("isshow", "0");
 			$(obj).removeClass("yzm-iconshousuojianhao").addClass("yzm-iconshousuojiahao");
+			$(".top .parentid").attr('action', 1).html('&#xe652;');
+			$(".child").addClass("tr_hide");
 		}
+		yzm_set_status();
     }
 
     $(".parentid").click(function () {
@@ -58,14 +86,15 @@
         var tr = $(this).parents('tr').eq(0);
         switch (action) {
             case 1://展示
-                $(tr).nextUntil('.top').show();
+                $(tr).nextUntil('.top').removeClass("tr_hide");
                 $(this).attr('action', 2).html('&#xe653;');
                 break;
             case 2://收缩
-                $(tr).nextUntil('.top').hide();
+                $(tr).nextUntil('.top').addClass("tr_hide");
                 $(this).attr('action', 1).html('&#xe652;');
                 break;
         }
+        yzm_set_status();
     })
 </script>
 </body>

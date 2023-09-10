@@ -134,7 +134,7 @@ class order extends common{
 	 * 订单改价
 	 */		
 	public function change_price(){
-		if(isset($_POST['dosubmit'])){
+		if(is_post()){
 			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
 			$money = isset($_POST['money']) ? floatval($_POST['money']) : 0;
 			if($money < 0.01) return_json(array('status'=>0,'message'=>'支付金额不能小于0.01元'));
@@ -165,7 +165,7 @@ class order extends common{
 	 * 删除
 	 */	
 	public function del(){ 
-		if(!isset($_GET['yzm_csrf_token']) || !check_token($_GET['yzm_csrf_token'])) showmsg(L('token_error'), 'stop');
+		if(!isset($_GET['yzm_csrf_token']) || !check_token($_GET['yzm_csrf_token'])) return_message(L('token_error'), 0);
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 		D('order')->delete(array('id'=>$id));
 		showmsg(L('operation_success'),'',1);

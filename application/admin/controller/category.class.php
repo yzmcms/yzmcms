@@ -30,6 +30,20 @@ class category extends common {
 		foreach($modelinfo as $val){
 			$modelarr[$val['modelid']] = $val['name'];
 		}
+
+		$category_show_status = isset($_COOKIE['category_show_status_'.self::$siteid]) ? json_decode($_COOKIE['category_show_status_'.self::$siteid], true) : array();
+		$tree_toggle = 0;
+		$childid_hide = '';
+		if($category_show_status) foreach($category_show_status as $k=>$v){
+			if($v == '1') {
+				$childid_hide .= get_category($k, 'arrchildid', true).',';
+				$tree_toggle = 1;
+			}else{
+				$tree_toggle = 0;
+			}
+		}
+		$arrchildid_arr = explode(',', $childid_hide);
+
 		$tree = yzm_base::load_sys_class('tree');
 		$tree->icon = array('&nbsp;&nbsp;&nbsp;│ ','&nbsp;&nbsp;&nbsp;├─ ','&nbsp;&nbsp;&nbsp;└─ ');
 		$tree->nbsp = '&nbsp;&nbsp;&nbsp;';
@@ -43,9 +57,17 @@ class category extends common {
 				$v['catlink'] = U('page_content', array('catid'=>$v['id']));
 			}else{ 
 				$v['catlink'] = $v['pclink']."'  target='_blank";
-			} 
-			$v['style'] = $v['parentid'] ? 'child' : 'top';
-			$v['parentoff'] = $v['parentid'] ? '' : '<i class="yzm-iconfont parentid" action="2">&#xe653;</i> ';
+			}
+			
+			$icon = '&#xe653;';
+			$action = '2';
+			if($category_show_status && isset($category_show_status[$v['id']]) && $category_show_status[$v['id']]=='1'){
+				$icon = '&#xe652;';
+				$action = '1';
+			}
+			$show_status = in_array($v['id'], $arrchildid_arr) ? ' tr_hide' : '';
+			$v['class'] = $v['parentid'] ? 'child'.$show_status : 'top';
+			$v['parentoff'] = $v['parentid'] ? '' : '<i class="yzm-iconfont parentid" catid="'.$v['id'].'" action="'.$action.'">'.$icon.'</i> ';
 			$v['domain'] = $v['domain'] ? '<div title="绑定域名：'.$v['domain'].'" style="color:#0194ff;font-size:12px" class="yzm-iconfont">&#xe64a; 域名</div>' : '';
 			$v['cattype'] = $v['type']=="0" ? '普通栏目' : ($v['type']=="1" ? '<span style="color:green">单页面</span>' : '<span style="color:red">外部链接</span>');
 			$v['catmodel'] = $v['modelid']&&isset($modelarr[$v['modelid']]) ? $modelarr[$v['modelid']] : '无';
@@ -57,7 +79,7 @@ class category extends common {
 			
 			$array[] = $v;
 		}	
-		$str  = "<tr class='text-c \$style'>
+		$str  = "<tr class='text-c \$class'>
 					<td><input type='text' class='input-text listorder' name='listorder[]' value='\$listorder'><input type='hidden' name='catid[]' value='\$id'></td>
 					<td>\$id</td>
 					<td class='text-l'>\$parentoff\$spacer<a href='\$catlink' class='yzm_text_link'>\$name</a></td>
@@ -79,13 +101,13 @@ class category extends common {
 	 * 排序栏目
 	 */
 	public function order() {
-		if(isset($_POST["dosubmit"])){
+		if(isset($_POST['catid']) && is_array($_POST['catid'])){
 			foreach($_POST['catid'] as $key=>$val){
 				$this->db->update(array('listorder'=>$_POST['listorder'][$key]),array('catid'=>intval($val)));
 			}
 			$this->delcache();
-			showmsg(L('operation_success'),'',1);
 		}
+		showmsg(L('operation_success'), '' ,1);
 	}
 
 	

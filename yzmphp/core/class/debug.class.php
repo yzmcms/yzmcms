@@ -112,14 +112,15 @@ class debug {
 	 * 添加调试消息
 	 * @param	string	$msg	调试消息字符串
 	 * @param	int	    $type	消息的类型
+	 * @param	int	    $start_time	开始时间，用于计算SQL耗时
 	 */
-	public static function addmsg($msg, $type=0) {
+	public static function addmsg($msg, $type=0, $start_time=0) {
 		switch($type){
 			case 0:
 				self::$info[] = $msg;
 				break;
 			case 1:
-				self::$sqls[] = htmlspecialchars($msg).';';
+				self::$sqls[] = htmlspecialchars($msg).'; [ RunTime:'.number_format(microtime(true)-$start_time , 6).'s ]';
 				break;
 			case 2:
 				self::$request[] = $msg;

@@ -10,7 +10,7 @@
                 <table>
                     <tr>
                         <td>邮箱：</td>
-                        <td><input type="email" name="email" value="{$email}" required class="input" {if $email_status}readonly{/if}> {if $email_status}<span class="green">[已验证]</span>{/if}</td>
+                        <td><input type="email" name="email" value="{$email}" class="input {if $email_status}disabled{/if}" {if $email_status}readonly{/if}> {if $email_status}<span class="green">[已验证]</span>{/if}</td>
                     </tr>
                     <tr>
                         <td>安全问题：</td>

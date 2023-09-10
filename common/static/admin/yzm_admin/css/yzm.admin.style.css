@@ -69,7 +69,7 @@ select{background:#fff}
 .btn-mini{padding:3px 9px;font-size:12px;border-radius:2px;display:inline-block;cursor:pointer;}
 .btn-mini:hover{text-decoration:none}
 .btn-disabled{border:1px solid #d3d1d1;color:#bdbcbc;cursor:not-allowed;}
-.select optgroup {background:#f0f0f0}
+.select optgroup {background:#f5f5f5;cursor:not-allowed}
 .yzm-content-error{background:#d23131;color:#fff;font-size:12px;padding:3px 6px}
 .yzm_text_link{border-bottom: dashed 1px #409eff;padding:2px;border-radius:1px;}
 .yzm_text_link:hover{text-decoration:none;background:#409eff;color:#fff;}

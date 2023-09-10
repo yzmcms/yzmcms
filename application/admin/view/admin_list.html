@@ -7,7 +7,7 @@
 	<div> 
 		<form action="<?php echo U(ROUTE_A);?>" method="get">
 			<input type="hidden" value="admin" name="m">
-			<input type="hidden" value="admin_log" name="c">
+			<input type="hidden" value="<?php echo ROUTE_C;?>" name="c">
 			<input type="hidden" value="<?php echo ROUTE_A;?>" name="a">
 			添加时间：<input type="text" class="input-text laydate-icon" style="width:175px;height:30px;" id="start" name="start" <?php if(isset($_GET['start']) && $_GET['start'] != '') echo 'value="'.$_GET['start'].'"'; ?>>
 			至 <input type="text" class="input-text laydate-icon" style="width:175px;height:30px;" id="end" name="end" value="<?php if(isset($_GET['end']) &&  $_GET['end'] != '') echo $_GET['end']; else echo date('Y-m-d H:i:s'); ?>">
@@ -32,18 +32,18 @@
 		</form>	
 	</div>
 	<div class="cl mt-15 tb-top"> <span class="l"><a href="javascript:;" onclick="yzm_open('添加管理员','<?php echo U('add');?>','600','420')" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontianjia"></i> 添加管理员</a></span></div>
-	<table class="table table-border table-bg table-hover">
+	<table class="table table-border table-bg table-hover yzm-table-sort">
 		<thead>
 			<tr class="text-c">
-				<th>ID</th>
-				<th>用户名</th>
-				<th>真实姓名</th>
-				<th>邮箱</th>
-				<th>角色</th>
-				<th>添加时间</th>
-				<th>最后登录时间</th>
-				<th>最后登录IP</th>
-				<th>添加人</th>
+				<th>ID<?php echo field_order('adminid');?></th>
+				<th>用户名<?php echo field_order('adminname');?></th>
+				<th>真实姓名<?php echo field_order('realname');?></th>
+				<th>邮箱<?php echo field_order('email');?></th>
+				<th>角色<?php echo field_order('roleid');?></th>
+				<th>添加时间<?php echo field_order('addtime');?></th>
+				<th>最后登录时间<?php echo field_order('logintime');?></th>
+				<th>最后登录IP<?php echo field_order('loginip');?></th>
+				<th>添加人<?php echo field_order('addpeople');?></th>
 				<th>操作</th>
 			</tr>
 		</thead>

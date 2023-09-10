@@ -72,7 +72,7 @@ class diyform_info extends common{
 			$this->modelname = $data['name'];
 			$this->modeltable = $data['tablename'];
 		}else{
-			showmsg('模型不存在！', 'stop');
+			return_message('模型不存在！', 0);
 		}
 	}
 

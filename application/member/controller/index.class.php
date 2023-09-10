@@ -32,7 +32,7 @@ class index extends common{
 	 */	
 	public function login(){		
 		
-		if(is_ajax()){		
+		if(is_post()){		
 			
 			//检查是否开启验证码
 			if(get_config('member_yzm')) $this->_check_code($_POST['code']);
@@ -90,7 +90,7 @@ class index extends common{
 			showmsg(L('login_success'), U('member/index/init'), 1);
 		}
 			
-		if(is_ajax()){
+		if(is_post()){
 			
 			$this->_check_code($_POST['code']);
 			$member = D('member');
@@ -204,7 +204,7 @@ class index extends common{
 	 */	
 	public function account(){
 		
-		if(isset($_POST['dosubmit'])){
+		if(is_post()){
 			if(!is_mobile($_POST['mobile'])) showmsg('手机号格式不正确！');
 			unset($_POST['userpic'], $_POST['guest'], $_POST['fans']);
 			$res = D('member_detail')->update($_POST, array('userid'=>$this->userid), true);
@@ -234,7 +234,7 @@ class index extends common{
 	public function user_pic(){
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
-		if(isset($_POST['dosubmit'])){
+		if(is_post()){
 			if(!isset($_FILES['user_pic']['name']) || empty($_FILES['user_pic']['name'])) showmsg('请上传头像！');
 			$upload = yzm_base::load_sys_class('upload');
 			if($upload->uploadfile('user_pic')){
@@ -262,7 +262,7 @@ class index extends common{
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
 
-		if(isset($_POST['dosubmit'])){
+		if(is_post()){
 			$this->_check_code($_POST['code']);
 
 			if(password($_POST['oldpass']) != $password) showmsg('原密码不正确！');
@@ -285,7 +285,7 @@ class index extends common{
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
 		
-		if(isset($_POST['dosubmit'])){
+		if(is_post()){
 			$this->_check_code($_POST['code']);
 			if(password($_POST['password']) != $password) showmsg(L('password_error'));
 			

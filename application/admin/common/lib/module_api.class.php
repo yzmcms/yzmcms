@@ -21,7 +21,7 @@ class module_api {
 		if ($module) $this->module = $module;
 		
 		$this->installdir = APP_PATH.$this->module.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR;
-		$this->check();
+		if(!$this->check()) return false;
 		$model = include($this->installdir.'model.php');
 		foreach ($model as $m) {
 			$sql = file_get_contents($this->installdir.$m.'.sql');
@@ -50,11 +50,11 @@ class module_api {
 		}
 		$this->uninstalldir = APP_PATH.$module.DIRECTORY_SEPARATOR.'uninstall'.DIRECTORY_SEPARATOR;
 		if(!is_dir($this->uninstalldir)) {
-			$this->error_msg = 'uninstall目录不存在！';
+			$this->error_msg = '模块【'.$module.'】uninstall目录不存在！';
 			return false;
 		}
 		if(!is_file($this->uninstalldir.'model.php')) {
-			$this->error_msg = 'model.php不存在！';
+			$this->error_msg = '模块【'.$module.'】model.php不存在！';
 			return false;
 		}
 		$model = include($this->uninstalldir.'model.php');
@@ -85,7 +85,7 @@ class module_api {
 		}
 
 		if(D('module')->where(array('module'=>$this->module))->find()) {
-			$this->error_msg = $this->module.'模块已经安装过！';
+			$this->error_msg = '模块【'.$this->module.'】已经安装过！';
 			return false;
 		}
 		
@@ -94,17 +94,17 @@ class module_api {
 		}
 		
 		if(!is_dir($this->installdir)) {
-			$this->error_msg = 'install目录不存在！';
+			$this->error_msg = '模块【'.$this->module.'】install目录不存在！';
 			return false;
 		}
 		
 		if(!is_file($this->installdir.'config.inc.php')) {
-			$this->error_msg = 'config.inc.php不存在！';
+			$this->error_msg = '模块【'.$this->module.'】config.inc.php文件不存在！';
 			return false;
 		}
 
 		if(!is_file($this->installdir.'model.php')) {
-			$this->error_msg = 'model.php不存在！';
+			$this->error_msg = '模块【'.$this->module.'】model.php文件不存在！';
 			return false;
 		}
 
@@ -112,7 +112,7 @@ class module_api {
 		if(is_array($model) && !empty($model)) {
 			foreach ($model as $m) {
 				if($m && !is_file($this->installdir.$m.'.sql')) {
-					$this->error_msg = $m.'.sql不存在！';
+					$this->error_msg = '模块【'.$this->module.'】'.$m.'.sql不存在！';
 					return false;
 				}
 			}

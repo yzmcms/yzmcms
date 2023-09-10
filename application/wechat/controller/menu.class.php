@@ -90,13 +90,13 @@ class menu extends wechat_common{
 	 * 菜单排序
 	 */
 	public function order() {
-		$wechat_menu = D('wechat_menu');
-		if(isset($_POST["dosubmit"])){
+		if(isset($_POST['id']) && is_array($_POST['id'])){
+			$wechat_menu = D('wechat_menu');
 			foreach($_POST['id'] as $key=>$val){
 				$wechat_menu->update(array('listorder'=>$_POST['listorder'][$key]),array('id'=>intval($val)));
 			}
 		}
-		showmsg(L('operation_success'),'',1);
+		showmsg(L('operation_success'), '', 1);
 	}
 	
 

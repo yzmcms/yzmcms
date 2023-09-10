@@ -34,7 +34,8 @@
 	<span class="select-box inline">
 		<select name="type" class="select">
 	    <option <?php if(isset($_GET["type"]) && $_GET["type"]=='1'){echo 'selected';} ?> value="1">内容标题</option>
-		<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo 'selected';} ?> value="2">发布人</option>	
+			<option <?php if(isset($_GET["type"]) && $_GET["type"]=='2'){echo 'selected';} ?> value="2">稿件ID</option>	
+			<option <?php if(isset($_GET["type"]) && $_GET["type"]=='3'){echo 'selected';} ?> value="3">发布人</option>	
 		</select>
 	</span>
 	 <input type="text" name="searinfo" class="input-text search" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>
@@ -94,7 +95,18 @@
 </div>
 
 <div id="rejection_mess" style="margin:10px 15px 0 15px;display:none">
-	<textarea name="content_c" class="textarea" style="width:300px;margin-bottom:5px" placeholder="请输入退稿理由，退稿理由将会以短消息方式发送！"></textarea>
+	<textarea name="content_c" class="textarea" style="width:400px;margin-bottom:5px" placeholder="请输入退稿原因，退稿原因将会以短消息方式发送！"></textarea>
+	<select class="select" style="width:170px;height:30px;line-height:30px;display:block;" onchange="change_rejection(this.value)">
+		<option value="">= 快速选择退稿原因 =</option>
+		<option value="不符合投稿格式要求：请注意正文前后署名格式。">不符合投稿格式要求</option>
+		<option value="稿件标题重复或雷同：请根据内容编辑贴切具体的标题。">稿件标题重复或雷同</option>
+		<option value="稿件内容重复：可能与自己发表或同学已发表稿件内容重复，不要投递重复内容。">稿件内容重复</option>
+		<option value="图片无法显示：请将图片上传到本站，不可引用外站图片，图片宽度不可超过800像素。">图片无法显示</option>
+		<option value="内容过于草率：请丰富稿件正文内容，插入对应图片（不可重复插入已在其他稿件出现过的图片）。">内容过于草率</option>
+		<option value="含有较多敏感信息：内容涵盖较多国家党政敏感信息，不适合在我站展示。">含有较多敏感信息</option>
+		<option value="含有编程代码：对网站展示有一定风险或错觉。">含有编程代码</option>
+		<option value="内容中含有广告推广或其他联系方式。">含有广告推广</option>
+	</select>
 </div>
 
 <?php include $this->admin_tpl('footer');?>
@@ -107,8 +119,8 @@
 		   return false;
 		}	
 	    $.ajax({
-			type: 'POST',
-			url: '<?php echo U('admin_content/adopt');?>', 
+			type: "POST",
+			url: "<?php echo U('admin_content/adopt');?>", 
 			data: $("#myform").serialize(),
 			dataType: "json", 
 			success: function (msg) {
@@ -132,9 +144,13 @@
 			content: $('#rejection_mess'),
 			yes: function(index, layero){
 				var content_c = $("textarea[name='content_c']").val();
+				if(content_c == ''){
+					layer.msg("请输入退稿原因！", {icon:2,time:2000});
+					return false;
+				}
 			    $.ajax({
-	               type: 'POST',
-	               url: '<?php echo U('admin_content/rejection');?>', 
+	               type: "POST",
+	               url: "<?php echo U('admin_content/rejection');?>", 
 	               data: $("#myform").serialize()+'&content_c='+content_c,
 	   		       dataType: "json", 
 	               success: function (msg) {
@@ -149,6 +165,10 @@
 	           })
 			}
 		});
+	}
+
+	function change_rejection(val) {
+		$("textarea[name='content_c']").val(val);
 	}
 
 	var start = {elem:'#start',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){end.min = datas;end.start = datas}

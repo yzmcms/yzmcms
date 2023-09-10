@@ -14,10 +14,10 @@
   <body>
 	    {m:include "index","header"} 
 		 <div class="yzm-content-box yzm-main-left yzm-news-list">
-		 	    {m:search field="id,catid,title,updatetime,thumb,url,color,flag,description" keyword="$q" siteid="$siteid" modelid="$modelid" limit="10" page="page"}
+		 	    {m:search field="id,catid,title,updatetime,thumb,url,color,flag,description" keyword="$q" siteid="$siteid" modelid="$modelid" catid="$catid" limit="10" page="page"}
 
 		 		<div class="yzm-title">
-		 			<h2>“{$q}” 的搜索结果，共{php echo $tag->total}条</h2>
+		 			<h2>“{$q}” 的搜索结果，共{$tag->total}条</h2>
 		 		</div>
 		 		
 		 		{loop $data $v}

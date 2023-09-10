@@ -125,7 +125,7 @@ class banner extends common {
 	 * 排序
 	 */
 	public function order() {
-		if(isset($_POST["order_id"])){
+		if(isset($_POST['order_id']) && is_array($_POST['order_id'])){
 			$banner = D('banner');
 			foreach($_POST['order_id'] as $key=>$val){
 				$banner->update(array('listorder'=>$_POST['listorder'][$key]),array('id'=>intval($val)));

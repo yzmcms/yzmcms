@@ -119,6 +119,7 @@ class system_manage extends common {
 			$res = $config->where(array('name' => $_POST['name']))->find();
 			if($res) return_json(array('status'=>0,'message'=>'配置名称已存在！'));
 			if(empty($_POST['value']))  return_json(array('status'=>0,'message'=>'配置值不能为空！'));
+			$_POST = new_html_special_chars($_POST);
 			
 			$_POST['type'] = 99;
 			if(in_array($_POST['fieldtype'], array('select','radio'))){
@@ -126,8 +127,6 @@ class system_manage extends common {
 		    }else{
 				$_POST['setting'] = '';
 			}
-
-			$_POST = new_html_special_chars($_POST, array('setting'));
 			
 			if($config->insert($_POST)){
 				delcache('configs');

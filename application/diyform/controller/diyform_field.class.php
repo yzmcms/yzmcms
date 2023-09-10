@@ -43,6 +43,7 @@ class diyform_field extends common{
 		   
 		   $files = array('input','textarea','number','decimal','datetime','image','images','attachment','attachments','select','radio','checkbox');
 		   if(!in_array($_POST['fieldtype'], $files))  showmsg(L('illegal_parameters'), 'stop');
+		   $_POST = new_html_special_chars($_POST);
 		   
 		   $_POST['issystem'] = 0;	
 		   $_POST['modelid'] = $this->modelid;	
@@ -55,7 +56,7 @@ class diyform_field extends common{
 		   }else{
 			   unset($_POST['setting']);
 		   }
-		   		   
+		   
 		   if($_POST['minlength']) $_POST['isrequired'] = 1;
 
 		   if($_POST['fieldtype'] == 'input' || $_POST['fieldtype'] == 'datetime'){
@@ -89,6 +90,8 @@ class diyform_field extends common{
 	public function edit() {
 		$fieldid = isset($_GET['fieldid']) ? intval($_GET['fieldid']) : 0;
 		if(isset($_POST['dosubmit'])) {
+
+			$_POST = new_html_special_chars($_POST);
 			
 			if(in_array($_POST['fieldtype'], array('select','radio','checkbox'))){
 			   $_POST['setting'] = array2string(explode('|', rtrim($_POST['setting'], '|')));
@@ -138,14 +141,14 @@ class diyform_field extends common{
 	 * 排序字段
 	 */
 	public function order() {
-		if(isset($_POST["dosubmit"])){
+		if(isset($_POST['fieldid']) && is_array($_POST['fieldid'])){
 			$model_field = D('model_field'); 
 			foreach($_POST['fieldid'] as $key=>$val){
 				$model_field->update(array('listorder'=>$_POST['listorder'][$key]),array('fieldid'=>intval($val)));
 			}
-			delcache(intval($_POST["modelid"]).'_model');
-			showmsg(L('operation_success'),'',1);
+			delcache(intval($_POST['modelid']).'_model');
 		}
+		showmsg(L('operation_success'), '' ,1);
 	}
 
 
@@ -195,7 +198,7 @@ class diyform_field extends common{
 			$this->modelname = $data['name'];
 			$this->modeltable = $data['tablename'];
 		}else{
-			showmsg('模型不存在！', 'stop');
+			return_message('模型不存在！', 0);
 		}
 	}
 

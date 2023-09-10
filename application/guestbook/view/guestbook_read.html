@@ -22,7 +22,7 @@
 			<li>
 				<div>
 					<span style="color:#de4c1c"><?php echo $value['name']; ?>回复 【<?php echo date('Y-m-d H:i:s',$value['booktime']); ?>】</span>
-					<span class="yzm-iconfont yzm-iconshanchu mydel pointer" onclick="yzm_del('<?php echo U('del_reply', array('id'=>$value['id']));?>', true);"></span>
+					<span class="yzm-iconfont yzm-iconshanchu mydel pointer" onclick="yzm_confirm('<?php echo U('del_reply', array('id'=>$value['id']));?>', '确定要删除此回复吗？', 1);"></span>
 				</div>
 				<div style="color:#0072c6">
 					<?php echo nl2br($value['bookmsg']); ?>
@@ -46,7 +46,7 @@
 <script type="text/javascript">
 	function dosub(obj){
 		if(obj.bookmsg.value == ''){
-			layer.msg('回复的内容不能为空！', {icon:2});
+			layer.msg('请输入回复内容！', {icon:2});
 			return false;
 		}
 

@@ -88,8 +88,8 @@ class api{
 		$pid = isset($_GET['pid']) ? $_GET['pid'] : 'uploadfile';
 		$module = isset($_GET['module']) ? $_GET['module'] : '';
 		$t = isset($_GET['t']) ? intval($_GET['t']) : 1; //上传类型，1为图片类型
-		$n = isset($_GET['n']) ? 20 : 1;  //上传数量
-		$s = round(get_config('upload_maxsize')/1024, 2).'MB';  //允许上传附件大小
+		$n = isset($_GET['n'])&&intval($_GET['n']) ? intval($_GET['n']) : 1;  //上传数量
+		$s = sizecount(get_config('upload_maxsize')*1024);  //允许上传附件大小
 		$originname = isset($_GET['originname']) ? safe_replace(trim($_GET['originname'])) : '';
 		$uploadtime = isset($_GET['uploadtime']) ? htmlspecialchars($_GET['uploadtime']) : '';
 		$type = join(',', handle_upload_types($t));
@@ -125,19 +125,27 @@ class api{
 			$y = $_POST['y'];
 			$w = $_POST['w'];
 			$h = $_POST['h'];
+			$attid = isset($_POST['attid']) ? intval($_POST['attid']) : 0;
 			$image = yzm_base::load_sys_class('image');
 			$filepath = SITE_PATH.C('upload_file').'/'.date('Ym/d/');
 			$filename = date("ymdhis").rand(100,999);
 			$filetype = fileext($_POST['filepath']);
 			$fileinfo = $image->crop($yzmcms_path.$_POST['filepath'], $yzmcms_path.$filepath.$filename.'.'.$filetype, $w, $h, $x, $y);
 			if($fileinfo){
-				$fileinfo['module'] = 'admin';
-				$fileinfo['originname'] = basename($_POST['filepath']);
+				$info = D('attachment')->field('userid,filepath,filename,originname')->where(array('id'=>$attid))->find();
+				$fileinfo['module'] = ROUTE_M;
+				$fileinfo['originname'] = $info ? '裁剪_'.$info['originname'] : '裁剪_'.basename($_POST['filepath']);
 				$fileinfo['filepath'] = $filepath;
 				$fileinfo['filename'] = $filename.'.'.$filetype;
 				$fileinfo['filesize'] = $fileinfo['size'];
 				$fileinfo['filetype'] = $filetype;
 				$this->_att_write($fileinfo);
+				if($info && $this->isadmin){
+					yzm_base::load_model('host', '', 0);
+					$upload = new host();
+					$res = $upload->deletefile($info);
+					$res && D('attachment')->delete(array('id'=>$attid));
+				}
 				return_json(array('status' => 1, 'filepath' => $fileinfo['filepath'].$fileinfo['filename']));
 			}else{
 				return_json(array('status' => 0));
@@ -145,6 +153,7 @@ class api{
 		}
 
 		$filepath = isset($_GET['f']) ? base64_decode($_GET['f']) : showmsg(L('lose_parameters'), 'stop');
+		$attid = D('attachment')->field('id')->where(array('filename'=>basename($filepath)))->one();
 		if(strpos($filepath, '://')) $filepath = strstr($filepath, SITE_PATH.'uploads');
 		if(!is_file($yzmcms_path.$filepath)) showmsg('请选择本地已存在的图像！', 'stop');
 		$spec = isset($_GET['spec']) ? intval($_GET['spec']) : 1; 
@@ -206,7 +215,7 @@ class api{
 	private function _att_write($fileinfo){
 		$arr = array();
 		$arr['siteid'] = get_siteid();
-		$arr['originname'] = strlen($fileinfo['originname'])<50 ? htmlspecialchars($fileinfo['originname']) : htmlspecialchars(str_cut($fileinfo['originname'], 45));
+		$arr['originname'] = strlen($fileinfo['originname'])<50 ? htmlspecialchars($fileinfo['originname']) : htmlspecialchars(str_cut($fileinfo['originname'], 50));
 		$arr['filename'] = $fileinfo['filename'];
 		$arr['filepath'] = $fileinfo['filepath'];
 		$arr['filesize'] = $fileinfo['filesize'];

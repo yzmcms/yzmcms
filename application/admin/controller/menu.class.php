@@ -123,16 +123,14 @@ class menu extends common {
 	 * 菜单排序
 	 */
 	public function order() {
-		if(isset($_POST['dosubmit'])) {
+		if(isset($_POST['listorders']) && is_array($_POST['listorders'])){
 			$menu = D('menu');
 			foreach($_POST['listorders'] as $id => $listorder) {
 				$menu->update(array('listorder'=>$listorder),array('id'=>$id));
 			}
 			delcache('menu_string_1');
-			showmsg(L('operation_success'), '', 1);
-		} else {
-			showmsg(L('operation_failure'));
 		}
+		showmsg(L('operation_success'), '' ,1);
 	}	
 
 

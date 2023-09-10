@@ -26,6 +26,6 @@ a{color:#454545}a:hover,a:focus,.maincolor,.maincolor a{color:#06c}
 .Hui-aside .menu_dropdown li a:hover {background:#1c4e80;color:#fff;}
 .Hui-aside .menu_dropdown li .current a,.menu_dropdown li.current a:hover {color:#fff;}
 .Hui-aside .menu_dropdown li .curmenu,.Hui-aside .menu_dropdown li .curmenu:hover {background:#1890ff;color:#fff;}
-.Hui-aside .menu_dropdown dt .Hui-iconfont {color:rgba(255,255,255,.8);margin-right:5px}
-.Hui-aside .menu_dropdown dt .menu_dropdown-arrow {color:rgba(255,255,255,.8);right:33px;}
+.Hui-aside .menu_dropdown dt .yzm-iconfont {color:rgba(255,255,255,.8);margin-right:5px}
+.Hui-aside .menu_dropdown dt .menu_dropdown-arrow {color:rgba(255,255,255,.8);transition:all .1s ease 0s;right:33px;}
 .dislpayArrow a {background:url(icon_arrow.png) no-repeat 0 0}

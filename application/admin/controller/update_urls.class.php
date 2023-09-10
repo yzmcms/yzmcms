@@ -122,7 +122,7 @@ class update_urls extends common {
 			$db->update(array('url' => $url), array('id' => $val['id']));
 			$all_content->update(array('url' => $url), array('modelid' => $modelid, 'id' => $val['id']));
 		}
-		$rate = $num ? floor(100 * ($page / $num)) : 100;
+		$rate = $num ? round(100 * ($page / $num), 2) : 100;
 		$message = '【'.get_model($modelid, 'name').'】 正在更新，进度： '.$rate.'%';
 		if($num > $page) {
 			return_json(array('status'=>2, 'message'=>$message, 'autoid'=>$autoid, 'total'=>$total, 'page'=>++$page));

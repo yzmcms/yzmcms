@@ -35,16 +35,17 @@
 <script type="text/javascript">
 
   	function yzm_tree_toggle(obj) {
-		$(".parentid").each(function () {
-            $(this).trigger('click');
-        })
 		var isshow = $(obj).attr("isshow");
 		if(isshow == "0"){
 			$(obj).attr("isshow", "1");
 			$(obj).html('<i class="yzm-iconfont">&#xe653;</i> 收起子项');
+			$(".top .parentid").attr('action', 2).html('&#xe653;');
+			$(".child").show();
 		}else{
 			$(obj).attr("isshow", "0");
 			$(obj).html('<i class="yzm-iconfont">&#xe652;</i> 展开子项');
+			$(".top .parentid").attr('action', 1).html('&#xe652;');
+			$(".child").hide();
 		}
     }
 

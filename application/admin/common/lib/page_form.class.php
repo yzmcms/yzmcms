@@ -19,7 +19,7 @@ class page_form {
 	
 	
 	public function content_edit($data) {
-		$modelinfo = $this->get_modelinfo();
+		$modelinfo = $this->get_modelinfo($data);
 		$string = '';
 		foreach($modelinfo as $val){
 			$fieldtype = $val['fieldtype'];
@@ -56,13 +56,19 @@ class page_form {
 	}
 
 	
-	public function get_modelinfo() {
+	public function get_modelinfo($data) {
 		$modelinfo = getcache($this->modelid.'_model');
 		if($modelinfo === false){
-			if(!D('model')->where(array('modelid' => $this->modelid))->find()) showmsg('模型不存在！', 'stop');
+			if(!D('model')->where(array('modelid' => $this->modelid))->find()) return_message('模型不存在！', 0);
 			$modelinfo = D('model_field')->where(array('modelid' => $this->modelid, 'disabled' => 0))->order('listorder ASC,fieldid ASC')->select();
 			setcache($this->modelid.'_model', $modelinfo);
 			delcache($this->modelid.'_model_string');
+		}
+
+		foreach($modelinfo as $key=>$val){
+			if($val['setting_catid']!='0' && strpos($val['setting_catid'], strval($data['catid']))===false) {
+				unset($modelinfo[$key]);
+			}
 		}
 		return $modelinfo;
 	}

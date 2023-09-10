@@ -48,7 +48,7 @@ class member_pay extends common{
 	 * 生成订单
 	 */	
 	public function create_order(){
-		if(isset($_POST['dosubmit'])){
+		if(is_post()){
 			$this->_check_code($_POST['code']);
 				
 			$paytype = intval($_POST['paytype']);

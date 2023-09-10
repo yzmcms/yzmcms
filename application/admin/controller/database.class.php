@@ -68,8 +68,8 @@ class database extends common {
 	public function public_optimize() {
 		$tables = input('post.tables');
 		if(!$tables) return_json(array('status'=>0, 'message'=>L('lose_parameters')));
-		$tables = is_array($tables) ? implode(',',$tables) : $tables;
-		D('admin')->query('OPTIMIZE TABLE '.$this->_safe_replace($tables));
+		$tables = is_array($tables) ? implode('`,`',array_map(array($this, '_safe_replace'), $tables)) : $this->_safe_replace($tables);
+		D('admin')->query('OPTIMIZE TABLE `'.$tables.'`');
 		return_json(array('status'=>1, 'message'=>L('operation_success')));
 	}
 	
@@ -80,8 +80,8 @@ class database extends common {
 	public function public_repair() {
 		$tables = input('post.tables');
 		if(!$tables) return_json(array('status'=>0, 'message'=>L('lose_parameters')));
-		$tables = is_array($tables) ? implode(',',$tables) : $tables;
-		D('admin')->query('REPAIR TABLE '.$this->_safe_replace($tables));
+		$tables = is_array($tables) ? implode('`,`',array_map(array($this, '_safe_replace'), $tables)) : $this->_safe_replace($tables);
+		D('admin')->query('REPAIR TABLE `'.$tables.'`');
 		return_json(array('status'=>1, 'message'=>L('operation_success')));
 	}
 	
@@ -93,7 +93,7 @@ class database extends common {
 	public function public_datatable_structure() {
 		$table = isset($_GET['table']) ? trim($_GET['table']) : '';
 		if(!$table) showmsg(L('lose_parameters'), 'stop');
-		$data = D('admin')->query('SHOW CREATE TABLE '.$this->_safe_replace($table), false);
+		$data = D('admin')->query('SHOW CREATE TABLE `'.$this->_safe_replace($table).'`', false);
 		include $this->admin_tpl('datatable_structure');
 	}
 
@@ -201,7 +201,7 @@ class database extends common {
                 }
             } else {
                 $tab  = array('id' => $id, 'start' => $start[0]);
-                $rate = floor(100 * ($start[0] / $start[1]));
+                $rate = round(100 * ($start[0] / $start[1]), 2);
                 return_json(array('status'=>2, 'message'=>'表'.$tables[$id].'正在备份...('.$rate.'%)', 'tab'=>$tab));
             }
 
@@ -264,7 +264,7 @@ class database extends common {
             } else {
                 $data = array('part' => $part, 'start' => $start[0]);
                 if($start[1]){
-                    $rate = floor(100 * ($start[0] / $start[1]));
+                    $rate = round(100 * ($start[0] / $start[1]), 2);
 					return_json(array('status'=>2, 'message'=>'正在还原：卷'.$part.'...('.$rate.'%)', 'data'=>$data));
                 } else {
 					return_json(array('status'=>2, 'message'=>'正在还原：卷'.$part.'...', 'data'=>$data));
@@ -278,6 +278,7 @@ class database extends common {
 
 
 	private function _safe_replace($string) {
-		return str_replace(array('`',"\\",'&',' ',"'",'"','/','*','<','>',"\r","\t","\n","#"), '', $string);
+		if(!is_string($string)) return '';
+		return str_replace(array('`',';','%','{','}',"\\",'&',' ',"'",'"','/','*','<','>',"\r","\t","\n",'#'), '', $string);
 	}
 }

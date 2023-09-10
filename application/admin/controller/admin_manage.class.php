@@ -19,6 +19,10 @@ class admin_manage extends common {
 	 * 管理员管理列表
 	 */
 	public function init() {
+		$of = input('get.of');
+		$or = input('get.or');
+		$of = in_array($of, array('adminid','adminname','realname','email','roleid','addtime','logintime','loginip','addpeople')) ? $of : 'adminid';
+		$or = in_array($or, array('ASC','DESC')) ? $or : 'DESC';
 		$roleid = isset($_GET['roleid']) ? intval($_GET['roleid']) : 0;
 		$where = $roleid ? array('roleid' => $roleid) : array();
 		if(isset($_GET['dosubmit'])){	
@@ -42,7 +46,7 @@ class admin_manage extends common {
 		$admin = D('admin');
 		$total = $admin->where($where)->total();
 		$page = new page($total, 15);
-		$data = $admin->where($where)->order('adminid DESC')->limit($page->limit())->select();
+		$data = $admin->where($where)->order("$of $or")->limit($page->limit())->select();
 		$role_data = D('admin_role')->field('roleid,rolename')->where(array('disabled'=>0))->order('roleid ASC')->limit(100)->select();
 		
 		include $this->admin_tpl('admin_list');
@@ -53,7 +57,7 @@ class admin_manage extends common {
 	 * 删除管理员
 	 */
 	public function delete() {
-		if(!isset($_GET['yzm_csrf_token']) || !check_token($_GET['yzm_csrf_token'])) showmsg(L('token_error'), 'stop');
+		if(!isset($_GET['yzm_csrf_token']) || !check_token($_GET['yzm_csrf_token'])) return_message(L('token_error'), 0);
 		$adminid = intval($_GET['adminid']);
 		if($adminid == '1' || $adminid == $_SESSION['adminid']) return_json(array('status'=>0,'message'=>'不能删除ID为1的管理员，或不能删除自己！'));
 		$roleid = D('admin')->field('roleid')->where(array('adminid'=>$adminid))->one();

@@ -10,7 +10,8 @@
             <h3>稿件编辑</h3>
         </div>
         <div class="main_cont">
-            <form method="post" action="" onsubmit="return chcekall()">
+            <form method="post" action="" onsubmit="return chcekall(this)">
+                <input type="hidden" name="id" value="{$id}">
                 <table>
                     <tr>
                         <td width="70">栏目：</td>
@@ -18,7 +19,7 @@
                     </tr>
                     <tr>
                         <td><span class="required">*</span>标题：</td>
-                        <td><input type="text" name="title" value="{$data['title']}" required class="input w370"></td>
+                        <td><input type="text" name="title" value="{$data['title']}" class="input w370"></td>
                     </tr>
                     <tr>
                         <td>关键字：</td>
@@ -26,7 +27,7 @@
                     </tr>
                     <tr>
                         <td>缩略图：</td>
-                        <td>{php echo form::image('thumb',$data['thumb'])}
+                        <td>{form::image('thumb',$data['thumb'])}
                     </tr>
                     <tr>
                         <td>摘要：</td>
@@ -44,7 +45,7 @@
                     </tr>
                     <tr>
                         <td><span class="required">*</span>内容：</td>
-                        <td>{php echo form::editor_mini('content',$data['content'])}</td>
+                        <td>{form::editor_mini('content',$data['content'])}</td>
                     </tr>
                     <tr>
                         <td></td>
@@ -56,26 +57,44 @@
     </div>
 </div>
 <script type="text/javascript">
-	  function chcekall(){
-	  	  if($("input[name='title']").val()==''){
-				layer.msg("标题不能为空!", {icon:2});
-				return false;
-		  }
+	  function chcekall(obj){
+	  	  if(obj.title.value==''){
+            layer.msg("标题不能为空!", {icon:2});
+            return false;
+          }
 			
-			//form必填字段的验证
-			{loop $field_check $k=>$v}
-				{if ($v['isrequired'] && in_array($v['fieldtype'], array('input', 'textarea')))}
-				if($("{$v[fieldtype]}[name='{$k}']").val()==''){
-					layer.msg("{$v[errortips]}", {icon:2});
-					return false;
-				}
-				{/if}		
-			{/loop}
+          //form必填字段的验证
+          {loop $field_check $k=>$v}
+                {if $v['isrequired'] && !in_array($v['fieldtype'], array('images','attachments','checkbox','editor','editor_mini'))}
+                if(obj.{$k}.value==''){
+                    layer.msg("{$v[errortips]}", {icon:2});
+                    return false;
+                }
+                {/if}       
+          {/loop}
 
 		  if(UE.getEditor('content').getContent()==''){
 				layer.msg("内容不能为空!", {icon:2});
 				return false;
 		  }
+
+          layer.msg('正在发布中...', {icon:16, shade:0.21, time:false});
+          $.ajax({
+              type: "POST",
+              url: "{U('edit_through')}", 
+              data: $(obj).serialize(),
+              dataType: "json", 
+              success: function (msg) {
+                  if(msg.status == 1){
+                      layer.msg(msg.message, {icon:1, time:2000}, function(){
+                          location.href = msg.url;
+                      });
+                  }else{
+                      layer.msg(msg.message, {icon:2});
+                  }
+              }
+          })       
+          return false;
 	  }
 </script>
 {m:include "member","footer"}

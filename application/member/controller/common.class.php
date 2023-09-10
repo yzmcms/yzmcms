@@ -30,13 +30,15 @@ class common{
 		if(ROUTE_M =='member' && ROUTE_C =='index' && in_array(ROUTE_A, array('login', 'register'))) {
 			if(isset($_SESSION['_userid']) && $_SESSION['_userid'] && $_SESSION['_userid']==intval(get_cookie('_userid'))){
 				$referer = isset($_GET['referer']) && !empty($_GET['referer']) ? urldecode($_GET['referer']) : U('member/index/init');
+				is_ajax() && return_json(array('status'=>1, 'message'=>L('login_success'), 'url'=>$referer));
 				showmsg(L('login_success'), $referer, 1);
 			}
 			return true;
 		} else {
 			$this->userid = intval(get_cookie('_userid'));
 			if(!isset($_SESSION['_userid']) || !$_SESSION['_userid'] || $this->userid != $_SESSION['_userid']){
-				$referer = isset($_GET['referer']) && !empty($_GET['referer']) ? urldecode($_GET['referer']) : '';
+				$referer = isset($_GET['referer']) && !empty($_GET['referer']) && is_string($_GET['referer'])? urldecode($_GET['referer']) : '';
+				is_ajax() && return_json(array('status'=>0, 'message'=>L('login_website'), 'url'=>url_referer(1, $referer)));
 				showmsg(L('login_website'), url_referer(1, $referer), 1);
 			}
 
@@ -44,13 +46,13 @@ class common{
 			$this->memberinfo = $this->db->where(array('userid'=>$this->userid))->find();
 			
 			//如果用户不存在或者不是正常状态，即停止
-			if(empty($this->memberinfo) ||  $this->memberinfo['status'] != '1') showmsg('账号异常！', 'stop');
+			if(empty($this->memberinfo) ||  $this->memberinfo['status'] != '1') return_message('账号异常！', 0);
 			
 			$data = D('member_detail')->where(array('userid'=>$this->userid))->find();
 			if(!$data) $data = array();
 			
 			$this->memberinfo = array_merge($this->memberinfo, $data);
-			self::get_message();
+			is_get() && self::get_message();
 		
 		}
 	}

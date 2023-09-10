@@ -13,6 +13,12 @@ defined('IN_YZMPHP') or exit('Access Denied');
 yzm_base::load_controller('common', 'admin', 0);
 
 class sitemap extends common {
+
+	public $root_dir;
+	public $data;
+	public $filename;
+	public $header;
+	public $footer;
 	
 	public function __construct() {
 		parent::__construct();
@@ -124,7 +130,7 @@ class sitemap extends common {
 				return_json(array('status'=>1,'message'=>'生成文件 '.$this->filename.' 成功！'));
 			}
 
-			$rate = floor(100 * ($page*$pagesize / $total));
+			$rate = round(100 * ($page*$pagesize / $total), 2);
 			return_json(array('status'=>2,'message'=>'正在生成中，进度'.$rate.'%……','total'=>$total,'page'=>++$page));
 		}
 	}
@@ -137,7 +143,7 @@ class sitemap extends common {
 		$type = isset($_GET['type']) ? intval($_GET['type']) : 0;
 		if($type) $this->filename = 'sitemap.txt';
 		if(is_file($this->root_dir.$this->filename)){
-			if(!@unlink($this->root_dir.$this->filename)) showmsg(L('operation_failure'));
+			if(!@unlink($this->root_dir.$this->filename)) return_json(array('status'=>0, 'message'=>L('operation_failure')));
 		}
 		return_json(array('status'=>1, 'message'=>L('operation_success')));
 	}

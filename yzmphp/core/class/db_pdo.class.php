@@ -143,9 +143,10 @@ class db_pdo{
 					$sql = substr_replace($sql, '\''.$val.'\'', strpos($sql, '?'), 1);
 				}
 			}
+			$sql_start_time = microtime(true);
 			$statement ->execute();
 			$this->lastsql = $sql;
-			debug::addmsg($sql, 1);
+			APP_DEBUG && debug::addmsg($sql, 1, $sql_start_time);
 			$this->key = array();
 			return $statement;
 		}catch (PDOException $e){
@@ -286,7 +287,7 @@ class db_pdo{
 	
 	/**
 	 * 执行删除记录操作
-	 * @param $where 		参数为数组，删除数据条件,不充许为空。
+	 * @param $where 		参数为数组，删除数据条件,不允许为空。
 	 * @param $many 		是否删除多个，多用在批量删除，取的主键在某个范围内，例如 $admin->delete(array(3,4,5), true);
 	 *                      结果为： DELETE FROM `yzmcms_admin` WHERE id IN (3,4,5);
 	 *

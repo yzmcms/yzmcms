@@ -6,14 +6,14 @@
 <div class="formdoby_normal"> 
 	<form method="post" onsubmit="return dosub(this)">
 		<ul>
-			 <li><label>模块名称：</label><?php echo $name?>（<?php echo $version?>）</li>
-			 <li><label>模块简介：</label><?php echo $description?></li>
-			 <li><label>作者：</label><?php echo $author?></li>
-			 <li><label>作者邮箱：</label><?php echo $authoremail?></li>
+			 <li><label>模块名称：</label><?php echo $name ?>（<?php echo $version?>）</li>
+			 <li><label>更新时间：</label><?php echo $updatedate ?></li>
+			 <li><label>模块简介：</label><?php echo $description ? $description : '暂无' ?></li>
+			 <li><label>作者：</label><?php echo $author ? $author : '暂无' ?></li>
+			 <li><label>作者邮箱：</label><?php echo $authoremail ? $authoremail : '暂无' ?></li>
 			 <li><label>作者主页：</label><a href="<?php echo $authorsite?>" target="_blank"><?php echo $authorsite?></a></li>
 			 <li style="margin-top:30px;margin-bottom:0px;padding:0;text-align:right;">
 			     <input type="hidden" name="module" value="<?php echo $module?>">
-			     <input type="hidden" name="dosubmit" value="1">
 				 <input class="btn btn-primary radius" type="submit" name="dosubmit" value="&nbsp;&nbsp;安装&nbsp;&nbsp;">&nbsp;&nbsp;
 				 <input class="btn btn-default radius" onclick="yzmcms_close()" value="&nbsp;&nbsp;取消&nbsp;&nbsp;" type="button">
 			 </li>
@@ -39,7 +39,7 @@
 				  	parent.location.reload();
 				}); 
 		    }else{
-				layer.msg(msg.message, {icon: 2});
+				layer.alert(msg.message, {icon:2,title:'操作提示'});
 			}
 		 }
 		})

@@ -27,7 +27,7 @@
 			<td><?php echo $modules[$d]['version']?></td>
 			<td><?php echo $modules[$d]['installdate']?></td>
 			<td><?php echo $modules[$d]['updatedate']?></td>
-			<td><?php if ($modules[$d]['iscore']) {?><span class="yzm-box-img btn-disabled">禁止</span><?php } else {?><span><a href="javascript:void(0);" onclick="yzm_confirm('<?php echo U('uninstall',array('module'=>$d));?>', '确定要卸载【<?php echo $modules[$d]['name']?>】模块吗？',)" class="yzm-box-img btn-danger">卸载</a></span><?php }?></td>
+			<td><?php if ($modules[$d]['iscore']) {?><span class="yzm-box-img btn-disabled">禁止</span><?php } else {?><span><a href="javascript:void(0);" onclick="yzm_confirm('<?php echo U('uninstall',array('module'=>$d));?>', '确定要卸载【<?php echo $modules[$d]['name']?>】模块吗？',1)" class="yzm-box-img btn-danger">卸载</a></span><?php }?></td>
 		  </tr>		
 		<?php 
 			}else{
@@ -43,7 +43,7 @@
 			<td>未知</td>
 			<td>未安装</td>
 			<td>未安装</td>
-			<td><?php if($isinstall){?> <span><a href="javascript:void(0);" onclick="yzm_open('模块安装','<?php echo U('install',array('module'=>$d));?>','550','325')" class="yzm-box-img btn-primary">安装</a></span><?php } else {?><span class="yzm-box-img btn-warning">无法安装</span><?php }?></a></td>
+			<td><?php if($isinstall){?> <span><a href="javascript:void(0);" onclick="yzm_open('模块安装','<?php echo U('install',array('module'=>$d));?>','550','350')" class="yzm-box-img btn-primary">安装</a></span><?php } else {?><span class="yzm-box-img btn-warning">无法安装</span><?php }?></a></td>
 		  </tr>	
 		<?php
 			}

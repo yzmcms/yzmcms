@@ -21,7 +21,7 @@ a{color:#333}a:hover,a:focus,.maincolor,.maincolor a{color:#06c}
 .Hui-aside .menu_dropdown li a:hover {color:#333;background:#fff;}
 .Hui-aside .menu_dropdown li .current a,.menu_dropdown li.current a:hover {color:#fff;}
 .Hui-aside .menu_dropdown li .curmenu {background:#fff;color:#333;}
-.Hui-aside .menu_dropdown dt .Hui-iconfont {color:rgba(255,255,255,.9);transition:all .1s ease 0s;margin-right:5px}
+.Hui-aside .menu_dropdown dt .yzm-iconfont {color:rgba(255,255,255,.9);transition:all .1s ease 0s;margin-right:5px}
 .Hui-aside .menu_dropdown dt .menu_dropdown-arrow {color:rgba(255,255,255,.9);right:33px;}
 .dislpayArrow a {background:url(icon_arrow.png) no-repeat 0 0}
 .tabBar {border-bottom: 2px solid #ff4a00}

@@ -55,6 +55,7 @@ class model_field extends common {
 		   
 		   $files = array('input','textarea','number','decimal','datetime','image','images','attachment','attachments','select','radio','checkbox','editor', 'editor_mini');
 		   if(!in_array($_POST['fieldtype'], $files))  showmsg(L('illegal_parameters'), 'stop');
+		   $_POST = new_html_special_chars($_POST);
 		   
 		   $_POST['issystem'] = 0;	
 		   $_POST['modelid'] = $this->modelid;	
@@ -67,7 +68,8 @@ class model_field extends common {
 		   }else{
 			   unset($_POST['setting']);
 		   }
-		   		   
+		   
+		   if(isset($_POST['setting_catid'])&&is_array($_POST['setting_catid'])) $_POST['setting_catid'] = join(',',$_POST['setting_catid']);
 		   if($_POST['minlength']) $_POST['isrequired'] = 1;
 
 		   if($_POST['fieldtype'] == 'input' || $_POST['fieldtype'] == 'datetime'){
@@ -90,6 +92,7 @@ class model_field extends common {
 		}else{
 			$modelid = $this->modelid;
 			$modelname = $this->modelname;
+			if($this->modeltype==2) $select_page = $this->_select_page();
 			include $this->admin_tpl('model_field_add');
 		}
 	}
@@ -101,6 +104,8 @@ class model_field extends common {
 	public function edit() {
 		$fieldid = isset($_GET['fieldid']) ? intval($_GET['fieldid']) : 0;
 		if(isset($_POST['dosubmit'])) {
+
+			$_POST = new_html_special_chars($_POST);
 			
 			if(in_array($_POST['fieldtype'], array('select','radio','checkbox'))){
 			   $_POST['setting'] = array2string(explode('|', rtrim($_POST['setting'], '|')));
@@ -112,6 +117,7 @@ class model_field extends common {
 		   	
 			unset($_POST['issystem'], $_POST['modelid'], $_POST['fieldtype']);	
 			
+			if(isset($_POST['setting_catid'])&&is_array($_POST['setting_catid'])) $_POST['setting_catid'] = join(',',$_POST['setting_catid']);
 		    $_POST['isrequired'] = $_POST['minlength'] ? 1 :0;
 			if(D('model_field')->update($_POST, array('fieldid' => $fieldid))){
 				delcache($this->modelid.'_model');
@@ -123,6 +129,7 @@ class model_field extends common {
 			$modelid = $this->modelid;
 			$modelname = $this->modelname;
 			$data = D('model_field')->where(array('fieldid'=>$fieldid))->find();
+			if($this->modeltype==2) $select_page = $this->_select_page($data['setting_catid']);
 			include $this->admin_tpl('model_field_edit');
 		}
 	}
@@ -150,14 +157,14 @@ class model_field extends common {
 	 * 排序字段
 	 */
 	public function order() {
-		if(isset($_POST["dosubmit"])){
+		if(isset($_POST['fieldid']) && is_array($_POST['fieldid'])){
 			$model_field = D('model_field'); 
 			foreach($_POST['fieldid'] as $key=>$val){
 				$model_field->update(array('listorder'=>$_POST['listorder'][$key]),array('fieldid'=>intval($val)));
 			}
-			delcache(intval($_POST["modelid"]).'_model');
-			showmsg(L('operation_success'),'',1);
+			delcache(intval($_POST['modelid']).'_model');
 		}
+		showmsg(L('operation_success'), '' ,1);
 	}
 
 
@@ -192,7 +199,7 @@ class model_field extends common {
 			$this->modelname = $data['name'];
 			$this->modeltable = $data['tablename'];
 		}else{
-			showmsg('模型不存在！', 'stop');
+			return_message('模型不存在！', 0);
 		}
 	}
 
@@ -209,6 +216,41 @@ class model_field extends common {
 		   exit('1');  
 		else
 		   exit('0');  
+	}
+
+
+	/**
+	 * 单页栏目select
+	 */
+	private function _select_page($value=0){
+		$categorys = array();
+		$html='<select name="setting_catid[]" class="select" multiple="true" style="min-width:300px;min-height:200px">';
+		$html.='<option value="0" '.($value==0 ? 'selected' : '').'>≡ 应用到所有栏目 ≡</option>';
+
+		$tree = yzm_base::load_sys_class('tree');
+		$data = D('category')->field('catid AS id,catname AS name,parentid,arrparentid,arrchildid,type,modelid,member_publish')->where(array('siteid'=>get_siteid()))->order('listorder ASC,catid ASC')->select();
+
+		$page_arr = array();
+		foreach($data as $catinfo){
+		    if($catinfo['type']!=1) continue;
+		    $key = md5($catinfo['arrparentid']);
+			$page_arr[$key] = isset($page_arr[$key]) ? $page_arr[$key].','.$catinfo['id'] : $catinfo['arrparentid'].','.$catinfo['id'];
+		}
+		$page_arr = array_unique(explode(',', join(',', $page_arr)));
+
+		foreach($data as $val){
+			if(!array_search($val['id'], $page_arr)) continue;
+			$val['html_disabled'] = 0;
+			if($val['type']!=1 && strpos($val['arrchildid'], ',')) $val['html_disabled'] = 1;
+			$categorys[$val['id']] = $val;
+		}
+		$tree->init($categorys);
+		$tree->icon = array('&nbsp;&nbsp;&nbsp;│ ','&nbsp;&nbsp;&nbsp;├─ ','&nbsp;&nbsp;&nbsp;└─ ');
+		$tree->nbsp = '&nbsp;&nbsp;&nbsp;';
+		$html .= $tree->get_tree_multi(0, "<option value='\$id' \$selected>\$spacer\$name</option>", "<optgroup label='\$spacer \$name'></optgroup>", $value);
+
+		$html .= '</select>';
+		return $html;
 	}
 
 }

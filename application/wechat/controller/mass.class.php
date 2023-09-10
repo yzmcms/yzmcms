@@ -112,7 +112,7 @@ class mass extends wechat_common{
 				$_POST['status'] = 1;
 				$_POST['masstime'] = SYS_TIME;
 				
-				D('wechat_mass')->insert($_POST);
+				D('wechat_mass')->insert($_POST, true);
 				showmsg(L('operation_success'), U('init'), 1);
 			}else{
 				showmsg('操作失败！errcode：'.$json_arr['errcode'].'，errmsg：'.$json_arr['errmsg'], 'stop');

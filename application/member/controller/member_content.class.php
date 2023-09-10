@@ -23,7 +23,6 @@ class member_content extends common{
 	public function init(){ 
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
-		
 		$this->_check_group_auth($groupid); 
 		yzm_base::load_sys_class('form','',0);
 
@@ -51,13 +50,13 @@ class member_content extends common{
 		//会员中心可发布的字段
 		$fields = array('title','keywords','copyfrom','catid','thumb','description','content');
 	
-		if(isset($_POST['dosubmit'])) {
+		if(is_post()) {
 			
 			$catid = intval($_POST['catid']);
 			
 			//判断栏目是否禁止投稿
 			$data = D('category')->field('member_publish')->where(array('catid'=>$catid))->find();
-			if(!$data['member_publish']) showmsg(L('illegal_operation'), 'stop');
+			if(!$data['member_publish']) return_message(L('illegal_operation'), 0);
 			
 			//支持不同栏目自动实例化不同的model
 			$modelid = get_category($catid, 'modelid');
@@ -66,9 +65,9 @@ class member_content extends common{
 			$field_check = $this->_get_model_str($modelid, true);
 			foreach($field_check as $k => $v){
 				if($v['isrequired']){
-					if(!isset($_POST[$k])) showmsg(L('lose_parameters'), 'stop');
+					if(!isset($_POST[$k])) return_message(L('lose_parameters'), 0);
 					$length = is_array($_POST[$k]) ? (empty($_POST[$k]) ? 0 : 1) : strlen($_POST[$k]);
-					if(!$length) showmsg($v['errortips']);
+					if(!$length) return_message($v['errortips'], 0);
 				}
 			}
 
@@ -118,10 +117,10 @@ class member_content extends common{
 			}
 			
 			if(!$is_adopt){
-				showmsg('发布成功，等待管理员审核！', U('not_pass'));
+				return_message('发布成功，等待管理员审核！', 1, U('not_pass'));
 			}else{
 				$this->_adopt($content_tabname, $catid, $id, $allid);
-				showmsg('发布成功，内容已通过审核！', U('pass'));
+				return_message('发布成功，内容已通过审核！', 1, U('pass'));
 			}
 		}
 		
@@ -140,38 +139,35 @@ class member_content extends common{
 		
 		//会员中心可发布的字段
 		$fields = array('title','keywords','copyfrom','catid','thumb','description','content');
-		
-		//可以根据catid获取model模型，来加载不同模板
-		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : showmsg(L('lose_parameters'), 'stop');  
-		$id = isset($_GET['id']) ? intval($_GET['id']) : showmsg(L('lose_parameters'), 'stop');
 	
-		if(isset($_POST['dosubmit'])) {
+		if(is_post()) {
 			
+			$id = isset($_POST['id']) ? intval($_POST['id']) : return_message(L('lose_parameters'), 0);
 			$_POST['catid'] = intval($_POST['catid']);
 			
 			//判断栏目是否禁止投稿
 			$data = D('category')->field('member_publish')->where(array('catid'=>$_POST['catid']))->find();
-			if(!$data['member_publish']) showmsg('该栏目不允许在线投稿！', 'stop');
+			if(!$data['member_publish']) return_message('该栏目不允许在线投稿！', 0);
 			
 			//根据POST传回的参数再次判断一下modelid（必须）
 			$modelid = get_category($_POST['catid'], 'modelid');
 			if(!$modelid){
-				showmsg(L('operation_failure'), 'stop');
+				return_message(L('operation_failure'), 0);
 			}
 			$content_tabname = D(get_model($modelid));			
 			
 			$all_content = D('all_content');
 			$data = $all_content->field('username,status,issystem')->where(array('modelid' => $modelid, 'id' => $id))->find();
 			if(!$data || $data['username'] != $username || $data['issystem']){
-				showmsg(L('illegal_operation'), 'stop');
+				return_message(L('illegal_operation'), 0);
 			}
 			
 			$field_check = $this->_get_model_str($modelid, true);
 			foreach($field_check as $k => $v){
 				if($v['isrequired']){
-					if(!isset($_POST[$k])) showmsg(L('lose_parameters'), 'stop');
+					if(!isset($_POST[$k])) return_message(L('lose_parameters'), 0);
 					$length = is_array($_POST[$k]) ? (empty($_POST[$k]) ? 0 : 1) : strlen($_POST[$k]);
-					if(!$length) showmsg($v['errortips']);
+					if(!$length) return_message($v['errortips'], 0);
 				}
 			}
 			$fields = array_merge($fields, array_keys($field_check));
@@ -200,13 +196,17 @@ class member_content extends common{
 				$all_content->update($_POST, array('modelid' => $modelid, 'id' => $id));
 				update_attachment($modelid, $id);
 				if(!$is_adopt){
-					showmsg('操作成功，等待管理员审核！', U('not_pass'));
+					return_message('操作成功，等待管理员审核！', 1, U('not_pass'));
 				}else{
-					showmsg('操作成功，内容已通过审核！', U('pass'));
+					return_message('操作成功，内容已通过审核！', 1, U('pass'));
 				}
 			}
 
 		}
+
+		//可以根据catid获取model模型，来加载不同模板
+		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : showmsg(L('lose_parameters'), 'stop');  
+		$id = isset($_GET['id']) ? intval($_GET['id']) : showmsg(L('lose_parameters'), 'stop');
 		
 		$modelid = get_category($catid, 'modelid');
 		if(!$modelid)  showmsg(L('lose_parameters'), 'stop');  
@@ -316,7 +316,7 @@ class member_content extends common{
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
 		
-		if(!isset($_POST['fx'])) showmsg('您没有选择项目！');
+		if(!isset($_POST['fx'])) showmsg('请选择要操作的内容！');
 		if(!is_array($_POST['fx'])) showmsg(L('illegal_operation'), 'stop');
 		$comment = D('comment');
 		foreach($_POST['fx'] as $v){
@@ -356,7 +356,7 @@ class member_content extends common{
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
 		
-		if(!isset($_POST['fx'])) showmsg('您没有选择项目！');
+		if(!isset($_POST['fx'])) showmsg('请选择要操作的内容！');
 		if(!is_array($_POST['fx'])) showmsg(L('illegal_operation'), 'stop');
 		$favorite = D('favorite');
 		foreach($_POST['fx'] as $v){
@@ -373,20 +373,20 @@ class member_content extends common{
 		$memberinfo = $this->memberinfo;
 		$groupinfo = get_groupinfo($groupid);
 		if(strpos($groupinfo['authority'], '3') === false) 
-		showmsg('你没有权限投稿，请升级会员组！', 'stop'); 
+		return_message('你没有权限投稿，请升级会员组！', 0);
 
 		if($is_add){
 			//检查用户每日最大投稿量，且VIP用户不受“每日最大投稿量”限制
 			if(!$memberinfo['vip'] || $memberinfo['overduedate']<SYS_TIME){
 				$total = D('all_content')->where(array('userid'=>$this->userid, 'issystem'=>0, 'inputtime>'=> strtotime(date('Y-m-d'))))->total();
-				if($total >= $groupinfo['max_amount']) showmsg('当前会员每日最大投稿数为 '.$groupinfo['max_amount'].' 条，如需发布更多请升级会员组', 'stop'); 
+				if($total >= $groupinfo['max_amount']) return_message('当前会员每日最大投稿数为 '.$groupinfo['max_amount'].' 条，如需发布更多请升级会员组！', 0); 
 			}			
 		}
 
 		//如果是投稿收费则检测积分是否够用
 		$publish_point = get_config('publish_point');
 		if(($publish_point < 0) && ($memberinfo['point'] < abs($publish_point))){
-			showmsg('本次交易将扣除点 '.abs($publish_point).' 积分，您的余额不足！', 'stop');
+			return_message('本次交易将扣除点 '.abs($publish_point).' 积分，您的余额不足！', 0);
 		}
 
 		return $groupinfo;

@@ -37,22 +37,28 @@ class messages extends common{
 		if(strpos($groupinfo['authority'], '1') === false) showmsg("你没有权限发信息!");		
 		
 		$messageid = isset($_GET['messageid']) ? intval($_GET['messageid']) : 0;
-		if(isset($_POST['dosubmit'])){
+		if(is_post()){
 			
 			$this->_check_code($_POST['code']);
+			$send_to = trim($_POST['send_to']);
 			
-			if(!is_username($_POST['send_to'])) showmsg('收件人格式不正确！');
-			if($_POST['send_to'] == $username) showmsg('禁止给自己发送短信息！');
-			if(!$this->db->where(array('username' => $_POST['send_to']))->find()) showmsg('收件人不存在！');
+			if(!is_username($send_to)) return_message('收件人格式不正确！', 0);
+			if($send_to == $username) return_message('不能给自己发送短信息！', 0);
+			if(!$this->db->where(array('username' => $send_to))->find()) return_message('收件人不存在！', 0);
 
-			$_POST['send_from'] = $username;
-			$_POST['message_time'] = SYS_TIME;
-			$_POST['replyid'] = $messageid;
-			$_POST['isread'] = '0';
-			if(D('message')->insert($_POST, true)){
-				showmsg(L('operation_success'), U('outbox'), 1);
+			$data['send_from'] = $username;
+			$data['send_to'] = $send_to;
+			$data['message_time'] = SYS_TIME;
+			$data['subject'] = trim($_POST['subject']);
+			$data['content'] = trim($_POST['content']);
+			$data['replyid'] = $messageid;
+			$data['status'] = 1;
+			$data['isread'] = 0;
+			$data['issystem'] = 0;
+			if(D('message')->insert($data, true)){
+				return_message(L('operation_success'), 1, U('outbox'));
 			}else{
-				showmsg(L('operation_failure'));
+				return_message(L('operation_failure'), 0);
 			}
 			
 		}else{
@@ -89,7 +95,7 @@ class messages extends common{
 	public function outbox_del(){
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
-		if(!isset($_POST['fx'])) showmsg('您没有选择项目！');
+		if(!isset($_POST['fx'])) showmsg('请选择要操作的内容！');
 		if(!is_array($_POST['fx'])) showmsg(L('illegal_operation'), 'stop');
 		$message = D('message');
 		foreach($_POST['fx'] as $v){
@@ -154,7 +160,7 @@ class messages extends common{
 	public function inbox_del(){
 		$memberinfo = $this->memberinfo;
 		extract($memberinfo);
-		if(!isset($_POST['fx'])) showmsg('您没有选择项目！');
+		if(!isset($_POST['fx'])) showmsg('请选择要操作的内容！');
 		if(!is_array($_POST['fx'])) showmsg(L('illegal_operation'), 'stop');
 		$message = D('message');
 		foreach($_POST['fx'] as $v){

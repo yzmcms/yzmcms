@@ -52,6 +52,8 @@ class admin_content extends common {
 			if($searinfo){
 				if($type == '1')
 					$where .= ' AND title LIKE \'%'.$searinfo.'%\'';
+				elseif($type == '2')
+					$where .= ' AND allid = '.intval($searinfo);
 				else
 					$where .= ' AND username LIKE \'%'.$searinfo.'%\'';
 			}
@@ -207,7 +209,7 @@ class admin_content extends common {
 				if($tablename) D($tablename)->update(array('status' => '2'), array('id' => $r['id'])); 
 				$all_content->update(array('status' => '2'), array('allid' => $val)); 
 				$data['send_to'] = $r['username'];  //收件人
-				$data['content'] = '您发送的投稿不满足我们的要求，请重新编辑投稿！<br>标题：'.$r['title'].'<br><a href="'.U('member/member_content/edit_through',array('catid'=>$r['catid'], 'id'=>$r['id']), false).'" style="color:red">点击这里修改</a><br>'.$data['content_c'];
+				$data['content'] = '您提交的稿件不满足我们的要求，请重新编辑稿件！<br>具体原因：'.$data['content_c'].'<br><br>原文标题：'.$r['title'].'<br><a href="'.U('member/member_content/edit_through',array('catid'=>$r['catid'], 'id'=>$r['id']), false).'" style="color:#2438cf">点击这里修改</a>';
 				$message->insert($data);
 			}
 			return_json(array('status'=>1,'message'=>L('operation_success')));			

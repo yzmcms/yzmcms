@@ -132,7 +132,7 @@ class link extends common{
 	 * 排序
 	 */
 	public function order() {
-		if(isset($_POST["order_id"])){
+		if(isset($_POST['order_id']) && is_array($_POST['order_id'])){
 			$link = D('link');
 			foreach($_POST['order_id'] as $key=>$val){
 				$link->update(array('listorder'=>$_POST['listorder'][$key]),array('id'=>intval($val)));

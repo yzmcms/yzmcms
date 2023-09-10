@@ -15,7 +15,7 @@
  */
 function set_config($config) {
 	$configfile = YZMPHP_PATH.'common'.DIRECTORY_SEPARATOR.'config/config.php';
-	if(!is_writable($configfile)) showmsg('Please chmod '.$configfile.' to 0777 !', 'stop');
+	if(!is_writable($configfile)) return_message('Please chmod '.$configfile.' to 0777 !', 0);
 	$pattern = $replacement = array();
 	foreach($config as $k=>$v) {
 		$v = str_replace(array(',','$','/'), '', $v);

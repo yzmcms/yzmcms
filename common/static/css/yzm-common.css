@@ -24,6 +24,7 @@ a:hover{color:#1eaff1;}
 .yzm-header-top a:hover{color:#ff0000;}
 .yzm-member-status{float:right;}
 .yzm-member-status .login{color: #ff0000;border:1px solid #ff0000;padding: 3px 7px}
+.yzm-member-status .login:hover{background:#ff0000;color:#fff}
 
 /* 网站容器 */
 .yzm-container{margin:auto;width:1170px;}

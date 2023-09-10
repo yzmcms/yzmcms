@@ -41,8 +41,10 @@ class tag extends common {
 				if($type == 1){
 					$where['tag'] = '%'.$searinfo.'%';
 				}elseif($type == 2){
-					$where['seo_title'] = '%'.$searinfo.'%';
+					$where['id'] = intval($searinfo);
 				}elseif($type == 3){
+					$where['seo_title'] = '%'.$searinfo.'%';
+				}elseif($type == 4){
 					$where['seo_keywords'] = '%'.$searinfo.'%';
 				}else{
 					$where['seo_description'] = '%'.$searinfo.'%';

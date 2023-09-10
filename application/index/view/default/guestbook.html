@@ -98,7 +98,7 @@
 				  	<strong>内容</strong>：{$v[bookmsg]}</p>
 					<!-- 管理员回复 start -->
 					{loop $v['admin_reply'] $v}
-						<p class="yzm-book-content"><strong style="color:#de4c1c">管理员回复</strong>：{$v[bookmsg]}</p>
+						<p class="yzm-book-content"><strong style="color:#de4c1c">管理员回复</strong>：{nl2br($v['bookmsg'])}</p>
 					{/loop}
 					<!-- 管理员回复 end -->
 			   </div>
