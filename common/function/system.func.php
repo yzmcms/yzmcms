@@ -784,7 +784,7 @@ function get_memberavatar($user, $type=1, $default=true) {
 	}else{
 		$data = $member_detail->field('userpic')->join('yzmcms_member b ON yzmcms_member_detail.userid=b.userid')->where(array('username' => $user))->find();
 	}	
-	return $data['userpic'] ? $data['userpic'] : ($default ? STATIC_URL.'images/default.gif' : '');
+	return $data&&$data['userpic'] ? $data['userpic'] : ($default ? STATIC_URL.'images/default.gif' : '');
 }
 
 
