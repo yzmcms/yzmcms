@@ -113,7 +113,7 @@ jQuery(function() {
     // 文件上传成功
     uploader.on( 'uploadSuccess', function( file, data ) {
 		if(data.status == 1){
-			var att_url = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico'].indexOf(data.filetype) !== -1 ? data.msg : (data.filetype == 'zip' || data.filetype == 'rar' ? STATIC_URL + 'images/ext/rar.png' : STATIC_URL + 'images/ext/blank.png');
+			var att_url = ['png', 'jpg', 'jpeg', 'gif', 'webp', 'bmp', 'ico'].indexOf(data.filetype) !== -1 ? data.msg : (['code','css','dir','doc','docx','gif','html','jpeg','jpg','js','mp3','mp4','pdf','php','png','ppt','pptx','psd','rar','sql','swf','txt','xls','xlsx','xml','zip'].indexOf(data.filetype) !== -1 ? STATIC_URL + 'images/ext/'+data.filetype+'.png' : STATIC_URL + 'images/ext/hlp.png');
 			var li='<li><a href="javascript:;" class="on" onclick="album_cancel(this)"><img src="'+att_url+'" class="img_src" path="'+data.msg+'" attid="'+data.attid+'" title="'+data.title+'"/><img src="'+ STATIC_URL +'images/checked.gif" class="checkd"></a></li>';
 			$("#uploadlist ul").prepend(li);
             $('#att_id').append('|'+data.attid);

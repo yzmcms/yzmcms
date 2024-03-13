@@ -453,25 +453,44 @@ class member extends common{
 	 * 会员统计
 	 */	
 	public function member_count(){ 
-		//统计开始时间
-		$starttime = strtotime(date('Y-m-d'))-10*24*3600;
 
-		//统计结束时间
+		$data1 = D('member')->total();
+		$data2 = D('member')->where(array('status'=>1))->total();
+		$data3 = D('member')->where(array('status'=>2))->total();
+		$data4 = D('member')->where(array('vip'=>1))->total();
+		$data5 = D('member')->where(array('lastdate>'=>strtotime(date('Y-m-d', strtotime('-1 week')))))->total();
+		$data6 = D('member')->where(array('email_status'=>1))->total();
+
+		//近一周统计开始时间
+		$starttime = strtotime(date('Y-m-d'))-7*24*3600;
+
+		//近一周统计结束时间
 		$endtime = strtotime(date('Y-m-d'));
 
 		$where = "regdate > $starttime";  //无需加结束条件，否则统计不到今日数据
-		$data = D('member')->field("COUNT(*) AS num,FROM_UNIXTIME(regdate, '%Y-%m-%d') AS gap")->where($where)->group('gap')->select();
+		$data = D('member')->field("COUNT(*) AS num,FROM_UNIXTIME(regdate, '%m/%d') AS gap")->where($where)->group('gap')->select();
 		$arr = array();
 		foreach ($data as $val){
 			$arr[$val['gap']] = intval($val['num']);
 		}
 
+		$result1 = array();
 		for($i=$starttime; $i<=$endtime; $i = $i+24*3600){
-			$num = isset($arr[date('Y-m-d',$i)]) ? $arr[date('Y-m-d',$i)] : 0;				
-			$result['day'][] = date('Y-m-d',$i);
-			$result['num'][] = $num;
+			$num = isset($arr[date('m/d',$i)]) ? $arr[date('m/d',$i)] : 0;				
+			$result1['day'][] = date('m/d',$i);
+			$result1['num'][] = $num;
 		}
-		$result = json_encode($result);
+		$result1 = json_encode($result1);
+
+		// 会员组人员统计
+		$result2 = array();
+		foreach(get_groupinfo() as $val){
+			$result2[] = array(
+				'name' => $val['name'],
+				'value' => D('member')->where(array('groupid'=>$val['groupid']))->total()
+			);
+		}
+		$result2 = json_encode($result2);
 		include $this->admin_tpl('member_count');
 	}
 	
@@ -481,8 +500,8 @@ class member extends common{
 	 * 在线充值
 	 */	
 	public function recharge(){ 
-		if(isset($_POST['dosubmit'])) {
-			$username = isset($_POST['username']) ? trim($_POST['username']) : showmsg(L('user_name_format_error'));
+		if(is_post()) {
+			$username = isset($_POST['username']) ? trim($_POST['username']) : return_json(array('status'=>0, 'message'=>L('user_name_format_error')));
 			$userinfo = D('member')->field('userid,email')->where(array('username'=>$username))->find();
 			if($userinfo){
 				if($_POST['unit']) {
@@ -499,9 +518,9 @@ class member extends common{
 				}
 				
 				$op = $_POST['unit'] == '1' ? 'pay' : 'pay_spend';
-				showmsg(L('operation_success'), U($op), 2);
+				return_json(array('status'=>1, 'message'=>L('operation_success'), 'url'=>U($op)));
 			}else{
-				showmsg(L('user_does_not_exist'));
+				return_json(array('status'=>0, 'message'=>L('user_does_not_exist')));
 			}
 		    
 		}else{

@@ -76,7 +76,7 @@
 									$str = $parent_temp&&$key==$parent_temp['category_template'] ? ' selected="selected" ' : '';
 									echo '<option value="'.$key.'"'.$str.'>'.$val.'('.$key.')</option>';
 							  }
-							  if(!$category_temp) echo '<option value="">暂无模板</option>';
+							  echo $category_temp ? '<option value="">不使用模板</option>' : '<option value="">暂无模板</option>';
 						  ?>
 						</select>
 						</span>
@@ -174,7 +174,7 @@ function yzm_change_template(modelid){
 			for(var info in msg.show_template) {
 			    show_template += '<option value="'+info+'">'+msg.show_template[info]+'('+info+')</option>';
 			}
-			$('#category_template').html(category_template ? category_template : options);
+			$('#category_template').html(category_template ? category_template+'<option value="">不使用模板</option>' : options);
 			$('#list_template').html(list_template ? list_template : options);
 			$('#show_template').html(show_template ? show_template : options);
 			$('.model_table').html(msg.tablename);

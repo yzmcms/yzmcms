@@ -655,7 +655,7 @@ class AopClient {
 	 *  公钥是否是读取字符串还是读取文件，是根据初始化传入的值判断的。
 	 **/
 	public function rsaCheckV1($params, $rsaPublicKeyFilePath,$signType='RSA') {
-			$sign = $params['sign'];
+			$sign = isset($params['sign']) ? $params['sign'] : '';
 			$params['sign_type'] = null;
 			$params['sign'] = null;
 			return $this->verify($this->getSignContent($params), $sign, $rsaPublicKeyFilePath,$signType);

@@ -11,7 +11,7 @@ defined('IN_YZMPHP') or exit('Access Denied');
 class module_api {
 	
 	public $error_msg = '';
-	private $installdir, $module;
+	private $installdir, $uninstalldir, $module;
 	
 	/**
 	 * 模块安装

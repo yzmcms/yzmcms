@@ -52,7 +52,7 @@ class update_urls extends common {
 			if(!$catids[0]){
 				 $catinfo = get_category(); 
 			}else{
-				$catinfo = D('category')->field('catid,catname,arrparentid,`type`,catdir,domain')->where(array('catid'=>array('in', $catids, 'intval')))->select();
+				$catinfo = D('category')->field('catid,catname,arrparentid,`type`,catdir,domain')->wheres(array('catid'=>array('in', $catids, 'intval')))->select();
 			}
 			
 			foreach($catinfo as $val){

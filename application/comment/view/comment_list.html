@@ -40,7 +40,7 @@
 		 <a href="<?php echo U('init');?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</a>
 		 </form>	
   </div>
-	<div class="cl mt-15 tb-top"> <span class="l"><a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontongguo"></i> 通过审核</a> <a href="javascript:;" onclick="yzm_dels('id')" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a></span></div>
+	<div class="cl mt-15 tb-top"> <span class="l"><a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontongguo"></i> 通过审核</a> <a href="javascript:;" onclick="yzm_dels('id', 1)" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a></span></div>
 	<form method="post" action="<?php echo U('del');?>" id="myform">
 	<table class="table table-border table-bg table-hover yzm-table-sort">
 		<thead>
@@ -101,9 +101,23 @@
 		if ($("input[name='id[]']:checked").length<1){
 		   layer.alert('请选择要操作的内容！');
 		   return false;
-		}	
-		document.getElementById('myform').action='<?php echo U('adopt');?>';
-		document.getElementById('myform').submit();
+		}
+		layer.msg('正在操作中...', { icon: 16, shade: 0.21, time:false });
+	    $.ajax({
+			type: 'POST',
+			url: '<?php echo U('adopt');?>', 
+			data: $("#myform").serialize(),
+			dataType: "json", 
+			success: function (msg) {
+				if(msg.status == 1){
+					layer.msg(msg.message, {icon:1, time:1000}, function(){
+						location.reload();
+					});
+			    }else{
+					layer.msg(msg.message, {icon:2});
+				}
+			}
+	    })
 	}
 </script>	
 </body>

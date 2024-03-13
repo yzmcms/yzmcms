@@ -259,7 +259,7 @@ class collection_content extends common {
 		
 		$collection_content = D('collection_content');
 		$order = $_POST['order'] =='1' ? 'id ASC' : 'id DESC';
-		$res = $collection_content->field('id AS cid,status,data')->where(array('id'=>array('in', explode(',', $ids), 'intval')))->order($order)->select(); 
+		$res = $collection_content->field('id AS cid,status,data')->wheres(array('id'=>array('in', explode(',', $ids), 'intval')))->order($order)->select(); 
 		
 		$data = array();
 		$data['nickname'] = safe_replace($_POST['nickname']);

@@ -16,7 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 define('APPDIR', _dir_path(substr(dirname(__FILE__), 0, -8)));
 define('SITEDIR', dirname(APPDIR).DIRECTORY_SEPARATOR);
-define("VERSION", 'YzmCMS V7.0');
+define("VERSION", 'YzmCMS V7.1');
 
 if(is_file(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock')){
     exit("YzmCMS程序已运行安装，如果你确定要重新安装，请先从FTP中删除 cache/install.lock！");
@@ -90,7 +90,8 @@ switch ($step) {
 				$err++;
 			}
         }
-        if (!in_array(check_url($domain.'admin'), array('200', '550')) && strstr(gethostbyname($_SERVER['HTTP_HOST']), $_SERVER['SERVER_ADDR'])){
+        !isset($_SERVER['SERVER_ADDR']) && $_SERVER['SERVER_ADDR'] = '';
+        if (strstr(gethostbyname($_SERVER['HTTP_HOST']), $_SERVER['SERVER_ADDR']) && !in_array(check_url($domain.'admin'), array('200', '550'))){
             $rewrite_module = '<span class="correct_span error_span">&radic;</span> 未开启，<a href="javascript:;" onclick="javascript:location.reload();">刷新</a>或<a href="https://www.yzmcms.com/dongtai/121.html" target="_blank">查看教程</a>';
             $err++;
         } else {
@@ -158,7 +159,13 @@ switch ($step) {
             }
             mysqli_query($conn, "SET NAMES utf8"); 
 
-            if (!mysqli_select_db($conn, $dbName)) {
+            try {  
+                $is_db_exist = mysqli_select_db($conn, $dbName);
+            } catch (mysqli_sql_exception $e) {  
+                $is_db_exist = false;
+            }
+
+            if (!$is_db_exist) {
                 //创建数据时同时设置编码
                 if (!mysqli_query($conn, "CREATE DATABASE IF NOT EXISTS `" . $dbName . "` DEFAULT CHARACTER SET utf8;")) {
                     $arr['msg'] = '数据库 ' . $dbName . ' 不存在，也没权限创建新的数据库！';
@@ -342,7 +349,7 @@ function check_url($url){
     curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, false);
     curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, false);
     curl_setopt($curl, CURLOPT_NOSIGNAL, true); 
-    curl_setopt($curl, CURLOPT_TIMEOUT, 1); 
+    curl_setopt($curl, CURLOPT_TIMEOUT, 2); 
     curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
     $output = curl_exec($curl);
     $httpcode = curl_getinfo($curl, CURLINFO_HTTP_CODE);

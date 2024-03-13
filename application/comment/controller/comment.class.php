@@ -84,13 +84,13 @@ class comment extends common {
 			$comment = D('comment');
 			foreach($_POST['id'] as $val){
 				$comment_data = $comment ->field('commentid')->where(array('id'=>$val))->find();
-				if(!$comment_data) showmsg('该评论不存在，请返回检查！');
+				if(!$comment_data) return_json(array('status'=>0,'message'=>'评论【'.$val.'】不存在，请检查！'));
 				$commentid = $comment_data['commentid'];
 				$comment->delete(array('id'=>$val));
 				$comment->query("UPDATE yzmcms_comment_data SET `total` = `total`-1 WHERE commentid='$commentid'");
 				$comment->delete(array('reply'=>$val));
 			}
-			showmsg(L('operation_success'), '', 1);
+			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}
 	}
 	
@@ -99,20 +99,18 @@ class comment extends common {
 	 * 通过审核
 	 */
 	public function adopt() {
-		if(is_ajax()){
-			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
-			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
-			D('comment')->update(array('status'=>$value), array('id'=>$id));
-			return_json(array('status'=>1, 'message'=>L('operation_success')));
-		}
 
-		if(is_post() && is_array($_POST['id'])){
-			$comment = D('comment');
+		$comment = D('comment');
+		if(is_array($_POST['id'])){
 			foreach($_POST['id'] as $val){
 				$comment->update(array('status'=>1), array('id' => $val));
 			}
-			showmsg(L('operation_success'), '', 1);
+		}else{
+			$id = isset($_POST['id']) ? intval($_POST['id']) : 0;
+			$value = isset($_POST['value']) ? intval($_POST['value']) : 0;
+			$comment->update(array('status'=>$value), array('id'=>$id));
 		}
+		return_json(array('status'=>1,'message'=>L('operation_success')));
 	}
 	
 }

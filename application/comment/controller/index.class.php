@@ -109,9 +109,10 @@ class index{
 	 * 更多评论
 	 */
 	public function more(){
-		$sign = isset($_GET['sign']) ? trim($_GET['sign']) : return_message(L('lose_parameters'), 0);
+		$sign = isset($_GET['sign'])&&is_string($_GET['sign']) ? trim($_GET['sign']) : return_message(L('lose_parameters'), 0);
+		if(!strpos($sign, '_')) return_message(L('illegal_parameters'), 0);
 		list($modelid, $id) = explode('_', $sign);
-		$tabname = get_model($modelid);
+		$tabname = get_model($modelid, 'tablename', true);
 		if(!$tabname) return_message(L('illegal_parameters'), 0);
 		$id = intval($id);
 		$content_data = D($tabname)->field('catid,status,title,url,inputtime,updatetime,keywords,description')->where(array('id'=>$id))->find();

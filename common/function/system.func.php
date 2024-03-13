@@ -93,6 +93,7 @@ function get_site_seo($siteid = null, $title = '', $keyword = '', $site_descript
  * 获取内容页URL 
  * @param $catid 
  * @param $id 
+ * @return string
  */
 function get_content_url($catid, $id){
 	if(!$catid || !$id) return '';
@@ -165,6 +166,7 @@ function get_modelinfo($typeall = 0){
 		$where['type'] = 0;
 	}else{
 		$filename = 'modelinfo_all';
+		$where['type!='] = 2;
 	}
 	
 	if(!$modelinfo = getcache($filename)){
@@ -181,7 +183,7 @@ function get_modelinfo($typeall = 0){
  * @param $title    邮件标题
  * @param $content     邮件内容
  * @param $mailtype    邮件内容类型
- * @return true or false
+ * @return bool
  */
 function sendmail($email, $title = '', $content = '', $mailtype = 'HTML'){
     if(!is_email($email)) return false;
@@ -213,13 +215,14 @@ function ismobile(){
 
 /**
  * 返回附件类型图标
- * @param $file 附件名称
+ * @param  string $file 附件名称
+ * @return string
  */
 function file_icon($file){
-	$ext_arr = array('doc','docx','ppt','xls','txt','pdf','mdb','jpg','gif','png','bmp','jpeg','rar','zip','swf','flv');
-	$ext = fileext($file);
-	if(in_array($ext,$ext_arr)) return STATIC_URL.'images/ext/'.$ext.'.gif';
-	else return STATIC_URL.'images/ext/hlp.gif';
+    $ext_arr = array('code','css','dir','doc','docx','gif','html','jpeg','jpg','js','mp3','mp4','pdf','php','png','ppt','pptx','psd','rar','sql','swf','txt','xls','xlsx','xml','zip');
+    $ext = fileext($file);
+    if(in_array($ext,$ext_arr)) return STATIC_URL.'images/ext/'.$ext.'.png';
+    return STATIC_URL.'images/ext/hlp.png';
 }
 
 
@@ -458,7 +461,8 @@ function down_remote_img($content, $targeturl = ''){
 /**
  * 更新内容附件
  * @param   $modelid 
- * @param   $id  
+ * @param   $id
+ * @return bool
  */
 function update_attachment($modelid, $id){
 	$attachmentid = isset($_SESSION['roleid'])&&isset($_SESSION['attachmentid']) ? $_SESSION['attachmentid'] : get_cookie('attachmentid');
@@ -481,7 +485,8 @@ function update_attachment($modelid, $id){
 /**
  * 删除内容附件
  * @param   $modelid 
- * @param   $id  
+ * @param   $id
+ * @return bool
  */
 function delete_attachment($modelid, $id){
 	if(!get_config('att_relation_content')) return false;
@@ -503,6 +508,7 @@ function delete_attachment($modelid, $id){
 /**
  * 获取当前的站点ID
  * 兼容站群模块/联系QQ：214243830
+ * @return int
  */
 function get_siteid() {
 
@@ -519,7 +525,7 @@ function get_siteid() {
  * 兼容站群模块/联系QQ：214243830
  * @param  int $siteid
  * @param  string $parameter
- * @return array or string     
+ * @return array|string     
  */
 function get_site($siteid = 0, $parameter = ''){
 
@@ -542,7 +548,7 @@ function get_site($siteid = 0, $parameter = ''){
 /**
  * 是否存在子栏目
  * @param  array  $data 栏目信息或栏目ID
- * @return boolean
+ * @return bool
  */
 function is_childid($data){
 	if(is_numeric($data)) $data = get_category($data);
@@ -558,7 +564,7 @@ function is_childid($data){
  * @param  int $catid
  * @param  string $parameter
  * @param  bool  $all
- * @return array or string
+ * @return array|string
  */
 function get_category($catid = 0, $parameter = '', $all = false){
 	if($all){
@@ -657,10 +663,11 @@ function get_location($catid, $is_mobile=false, $self=true, $symbol=' &gt; '){
  *
  * @param  int $modelid
  * @param  bool $parameter 获取键名称
+ * @param  bool $is_site 是否只加载当前站点信息
  * @return string
  */
-function get_model($modelid, $parameter = 'tablename'){
-	$modelinfo = get_modelinfo(1);
+function get_model($modelid, $parameter = 'tablename', $is_site = false){
+	$modelinfo = $is_site ? get_site_modelinfo() : get_modelinfo(1);
 	$modelarr = array();
 	foreach($modelinfo as $val){
 		$modelarr[$val['modelid']] = $val;
@@ -673,6 +680,7 @@ function get_model($modelid, $parameter = 'tablename'){
 /**
  * 获取当前站点默认模型
  * @param   $key 获取的key
+ * @return string|array
  */
 function get_default_model($key = false){
 	$default_model = array();
@@ -694,7 +702,7 @@ function get_default_model($key = false){
  *
  * @param  int $catid
  * @param  string $parameter
- * @return array or string
+ * @return array|string
  */
 function get_content_keyword(){
 	$res = getcache('keyword_link');
@@ -783,6 +791,7 @@ function get_memberavatar($user, $type=1, $default=true) {
 /**
  * 设置路由映射
  * @param string $m 模块名
+ * @return array
  */
 function set_mapping($m) {
 	$siteid = get_siteid();
@@ -829,10 +838,11 @@ function get_urlrule() {
  * 获取用户所有信息
  * @param $userid 
  * @param $additional  是否获取附表信息
- * @return array or false
+ * @return array|false
  */
 function get_memberinfo($userid, $additional=false){	
 	$memberinfo = array();
+	if(!$userid) return $memberinfo;
 	global $member;
 	$member = isset($member) ? $member : D('member');
 	$memberinfo = $member->field('username,regdate,lastdate,lastip,loginnum,email,groupid,amount,experience,point,status,vip,overduedate,email_status')->where(array('userid' => $userid))->find();

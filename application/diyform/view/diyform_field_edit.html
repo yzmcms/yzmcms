@@ -62,8 +62,8 @@
 				<tr>
 					<td>字符长度取值范围</td> 
 					<td class="yzm-explain-box">最小值：<input class="input-text w_100" type="text" value="<?php echo $data['minlength'];?>" name="minlength">
-                        最大值：<input class="input-text w_100" type="text" value="<?php echo $data['maxlength'];?>" name="maxlength">
-                        <span class="yzm-explain">最小值为1则为必填项，为0则非必填项</span>
+                        最大值：<input class="input-text w_100 disabled" type="text" disabled value="<?php echo $data['maxlength'];?>" name="maxlength">
+                        <span class="yzm-explain">最小值为1则为必填项，为0则非必填项<br>最大值指的是数据库表字段的最大长度</span>
                     </td>
 				</tr>	
 				<tr>

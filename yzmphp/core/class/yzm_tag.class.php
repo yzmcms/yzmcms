@@ -473,10 +473,10 @@ class yzm_tag{
 	 * @param $modelid
 	 */
 	private function _set_model($modelid) {
-		$model = get_model($modelid);
-		if(!$model)  return false;
-		$this->tablename = $model;
-		$this->db = D($model);
+		$model_info = yzm_array_column(get_site_modelinfo(), 'tablename', 'modelid');
+		if(!isset($model_info[$modelid])) return false;
+		$this->tablename = $model_info[$modelid];
+		$this->db = D($this->tablename);
 		return true;
 	}
 	

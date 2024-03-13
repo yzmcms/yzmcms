@@ -93,7 +93,7 @@ class admin_log extends common {
 			}
 			if($searinfo){
 				if($type == '1')
-					$where['adminname'] = $_SESSION['roleid']>1 ? $_SESSION['adminname'] : $searinfo;
+					$where['adminname'] = $_SESSION['roleid']>1 ? $_SESSION['adminname'] : '%'.$searinfo.'%';
 				else
 					$where['loginip'] = '%'.$searinfo.'%';
 			}			

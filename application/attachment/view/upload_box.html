@@ -39,7 +39,7 @@
 				<ul>
 					<?php
 					foreach($data as $val){
-						$thum = $val['isimage'] ? $val['filepath'].$val['filename'] : (in_array($val['fileext'], array('zip', 'rar')) ? STATIC_URL.'images/ext/rar.png' : STATIC_URL.'images/ext/blank.png');
+						$thum = $val['isimage'] ? $val['filepath'].$val['filename'] : file_icon($val['filename']);
 						echo '<li><a href="javascript:;" onclick="album_cancel(this)" title="'.$val['originname'].'"><img class="img_src" src="'.$thum.'" attid="'.$val['id'].'" path="'.$val['filepath'].$val['filename'].'"><img src="'.STATIC_URL.'images/checked.gif" class="checkd hidden"></a><span class="yzm-iconfont img_del" onclick="yzm_att_del(\''.U('delete', array('id'=>$val['id'])).'\', \''.$val['originname'].'\')">&#xe625;</span></li>';
 					}
 					?>
@@ -123,7 +123,15 @@ $(function(){
 		
 		<?php } ?>
 		parent.layer.close(index);
-	});	
+	});
+
+	if(localStorage.getItem('open_watermark')) {
+		$('#open_watermark').prop('checked', localStorage.getItem('open_watermark') === 'true');
+	}
+
+	$('#open_watermark').on('change', function(){
+		localStorage.setItem('open_watermark', this.checked);
+	});
 	
 	$('#cancel').on('click', function(){
 		parent.layer.close(index);

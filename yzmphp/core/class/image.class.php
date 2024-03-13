@@ -132,10 +132,24 @@ class image {
 			imagecopyresampled($thumbimg, $srcimg, 0, 0, $psrc_x, $psrc_y, $width, $height, $srcwidth, $srcheight); 
 		else
 			imagecopyresized($thumbimg, $srcimg, 0, 0, $psrc_x, $psrc_y, $width, $height,  $srcwidth, $srcheight); 
+
 		if($type=='gif' || $type=='png') {
-			$background_color  =  imagecolorallocate($thumbimg,  0, 255, 0);  //  指派一个绿色  
-			imagecolortransparent($thumbimg, $background_color);  //  设置为透明色，若注释掉该行则输出绿色的图 
+		    $thumbimg = imagecreatetruecolor($createwidth, $createheight); 
+
+		    // 设置透明背景
+		    $background_color = imagecolorallocatealpha($thumbimg, 255, 255, 255, 127);
+		    imagefill($thumbimg, 0, 0, $background_color);
+
+		    // 保存透明通道信息
+		    imagesavealpha($thumbimg, true);
+
+		    if (function_exists('imagecopyresampled')) {
+		        imagecopyresampled($thumbimg, $srcimg, 0, 0, $psrc_x, $psrc_y, $createwidth, $createheight, $srcwidth, $srcheight); 
+		    } else {
+		        imagecopyresized($thumbimg, $srcimg, 0, 0, $psrc_x, $psrc_y, $createwidth, $createheight,  $srcwidth, $srcheight); 
+		    }
 		}
+		
 		if($type=='jpg' || $type=='jpeg') imageinterlace($thumbimg, $this->interlace);
 		$imagefun = 'image'.($type=='jpg' ? 'jpeg' : $type);
 		if(empty($filename)) $filename  = substr($image, 0, strrpos($image, '.')).$suffix.'.'.$type;
@@ -185,7 +199,7 @@ class image {
 
 		if($type=='jpg' || $type=='jpeg') imageinterlace($thumbimg, $this->interlace);
 		$imagefun = 'image'.($type=='jpg' ? 'jpeg' : $type);
-		if(empty($filename)) $filename  = substr($image, 0, strrpos($image, '.')).$suffix.'.'.$type;
+		if(empty($filename)) $filename  = substr($image, 0, strrpos($image, '.')).'.'.$type;
 		$imagefun($thumbimg, $filename);
 		imagedestroy($thumbimg);
 		imagedestroy($srcimg);
@@ -206,7 +220,7 @@ class image {
 	 */
 	public function watermark($source, $target = '', $w_pos = '', $w_img = '', $w_text = 'yzmcms', $w_font = 8, $w_color = '#ff0000') {
 		$w_pos = $w_pos ? $w_pos : $this->w_pos;
-		$w_img = $w_img ? YZMPHP_PATH.'common/data/water/'.$w_img : $this->w_img;
+		$w_img = $w_img ? $w_img : $this->w_img;
 		if(!$this->watermark_enable || !$this->check($source)) return false;
 		if(!$target) $target = $source;
 		$source_info = getimagesize($source);
@@ -222,6 +236,8 @@ class image {
 				break;
 			case 3 :
 				$source_img = imagecreatefrompng($source);
+				imagealphablending($source_img, true);
+    			imagesavealpha($source_img, true);
 				break;
 			default :
 				return false;

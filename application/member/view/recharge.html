@@ -6,7 +6,7 @@
 <div class="page-container">
   <div class="sub_menu"><a href="<?php echo U('pay');?>">入账记录</a> <a href="<?php echo U('pay_spend');?>">消费记录</a> <a href="<?php echo U('recharge');?>"  class="on">在线充值</a></div>
  <div class="formdoby_normal"> 
-	<form method="post" action="" onsubmit="return checkall()">
+	<form method="post" action="" onsubmit="return checkall(this)">
 		<ul>
 			 <li><label><span class="c-red">*</span>充值类型：</label>
 			 	<label class="label_radio"><input name="type" type="radio" value="2" checked> 金钱</label>
@@ -94,7 +94,7 @@ function checkmoney(){
 	}		   
 }
 
-function checkall(){
+function checkall(obj){
     if(!checkname() || !checkmoney()){
 		return false;
 	}
@@ -102,8 +102,25 @@ function checkall(){
 	if($("textarea[name='remarks']").val() == ''){
 		layer.msg('备注说明不能为空！', {icon:2});
 		return false;
-	}	
-	return true;
+	}
+
+	layer.msg('正在充值中……', {icon:16, time:0, shade:0.3});
+	$.ajax({
+        type: 'POST',
+        url: '<?php echo U(ROUTE_A);?>', 
+        data: $(obj).serialize(),
+	    dataType: "json", 
+        success: function (msg) {
+			if(msg.status == 1){
+				layer.msg(msg.message, {icon:1, time:2000}, function(){
+					window.location.href = msg.url;
+				});
+		    }else{
+				layer.msg(msg.message, {icon:2});
+			}
+        }
+    })		 
+	return false;
 }
 </script>
 

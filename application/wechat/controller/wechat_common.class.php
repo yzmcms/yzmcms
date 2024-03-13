@@ -70,7 +70,7 @@ class wechat_common extends common{
 				if(!is_array($value)){
 					$jsonstr[$key] = urlencode($value);
 				}else{
-					$jsonstr[$key] = urlencode(my_json_encode($value));
+					$jsonstr[$key] = urlencode($this->my_json_encode($value));
 				}
 			}  
 			$jsonstr = urldecode(json_encode($jsonstr)); 

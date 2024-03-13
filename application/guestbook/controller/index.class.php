@@ -11,7 +11,7 @@
 
 class index{
 
-	private $siteid,$siteinfo,$ip;
+	private $siteid,$siteinfo,$ip,$module;
 	
 	public function __construct(){
 		$ismobile = ismobile() ? true : false;

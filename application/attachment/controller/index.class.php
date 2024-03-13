@@ -74,8 +74,10 @@ class index extends common{
 		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
 		$info = D('attachment')->where(array('id'=>$id))->find();
 		if($info){
-			echo '<p style="text-align:center;">';
-			echo $info['isimage'] ? '<img src="'.$info['filepath'].$info['filename'].'" style="max-width:100%">' : '<img src="'.(in_array($info['fileext'], array('zip', 'rar')) ? STATIC_URL.'images/ext/rar.png' : STATIC_URL.'images/ext/blank.png').'" title="'.$info['originname'].'"><a style="font-size:14px;display:block;margin-top:20px;" href="'.$info['filepath'].$info['filename'].'" download="'.$info['originname'].'">点击下载</a>';
+			echo '<p style="text-align:center;margin-top:50px">';
+			echo $info['isimage'] ? '<img src="'.$info['filepath'].$info['filename'].'" style="max-width:100%">' : '<img src="'.file_icon($info['filename']).'" title="'.$info['originname'].'" style="width:100px">
+				<span style="display:block;margin-top:8px;font-size:13px;color:#333;">'.$info['originname'].'</span>
+				<a style="font-size:14px;display:block;margin-top:20px;color:#0583e7" href="'.$info['filepath'].$info['filename'].'" download="'.$info['originname'].'">点击下载</a>';
 			echo '</p>';
 		}
 	}

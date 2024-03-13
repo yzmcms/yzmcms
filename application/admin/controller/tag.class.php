@@ -131,7 +131,7 @@ class tag extends common {
 				$tag_content->delete(array('tagid'=>$id));
 			}
 		}
-		showmsg(L('operation_success'),'',1);
+		return_json(array('status'=>1,'message'=>L('operation_success')));
 	}
 
 

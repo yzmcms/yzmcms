@@ -200,7 +200,7 @@ class content extends common {
 		if($_POST && is_array($_POST['ids'])){
 			if(empty($_POST['ids'])) return_json(array('status'=>0,'message'=>L('lose_parameters')));
 			$content = D($this->content->tabname);
-			$data = $content->field('url,is_push')->where(array('id'=>array('in', $_POST['ids'], 'intval')))->select();
+			$data = $content->field('url,is_push')->wheres(array('id'=>array('in', $_POST['ids'], 'intval')))->select();
 			$urls = array();
 			$site_url = get_site_url();
 			foreach ($data as $value) {
@@ -232,7 +232,7 @@ class content extends common {
 				curl_close($ch);
 				$result = json_decode($result, true);
 				if(isset($result['success'])){
-					$content->update(array('is_push' => 1), array('id'=>array('in', $_POST['ids'], 'intval')));
+					$content->wheres(array('id'=>array('in', $_POST['ids'], 'intval')))->update(array('is_push' => 1));
 					return_json(array('status'=>1,'message'=>'成功推送'.$result['success'].'条URL地址！'));
 				}else{
 					return_json(array('status'=>0,'message'=>'推送失败，错误码：'.$result['error']));

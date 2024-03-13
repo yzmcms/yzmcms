@@ -1,44 +1,139 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
 <title>会员统计 - YzmCMS内容管理系统</title>
-<style>
-	html,body{height:100%;}
-	.page-container{height:80%;}
-</style>
 </head>
 <body>
 <nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 会员管理 <span class="c-gray en">&gt;</span> 会员统计 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <article class="page-container">
-	<div id="main" style="width:100%;height:100%"></div>
+	<div class="member_count mb-20">
+		<div class="member_count_item item1">
+			<i class="yzm-iconfont yzm-iconyonghu"></i>
+			<p>会员总数</p>
+			<span><?php echo $data1;?></span>
+		</div>
+		<div class="member_count_item item2">
+			<i class="yzm-iconfont yzm-iconxietong"></i>
+			<p>正常用户</p>
+			<span><?php echo $data2;?></span>
+		</div>
+		<div class="member_count_item item3">
+			<i class="yzm-iconfont yzm-iconlock-line"></i>
+			<p>锁定用户</p>
+			<span><?php echo $data3;?></span>
+		</div>
+		<div class="member_count_item item4">
+			<i class="yzm-iconfont yzm-iconshenfenrenzheng"></i>
+			<p>VIP用户</p>
+			<span><?php echo $data4;?></span>
+		</div>
+		<div class="member_count_item item5">
+			<i class="yzm-iconfont yzm-iconshijian"></i>
+			<p>7日内登录</p>
+			<span><?php echo $data5;?></span>
+		</div>
+		<div class="member_count_item item6">
+			<i class="yzm-iconfont yzm-iconyoujian"></i>
+			<p>绑定邮箱</p>
+			<span><?php echo $data6;?></span>
+		</div>
+	</div>
+	<div>
+		<div class="col-xs-6" style="padding-left:0">
+			<div id="main1" style="width:100%;height:500px" class="member_count pt-20"></div>
+		</div>
+		<div class="col-xs-6" style="padding-right:0">
+			<div id="main2" style="width:100%;height:500px" class="member_count pt-20"></div>
+		</div>
+	</div>
+
+
 </article>
 <script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/echarts/echarts.common.min.js"></script>
 <script type="text/javascript">
 
-	var res = <?php echo $result;?>;
-	var myChart = echarts.init(document.getElementById('main'));
+	line_chart('main1', '一周内注册会员统计', <?php echo $result1;?>);
+	pie_chart('main2', '会员组人员统计', <?php echo $result2;?>);
 
-	var option = {
-		title: {
-			text: '近10日注册会员统计'
-		},
-		color: ['#409eff'],
-		tooltip: {
-			trigger: 'axis'
-		},
-		xAxis: {
-		    type: 'category',
-		    data: res.day
-	    },
-	    yAxis: {
-		    type: 'value'
-	    },
-	    series: [{
-		    data: res.num,
-		    smooth: true,
-		    type: 'line'
-	    }]
-	};
+	function line_chart(id, title, data) {
+		var myChart = echarts.init(document.getElementById(id));
 
-	myChart.setOption(option);
+		var option = {
+			title: {
+				text: title,
+				left: 20
+			},
+			color: ['#409eff'],
+			tooltip: {
+				trigger: 'axis'
+			},
+			xAxis: {
+			    type: 'category',
+			    data: data.day
+		    },
+		    yAxis: {
+			    type: 'value',
+			    splitLine :{
+					lineStyle:{
+						type:'dashed'
+					}
+				}
+		    },
+		    series: [{
+			    data: data.num,
+			    smooth: true,
+			    type: 'line',
+				areaStyle: {
+					normal: {
+						color: {
+							x: 0,
+							y: 0,
+							x2: 0,
+							y2: 1,
+							colorStops: [{
+								offset: 0,
+								color: "#409eff"
+							}, {
+								offset: 0.7,
+								color: "#d9ecff"
+							}]
+						}
+					}
+				}
+		    }]
+		};
+
+		myChart.setOption(option);
+	}
+
+	function pie_chart(id, title, data) {
+
+        var option = {
+            color: [ "#1890ff", "#2fc25b", "#13c2c2", "#ff9700", "#5C6BC0", "#66BB6A", "#FF7043", "#26C6DA", "#29B6F6", "#42A5F5", "#FFCA28", "#7E57C2" ],
+            title: {
+                text: title,
+                left: 20
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            series: [
+                {
+                    name: title,
+                    type: 'pie',
+                    radius: ['30%', '60%'],
+                    label: {
+                        show : true,
+                        formatter: '{b}：{c}({d}%)'
+                    },
+                    data: data
+                }
+            ]
+        };
+
+        var myChart = echarts.init(document.getElementById(id));
+        myChart.setOption(option);
+    }
+
+
 </script>
 </body>
 </html>

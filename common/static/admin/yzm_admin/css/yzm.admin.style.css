@@ -174,6 +174,18 @@ select{background:#fff}
 .lock-submit:hover{background:#1c5ff4}
 .layui-layer-tips{margin-top:-12px !important}
 
+.member_count{border: 1px solid #ebeef5;border-radius: 5px;background: #fff;box-shadow: 0 8px 20px #315b8214, 0 12px 32px 4px #315b820a;overflow: hidden;box-sizing: border-box;}
+.member_count_item{width:16.6666666%;float: left;padding:20px;box-sizing: border-box;}
+.member_count_item .yzm-iconfont{font-size: 30px;border-radius: 15px;padding: 15px;font-weight: bold;float: left;height: 30px;width: 30px;text-align: center;line-height: 30px;margin: 0 15px;}
+.item1 .yzm-iconfont{color: #1890ff;background: #d9ecff;}
+.item2 .yzm-iconfont{color: #00785a;background: #c7e6de;}
+.item3 .yzm-iconfont{color: #f45e63;background: #ffc1c3;}
+.item4 .yzm-iconfont{color: #13c2c2;background: #d8faff;}
+.item5 .yzm-iconfont{color: #f28d00;background: #fde3be;}
+.item6 .yzm-iconfont{color: #58c325;background: #c2f0ab;}
+.member_count_item p{font-size: 14px;margin:5px 0;color:#606266;}
+.member_count_item span{font-size: 20px;font-weight: bold;color:#4e4e4e;}
+
 #yzmcms_notice{width:300px;line-height:50px;color:#fff;background-color:rgba(0,0,0,0.6);font-size:14px;text-align:center;position:fixed;top:50%;left:50%;margin-top:-30px;margin-left:-150px;overflow:hidden;display:none;border-radius:3px}
 #yzmcms_notice a{color:red;font-size:12px}
 

@@ -23,6 +23,7 @@ class tree {
 	public $icon = array('│','├','└');
 	public $nbsp = "&nbsp;";
 	public $ret = '';
+	public $str = '';
 
 	/**
 	* 构造函数，初始化类

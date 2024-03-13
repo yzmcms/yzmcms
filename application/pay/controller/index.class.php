@@ -14,7 +14,7 @@ class index{
 	 */	
 	public function pay_callback(){
 		if(is_post()){
-			$out_trade_no = $_POST['out_trade_no'];
+			$out_trade_no = isset($_POST['out_trade_no'])&&is_string($_POST['out_trade_no']) ? trim($_POST['out_trade_no']) : '';
 			$order = D('order')->field('id,order_sn,status,userid,username,paytype,money,quantity,`type`,`desc`')->where(array('order_sn' => $out_trade_no))->find();
 			if(!$order) exit('fail');
 			$order_params = array(

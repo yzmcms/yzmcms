@@ -185,7 +185,7 @@ class cache_file{
     /**
      * 从文件得到数据
      * 
-     * @param  sring $file
+     * @param  string $file
      * @return boolean|array
      */
     protected function _filegetcontents($file){

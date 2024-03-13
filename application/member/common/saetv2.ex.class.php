@@ -121,6 +121,8 @@ class SaeTOAuthV2 {
 	 */
 	public static $boundary = '';
 
+	public $postdata,$remote_ip,$http_header;
+
 	/**
 	 * Set API URLS
 	 */
@@ -493,6 +495,8 @@ class SaeTOAuthV2 {
  */
 class SaeTClientV2
 {
+
+	public $oauth;
 	/**
 	 * 构造函数
 	 * 

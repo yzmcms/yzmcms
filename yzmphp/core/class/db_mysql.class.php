@@ -4,7 +4,7 @@
  *  
  * @author           袁志蒙  
  * @license          http://www.yzmcms.com
- * @lastmodify       2018-03-30
+ * @lastmodify       2024-03-10
  */
 	
 class db_mysql{
@@ -62,7 +62,7 @@ class db_mysql{
 	 * 
 	 * 当第二次切换到相同的数据库的时候，就不需要传入数据库连接信息了，可以直接使用：D('tablename')->db(1)->select();
 	 * 如果需要切换到默认的数据库连接，只需要调用：D('tablename')->db(0)->select();
-	 *
+	 * @return object
 	 */		
 	public function db($linknum = 0, $config = array()){
 		if(isset(self::$db_link[$linknum])){
@@ -125,57 +125,47 @@ class db_mysql{
 	/**
 	 * 内部方法：数据库查询执行方法
 	 * @param $sql 要执行的sql语句
-	 * @return 查询资源句柄
+	 * @return object
 	 */
 	private function execute($sql) {
-		$sql_start_time = microtime(true);
-		$this->lastsql = $sql;
-		$res = mysql_query($sql) or $this->geterr($sql);
-		$this->key = array();
-		APP_DEBUG && debug::addmsg($sql, 1, $sql_start_time);
-		return $res;
+		try{
+			$sql_start_time = microtime(true);
+			$this->lastsql = $sql;
+			$res = mysql_query($sql) or $this->geterr($sql);
+			$this->key = array();
+			APP_DEBUG && debug::addmsg($sql, 1, $sql_start_time);
+			return $res;
+		}catch (Exception $e){
+			if (strpos($e->getMessage(), 'server has gone away') !== false) {
+		        self::$db_link[0]['db'] = self::$link = self::connect();
+		        return $this->execute($sql);
+		    }
+			$this->geterr('Execute SQL error, message : '.$e->getMessage(), $sql);
+		}
 	}	
 	
 
 	/**
 	 * 组装where条件，将数组转换为SQL语句
 	 * @param array $where  要生成的数组,参数可以为数组也可以为字符串，建议数组。
-	 * return string
+	 * return object
 	 */
 	public function where($arr = ''){
-		if(empty($arr))  return $this;
+		if(empty($arr) || isset($this->key['wheres']))  return $this;	
 		if(is_array($arr)) {
 			$args = func_get_args();
 			$str = '(';
 			foreach ($args as $value){
 				foreach($value as $kk => $vv){
-					if(!is_array($vv)){
-						$vv = !is_null($vv) ? $this->safe_data($vv) : '';
-						if(!strpos($kk,'>') && !strpos($kk,'<') && !strpos($kk,'=') && substr($vv, 0, 1) != '%' && substr($vv, -1) != '%'){   
-							$str .= $kk." = '".$vv."' AND ";
-						}else if(substr($vv, 0, 1) == '%' || substr($vv, -1) == '%'){
-							$str .= $kk." LIKE '".$vv."' AND "; 
-						}else{ 
-							$str .= $kk."'".$vv."' AND ";   
-						}
-						
-					}else{
-						
-						$exp_arr = array('eq'=>'=','neq'=>'<>','gt'=>'>','egt'=>'>=','lt'=>'<','elt'=>'<=','notlike'=>'NOT LIKE','like'=>'LIKE','in'=>'IN','notin'=>'NOT IN','not in'=>'NOT IN','between'=>'BETWEEN','not between'=>'NOT BETWEEN','notbetween'=>'NOT BETWEEN');
-						
-						$exp = isset($vv[0])&&isset($exp_arr[strtolower($vv[0])]) ? $exp_arr[strtolower($vv[0])] : '';
-						$rule = isset($vv[1]) ? $vv[1] : '';
-						$fun = isset($vv[2]) ? $vv[2] : '';
-						if(!$exp) $this->geterr('The expression '.$vv[0].' does not exis!'); 
-						
-						if(is_array($rule)) {
-							if($fun) $rule = array_map($fun, $rule);
-							$rule = strpos($exp, 'BETWEEN') === false ? "('".join("','", $rule)."')" : "'".join("' AND '", $rule)."'";
-						}else{
-							$rule = $fun ? "'".$fun($rule)."'" : "'".$this->safe_data($rule)."'";
-						}
+					if(is_array($vv)) $vv = 'array';
 
-						$str .= $kk.' '.$exp.' '.$rule.' AND '; 
+					$vv = !is_null($vv) ? $this->safe_data($vv) : '';
+					if(!strpos($kk,'>') && !strpos($kk,'<') && !strpos($kk,'=') && substr($vv, 0, 1) != '%' && substr($vv, -1) != '%'){   
+						$str .= $kk." = '".$vv."' AND ";
+					}else if(substr($vv, 0, 1) == '%' || substr($vv, -1) == '%'){
+						$str .= $kk." LIKE '".$vv."' AND "; 
+					}else{ 
+						$str .= $kk."'".$vv."' AND ";   
 					}
 				}
 				$str = rtrim($str,' AND ').')';
@@ -183,11 +173,66 @@ class db_mysql{
 			}
 			$str = rtrim($str,' OR (');
 			$this->key['where'] = $str;
-			return $this;
 		}else{
 			$this->key['where'] = str_replace('yzmcms_', $this->config['db_prefix'], $arr);	
-			return $this;
 		}
+		return $this;
+	}
+
+
+	/**
+	 * 组装where条件，where方法升级版
+	 * 格式：$where['字段']  = array('表达式','字段条件','可选参数(函数名)');
+	 * 简写：$where['字段']  = array('yzmcms') 等价 $where['字段']  = array('eq', 'yzmcms')
+	 * @param array $where  要生成的数组,参数可以为数组也可以为字符串，建议数组。
+	 * return object
+	 */
+	public function wheres($arr = ''){
+		if(empty($arr))  return $this;
+		if(is_array($arr)) {
+			$args = func_get_args();
+			$str = '(';
+			foreach ($args as $value){
+				foreach($value as $kk => $vv){
+					if(!is_array($vv)) $this->geterr('The parameters of the wheres method must be array!'); 
+
+					$exp_arr = array('eq'=>'=','neq'=>'<>','gt'=>'>','egt'=>'>=','lt'=>'<','elt'=>'<=','notlike'=>'NOT LIKE','like'=>'LIKE','in'=>'IN','notin'=>'NOT IN','not in'=>'NOT IN','between'=>'BETWEEN','not between'=>'NOT BETWEEN','notbetween'=>'NOT BETWEEN');
+					$fun_arr = array('intval','strval','trim','ltrim','rtrim','htmlspecialchars','addslashes','stripslashes','strip_tags','strtoupper','strtolower');
+					
+					$tmp_exp = isset($vv[0])&&!is_array($vv[0]) ? strtolower($vv[0]) : '';
+					$exp = isset($exp_arr[$tmp_exp]) ? $exp_arr[$tmp_exp] : '';
+					$rule = isset($vv[1]) ? $vv[1] : '';
+					$fun = isset($vv[2]) ? $vv[2] : '';
+
+					// 支持简写方式
+					if(!$exp && !$rule) {
+						$exp = '=';
+						$rule = $tmp_exp;
+					}
+
+					if(!$exp) $this->geterr('The expression '.$vv[0].' does not exis!');
+					if($fun && !in_array($fun, $fun_arr)) $this->geterr('The callback function '.$fun.' is disabled!'); 
+					
+					if(is_array($rule)) {
+						if(strpos($exp, 'IN') === false && strpos($exp, 'BETWEEN') === false) $rule = array('array');
+						if($fun) $rule = array_map($fun, $rule);
+						$rule = strpos($exp, 'BETWEEN') === false ? "('".join("','", $rule)."')" : "'".join("' AND '", $rule)."'";
+					}else{
+						$rule = $fun ? "'".$fun($rule)."'" : "'".$this->safe_data($rule)."'";
+					}
+					$str .= $kk.' '.$exp.' '.$rule.' AND ';
+				}
+				$str = rtrim($str,' AND ').')';
+				$str .= ' OR (';
+			}
+			$str = rtrim($str,' OR (');
+			$this->key['where'] = $str;
+		}else{
+			$this->key['where'] = str_replace('yzmcms_', $this->config['db_prefix'], $arr);	
+		}
+
+		$this->key['wheres'] = true;
+		return $this;
 	}
 	
 		
@@ -213,7 +258,7 @@ class db_mysql{
 	 * @param $filter       如果为真值[1为真] 则开启实体转义
 	 * @param $primary 		是否过滤主键
 	 * @param $replace 		是否为replace
-	 * @return int/boolean  成功：返回自动增长的ID，失败：false
+	 * @return int|boolean  成功：返回自动增长的ID，失败：false
 	 */
 	public function insert($data, $filter = false, $primary = true, $replace = false){
 		if(!is_array($data)) {
@@ -239,7 +284,7 @@ class db_mysql{
 	 * @param $data         要增加的数据，参数为二维数组
 	 * @param $filter       如果为真值[1为真] 则开启实体转义
 	 * @param $replace 		是否为replace
-	 * @return int/boolean  成功：返回首个自动增长的ID，失败：false
+	 * @return int|boolean  成功：返回首个自动增长的ID，失败：false
 	 */
 	public function insert_all($datas, $filter = false, $replace = false){
 		if(!is_array($datas) || !current($datas)) {
@@ -271,20 +316,23 @@ class db_mysql{
 	 *
 	 * @return int          返回影响行数
 	 */
-	public function delete($where, $many = false){	
-		if(is_array($where) && !empty($where)){
-            if(!$many){
-				$this->where($where);   
+	public function delete($where = array(), $many = false){
+		if(!isset($this->key['wheres'])){
+			if(is_array($where) && !empty($where)){
+				if(!$many){
+					$this->where($where);   
+				}else{
+					$where = array_map('intval', $where);
+					$sql = implode(', ', $where);
+					$this->key['where'] = $this->get_primary().' IN ('.$sql.')';
+				}			
 			}else{
-				$where = array_map('intval', $where);
-				$sql = implode(', ', $where);
-				$this->key['where'] = $this->get_primary().' IN ('.$sql.')';
-			}			
-			$sql = 'DELETE FROM '.$this->get_tablename().' WHERE '.$this->key['where'];
-		}else{
-			$this->geterr('delete function First parameter Must be array Or cant be empty!'); 
-			return false;
-		}
+				$this->geterr('delete function First parameter Must be array Or cant be empty!'); 
+				return false;
+			}
+		}	
+
+		$sql = 'DELETE FROM '.$this->get_tablename().' WHERE '.$this->key['where'];
 		$this->execute($sql);
 		return mysql_affected_rows();
 	}
@@ -301,8 +349,8 @@ class db_mysql{
 	 * @param $primary 		是否过滤主键
 	 * @return int          返回影响行数
 	 */		
-	public function update($data, $where = '', $filter = false, $primary = true){	
-		$this->where($where);
+	public function update($data, $where = array(), $filter = false, $primary = true){	
+		if(!isset($this->key['wheres'])) $this->where($where);
 		if(is_array($data)){
 			$data = $this->filter_field($data, $primary);				
 			$sets = array();
@@ -403,11 +451,10 @@ class db_mysql{
 	 * @return string
 	 */	
 	public function lastsql($echo = true){
-		$sql = $this->lastsql;
-		if($echo)
-			echo '<div style="font-size:14px;text-align:left; border:1px solid #9cc9e0;line-height:25px; padding:5px 10px;color:#000;font-family:Arial, Helvetica,sans-serif;"><p><b>SQL：</b>'.$sql.'</p></div>'; 	
-		else
-			return $sql;		
+		if(!$echo) {
+			return $this->lastsql;
+		}
+		echo '<div style="font-size:14px;text-align:left;border:1px solid #9cc9e0;line-height:25px;padding:5px 10px;color:#000;font-family:Arial,Helvetica,sans-serif;"><p><b>SQL：</b>'.$this->lastsql.'</p></div>';		
 	}
 
 	
@@ -455,10 +502,13 @@ class db_mysql{
 	/**
 	 * 获取错误提示
 	 */		
-	private function geterr($msg = ''){
+	private function geterr($msg, $sql=''){
+		if(PHP_SAPI == 'cli'){
+			throw new Exception('MySQL Error: '.mysql_error().' | '.$msg);
+		}
+		
 		if(APP_DEBUG){
 			if(is_ajax()) return_json(array('status'=>0, 'message'=>'MySQL Error: '.mysql_error().' | '.$msg));
-			if(PHP_SAPI == 'cli') exit('MySQL Error: '.mysql_error().' | '.$msg);
 			application::fatalerror($msg, mysql_error(), 2);	
 		}else{
 			write_error_log(array('MySQL Error', mysql_errno(), mysql_error(), $msg));
@@ -598,6 +648,7 @@ class db_mysql{
 	
 	/**
 	 * 关闭数据库连接
+	 * @return boolean
 	 */	
 	public function close(){
 	    return @mysql_close(self::$link);

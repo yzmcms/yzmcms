@@ -50,7 +50,7 @@
 			<td><?php echo $val['module'] ? $val['module'] : '/' ?></td>
 			<td>
 				<?php 
-				$src = $val['isimage'] ? $val['filepath'].$val['filename'] : (in_array($val['fileext'], array('zip', 'rar')) ? STATIC_URL.'images/ext/rar.png' : STATIC_URL.'images/ext/blank.png'); 
+				$src = $val['isimage'] ? $val['filepath'].$val['filename'] : file_icon($val['filename']); 
 				$click = $val['isimage'] ? 'onclick="yzm_show_img(\''.$src.'\',800,500)"' : 'onclick="yzm_open(\'附件预览\',\''.U('public_att_view',array('id'=>$val['id'])).'\',800,500)"';
 				?>
 				 <a title="点击预览" href="javascript:;" <?php echo $click;?> style="text-decoration:none"><img src="<?php echo $src;?>" height="30" style="max-width:100px" onmouseover="yzm_img_browse(this, '<?php echo $src;?>')" onmouseout="layer.closeAll('tips')"></a>

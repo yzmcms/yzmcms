@@ -19,7 +19,7 @@
 .yzm-imagelist ul li a{width:100px;height:70px;border:1px solid #eee;text-align:center;vertical-align:middle;display:table-cell;position:relative;z-index:6;}
 .yzm-imagelist ul li a:hover{background:#f3f6fa;}
 .yzm-imagelist ul li .on{background:#f3f6fa;border:1px solid #0099ff;}
-.yzm-imagelist ul li a img{width:90px;height:60px;position:absolute;right:5px;bottom:5px;z-index:9;}
+.yzm-imagelist ul li a img{max-width:90px;height:60px;}
 .yzm-imagelist ul li a .checkd{width:25px;height:25px;position:absolute;right:0;bottom:0;z-index:10;}
 .yzm-imagelist ul li .img_del{display:none;height:15px;line-height:15px;position:absolute;cursor:pointer;top:-6px;left:92px;font-size:15px;color:#0099ff;background:#fff;border-radius:100%;z-index:88}
 .yzm-imagelist ul li a:hover + .img_del{display:block}
