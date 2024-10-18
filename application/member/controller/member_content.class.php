@@ -235,7 +235,7 @@ class member_content extends common{
 		$total = $all_content->where(array('userid' =>$userid,'issystem' =>0,'status' =>1))->total();
 		$page = new page($total, 15);
 		$data = $all_content->field('modelid,catid,id,title,url,thumb,inputtime,updatetime')->where(array('userid' =>$userid,'issystem' =>0,'status' =>1))->order('updatetime DESC')->limit($page->limit())->select();
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		$pages = $this->_page_lists($total, $page);
 		include template('member', 'publish_through');
 	}
 
@@ -252,7 +252,7 @@ class member_content extends common{
 		$total = $all_content->where(array('userid' =>$userid,'issystem' =>0,'status' =>0))->total();
 		$page = new page($total, 15);
 		$data = $all_content->field('modelid,catid,id,title,url,thumb,inputtime,updatetime,status')->where(array('userid' =>$userid,'issystem' =>0,'status!=' =>1))->order('updatetime DESC')->limit($page->limit())->select();
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		$pages = $this->_page_lists($total, $page);
 		include template('member', 'publish_not_through');
 	}
 	
@@ -303,7 +303,7 @@ class member_content extends common{
 			}
 			$data[$key] = $val;
 		}
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		$pages = $this->_page_lists($total, $page);
 		include template('member', 'comment_list');
 	}
 	
@@ -343,7 +343,7 @@ class member_content extends common{
 		$total = $favorite->where(array('userid' =>$userid))->total();
 		$page = new page($total, 15);
 		$data = $favorite->where(array('userid' =>$userid))->order('id DESC')->limit($page->limit())->select();
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		$pages = $this->_page_lists($total, $page);
 		include template('member', 'favorite');
 	}
 	

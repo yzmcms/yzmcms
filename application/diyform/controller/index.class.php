@@ -60,7 +60,7 @@ class index{
 		$description = $modelinfo['description'] ? $modelinfo['description'] : $description;
 		
 		//获取当前位置
-		$location = '<a href="'.SITE_URL.'">首页</a> &gt; <a href="'.U('init').'">'.$modelinfo['name'].'</a> &gt;显示页';
+		$location = '<a href="'.SITE_URL.'">'.L('total').'</a> &gt; <a href="'.U('init').'">'.$modelinfo['name'].'</a> &gt; '.L('detail_page');
 		$fieldstr = $this->_get_model_str($modelid);
 		$field_check = $this->_get_model_str($modelid, true);
 		include template('index', $template);	

@@ -466,6 +466,12 @@ function check_all(obj){
 		    }else{
 				layer.msg(msg.message, {icon:2});
 			}
+        },
+        error: function (xhr) {
+            if(xhr.status != 200){
+                layer.alert('保存失败，xhr状态码：'+xhr.status);
+                return false;
+            }
         }
 	})	
 	return false;	
@@ -498,7 +504,7 @@ function test_mail() {
         },
         error: function (xhr) {
             if(xhr.status != 200){
-                layer.alert('发送邮件失败，xhr状态码：'+xhr.status);
+                layer.alert('发送邮件失败！XHR状态码：'+xhr.status,  {icon:2,title:"操作提示"});
                 return false;
             }
         }

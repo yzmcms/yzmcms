@@ -6,7 +6,7 @@
 	<?php if(!$stop){?>
     <meta http-equiv="refresh" content="<?php echo $limittime;?>;URL=<?php echo $gourl;?>" />
 	<?php }?>
-    <title>YzmCMS提示信息</title>
+    <title>YzmCMS<?php echo L('message_tips');?></title>
 	<link rel="Shortcut Icon" href="<?php echo STATIC_URL;?>admin/yzm_admin/images/favicon.ico" />
     <style type="text/css">
 	  *{padding:0;margin:0;}
@@ -22,13 +22,13 @@
 </head>
 <body>
 	<div class="yzm-msg">        	
-		<div class="yzm-msg-title">提示信息</div>
+		<div class="yzm-msg-title"><?php echo L('message_tips');?></div>
 		<div class="yzm-msg-body">
 			<div class="yzm-info"><?php echo $msg;?></div>
 			<?php if(!$stop){?>
-			<p>本页面将在<span style="color:red;font-weight:bold;margin:0 5px;"><?php echo $limittime;?></span>秒后跳转...</p>
+			<p><?php echo L('page_will');?><span style="color:red;font-weight:bold;margin:0 5px;"><?php echo $limittime;?></span><?php echo L('jump_seconds');?>...</p>
 			<?php }else{?>
-			<p><a href="<?php echo htmlspecialchars(HTTP_REFERER); ?>" title="点击返回上一页">点击返回上一页</a></p>
+			<p><a href="<?php echo htmlspecialchars(HTTP_REFERER); ?>" title="<?php echo L('click_return');?>"><?php echo L('click_return');?></a></p>
 			<?php }?>
 		</div>
 	</div> 

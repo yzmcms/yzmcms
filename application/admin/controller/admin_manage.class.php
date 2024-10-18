@@ -139,6 +139,22 @@ class admin_manage extends common {
 			include $this->admin_tpl('admin_edit');
 		}
 		
+	}
+
+
+	/**
+	 * 变更角色
+	 */
+	public function change_role() {
+		$move_id  = input('post.move_id', 0, 'intval');
+		$id = input('post.id', array());
+		$rolename = D('admin_role')->field('rolename')->where(array('roleid'=>$move_id))->one();
+		$where['adminid'] = array('in', $id, 'intval');
+		if(D('admin')->wheres($where)->update(array('roleid'=>$move_id, 'rolename'=>$rolename))){
+			return_json(array('status'=>1,'message'=>L('operation_success')));
+		}else{
+			return_json();
+		}
 	}	
 
 	

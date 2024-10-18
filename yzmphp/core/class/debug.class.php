@@ -37,6 +37,7 @@ class debug {
 	 * 返回同一脚本中两次获取时间的差值
 	 */
 	public static function spent(){
+		if(!self::$stoptime) self::stop();
 		return round((self::$stoptime - SYS_START_TIME) , 4);  
 	}
 
@@ -136,7 +137,8 @@ class debug {
 		return array(
 			'info' => self::$info,
 			'sqls' => self::$sqls,
-			'request' => self::$request
+			'request' => self::$request,
+			'time' => self::spent()
 		);
 	}
 	

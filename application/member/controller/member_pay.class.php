@@ -27,7 +27,7 @@ class member_pay extends common{
 		$total = $pay->where(array('userid'=>$userid))->total();
 		$page = new page($total, 15);
 		$data = $pay->where(array('userid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		$pages = $this->_page_lists($total, $page);
 		include template('member', 'pay');
 	}
 	
@@ -49,12 +49,13 @@ class member_pay extends common{
 	 */	
 	public function create_order(){
 		if(is_post()){
-			$this->_check_code($_POST['code']);
+			$this->_check_code();
 				
 			$paytype = intval($_POST['paytype']);
 			if(!$paytype) showmsg('请选择支付方式！', 'stop');
 			$money = floatval($_POST['money']);
 			if($money < 0.1) showmsg('最小支付0.1元人民币！', 'stop');
+			if(strstr($money, '.') && strlen(strstr($money, '.'))>3) showmsg('支付金额最小精确到分！', 'stop');
 			if(isset($_POST['type']) && $_POST['type']==2){
 				$type = 2;
 				$quantity = $money;
@@ -94,7 +95,7 @@ class member_pay extends common{
 		$total = $order->where(array('userid'=>$userid))->total();
 		$page = new page($total, 15);
 		$data = $order->where(array('userid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		$pages = $this->_page_lists($total, $page);
 		include template('member', 'order_list');
 	}
 	
@@ -122,7 +123,7 @@ class member_pay extends common{
 		$total = $pay_spend->where(array('userid'=>$userid))->total();
 		$page = new page($total, 15);
 		$data = $pay_spend->where(array('userid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		$pages = $this->_page_lists($total, $page);
 		include template('member', 'spend_record');
 	}
 	

@@ -82,19 +82,19 @@ article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display
 body{font:12px/1.5;color:#333;background:url(../images/bg.png);}
 a{color:#1890ff;text-decoration:none;}
 a:hover{text-decoration:underline;}
-.wrap{margin:50px auto 100px;box-shadow:0 0 10px #ccc;width:850px;background:#fff;overflow: hidden;border-radius: 4px;}
+.wrap{margin:50px auto 100px;box-shadow:0 0 10px #ccc;width:1100px;background:#fff;overflow: hidden;border-radius: 4px;}
 /*.header{background:#246fa6 url(../images/header.png) 0 0 repeat-x;}*/
 .header{height:80px;box-shadow:0 3px 3px #ddd;position:relative;color:#fff;background:#282b33}
 .main{padding-top:35px;}
 .footer{text-align:center;padding:15px 0;color:#fff;background: #333;position: fixed;bottom:0;width: 100%}
 .footer a{color:#77bbfa}
-.bottom{padding:0 0 25px;}
+.bottom{margin:25px 0 25px 0;}
 /*
 ===================
 协议
 ===================
 */
-.pact{box-shadow:5px 5px 5px #f7f7f7 inset;border:1px solid #bdbcbc;width:750px;height:350px;padding:10px;overflow:hidden;display:block;overflow-y:scroll;margin:0 auto;font-size:12px;line-height:1.5;margin-bottom:22px;outline:none;border-radius:3px}
+.pact{box-shadow:5px 5px 5px #f7f7f7 inset;border:1px solid #bdbcbc;width:90%;height:500px;padding:10px;overflow:hidden;display:block;overflow-y:scroll;margin:0 auto;font-size:12px;line-height:1.5;margin-bottom:22px;outline:none;border-radius:3px}
 pre{white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;white-space: -o-pre-wrap;word-wrap: break-word;word-break : normal;}
 .version{float:right;margin:50px 45px 0 0;}
 .logo{float:left;width:400px;height:80px;line-height: 80px;font-family:Tahoma,Arial,sans-serif;padding-left: 40px;font-weight: normal;/*background:url(../images/logo.png) no-repeat;overflow:hidden;text-indent:-2000em;*/}
@@ -128,15 +128,16 @@ pre{white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;whit
 服务器检测/信息输入
 ===================
 */
-.server{padding:20px 20px 10px 155px;font-size:13px;color:#555}
+.server{width:90%;margin:20px auto;font-size:13px;color:#555;padding-left:130px}
+.server2{padding-left:200px}
 .server table{margin-bottom:20px;}
-.server td{padding:5px 5px;}
+.server td{padding:7px 5px;}
 .server .td1{color:#000;}
-.server .input,.server .select{border:1px solid #e3e9ef;padding:3px 5px;width:250px;font-size: 12px;height: 23px;line-height: 23px;background-color: #fff;border-radius: 3px;outline:none;}
-.server .input:hover{border:1px solid #75a1f0; }
+.server .input,.server .select,.server .select2{border:1px solid #e3e9ef;padding:3px 5px;width:250px;font-size: 12px;height: 23px;line-height: 23px;background-color: #fff;border-radius: 3px;outline:none;}
+.server .input:hover, .server .select:hover, .server .select2:hover{border:1px solid #75a1f0; }
 .server .input:focus{border:1px solid #75a1f0; box-shadow:0 0 0 3px rgba(117,161,240,0.3)}
-.server .select{width: 261px;height: 30px}
-.server .select: hover;{border:1px solid #75a1f0;}
+.server .select{width: 261px;height: 30px;cursor: pointer}
+.server .select2{width: 126px;height: 30px;cursor: pointer}
 .gray{color:#bbb;}
 .server tr:hover .gray{color:#333;}
 /*
@@ -152,14 +153,14 @@ pre{white-space: pre-wrap;white-space: -moz-pre-wrap;white-space: -pre-wrap;whit
 数据表写入
 ===================
 */
-.install{box-shadow:5px 5px 5px #f7f7f7 inset;border:1px solid #bdbcbc;width:670px;height:350px;padding:10px;overflow:hidden;display:block;overflow-y:scroll;margin:25px auto;font-size:12px;margin-bottom:22px;outline:none;}
+.install{box-shadow:5px 5px 5px #f7f7f7 inset;border:1px solid #bdbcbc;width:86%;height:550px;padding:10px;overflow:hidden;display:block;overflow-y:scroll;margin:25px auto;font-size:12px;margin-bottom:22px;outline:none;}
 .install ul{line-height:1.8;}
 /*
 ===================
 成功提示
 ===================
 */
-.success_tip{background:#fff url(../images/complete.png) 150px center no-repeat;padding:50px 80px 50px 280px;line-height:30px;}
+.success_tip{background:#fff url(../images/complete.png) 250px center no-repeat;padding:50px 80px 50px 400px;margin:100px 0;line-height:30px;}
 .success_tip p{font-size:13px}
 .success_tip a,.s4{color:#1890ff;text-decoration:none;}
 .success_tip a:hover{text-decoration:underline;}

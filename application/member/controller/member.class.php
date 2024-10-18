@@ -504,16 +504,20 @@ class member extends common{
 			$username = isset($_POST['username']) ? trim($_POST['username']) : return_json(array('status'=>0, 'message'=>L('user_name_format_error')));
 			$userinfo = D('member')->field('userid,email')->where(array('username'=>$username))->find();
 			if($userinfo){
+				$money = trim($_POST['money']);
+				if($_POST['type'] == '1' && strstr($money, '.')) return_json(array('status'=>0, 'message'=>'充值积分额度必须为正整数！'));
+				if($_POST['type'] == '2' && strstr($money, '.') && strlen(strstr($money, '.'))>3) return_json(array('status'=>0, 'message'=>'充值金钱额度最小精确到分！'));
+
 				if($_POST['unit']) {
-					M('point')->point_add($_POST['type'], floatval($_POST['money']), 4, $userinfo['userid'], $username, 0, $_POST['remarks'], $_SESSION['adminname'], false);
+					M('point')->point_add($_POST['type'], floatval($money), 4, $userinfo['userid'], $username, 0, $_POST['remarks'], $_SESSION['adminname'], false);
 				}else{
-					M('point')->point_spend($_POST['type'], floatval($_POST['money']), 4, $userinfo['userid'], $username, $_POST['remarks']);
+					M('point')->point_spend($_POST['type'], floatval($money), 4, $userinfo['userid'], $username, $_POST['remarks']);
 				}
 				
 				//发送e-mail通知会员 
 				if(isset($_POST['sendemail'])){
 					$type = $_POST['type'] == '1' ? '积分' : '元';
-					$content = '您的账户于'.date('Y-m-d H:i:s',SYS_TIME).'成功充值'.floatval($_POST['money']).$type.'，详情请登录会员中心查看。';
+					$content = '您的账户于'.date('Y-m-d H:i:s',SYS_TIME).'成功充值'.floatval($money).$type.'，详情请登录会员中心查看。';
 					sendmail($userinfo['email'], '充值到账通知', $content);
 				}
 				

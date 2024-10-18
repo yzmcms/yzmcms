@@ -31,10 +31,24 @@
 			<a href="<?php echo U('init');?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</a>
 		</form>	
 	</div>
-	<div class="cl mt-15 tb-top"> <span class="l"><a href="javascript:;" onclick="yzm_open('添加管理员','<?php echo U('add');?>','600','420')" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontianjia"></i> 添加管理员</a></span></div>
+	<div class="cl mt-15 tb-top">
+		<span class="l">
+			<a href="javascript:;" onclick="yzm_open('添加管理员','<?php echo U('add');?>','600','420')" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontianjia"></i> 添加管理员</a>
+			<a href="javascript:;" onclick="move_role()" class="btn btn-success radius"><i class="yzm-iconfont yzm-iconyidong"></i> 变更角色</a>
+		</span>
+	</div>
+	<form action="" id="myform">
+	<div id="show_pop" style="margin:20px 20px 0 20px;display:none">
+		<select class="select" name="move_id" style="min-width:270px;height:30px;line-height:30px;display:block;">
+			<?php foreach($role_data as $val){ ?>
+			<option value="<?php echo $val['roleid'] ?>"><?php echo $val['rolename'] ?></option>
+			<?php } ?>
+		</select>
+	</div>
 	<table class="table table-border table-bg table-hover yzm-table-sort">
 		<thead>
 			<tr class="text-c">
+				<th width="25"><input type="checkbox"></th>
 				<th>ID<?php echo field_order('adminid');?></th>
 				<th>用户名<?php echo field_order('adminname');?></th>
 				<th>真实姓名<?php echo field_order('realname');?></th>
@@ -52,8 +66,12 @@
 			   foreach($data as $val){
 			 ?>
 			<tr class="text-c">
+				<td><input type="checkbox" value="<?php echo $val['adminid']?>" name="id[]"></td>
 				<td><?php echo $val['adminid'];?></td>
-				<td><?php echo $val['adminname'];?></td>
+				<td>
+					<?php echo $val['adminname'];?>
+					<?php if($val['realname']){echo '<br>('.$val['realname'].')';} ?>	
+				</td>
 				<td><?php echo $val['realname'] ? $val['realname'] : '暂无';;?></td>
 				<td><?php echo $val['email'] ? $val['email'] : '暂无';?></td>
 				<td><?php echo $val['rolename'];?></td>
@@ -71,6 +89,7 @@
 			?>	
 		</tbody>
 	</table>
+	</form>
 	<?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
 	<div id="page"><span class="page_left">共<?php echo $total?>条记录，共<?php echo $page->total()?>页，当前显示第<?php echo $page->getpage()?>页</span>
 	<span class="page_right"><?php echo $page->getfull();?></span></div>
@@ -83,6 +102,37 @@
 	var end = {elem:'#end',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){start.max = datas;}};
 	laydate(start);
 	laydate(end);
+
+	function move_role() {
+		if ($("input[name='id[]']:checked").length<1){
+			layer.alert('请选择要操作的记录！', {title:"操作提示"});
+			return false;
+		}
+
+		layer.open({
+			type: 1,
+			title: '变更角色',
+			btn: ['确定', '取消'],
+			content: $('#show_pop'),
+			yes: function(index, layero){
+			    $.ajax({
+	               type: "POST",
+	               url: "<?php echo U('change_role');?>", 
+				   data: $("#myform").serialize(),
+	   		       dataType: "json", 
+	               success: function (msg) {
+						if(msg.status == 1){
+							layer.msg(msg.message, {icon:1,time:1000},function(){
+								window.location.reload();
+							});
+						}else{
+							layer.msg(msg.message, {icon:2,time:2500});
+						}
+	               }
+	           })
+			}
+		});
+	}
 </script>
 </body>
 </html>

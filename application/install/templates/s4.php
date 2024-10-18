@@ -26,7 +26,7 @@
     <div class="bottom tac"> <a href="javascript:;" class="btn_old"><img src="./images/loading.gif" class="yzm-loading" align="absmiddle" />&nbsp;正在安装...</a> </div>
   </section>
   <script type="text/javascript">
-var n=0;
+    var n = 0;
     var data = <?php echo json_encode($_POST);?>;
     $.ajaxSetup ({ cache: false });
     function reloads(n) {
@@ -36,21 +36,19 @@ var n=0;
             url: url,
             data: data,
             dataType: 'json',
-            beforeSend:function(){
-            },
             success: function(msg){
-                if(msg.n=='999999'){
+                if(msg.n == '999999'){
                     $('#dosubmit').attr("disabled",false);
                     $('#dosubmit').removeAttr("disabled");
                     $('#dosubmit').removeClass("nonext");
-                    setTimeout('gonext()',2000);
+                    setTimeout('gonext()', 2000);
+                    
                 }else{
-					if(msg.n){
+					if(msg.status){
 						$('#loginner').append(msg.msg);
 						reloads(msg.n);
 					}else{
-						//alert('指定的数据库不存在，系统也无法创建，请先通过其他方式建立好数据库！');
-						layer.alert(msg.msg);
+						layer.alert(msg.msg, {title:'安装失败'});
 					}					
 				}
             },

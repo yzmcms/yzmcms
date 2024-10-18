@@ -96,8 +96,10 @@ class db_mysql{
 	 * @return string
 	 */	
 	private function safe_data($value, $chars = false){
-		if(!MAGIC_QUOTES_GPC) $value = addslashes($value);
-		if($chars) $value = htmlspecialchars($value);
+		if(is_string($value)){
+			if(!MAGIC_QUOTES_GPC) $value = addslashes($value);
+			if($chars) $value = htmlspecialchars($value);
+		}
 
 		return $value;
 	}
@@ -107,12 +109,15 @@ class db_mysql{
 	 * 内部方法：过滤非表字段
 	 * @param $arr
 	 * @param $primary 是否过滤主键
+	 * @param $field   是否过滤非表字段
 	 * @return array
 	 */
-	private function filter_field($arr, $primary = true){		
-		$fields = $this->get_fields();	
-		foreach($arr as $k => $v){
-			if(!in_array($k, $fields, true)) unset($arr[$k]);
+	private function filter_field($arr, $primary = true, $field = true){
+		if($field){
+			$fields = $this->get_fields();	
+			foreach($arr as $k => $v){
+				if(!in_array($k, $fields, true)) unset($arr[$k]);
+			}
 		}
 		if($primary){
 			$p = $this->get_primary();
@@ -125,10 +130,12 @@ class db_mysql{
 	/**
 	 * 内部方法：数据库查询执行方法
 	 * @param $sql 要执行的sql语句
+	 * @param $is_private 是否私有查询
 	 * @return object
 	 */
-	private function execute($sql) {
+	private function execute($sql, $is_private = false) {
 		try{
+			if($is_private) return mysql_query($sql);
 			$sql_start_time = microtime(true);
 			$this->lastsql = $sql;
 			$res = mysql_query($sql) or $this->geterr($sql);
@@ -138,7 +145,7 @@ class db_mysql{
 		}catch (Exception $e){
 			if (strpos($e->getMessage(), 'server has gone away') !== false) {
 		        self::$db_link[0]['db'] = self::$link = self::connect();
-		        return $this->execute($sql);
+		        return $this->execute($sql, $is_private);
 		    }
 			$this->geterr('Execute SQL error, message : '.$e->getMessage(), $sql);
 		}
@@ -257,15 +264,16 @@ class db_mysql{
 	 * @param $data         要增加的数据，参数为数组。数组key为字段值，数组值为数据取值
 	 * @param $filter       如果为真值[1为真] 则开启实体转义
 	 * @param $primary 		是否过滤主键
+	 * @param $field 		是否过滤非表字段
 	 * @param $replace 		是否为replace
 	 * @return int|boolean  成功：返回自动增长的ID，失败：false
 	 */
-	public function insert($data, $filter = false, $primary = true, $replace = false){
+	public function insert($data, $filter = false, $primary = true, $field = true, $replace = false){
 		if(!is_array($data)) {
 		    $this->geterr('insert function First parameter Must be array!'); 
 			return false;
 		}
-		$data = $this->filter_field($data, $primary); 
+		$data = $this->filter_field($data, $primary, $field);
 		$fields = $values = array();
 		foreach ($data AS $key => $val){
 			$fields[] = '`'. $key .'`';
@@ -347,12 +355,13 @@ class db_mysql{
 	 * @param $where 		更新数据时的条件,参数为数组类型或者字符串
 	 * @param $filter 		第三个参数选填 如果为真值[1为真] 则开启实体转义
 	 * @param $primary 		是否过滤主键
+	 * @param $field 		是否过滤非表字段
 	 * @return int          返回影响行数
 	 */		
-	public function update($data, $where = array(), $filter = false, $primary = true){	
+	public function update($data, $where = array(), $filter = false, $primary = true, $field = true){	
 		if(!isset($this->key['wheres'])) $this->where($where);
 		if(is_array($data)){
-			$data = $this->filter_field($data, $primary);				
+			$data = $this->filter_field($data, $primary, $field);
 			$sets = array();
 			foreach ($data AS $key => $val){
 				$sets[] = '`'. $key .'` = \''. $this->safe_data($val, $filter) .'\'';
@@ -574,7 +583,7 @@ class db_mysql{
 	public function get_primary($table = '') {
 		$table = empty($table) ? $this->get_tablename() : $table;
 		$sql = "SHOW COLUMNS FROM $table";
-		$r = mysql_query($sql) or $this->geterr($sql);
+		$r = $this->execute($sql, true);
 		while($data = mysql_fetch_assoc($r)){
 			if($data['Key'] == 'PRI') break;
 		}
@@ -588,7 +597,7 @@ class db_mysql{
 	 */		
 	public function list_tables() {
 		$tables = array();
-		$listqeury = $this->execute('SHOW TABLES');
+		$listqeury = $this->execute('SHOW TABLES', true);
 		while($r = $this->fetch_array($listqeury, MYSQL_NUM)) {
 			$tables[] = $r[0];
 		}
@@ -605,7 +614,7 @@ class db_mysql{
 		$table = empty($table) ? $this->get_tablename() : $table;
 		$fields = array();
 		$sql = "SHOW COLUMNS FROM $table";
-		$r = mysql_query($sql) or $this->geterr($sql);
+		$r = $this->execute($sql, true);
 		while($data = mysql_fetch_assoc($r)){
 			$fields[] = $data['Field'];
 		}		

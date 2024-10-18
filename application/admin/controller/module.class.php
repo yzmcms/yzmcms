@@ -62,6 +62,7 @@ class module extends common {
 		if(!is_array($config)){
 			showmsg('配置文件读取错误！', 'stop');
 		}
+		$config = array_map('htmlspecialchars', $config);
 		extract($config);
 		include $this->admin_tpl('module_config');
 	}

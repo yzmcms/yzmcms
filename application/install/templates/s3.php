@@ -19,10 +19,10 @@
                 </div>
                 <form action="index.php?step=4" method="post" onsubmit="return dosubmit(this)">
                     <input type="hidden" name="force" value="0" />
-                    <div class="server">
+                    <div class="server server2">
                         <table width="100%">
                             <tr>
-                                <td class="td1" width="120">数据库信息</td>
+                                <td class="td1" width="180">数据库信息</td>
                                 <td width="200">&nbsp;</td>
                                 <td>&nbsp;</td>
                             </tr>
@@ -30,7 +30,7 @@
                                 <td class="tar">数据库驱动类型：</td>
                                 <td>
 								<select name="dbtype" id="dbtype" class="select">
-									<option value="pdo" >PDO_MYSQL (推荐)</option>
+									<option value="pdo"  selected>PDO_MYSQL (推荐)</option>
 									<option value="mysqli" >MYSQLI</option>
 									<!-- <option value="mysql" >MYSQL</option> -->
 								</select>
@@ -67,10 +67,24 @@
                                 <td><input type="text" name="dbprefix" id="dbprefix" value="yzm_" class="input"></td>
                                 <td><div id="J_install_tip_dbprefix"><span class="gray">如无特殊需要，请不要修改</span></div></td>
                             </tr>
+                            <tr>
+                                <td class="tar">数据表引擎/字符集：</td>
+                                <td>
+                                    <select name="engine" class="select2">
+                                        <option value="myisam" selected>MyISAM</option>
+                                        <option value="innodb">InnoDB</option>
+								    </select>
+                                    <select name="charset" class="select2">
+                                        <option value="utf8" selected>utf8</option>
+                                        <option value="utf8mb4">utf8mb4</option>
+								    </select>
+                                </td>
+                                <td><div id="J_install_tip_dbname"></div></td>
+                            </tr>
                         </table>
                         <table width="100%">
                             <tr>
-                                <td class="td1" width="120">网站配置</td>
+                                <td class="td1" width="180">网站配置</td>
                                 <td width="200">&nbsp;</td>
                                 <td>&nbsp;</td>
                             </tr>
@@ -97,7 +111,7 @@
                         </table>
                         <table width="100%">
                             <tr>
-                                <td class="td1" width="120">创始人信息</td>
+                                <td class="td1" width="180">创始人信息</td>
                                 <td width="200">&nbsp;</td>
                                 <td>&nbsp;</td>
                             </tr>
@@ -110,11 +124,6 @@
                                 <td class="tar">密码：</td>
                                 <td><input type="text" name="manager_pwd" id="J_manager_pwd" class="input" value="yzmcms" autoComplete="off"></td>
                                 <td><div id="J_install_tip_manager_pwd"><span class="gray">密码长度为6-20位</span></div></td>
-                            </tr>
-                            <tr>
-                                <td class="tar">重复密码：</td>
-                                <td><input type="text" name="manager_ckpwd" class="input" value="yzmcms" autoComplete="off"></td>
-                                <td><div id="J_install_tip_manager_ckpwd"><span class="gray">密码长度为6-20位</span></div></td>
                             </tr>
                         </table>
                         <input type="hidden" name="webPath" value="<?php echo $rootpath?>/" />
@@ -192,10 +201,6 @@
                     }
                     if(obj.manager_pwd.value.length < 6 || obj.manager_pwd.value.length > 20){
                         layer.msg('管理员密码长度必须为6-20位!', {icon:2});
-                        return false;
-                    }
-                    if(obj.manager_pwd.value !== obj.manager_ckpwd.value){
-                        layer.msg('管理员两次密码值不相等!', {icon:2});
                         return false;
                     }
                     if(!TestDbPwd()){

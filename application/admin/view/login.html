@@ -79,7 +79,11 @@
 							$(".yzm-verify-input").val('');
 						});
 					}
-	            }
+	            },
+		        error: function (xhr) {
+		            layer.alert('登录失败！XHR状态码：'+xhr.status,  {icon:2,title:"操作提示"});
+		            return false;
+		        }
 	        })		 
 			return false;			
 		}

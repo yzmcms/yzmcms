@@ -129,12 +129,12 @@
 .textarea{width: 98%; height: 78px; border: 1px solid #ccc; padding: 5px 5px; outline: none; color: #333; line-height: 20px; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 13px;}
 .textarea2{width: 98%}
 .yzm-comment-form p{height: 28px; line-height: 28px; position: relative}
-.yzm-comment-form .emotion{width: 42px; height: 20px; background: url(../images/icon.gif) no-repeat 2px 2px; padding-left: 20px; cursor: pointer; color: #999}
-.yzm-comment-form .emotion:hover{background-position: 2px -28px; color: #666}
-.qqFace{margin-top: 4px; background: #fff; padding: 2px; border: 1px #dfe6f6 solid;}
-.qqFace table td{padding: 0px;}
-.qqFace table td img{cursor: pointer; border: 1px #fff solid;}
-.qqFace table td img:hover{border: 1px #0066cc solid;}
+.yzm-comment-form .emotion{width: 42px; height: 20px; background: url(../images/icon.gif) no-repeat 2px 1px; padding-left: 20px; cursor: pointer; color: #999}
+.yzm-comment-form .emotion:hover{background-position: 2px -29px; color: #666}
+.yzm-face{margin-top:4px;background:#fff;padding:3px;border: 1px #ccc solid;border-radius:3px}
+.yzm-face table td{padding:2px;}
+.yzm-face table td img{cursor:pointer;border:1px #fff solid;width:35px}
+.yzm-face table td img:hover{border:1px #0066cc solid;}
 .yzm-comment-submit{background-color: #e6e6e6; background-image: linear-gradient(#fcfcfc, #fcfcfc 25%, #e6e6e6); background-repeat: no-repeat; border-bottom-right-radius: 3px; border-color: #ddd #ddd #aaa; border-style: solid; border-width: 1px; box-shadow: 0 0 1px #fff inset; color: #555; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px; height: 32px; position: absolute; right: 0; text-align: center; text-shadow: 0 1px 0 #fff; top: 0; transition: all 0.15s linear 0s; width: 100px; cursor: pointer; border-radius: 2px; margin-top: 5px; outline: none;}
 .yzm-comment-submit:hover{background-position: 0 -15px; color: #121212}
 .yzm-comment-code{position:absolute;right:115px;top:5px;}

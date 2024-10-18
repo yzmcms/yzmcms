@@ -11,7 +11,7 @@
     <link href="{STATIC_URL}css/yzm-style.css" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="{STATIC_URL}js/yzm-front.js"></script>
-    <script type="text/javascript" src="{STATIC_URL}js/jquery.qqFace.js"></script>
+    <script type="text/javascript" src="{STATIC_URL}js/yzm-face.js"></script>
     <script type="text/javascript" src="{STATIC_URL}plugin/layer/layer.js"></script>
 </head>
 
@@ -48,11 +48,7 @@
                 <div class="clearfix"></div>
                 <div class="yzm-content">
                     <h2>软件介绍</h2>
-                    {if $allow_read}
                     {$content}
-                    {else}
-                    <p class="yzm-content-read-tips">阅读此内容需要您支付<span>{$readpoint}</span>{if $paytype==1}点积分{else}元{/if}，<a href="{$pay_url}">点击支付</a></p>
-                    {/if}
                 </div>
                 <div class="yzm-content-tag">
                     {m:centent_tag modelid="$modelid" id="$id" limit="10"}
@@ -72,7 +68,7 @@
                     {if $allow_read}
                     <a href="{$down_url}" target="_blank">{$title}</a>
                     {else}
-                    <a href="{$pay_url}">点击支付 <span>{$readpoint}</span> {if $paytype==1}点积分{else}元{/if}后，方可显示下载地址</a>
+                    <a href="{$pay_url}">点击支付 <span>{$readpoint}</span> {if $paytype==1}点积分{else}元{/if}后，显示下载地址</a>
                     {/if}
                 </li>
             </ul>
@@ -221,7 +217,7 @@
     </div>
     <script type="text/javascript">
     $(function() {
-        $('.emotion').qqFace({
+        $('.emotion').yzmface({
             path: '{STATIC_URL}images/face/'
         });
     });

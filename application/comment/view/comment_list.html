@@ -40,7 +40,12 @@
 		 <a href="<?php echo U('init');?>" class="btn btn-primary radius"><i class="yzm-iconfont yzm-iconshuaxin"></i> 重置</a>
 		 </form>	
   </div>
-	<div class="cl mt-15 tb-top"> <span class="l"><a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontongguo"></i> 通过审核</a> <a href="javascript:;" onclick="yzm_dels('id', 1)" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a></span></div>
+	<div class="cl mt-15 tb-top"> <span class="l">
+		<a href="javascript:;" onclick="adopt()" class="btn btn-primary radius"><i class="yzm-iconfont yzm-icontongguo"></i> 通过审核</a> 
+		<a href="javascript:;" onclick="yzm_dels('id', 1)" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a>
+		<a href="javascript:;" onclick="yzm_confirm('<?php echo U('del_all');?>', '确定要删除所有未审核的评论吗？', 1)" class="btn btn-warning radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 删除所有未审核</a>
+	</span>
+	</div>
 	<form method="post" action="<?php echo U('del');?>" id="myform">
 	<table class="table table-border table-bg table-hover yzm-table-sort">
 		<thead>

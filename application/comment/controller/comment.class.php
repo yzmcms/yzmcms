@@ -93,6 +93,22 @@ class comment extends common {
 			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}
 	}
+
+
+	/**
+	 * 删除所有未审核
+	 */
+	public function del_all() {
+		$comment = D('comment');
+		$data = $comment->field('id,commentid')->where(array('siteid'=>self::$siteid,'status'=>0,'reply'=>0))->select();
+		foreach($data as $val){
+			$commentid = $val['commentid'];
+			$comment->delete(array('id'=>$val['id']));
+			$comment->query("UPDATE yzmcms_comment_data SET `total` = `total`-1 WHERE commentid='$commentid'");
+			$comment->delete(array('reply'=>$val['id']));
+		}
+		return_json(array('status'=>1,'message'=>L('operation_success')));
+	}
 	
 	
 	/**

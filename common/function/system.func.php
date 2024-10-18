@@ -99,10 +99,11 @@ function get_content_url($catid, $id){
 	if(!$catid || !$id) return '';
 	$catinfo = get_category($catid);
 	$url_mode = get_config('url_mode');
+	$system_str = URL_MODEL==3 ? '' : 'index.php?s=';
 	if($url_mode==1 || $url_mode==2){
-		return get_site_url().$catinfo['catdir'].'/'.$id.C('url_html_suffix');
+		return get_site_url().$system_str.$catinfo['catdir'].'/'.$id.C('url_html_suffix');
 	}
-	return SITE_PATH.$catinfo['catdir'].'/'.$id.C('url_html_suffix');
+	return SITE_PATH.$system_str.$catinfo['catdir'].'/'.$id.C('url_html_suffix');
 }
 
 
@@ -235,8 +236,7 @@ function url_referer($is_login = 1, $referer = ''){
 	
 	$referer = $referer ? urlencode($referer) : urlencode(get_url());
 	$url = $is_login ? U('member/index/login') : U('member/index/logout');
-	if(URL_MODEL) return $url.'?referer='.$referer;	
-	return $url.'&referer='.$referer;
+	return $url.(strstr($url, '?') ? '&' : '?').'referer='.$referer;
 }
 
 
@@ -641,13 +641,13 @@ function get_location($catid, $is_mobile=false, $self=true, $symbol=' &gt; '){
 	$catid = intval($catid);
 	$data = $catid ? explode(',', get_category($catid, 'arrparentid')) : array();
 	if($is_mobile){
-		$str = '<a href="'.U('mobile/index/init').'">首页</a>';
+		$str = '<a href="'.U('mobile/index/init').'">'.L('home_page').'</a>';
 		foreach($data as $v){
 			if($v) $str .= $symbol.'<a href="'.U('mobile/index/lists', array('catid'=>$v)).'">'.get_category($v, 'mobname').'</a>';
 		}
 		if($self) $str .= $symbol.'<a href="'.U('mobile/index/lists', array('catid'=>$catid)).'">'.get_category($catid, 'mobname').'</a>';
 	}else{
-		$str = '<a href="'.SITE_URL.'">首页</a>';
+		$str = '<a href="'.SITE_URL.'">'.L('home_page').'</a>';
 		foreach($data as $v){
 			if($v) $str .= $symbol.'<a href="'.get_category($v, 'pclink').'">'.get_category($v, 'catname').'</a>';
 		}

@@ -47,6 +47,7 @@ class update_urls extends common {
 			$category = D('category');
 			$url_mode = get_config('url_mode');
 			$site_url = get_site_url();
+			$system_str = URL_MODEL==3 ? '' : 'index.php?s=';
 			
 			//更新所有栏目
 			if(!$catids[0]){
@@ -61,12 +62,12 @@ class update_urls extends common {
 					if(strstr($val['arrparentid'], ',')){
 						$arr = explode(',', $val['arrparentid']);
 						$parents_domain = get_category($arr[1], 'domain');
-						$pclink = $parents_domain ? $parents_domain.$val['catdir'].'/' : $site_url.$val['catdir'].'/';
+						$pclink = $parents_domain ? $parents_domain.$system_str.$val['catdir'].'/' : $site_url.$system_str.$val['catdir'].'/';
 					}else{
-						$pclink = $site_url.$val['catdir'].'/';
+						$pclink = $site_url.$system_str.$val['catdir'].'/';
 					}
 				}else{
-					$pclink = SITE_PATH.$val['catdir'].'/';
+					$pclink = SITE_PATH.$system_str.$val['catdir'].'/';
 				}		
 				$category->update(array('pclink' => $pclink), array('catid' => $val['catid']));
 			}

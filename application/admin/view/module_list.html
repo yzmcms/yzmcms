@@ -33,16 +33,19 @@
 			}else{
 				if(is_file(APP_PATH.$d.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'config.inc.php')) {
 					$isinstall = true;
+					$arr = include(APP_PATH.$d.DIRECTORY_SEPARATOR.'install'.DIRECTORY_SEPARATOR.'config.inc.php');
+					$arr = is_array($arr) ? $arr : array();
 				}else{
 					$isinstall = false;
+					$arr = array();
 				}
 			?>
 		  <tr class="text-c">
-			<td></td>
+			<td><?php echo isset($arr['name']) ? htmlspecialchars($arr['name']) : '未知';?></td>
 			<td><?php echo $d?></td>
-			<td>未知</td>
+			<td><?php echo isset($arr['version']) ? htmlspecialchars($arr['version']) : '未知';?></td>
 			<td>未安装</td>
-			<td>未安装</td>
+			<td><?php echo isset($arr['updatedate']) ? htmlspecialchars($arr['updatedate']) : '未知';?></td>
 			<td><?php if($isinstall){?> <span><a href="javascript:void(0);" onclick="yzm_open('模块安装','<?php echo U('install',array('module'=>$d));?>','550','350')" class="yzm-box-img btn-primary">安装</a></span><?php } else {?><span class="yzm-box-img btn-warning">无法安装</span><?php }?></a></td>
 		  </tr>	
 		<?php

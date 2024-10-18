@@ -16,7 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 define('APPDIR', _dir_path(substr(dirname(__FILE__), 0, -8)));
 define('SITEDIR', dirname(APPDIR).DIRECTORY_SEPARATOR);
-define("VERSION", 'YzmCMS V7.1');
+define("VERSION", 'YzmCMS V7.2');
 
 if(is_file(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock')){
     exit("YzmCMS程序已运行安装，如果你确定要重新安装，请先从FTP中删除 cache/install.lock！");
@@ -24,7 +24,7 @@ if(is_file(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock')){
 
 @set_time_limit(1000);
 
-if (version_compare(PHP_VERSION,'5.2.0','<')) exit('您的php版本过低，不能安装本软件，请升级到5.2.0或更高版本再安装，谢谢！');
+if (version_compare(PHP_VERSION,'5.4.0','<')) exit('您的PHP版本过低，不能安装本软件，请升级到5.4.0或更高版本再安装，谢谢！');
 
 $sqlFile = 'database.sql';
 
@@ -91,7 +91,7 @@ switch ($step) {
 			}
         }
         !isset($_SERVER['SERVER_ADDR']) && $_SERVER['SERVER_ADDR'] = '';
-        if (strstr(gethostbyname($_SERVER['HTTP_HOST']), $_SERVER['SERVER_ADDR']) && !in_array(check_url($domain.'admin'), array('200', '550'))){
+        if (strstr(gethostbyname($_SERVER['HTTP_HOST']), $_SERVER['SERVER_ADDR']) && !in_array(check_url($domain.'admin'), array(200, 550, 302, 0))){
             $rewrite_module = '<span class="correct_span error_span">&radic;</span> 未开启，<a href="javascript:;" onclick="javascript:location.reload();">刷新</a>或<a href="https://www.yzmcms.com/dongtai/121.html" target="_blank">查看教程</a>';
             $err++;
         } else {
@@ -121,8 +121,14 @@ switch ($step) {
     case '3':
 		//ajax测试链接数据库
         if (isset($_GET['testdbpwd'])) {
-            $conn = @mysqli_connect($_POST['dbhost'], $_POST['dbuser'], $_POST['dbpw'], null, intval($_POST['dbport']));
-            die($conn ? '1' : '0');
+            $dsn = 'mysql:host='.$_POST['dbhost'].';port='.intval($_POST['dbport']).';charset=utf8';
+            try {
+                $pdo = new PDO($dsn, trim($_POST['dbuser']), trim($_POST['dbpw']));
+                echo 1;
+            } catch (PDOException $e) {
+                echo 0;
+            }
+            exit;
         }
         include ("./templates/s3.php");
         exit();
@@ -140,6 +146,8 @@ switch ($step) {
             $dbUser = trim($_POST['dbuser']);
             $dbPwd = trim($_POST['dbpw']);
             $dbPrefix = empty($_POST['dbprefix']) ? 'yzm_' : str_replace(array('"','\'',','), '', trim($_POST['dbprefix']));
+            $engine = isset($_POST['engine']) ? $_POST['engine'] : 'myisam';
+            $charset = isset($_POST['charset']) ? $_POST['charset'] : 'utf8';
             $adminname = trim($_POST['manager_adminname']);
             $password = trim($_POST['manager_pwd']);
             $config = array();
@@ -151,67 +159,68 @@ switch ($step) {
             $config['db_pwd'] = $dbPwd;
             $config['db_port'] = $dbPort;
             $config['db_prefix'] = $dbPrefix;
+            try {
+                $dsn = "mysql:host=$dbHost;port=$dbPort;charset=$charset";
+                $pdo = new PDO($dsn, $dbUser, $dbPwd);
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-            $conn = @mysqli_connect($dbHost, $dbUser, $dbPwd, null, $dbPort);
-            if (!$conn) {
-                $arr['msg'] = "连接数据库失败!"; 
+                // 检查数据库是否存在
+                $sql = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = :dbName";
+                $stmt = $pdo->prepare($sql);
+                $stmt->execute([':dbName' => $dbName]);
+                $is_db_exist = $stmt->fetchColumn();
+            
+                if (!$is_db_exist) {
+                    $sql = "CREATE DATABASE IF NOT EXISTS `$dbName` DEFAULT CHARACTER SET $charset";
+                    $pdo->exec($sql);
+                    $dsn = "mysql:host=$dbHost;port=$dbPort;dbname=$dbName;charset=$charset";
+                    $pdo = new PDO($dsn, $dbUser, $dbPwd);
+                    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+                    $arr['n'] = 1;
+                    $arr['status'] = 1;
+                    $arr['msg'] = "成功创建数据库: {$dbName}<br>";
+                    die(json_encode($arr));
+                }
+            
+                $dsn = "mysql:host=$dbHost;port=$dbPort;dbname=$dbName;charset=$charset";
+                $pdo = new PDO($dsn, $dbUser, $dbPwd);
+                $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            
+            } catch (PDOException $e) {
+                $arr['status'] = 0;
+                $arr['msg'] = "连接数据库失败：" . $e->getMessage();
                 die(json_encode($arr));
             }
-            mysqli_query($conn, "SET NAMES utf8"); 
 
-            try {  
-                $is_db_exist = mysqli_select_db($conn, $dbName);
-            } catch (mysqli_sql_exception $e) {  
-                $is_db_exist = false;
-            }
-
-            if (!$is_db_exist) {
-                //创建数据时同时设置编码
-                if (!mysqli_query($conn, "CREATE DATABASE IF NOT EXISTS `" . $dbName . "` DEFAULT CHARACTER SET utf8;")) {
-                    $arr['msg'] = '数据库 ' . $dbName . ' 不存在，也没权限创建新的数据库！';
-                    die(json_encode($arr));
-                }
-                if (!$n) {
-                    $arr['n'] = 1;
-                    $arr['msg'] = "成功创建数据库:{$dbName}<br>";
-					
-                    die(json_encode($arr));
-                }
-                mysqli_select_db($conn, $dbName);
-            }
-
-            //读取数据文件
+            // 读取数据文件
             $sqldata = file_get_contents(APPDIR . 'install/' . $sqlFile);
             $sqlFormat = sql_split($sqldata, $dbPrefix);
 
-
-            /**
-            执行SQL语句
-             */
+            // 执行SQL语句
             $counts = count($sqlFormat);
-
-            for ($i = $n; $i < $counts; $i++) {
-                $sql = trim($sqlFormat[$i]);
-                if(empty($sql)) continue;
-
-                if (strstr($sql, 'CREATE TABLE')) {
-                    preg_match('/CREATE TABLE `([^ ]*)`/', $sql, $matches);
-                    //mysqli_query($conn, "DROP TABLE IF EXISTS `$matches[1]");
-                    $ret = mysqli_query($conn, $sql);
-                    if ($ret) {
+            try {
+                for ($i = $n; $i < $counts; $i++) {
+                    $sql = trim($sqlFormat[$i]);
+                    if(empty($sql)) continue;
+    
+                    if (stristr($sql, 'CREATE TABLE')) {
+                        preg_match('/CREATE TABLE `([^ ]*)`/', $sql, $matches);
+                        if($engine != 'myisam') $sql = str_replace(array('ENGINE=MyISAM', 'ENGINE = MyISAM'), array('ENGINE=InnoDB', 'ENGINE = InnoDB'), $sql);
+                        if($charset != 'utf8') $sql = str_replace('CHARSET=utf8', 'CHARSET=utf8mb4', $sql);
+                        $pdo->exec($sql);
                         $message = '<li><span class="correct_span">&radic;</span>创建数据表' . $matches[1] . '，完成</li> ';
+                        $arr = array('n' => ++$i, 'msg' => $message, 'status'=>1);
+                        die(json_encode($arr));
                     } else {
-                        $message = '<li><span class="correct_span error_span">&radic;</span>创建数据表' . $matches[1] . '，失败</li>';
+                        $pdo->exec($sql);
                     }
-                    $i++;
-                    $arr = array('n' => $i, 'msg' => $message);
-                    die(json_encode($arr));
-                } else {
-                    $ret = mysqli_query($conn, $sql);
-                    $message = '';
-                    $arr = array('n' => $i, 'msg' => $message);
-                    //echo json_encode($arr); exit;
                 }
+            
+            } catch (PDOException $e) {
+                $message = '<li><span class="correct_span error_span">&radic;</span>执行SQL失败：' .$e->getMessage(). '</li>';
+                $arr = array('n' => $i, 'msg' => $message, 'status'=>0);
+                die(json_encode($arr));
             }
 
             if ($i == 999999)
@@ -219,27 +228,39 @@ switch ($step) {
 
             //插入管理员
             $password = md5(substr(md5(trim($password)), 3, 26));
-            $time = time();
-            $query = "INSERT INTO `{$dbPrefix}admin` (`adminid`, `adminname`, `password`, `roleid`, `rolename`, `addtime`, `addpeople`) VALUES ('1', '{$adminname}', '{$password}', '1', '超级管理员', '{$time}', '创始人')";
-            $ret = mysqli_query($conn, $query);
-			if($ret){
-				$message = '添加管理员成功';
-			}else{
-				$message = '<span style="color:red">添加管理员失败！</span>';
-			}
+            $sql = "INSERT INTO `{$dbPrefix}admin` (`adminid`, `adminname`, `password`, `roleid`, `rolename`, `addtime`, `addpeople`) VALUES (:adminid, :adminname, :password, :roleid, :rolename, :addtime, :addpeople)";
+
+            $stmt = $pdo->prepare($sql);
+            $params = [
+                ':adminid' => 1,
+                ':adminname' => $adminname,
+                ':password' => $password,
+                ':roleid' => 1,
+                ':rolename' => '超级管理员',
+                ':addtime' => time(),
+                ':addpeople' => '创始人'
+            ];
+
+
+            $ret = $stmt->execute($params);
+            if ($ret) {
+                $message = '添加管理员成功';
+            } else {
+                $message = '<span style="color:red">添加管理员失败！</span>';
+            }
 			
 			//插入网站配置
 			$sitename = trim($_POST['sitename']);
             $siteurl = trim($_POST['siteurl']);
-			$query = "UPDATE {$dbPrefix}config  SET value='{$sitename}' WHERE id=1";
-			mysqli_query($conn, $query);
-			$query = "UPDATE {$dbPrefix}config  SET value='{$siteurl}' WHERE id=2";
-            mysqli_query($conn, $query);
+			$sql = "UPDATE {$dbPrefix}config  SET value='{$sitename}' WHERE id=1";
+			$pdo->exec($sql);
+			$sql = "UPDATE {$dbPrefix}config  SET value='{$siteurl}' WHERE id=2";
+            $pdo->exec($sql);
 			
 			//写入配置文件
             set_config($config);
 			$message .= '<br />成功写入配置文件<br>安装完成．';
-            $arr = array('n' => 999999, 'msg' => $message);
+            $arr = array('n' => 999999, 'msg' => $message, 'status'=>1);
             die(json_encode($arr));
         }
 
@@ -273,8 +294,7 @@ function testwrite($d) {
 }
 
 function sql_split($sql, $tablepre) {
-    if ($tablepre != "yzm_")
-        $sql = str_replace("yzm_", $tablepre, $sql);
+    if ($tablepre != "yzm_") $sql = str_replace("yzm_", $tablepre, $sql);
     $sql = preg_replace("/TYPE=(InnoDB|MyISAM|MEMORY)( DEFAULT CHARSET=[^; ]+)?/", "ENGINE=\\1 DEFAULT CHARSET=utf8", $sql);
 
     $sql = str_replace("\r", "\n", $sql);

@@ -226,14 +226,29 @@ function yzm_move_li(obj, is_up) {
 
 
 //html实体转换
-function yzm_htmlspecialchars(str)  {  
-    str = str.replace(/&/g, '&amp;');
-    str = str.replace(/</g, '&lt;');
-    str = str.replace(/>/g, '&gt;');
-    str = str.replace(/"/g, '&quot;');
-    str = str.replace(/'/g, '&#039;');
-    return str;
+function yzm_htmlspecialchars(str) {
+    if (typeof str !== 'string') {
+        return str;
+    }
+
+    return str.replace(/[&<>"'/]/g, function(match) {
+        switch(match) {
+            case "&":
+                return "&amp;";
+            case "<":
+                return "&lt;";
+            case ">":
+                return "&gt;";
+            case '"':
+                return "&quot;";
+            case "'":
+                return "&#039;";
+            case "/":
+                return "&#x2F;";
+        }
+    });
 }
+
 
 
 //新窗口打开

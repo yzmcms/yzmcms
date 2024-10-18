@@ -1,5 +1,22 @@
-@font-face {font-family: "yzm-iconfont";src: url('iconfont.woff2?t=1692351736030') format('woff2'),url('iconfont.woff?t=1692351736030') format('woff'),url('iconfont.ttf?t=1692351736030') format('truetype');}
+@font-face {font-family: "yzm-iconfont";src: url('iconfont.woff2?t=1721879028713') format('woff2'),url('iconfont.woff?t=1721879028713') format('woff'),url('iconfont.ttf?t=1721879028713') format('truetype');}
 .yzm-iconfont{font-family:"yzm-iconfont" !important;font-style:normal;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;}
+.yzm-icongailan1:before{content:"\e681";}
+.yzm-iconshengpi:before{content:"\e679";}
+.yzm-icongailan:before{content:"\e67a";}
+.yzm-iconhuishouzhan:before{content:"\e67b";}
+.yzm-iconlishi:before{content:"\e8d5";}
+.yzm-iconmoxing:before{content:"\e67c";}
+.yzm-iconshenpi2:before{content:"\eb67";}
+.yzm-iconfankui:before{content:"\e85f";}
+.yzm-iconcookie:before{content:"\e6aa";}
+.yzm-iconguding:before{content:"\e67d";}
+.yzm-iconzujian:before{content:"\e67f";}
+.yzm-iconqiehuan:before{content:"\e677";}
+.yzm-iconqiehuanzhanghao:before{content:"\e678";}
+.yzm-iconjianqie:before{content:"\e655";}
+.yzm-iconhuangguan:before{content:"\e674";}
+.yzm-iconchongmingming:before{content:"\e675";}
+.yzm-iconhuangguan1:before{content:"\e683";}
 .yzm-iconqunzu:before{content:"\e696";}
 .yzm-iconxietong:before{content:"\e85a";}
 .yzm-icongengduo:before{content:"\e8a6";}

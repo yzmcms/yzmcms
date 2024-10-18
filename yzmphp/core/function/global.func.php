@@ -355,7 +355,7 @@ function trim_script($str) {
 * @return	array	返回数组格式，如果，data为空，则返回空数组
 */
 function string2array($data) {
-	$data = trim($data);
+	$data = is_string($data) ? trim($data) : '';
 	if(empty($data)) return array();
 	
 	if(version_compare(PHP_VERSION,'5.4.0','<')) $data = stripslashes($data);
@@ -517,7 +517,7 @@ function is_img($ext) {
  * @return bool
  */
 function is_ie() {
-	$useragent = strtolower($_SERVER['HTTP_USER_AGENT']);
+	$useragent = isset($_SERVER['HTTP_USER_AGENT']) ? strtolower($_SERVER['HTTP_USER_AGENT']) : '';
 	if((strpos($useragent, 'opera') !== false) || (strpos($useragent, 'konqueror') !== false)) return false;
 	if(strpos($useragent, 'msie ') !== false) return true;
 	return false;
@@ -551,23 +551,41 @@ function is_utf8($string) {
  * @return null
  */
 function file_down($filepath, $filename = '') {
-	if(!$filename) $filename = basename($filepath);
-	if(is_ie()) $filename = rawurlencode($filename);
-	$filetype = fileext($filename);
-	$filesize = sprintf("%u", filesize($filepath));
-	if(ob_get_length() !== false) @ob_end_clean();
-	header('Pragma: public');
-	header('Last-Modified: '.gmdate('D, d M Y H:i:s') . ' GMT');
-	header('Cache-Control: no-store, no-cache, must-revalidate');
-	header('Cache-Control: pre-check=0, post-check=0, max-age=0');
-	header('Content-Transfer-Encoding: binary');
-	header('Content-Encoding: none');
-	header('Content-type: '.$filetype);
-	header('Content-Disposition: attachment; filename="'.$filename.'"');
-	header('Content-length: '.$filesize);
-	readfile($filepath);
-	exit;
+    if (!is_file($filepath) || !is_readable($filepath)) {
+        send_http_status(404);
+        exit;
+    }
+
+    if(!$filename) $filename = basename($filepath);
+    if(is_ie()) $filename = rawurlencode($filename);
+    if(function_exists('finfo_open')) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        $filetype = finfo_file($finfo, $filepath);
+        finfo_close($finfo);
+    } else {
+        if (function_exists('mime_content_type')) {
+            $filetype = mime_content_type($filepath);
+        } else {
+            $filetype = 'application/octet-stream';
+        }
+    }
+    $filesize = sprintf("%u", filesize($filepath));
+    if(ob_get_length() !== false) @ob_end_clean();
+    header('Pragma: public');
+    header('Last-Modified: '.gmdate('D, d M Y H:i:s') . ' GMT');
+    header('Cache-Control: no-store, no-cache, must-revalidate');
+    header('Cache-Control: pre-check=0, post-check=0, max-age=0');
+    header('Content-Transfer-Encoding: binary');
+    header('Content-Encoding: none');
+    header('Content-type: '.$filetype);
+    header('Content-Disposition: attachment; filename="'.$filename.'"');
+    header('Content-length: '.$filesize);
+    $file = fopen($filepath, 'rb');
+    fpassthru($file);
+    fclose($file);
+    exit;
 }
+
 
 
 /**
@@ -870,8 +888,8 @@ function get_cookie($name = '', $default = '') {
 	$name = C('cookie_pre').$name;
 	if(isset($_COOKIE[$name])){
 		if(strpos($_COOKIE[$name],'in_yzmphp')===0){
-			$_COOKIE[$name] = substr($_COOKIE[$name],9);
-			return json_decode(MAGIC_QUOTES_GPC?stripslashes(string_auth($_COOKIE[$name],'DECODE',md5(YZMPHP_PATH.C('db_pwd')))):string_auth($_COOKIE[$name],'DECODE',md5(YZMPHP_PATH.C('db_pwd'))), true);
+			$temp = substr($_COOKIE[$name],9);
+			return json_decode(MAGIC_QUOTES_GPC?stripslashes(string_auth($temp,'DECODE',md5(YZMPHP_PATH.C('db_pwd')))):string_auth($temp,'DECODE',md5(YZMPHP_PATH.C('db_pwd'))), true);
         }
 		return string_auth(safe_replace($_COOKIE[$name]),'DECODE',md5(YZMPHP_PATH.C('db_pwd')));
 	}else{
@@ -993,6 +1011,7 @@ function U($url='', $vars='', $domain=null, $suffix=true) {
 		if($vars){
 			if(!is_array($vars)) parse_str($vars, $vars);			
             foreach ($vars as $var => $val){
+				$val = str_replace('/', '{YZM_PATH}', $val);
                 if(!is_array($val) && trim($val) !== '') $string .= '/'.urlencode($var).'/'.urlencode($val);
             } 
 		}

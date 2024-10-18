@@ -12,7 +12,7 @@
     <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="{STATIC_URL}js/yzm-front.js"></script>
     <script type="text/javascript" src="{STATIC_URL}js/yzm-product-img.js"></script>
-    <script type="text/javascript" src="{STATIC_URL}js/jquery.qqFace.js"></script>
+    <script type="text/javascript" src="{STATIC_URL}js/yzm-face.js"></script>
     <script type="text/javascript" src="{STATIC_URL}plugin/layer/layer.js"></script>
 </head>
 
@@ -69,6 +69,7 @@
                     {if $allow_read}
                     {$content}
                     {else}
+                    <p>{$description}</p>
                     <p class="yzm-content-read-tips">阅读此内容需要您支付<span>{$readpoint}</span>{if $paytype==1}点积分{else}元{/if}，<a href="{$pay_url}">点击支付</a></p>
                     {/if}
                 </div>
@@ -224,7 +225,7 @@
     </div>
     <script type="text/javascript">
     $(function() {
-        $('.emotion').qqFace({
+        $('.emotion').yzmface({
             path: '{STATIC_URL}images/face/'
         });
     });

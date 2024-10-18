@@ -494,11 +494,12 @@ class category extends common {
 	 * @param $id 
 	 */
 	private function get_category_url($domain,$catdir){
+		$system_str = URL_MODEL==3 ? '' : 'index.php?s=';
 		$url_mode = get_config('url_mode');
 		if($url_mode==1 || $url_mode==3){
-			return $domain ? $domain.$catdir.'/' : get_site_url().$catdir.'/';
+			return $domain ? $domain.$system_str.$catdir.'/' : get_site_url().$system_str.$catdir.'/';
 		}
-		return SITE_PATH.$catdir.'/';
+		return SITE_PATH.$system_str.$catdir.'/';
 	}	
 
 

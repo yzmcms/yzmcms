@@ -29,7 +29,7 @@ class page{
 		$this->total_rows = intval($total_rows);	
 		$this->list_rows = $list_rows ? intval($list_rows) : $this->_get_page_size();
 		$this->total_page = ceil($this->total_rows/$this->list_rows); 
-		$this->now_page = isset($_GET['page']) ? intval($_GET['page']) : 1;
+		$this->now_page = isset($_GET['page']) ? intval($_GET['page']) : (isset($_POST['page']) ? intval($_POST['page']) : 1);
 		$this->now_page = $this->now_page>0 ? $this->now_page : 1;
         $this->parameter  = empty($parameter) ? $_GET : $parameter;	
         $this->url_rule = defined('LIST_URL') && LIST_URL ? true : false;

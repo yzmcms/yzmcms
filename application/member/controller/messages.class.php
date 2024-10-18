@@ -39,7 +39,7 @@ class messages extends common{
 		$messageid = isset($_GET['messageid']) ? intval($_GET['messageid']) : 0;
 		if(is_post()){
 			
-			$this->_check_code($_POST['code']);
+			$this->_check_code();
 			$send_to = trim($_POST['send_to']);
 			
 			if(!is_username($send_to)) return_message('收件人格式不正确！', 0);
@@ -83,7 +83,7 @@ class messages extends common{
 		$total = $message->where(array('send_from' => $username))->total();
 		$page = new page($total, 15);
 		$data = $message->where(array('send_from' => $username))->order('messageid DESC')->limit($page->limit())->select();	
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		$pages = $this->_page_lists($total, $page);
 		include template('member', 'outbox');
 	}
 	
@@ -118,7 +118,7 @@ class messages extends common{
 		$total = $message->where(array('send_to' => $username, 'status' => 1))->total();
 		$page = new page($total, 15);
 		$data = $message->where(array('send_to' => $username, 'status' => 1))->order('messageid DESC')->limit($page->limit())->select();	
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		$pages = $this->_page_lists($total, $page);
 		include template('member', 'inbox');
 	}
 
@@ -147,7 +147,7 @@ class messages extends common{
 			}
 		}		
 		
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		$pages = $this->_page_lists($total, $page);
 		include template('member', 'system_msg');
 	}
 

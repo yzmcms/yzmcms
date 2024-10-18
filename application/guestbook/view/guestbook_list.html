@@ -36,8 +36,9 @@
 
 	<div class="cl mt-15 tb-top"> 
 		<span class="l">
-			<a href="javascript:;" onclick="yzm_dels('id', 1)" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a>
 			<a href="javascript:;" onclick="set_read()" class="btn btn-success radius"><i class="yzm-iconfont yzm-iconyoujian"></i> 标识已读</a>
+			<a href="javascript:;" onclick="yzm_dels('id', 1)" class="btn btn-danger radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 批量删除</a>
+			<a href="javascript:;" onclick="yzm_confirm('<?php echo U('del_all');?>', '确定要删除所有未审核的留言吗？', 1)" class="btn btn-warning radius"><i class="yzm-iconfont yzm-iconshanchu2"></i> 删除所有未审核</a>
 		</span>
 	</div>
 	<form method="post" action="<?php echo U('del');?>" id="myform">

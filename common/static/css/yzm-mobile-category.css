@@ -77,7 +77,7 @@ a:hover{color:#2196f3;}
 .yzm-content-read-tips a{color:#0844f7;}
 .yzm-content-read-tips a:hover{color:red;}
 .yzm-title-box{margin-top: 20px;}
-.yzm-title-box h5{font-size: 16px;color:#121212;font-weight: normal;border-left: 3px solid #2196f3;padding-left: 8px}
+.yzm-title-box h5{font-size: 16px;color:#121212;font-weight: normal;border-left: 3px solid #2196f3;padding-left: 8px;margin-bottom:10px}
 .yzm-title-box ul{margin:8px 0}
 .yzm-title-box ul li{background: #fafafa;padding: 10px;}
 .yzm-pre-next{font-size:14px;margin-top:10px;}

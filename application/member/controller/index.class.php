@@ -35,7 +35,7 @@ class index extends common{
 		if(is_post()){		
 			
 			//检查是否开启验证码
-			if(get_config('member_yzm')) $this->_check_code($_POST['code']);
+			if(get_config('member_yzm')) $this->_check_code();
 			$member = D('member');
 			$username = isset($_POST['username']) ? trim($_POST['username']) : return_json(array('status'=>0, 'message'=>L('lose_parameters')));
 			$password = password($_POST['password']);
@@ -92,7 +92,7 @@ class index extends common{
 			
 		if(is_post()){
 			
-			$this->_check_code($_POST['code']);
+			$this->_check_code();
 			$member = D('member');
 			$data = array();
 			$data['username'] = isset($_POST['username']) && is_username($_POST['username']) ? trim($_POST['username']) : return_json(array('status'=>0, 'message'=>L('user_name_format_error')));	
@@ -263,7 +263,7 @@ class index extends common{
 		extract($memberinfo);
 
 		if(is_post()){
-			$this->_check_code($_POST['code']);
+			$this->_check_code();
 
 			if(password($_POST['oldpass']) != $password) showmsg('原密码不正确！');
 			if(!is_password($_POST['password'])) showmsg(L('password_format_error'));
@@ -286,7 +286,7 @@ class index extends common{
 		extract($memberinfo);
 		
 		if(is_post()){
-			$this->_check_code($_POST['code']);
+			$this->_check_code();
 			if(password($_POST['password']) != $password) showmsg(L('password_error'));
 			
 			$data = array();
@@ -369,7 +369,7 @@ class index extends common{
 		$total = $member_follow->where(array('userid'=>$userid))->total();
 		$page = new page($total, 9);
 		$data = $member_follow->where(array('userid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		$pages = $this->_page_lists($total, $page);
 		include template('member', 'follow');
 	}
 	
@@ -391,7 +391,7 @@ class index extends common{
 			$val['event'] = $val['username'].' 发布了《<a href="'.$val['url'].'" target="_blank">'.$val['title'].'</a>》';
 			$data[] = $val;
 		}
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		$pages = $this->_page_lists($total, $page);
 		include template('member', 'follow_dynamic');
 	}
 
@@ -409,7 +409,7 @@ class index extends common{
 		$total = $member_follow->where(array('followid'=>$userid))->total();
 		$page = new page($total, 9);
 		$data = $member_follow->alias('f')->field('m.userid,m.username')->join('yzmcms_member m ON f.userid=m.userid')->where(array('followid'=>$userid))->order('id DESC')->limit($page->limit())->select();	
-		$pages = '<span class="pageinfo">共'.$total.'条记录</span>'.$page->getfull(false);
+		$pages = $this->_page_lists($total, $page);
 		include template('member', 'fans');
 	}
 

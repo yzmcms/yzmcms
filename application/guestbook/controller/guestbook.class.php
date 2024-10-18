@@ -80,6 +80,7 @@ class guestbook extends common {
 			$_POST['name'] = $_SESSION['adminname'];
 			$_POST['booktime'] = SYS_TIME;
 			$_POST['ip'] = getip();
+			$_POST['ischeck'] = 1;
 			$guestbook->insert($_POST, true);
 			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}else{
@@ -127,7 +128,7 @@ class guestbook extends common {
 
 	
 	/**
-	 * 删除多个留言
+	 * 批量删除
 	 */
 	public function del() {
 		if($_POST && is_array($_POST['id'])){
@@ -138,6 +139,20 @@ class guestbook extends common {
 			}
 			return_json(array('status'=>1,'message'=>L('operation_success')));
 		}
+	}
+
+	
+	/**
+	 * 删除所有未审核
+	 */
+	public function del_all() {
+		$guestbook = D('guestbook');
+		$data = $guestbook->field('id')->where(array('siteid'=>self::$siteid,'ischeck'=>0,'replyid'=>0))->select();
+		foreach($data as $val){
+			$guestbook->delete(array('id'=>$val['id']));
+			$guestbook->delete(array('replyid'=>$val['id']));
+		}
+		return_json(array('status'=>1,'message'=>L('operation_success')));
 	}
 	
 }

@@ -35,7 +35,7 @@
           <td>PHP版本</td>
           <td>>=7.0.x</td>
           <td><span class="correct_span">&radic;</span> <?php echo $phpv; ?></td>
-          <td>5.2.0</td>
+          <td>5.4.0</td>
         </tr>
         <tr>
           <td>Mysql版本</td>

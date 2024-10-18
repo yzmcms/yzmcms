@@ -47,15 +47,14 @@
             <div class="yzm-news-list">
                 <h3 class="yzm-title">【最近更新】</h3>
                 <ul>
-                    <!-- 此处仅为功能演示，不分栏目，调取模型ID(modelid)为1的所有内容 -->
-                    {m:lists field="id,catid,title,color" modelid="1" limit="20"}
+                    {m:all field="id,catid,title,url,inputtime" limit="10"}
                     {loop $data $v}
-                    <li><a href="{mobile_url($v['catid'], $v['id'])}" title="{$v[title]}">{title_color($v['title'], $v['color'])}</a></li>
+                    <li><a href="{mobile_url($v['catid'], $v['id'])}" title="{$v[title]}">{$v[title]}</a></li>
                     {/loop}
                 </ul>
             </div>
             <div class="yzm-news-list">
-                <h3 class="yzm-title">【小编推荐】</h3>
+                <h3 class="yzm-title">【推荐文章】</h3>
                 <ul>
                     <!-- 此处为功能演示，调取内容属性为“推荐”的内容 -->
                     {m:lists field="id,catid,title,color" modelid="1" flag="4" limit="10"}

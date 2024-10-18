@@ -38,11 +38,10 @@
                     <li><strong>软件版本:</strong> {$version} </li>
                     <li><strong>评分等级:</strong> {$stars} </li>
                 </ul>
-                {if $allow_read}
-                    {$content}
-                {else}
-                    <p class="yzm-content-read-tips">阅读此内容需要您支付<span>{$readpoint}</span>{if $paytype==1}点积分{else}元{/if}，<a href="{$pay_url}">点击支付</a></p>
-                {/if}
+            </div>
+            <div class="yzm-title-box">
+                <h5>软件介绍：</h5>
+                {$content}
             </div>
             <div class="yzm-title-box">
                 <h5>下载地址：</h5>
@@ -51,9 +50,8 @@
                     {if $allow_read}
                         <a href="{$down_url}" target="_blank">{$title}</a>
                     {else}
-                        <a href="{$pay_url}">点击支付 <span>{$readpoint}</span> {if $paytype==1}点积分{else}元{/if}后，方可显示下载地址</a>
+                        <p class="yzm-content-read-tips">下载此软件，需要您支付<span>{$readpoint}</span>{if $paytype==1}点积分{else}元{/if}，<a href="{$pay_url}">点击支付</a></p>
                     {/if}
-                    
                    </li>                            
                 </ul>
             </div>

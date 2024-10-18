@@ -82,7 +82,7 @@ class param {
 
 			$total = count($pathinfo);
 			for($i = 3; $i<$total; $i+=2){
-				if(isset($pathinfo[$i+1])) $_GET[$pathinfo[$i]] = $pathinfo[$i+1];
+				if(isset($pathinfo[$i+1])) $_GET[$pathinfo[$i]] = str_replace('{YZM_PATH}', '/', $pathinfo[$i+1]);
 			}
 		}
 		return true;

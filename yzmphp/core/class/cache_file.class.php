@@ -171,13 +171,15 @@ class cache_file{
      * @return int | false 
      */
     protected function _fileputcontents($file, $contents){
+        if(!is_file($file)) touch($file) && @chmod($file, 0777);
+        
         if($this->config['mode'] == 1){
             $contents = "<?php exit('NO.'); ?>\n".serialize($contents);
         }else{
             $contents = "<?php\nreturn ".var_export($contents, true).";\n?>";
         }
-		
-		$filesize = file_put_contents($file, $contents, LOCK_EX);
+        
+        $filesize = file_put_contents($file, $contents, LOCK_EX);
         return $filesize ? $filesize : false;
     }
      
