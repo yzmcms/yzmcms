@@ -20,14 +20,14 @@
 		<thead height="50" >
 			<tr>
 				<th style="text-align:center;font-size:14px"  width="150">按照模型更新</th>
-				<th style="text-align:center;font-size:14px" width="386">选择栏目范围</th>
+				<th style="text-align:center;font-size:14px" width="500">选择栏目范围</th>
 				<th style="font-size:14px" >选择操作内容</th>
 			</tr>
 		</thead>
 		<tbody  height="300">
 			<tr> 
 				<td rowspan="2" style="text-align:center">
-				<select name="modelid" size="2" class="select" style="height:250px;width:140px;" onchange="change_model()">
+				<select name="modelid" size="2" class="select" style="height:300px;width:180px;" onchange="change_model()">
 					<option value='0' <?php if(!$modelid) echo 'selected';?>>≡ 所有模型 ≡</option>
 					<?php
 					 foreach($modelinfo as $val){

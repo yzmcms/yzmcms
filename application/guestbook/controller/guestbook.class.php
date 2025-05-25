@@ -55,6 +55,8 @@ class guestbook extends common {
 				if($type == '1'){
 					$where .= ' AND title LIKE \'%'.$searinfo.'%\'';
 				}elseif($type == '2'){
+					$where .= ' AND bookmsg LIKE \'%'.$searinfo.'%\'';
+				}elseif($type == '3'){
 					$where .= ' AND name LIKE \'%'.$searinfo.'%\'';
 				}else{
 					$where .= ' AND ip LIKE \'%'.$searinfo.'%\'';

@@ -77,7 +77,8 @@
 									$str = $key==$data['category_template'] ? ' selected="selected" ' : '';
 									echo '<option value="'.$key.'"'.$str.'>'.$val.'('.$key.')</option>';
 							  }
-							  echo $category_temp ? '<option value="">不使用模板</option>' : '<option value="">暂无模板</option>';
+							  $str = $data['category_template']=='' ? ' selected="selected" ' : '';
+							  echo $category_temp ? '<option value=""'.$str.'>不使用模板</option>' : '<option value="">暂无模板</option>';
 						  ?>
 						</select>
 						</span>

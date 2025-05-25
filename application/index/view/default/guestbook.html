@@ -83,10 +83,10 @@
  
 	 <!--留言列表 开始-->
 	 <div class="yzm-content-box yzm-book">
+	 		{m:guestbook page="page" limit="5"}
 	 		<div class="yzm-title">
-				<h2>留言列表</h2>
+				<h2>留言列表 ({$tag->total})</h2>
 			</div>
-			{m:guestbook page="page" limit="5"}
 			{loop $data $v}
 			   <div class="yzm-book-list">
 				  <p class="yzm-book-head">

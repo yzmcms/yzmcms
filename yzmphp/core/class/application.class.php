@@ -79,7 +79,7 @@ class application {
 	 * @return    void
 	 */
 	public static function showmsg($msg, $gourl, $limittime) {
-		$gourl = empty($gourl) ? (strpos(HTTP_REFERER, SITE_URL)!==0 ? SITE_URL : htmlspecialchars(HTTP_REFERER)) : htmlspecialchars($gourl);
+		$gourl = empty($gourl) ? (strpos(HTTP_REFERER, SITE_URL)!==0 ? SITE_URL : htmlspecialchars(HTTP_REFERER, ENT_QUOTES, 'UTF-8')) : htmlspecialchars($gourl, ENT_QUOTES, 'UTF-8');
 		$stop = $gourl!='stop' ? false : true;
 		include(YP_PATH.'core'.DIRECTORY_SEPARATOR.'tpl'.DIRECTORY_SEPARATOR.'message.tpl');
 	}

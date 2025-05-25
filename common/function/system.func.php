@@ -342,9 +342,10 @@ function get_thumb($thumb, $default = ''){
  */
 function select_category($name='parentid', $value='0', $root='', $member_publish=0, $attribute='', $parent_disabled=true, $disabled=true, $modelid=0){
 	if($root == '') $root = '≡ 作为一级栏目 ≡';
+	$selected = $value=='0' ? 'selected' : '';
 	$categorys = array();
 	$html='<select id="select" name="'.$name.'" class="select" '.$attribute.'>';
-	$html.='<option value="0">'.$root.'</option>';
+	$html.='<option value="0" data-name="" '.$selected.'>'.$root.'</option>';
 
 	$tree = yzm_base::load_sys_class('tree');
 	$data = D('category')->field('catid AS id,catname AS name,parentid,arrparentid,arrchildid,type,modelid,member_publish')->where(array('siteid'=>get_siteid()))->order('listorder ASC,catid ASC')->select(); 
@@ -381,7 +382,7 @@ function select_category($name='parentid', $value='0', $root='', $member_publish
 	$tree->init($categorys);
 	$tree->icon = array('&nbsp;&nbsp;&nbsp;│ ','&nbsp;&nbsp;&nbsp;├─ ','&nbsp;&nbsp;&nbsp;└─ ');
 	$tree->nbsp = '&nbsp;&nbsp;&nbsp;';
-	$html .= $tree->get_tree_category(0, "<option value='\$id' \$selected>\$spacer\$name</option>", "<optgroup label='\$spacer \$name'></optgroup>", $value);
+	$html .= $tree->get_tree_category(0, "<option value='\$id' data-name='\$name' \$selected>\$spacer\$name</option>", "<optgroup label='\$spacer \$name'></optgroup>", $value);
 
 	$html .= '</select>';
 	return $html;

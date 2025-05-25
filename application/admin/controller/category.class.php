@@ -164,6 +164,7 @@ class category extends common {
 			}
 			
 			$_POST['siteid'] = self::$siteid;
+			$_POST['arrchildid'] = '';
 			$catid = $this->db->insert($_POST, true);
 
 			if($type != 2){   //非外部链接
@@ -243,6 +244,7 @@ class category extends common {
 
 				$_POST['mobname'] = $_POST['catname'];
 				$_POST['siteid'] = self::$siteid;
+				$_POST['arrchildid'] = '';
 				$catid = $this->db->insert($_POST, true);
 				if($type == 1){   //单页类型
 					$arr = array();

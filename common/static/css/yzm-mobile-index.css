@@ -22,7 +22,7 @@ a:hover{color:#2196f3;}
 
 /*网站头部 */
 .yzm-header{height:40px;background:#2196f3;box-shadow: 0px 2px 3px #a6a6a6;margin-bottom:10px;position:fixed;top: 0;left: 0;right:0;z-index: 1;width: 100%;max-width:640px;margin:0 auto;}
-.yzm-header img{height:20px;margin-top:10px;cursor:pointer}
+.yzm-header img{height:20px;margin-top:10px;cursor:pointer;object-fit: cover;}
 .yzm-header h1,.yzm-header h2{width:70%;height:40px;line-height:40px;font-size:18px;color:#fff;text-align:center;margin:0 auto;text-overflow: ellipsis;white-space: nowrap;overflow: hidden;}
 .yzm-menu{float:left;margin-left:2%;}
 .yzm-search{float:right;margin-right:3%}
@@ -39,7 +39,7 @@ a:hover{color:#2196f3;}
 /* 焦点图*/
 .yzm-toppic{background:#000;height:250px;overflow:hidden;}
 .yzm-imgslidemain{clear:both;height:250px;position:relative;overflow:hidden;}
-.yzm-imgslidemain img{width:100%;height:250px;}
+.yzm-imgslidemain img{width:100%;height:250px;object-fit: cover;}
 .yzm-imgslide{clear:both;}
 .yzm-imgslide li{overflow:hidden;width:100%;position:relative}
 .yzm-imgslide li p {background:rgba(0,0,0,0.65);position:absolute;bottom:3px;height:35px;line-height:35px;display:block;color:#fff;width:100%;overflow:hidden;text-align:left;text-indent:1em;}
@@ -54,12 +54,12 @@ a:hover{color:#2196f3;}
 .yzm-title a{color:#123261;}
 .yzm-news-img{overflow:hidden;margin-bottom:10px;}
 .yzm-news-img ul li{width:50%;float:left;height:175px;padding:10px 10px;text-align:center;}
-.yzm-news-img ul li img{width:100%;height:120px;}
+.yzm-news-img ul li img{width:100%;height:120px;object-fit: cover;}
 .yzm-news-img ul li p{color:#444;display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
 .yzm-back{height:35px;width:35px;position:fixed;bottom:50px;right:10px;z-index:999}
 .yzm-back a{display: table-cell;vertical-align:middle;text-align: center;height:35px;width:35px;background:#2196f3;}
-.yzm-back img{height:25px;width:25px;vertical-align:middle;}
+.yzm-back img{height:25px;width:25px;vertical-align:middle;object-fit: cover;}
 
 /* 底部导航 */
 .yzm-footer-nav{line-height:35px;border-top:3px solid #2196f3;background:url(../images/fx.png) 0 28px repeat-x;overflow:hidden;background-color:#efefef;margin-top:10px;}

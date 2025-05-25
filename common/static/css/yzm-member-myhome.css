@@ -22,7 +22,7 @@ a:hover{color:#2f549f;text-decoration:underline;}
 
 #top{background: #f5f7fa;padding-left: 20px;height: 100px;border-bottom: solid 1px #dddddd;position: relative;color: #454545}
 #top .feeb  { border: solid 3px #ffffff; width: 150px;height: 150px;position: absolute;top: -65px;overflow: hidden;border-radius: 10px;left: 10px;}
-#top .feeb  img {  width: 150px;height: 150px;}
+#top .feeb  img {width: 150px;height: 150px;object-fit: cover;}
 #top .userinfo {float: left;margin-top:10px;margin-left: 160px;_margin-left:80px;width:650px}
 #top .username { margin-bottom: 6px;}
 #top .username {font-size:20px; height:26px;line-height:26px;}   
@@ -45,7 +45,7 @@ a:hover{color:#2f549f;text-decoration:underline;}
 #main_right .right_title{font-size:14px;font-weight:normal; color: #428bca;margin:10px 0;}
 #main_right .laifang ul li{float:left;width:33%;margin-bottom:10px;}
 #main_right .laifang ul li p{margin-left:4px;color: #454545}
-#main_right .laifang ul li img{height:60px;width:60px;border-radius:5px;}
+#main_right .laifang ul li img{height:60px;width:60px;border-radius:5px;object-fit: cover;}
 
 #page{margin-top:20px;font-size:13px;height:30px;line-height:30px;text-align:center}
 #page .pageinfo {color:#666;padding:6px 8px;border:1px solid #ddd}

@@ -51,6 +51,6 @@ class db_factory {
 	 * @return object
 	 */
 	public function connect($tabname) {		
-		return new self::$class(array('db_host'=>C('db_host'), 'db_user'=>C('db_user'), 'db_pwd'=>C('db_pwd'), 'db_name'=>C('db_name'), 'db_port'=>C('db_port'), 'db_prefix'=>C('db_prefix')), $tabname);
+		return new self::$class(array('db_host'=>C('db_host'), 'db_user'=>C('db_user'), 'db_pwd'=>C('db_pwd'), 'db_name'=>C('db_name'), 'db_port'=>C('db_port'), 'db_charset'=>C('db_charset', 'utf8'), 'db_prefix'=>C('db_prefix')), $tabname);
 	}
 }

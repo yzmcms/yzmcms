@@ -36,6 +36,8 @@ class content_form {
 						$string .= $this->tag_start($val['name'], $val['isrequired']).'<span class="select-box">'.form::select($val['field'],$val['defaultvalue'],string2array($val['setting'])).'</span>'.$this->tag_end();
 				}elseif($fieldtype == 'radio' || $fieldtype == 'checkbox'){
 						$string .= $this->tag_start($val['name'], $val['isrequired']).form::$fieldtype($val['field'],$val['defaultvalue'],string2array($val['setting'])).$this->tag_end();
+				}elseif($fieldtype == 'image' || $fieldtype == 'attachment'){
+						$string .= $this->tag_start($val['name'], $val['isrequired']).form::$fieldtype($val['field'],$val['defaultvalue'],string2array($val['setting'])).$this->tag_end();
 				}elseif($fieldtype == 'datetime'){
 						$string .= $this->tag_start($val['name'], $val['isrequired']).form::datetime($val['field'], '', $val['setting']).$this->tag_end();
 				}else{

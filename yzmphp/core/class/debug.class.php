@@ -121,7 +121,7 @@ class debug {
 				self::$info[] = $msg;
 				break;
 			case 1:
-				self::$sqls[] = htmlspecialchars($msg).'; [ RunTime:'.number_format(microtime(true)-$start_time , 6).'s ]';
+				self::$sqls[] = htmlspecialchars($msg, ENT_QUOTES, 'UTF-8').'; [ RunTime:'.number_format(microtime(true)-$start_time , 6).'s ]';
 				break;
 			case 2:
 				self::$request[] = $msg;

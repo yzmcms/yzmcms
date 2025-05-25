@@ -252,7 +252,7 @@ class yzm_tag{
 		$field = isset($data['field']) ? $data['field'] : '*';
 		$order = isset($data['order']) ? $data['order'] : 'id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
-		$where = isset($data['where']) ? $data['where'] : 'siteid='.get_siteid().' AND `ischeck` = 1';
+		$where = isset($data['where']) ? $data['where'] : 'siteid='.get_siteid().' AND `ischeck`=1 AND replyid=0';
 		$guestbook = D('guestbook');
 		if(isset($data['page'])){
 			yzm_base::load_sys_class('page','',0);

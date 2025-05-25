@@ -58,7 +58,7 @@
 				if (msg.status == 1) {
 					layer.msg(msg.message, {icon:1, time: 1500, shade:0.1});
 				} else {
-					layer.msg(msg.message);
+					layer.alert(msg.message, {icon:2});
 				}
 			}
 		})

@@ -18,6 +18,10 @@ class clear_cache extends common {
 	}
 	
 	public function public_clear() {
+
+		if(!is_writable(YZMPHP_PATH.'cache/')){
+			return_json(array('status'=>0,'message'=>'系统缓存目录【cache】不可写，请检查权限.'));
+		}
 		
 		//清除模块模板缓存
 		$chache_files = array('index', 'mobile', 'member');

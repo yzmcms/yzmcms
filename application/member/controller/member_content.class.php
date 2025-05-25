@@ -80,7 +80,7 @@ class member_content extends common{
 					continue;
 				} 
 				if(in_array($_k, $notfilter_field)) {
-					$_POST[$_k] = remove_xss(strip_tags($_v, '<p><a><br><img><ul><li><div><strong><table><th><tr><td>'));
+					$_POST[$_k] = remove_xss(strip_tags($_v, '<h1><h2><h3><h4><h5><h6><p><a><br><img><ul><li><div><strong><table><th><tr><td>'));
 				}else{
 					$_POST[$_k] = !is_array($_POST[$_k]) ? new_html_special_chars(trim_script($_v)) : $this->_content_dispose($_v);
 				}
@@ -179,7 +179,7 @@ class member_content extends common{
 					continue;
 				}
 				if(in_array($_k, $notfilter_field)) {
-					$_POST[$_k] = remove_xss(strip_tags($_v, '<p><a><br><img><ul><li><div><strong><table><th><tr><td>'));
+					$_POST[$_k] = remove_xss(strip_tags($_v, '<h1><h2><h3><h4><h5><h6><p><a><br><img><ul><li><div><strong><table><th><tr><td>'));
 				}else{
 					$_POST[$_k] = !is_array($_POST[$_k]) ? new_html_special_chars(trim_script($_v)) : $this->_content_dispose($_v);
 				}

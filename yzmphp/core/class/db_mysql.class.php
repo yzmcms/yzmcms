@@ -44,7 +44,7 @@ class db_mysql{
 			$mysql_error = APP_DEBUG ? mysql_error() : 'Database selection failed!';
 			application::halt($mysql_error, 550);    
 		}                                      
-		mysql_query("SET names utf8, sql_mode=''"); 	
+		mysql_query("SET names ".$this->config['db_charset'].", sql_mode=''"); 	
 		return self::$link;				
 	}	
 	

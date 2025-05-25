@@ -10,7 +10,7 @@
 .box{margin: 20px 0;}
 .left{width: 330px; float: left;}
 .yzm-banner{width: 760px; height: 395px; float: left; overflow: hidden;}
-.yzm-banner img{width: 100%; height: 395px;}
+.yzm-banner img{width: 100%; height: 395px;object-fit: cover;}
 .swiper-pagination{width: 100%; height: 15px; position: absolute; bottom: 10px;}
 .swiper-pagination-bullet{width: 30px; height: 10px; border-radius: 0; background: #2196f3; margin: 0 5px;}
 .yzm-button-prev,
@@ -29,7 +29,7 @@
 .yzm-text-thumbs{min-height: 400px;overflow:hidden}
 .yzm-text-thumb{width: 50%; float: left; margin: 10px 0;height: 150px;}
 .yzm-text-thumbl{width: 250px; height: 150px; float: left; margin-right: 10px;overflow: hidden;}
-.yzm-text-thumb img{width: 250px; height: 150px;transition:.5s}
+.yzm-text-thumb img{width: 250px; height: 150px;transition:.5s;object-fit: cover;}
 .yzm-text-thumb img:hover{width: 250px; height: 150px;transform: scale(1.1);}
 .yzm-text-thumbr{padding-right: 10px;}
 .yzm-text-thumbr a{font-size: 16px;}
@@ -44,7 +44,7 @@
 .yzm-img-list ul li a{overflow: hidden; display: block; margin: 0 7px; border: #f1f1f1 1px solid;}
 .yzm-img-list ul li p{color: #333; padding: 5px 10px; text-align: center; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;}
 .yzm-img-list ul li a i{height: 150px; display: block; overflow: hidden;}
-.yzm-img-list ul li a img{width: 100%; height: 150px; display: inline-block; vertical-align: middle; transition: .5s;}
+.yzm-img-list ul li a img{width: 100%; height: 150px; display: inline-block; vertical-align: middle; transition: .5s;object-fit: cover;}
 .yzm-img-list ul li a:hover img{transform: scale(1.1);}
 .yzm-tag{min-height: 100px;overflow:hidden}
 .yzm-tag ul li a{display: block; color: #666; width: 100px; text-align: center; float: left; margin: 5px 6px; padding: 4px 6px; background: #f1f1f1; line-height: 26px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
@@ -65,7 +65,7 @@
 .yzm-flag{font-style: normal;font-size: 12px;background:#f60;color:#fff;padding: 1px 3px;font-weight:normal;margin-right:3px;}
 .yzm-news{margin: 20px 0; height: 170px; border-bottom: 1px dashed #d3d3d3; overflow: hidden;}
 .yzm-news .yzm-news-img{width: 230px; height: 150px; float: left; margin-right: 10px; overflow: hidden;}
-.yzm-news .yzm-news-img img{width: 100%; height: 150px; transition: .5s;}
+.yzm-news .yzm-news-img img{width: 100%; height: 150px; transition: .5s;object-fit: cover;}
 .yzm-news .yzm-news-img img:hover{transform: scale(1.1);}
 .yzm-news-right{padding-right: 10px; padding-top: 10px;}
 .yzm-news-right em{font-style: normal; font-size: 12px; background: #f60; color: #fff; padding: 1px 3px; font-weight: normal; margin-right: 5px;}
@@ -133,7 +133,7 @@
 .yzm-comment-form .emotion:hover{background-position: 2px -29px; color: #666}
 .yzm-face{margin-top:4px;background:#fff;padding:3px;border: 1px #ccc solid;border-radius:3px}
 .yzm-face table td{padding:2px;}
-.yzm-face table td img{cursor:pointer;border:1px #fff solid;width:35px}
+.yzm-face table td img{cursor:pointer;border:1px #fff solid;width:35px;object-fit: cover;}
 .yzm-face table td img:hover{border:1px #0066cc solid;}
 .yzm-comment-submit{background-color: #e6e6e6; background-image: linear-gradient(#fcfcfc, #fcfcfc 25%, #e6e6e6); background-repeat: no-repeat; border-bottom-right-radius: 3px; border-color: #ddd #ddd #aaa; border-style: solid; border-width: 1px; box-shadow: 0 0 1px #fff inset; color: #555; font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; font-size: 14px; height: 32px; position: absolute; right: 0; text-align: center; text-shadow: 0 1px 0 #fff; top: 0; transition: all 0.15s linear 0s; width: 100px; cursor: pointer; border-radius: 2px; margin-top: 5px; outline: none;}
 .yzm-comment-submit:hover{background-position: 0 -15px; color: #121212}
@@ -176,7 +176,7 @@
 /* 下载模型 */
 .yzm-down-list{padding: 20px 0; height: 110px; border-bottom: 1px dashed #bbbbbb}
 .yzm-down-list-left{height: 100px; width: 150px; float: left; margin-right: 15px; overflow: hidden;}
-.yzm-down-list-left img{height: 110px; width: 150px; transition: .5s;}
+.yzm-down-list-left img{height: 110px; width: 150px; transition: .5s;object-fit: cover;}
 .yzm-down-list-left img:hover{transform: scale(1.1);}
 .yzm-down-title{margin-top: 5px}
 .yzm-down-title a{font-size: 16px; color: #232323;}
@@ -187,7 +187,7 @@
 .yzm-down-msg{margin: 20px 0; overflow: hidden;}
 .yzm-down-msg .yzm-desc{background: #f9f8f8; padding: 10px; width: 417px; float: right; margin-bottom: 10px}
 .yzm-down-msg .yzm-desc span{color: #2196f3;}
-.yzm-down-msg img{width: 300px; height: 200px; float: left; margin-right: 20px}
+.yzm-down-msg img{width: 300px; height: 200px; float: left; margin-right: 20px;object-fit: cover;}
 .yzm-down-msg ul{float: left;}
 .yzm-down-msg ul strong{margin-right: 10px;}
 .yzm-down-url ul{margin: 20px 0 10px 0;}
@@ -202,7 +202,7 @@
 .yzm-product-list{border: 1px #e8e8e8 solid; margin: 5px; padding: 20px; overflow: hidden; height: 160px;}
 .yzm-product-list:hover{border: 1px #2196f3 solid;}
 .yzm-product-img{width: 216px; height: 150px; float: left; overflow: hidden;}
-.yzm-product-list img{width: 216px; height: 150px; float: left; transition: .5s;}
+.yzm-product-list img{width: 216px; height: 150px; float: left; transition: .5s;object-fit: cover;}
 .yzm-product-list img:hover{transform: scale(1.1);}
 .yzm-product-right{float: right; width: 270px;}
 .yzm-product-title{font-size: 16px; display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; line-height: 35px}
@@ -218,7 +218,7 @@
 .yzm-shopping-box img{width:30px}
 .yzm-shopping-box .shopping_number{position: absolute;top: -10px;right: -10px;background: #e94b35;color: #fff;border-radius: 100%;height: 28px;width: 28px;text-align: center;line-height: 28px;font-size: 16px;font-weight: bold;}
 .yzm-image{width: 100%; height: 450px; line-height: 450px; text-align: center; border: 1px solid #ddd; background: #f9f8f8}
-.yzm-image img{width: 600px; height: 450px; overflow: hidden;}
+.yzm-image img{width: 600px; height: 450px; overflow: hidden;object-fit: cover;}
 .yzm-switch{width: 100%; height: 87px; border: 1px solid #ddd; margin: 5px auto;}
 .yzm-icon1{display: inline; width: 30px; float: left; padding-top: 28px; text-indent: -9999px; margin-left: 10px;}
 .yzm-icon1 a{display: block; width: 32px; height: 32px; background: url(../images/left.png) no-repeat;}
@@ -227,7 +227,7 @@
 .yzm-switch-center{float: left; width: 665px; height: 83px; margin-left: 10px; overflow: hidden; padding-top: 3px;}
 .yzm-switch-center li{display: inline; float: left; width: 100px; height: 66px; margin: 0 5px; padding-top: 10px;}
 .yzm-switch-center li a{display: block; width: 88px; height: 60px; border: 1px solid #ddd;}
-.yzm-switch-center li a img{width: 88px; height: 60px;}
+.yzm-switch-center li a img{width: 88px; height: 60px;object-fit: cover;}
 .yzm-switch-center li a.on{border: 1px solid #ff9900;}
 .yzm-switch-center li a:hover{border: 1px solid #ff9900;}
 /*产品模型*/

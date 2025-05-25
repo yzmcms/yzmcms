@@ -38,7 +38,7 @@ a:hover{text-decoration:underline;}
 
 .yzmcms_other_login{padding:5px 0;}
 .yzmcms_other_login a{width:40px;height: 40px;margin-right: 30px}
-.yzmcms_other_login a img{width:40px;height: 40px;transition:0.8s}
+.yzmcms_other_login a img{width:40px;height: 40px;transition:0.8s;object-fit: cover;}
 .yzmcms_other_login a img:hover{transform:rotate(360deg);}
 
 
@@ -48,12 +48,12 @@ a:hover{text-decoration:underline;}
 .bind_content p{margin:20px 0 40px 0;}
 .bind_content .bind{border-left:3px solid #2196f3;padding-left:10px}
 .bind_content .logo a{height:35px;line-height:35px;color:#2196f3;font-size:30px;text-decoration:none;display:inline-block}
-.bind_content .logo img{height:35px;vertical-align:top;}
+.bind_content .logo img{height:35px;vertical-align:top;object-fit: cover;}
 .bind_left{border:1px solid #e4e3e3;width:380px;float:left;height:300px;background:#fff;}
 .bind_title{border-bottom: 1px dashed #bbbbbb;height:40px;line-height:40px;padding:0px 20px}
-.bind_title img{height:18px;vertical-align:middle;}
+.bind_title img{height:18px;vertical-align:middle;object-fit: cover;}
 .bind_body{width:310px;margin:45px auto 0;text-align:center;font-size:14px;color:#666;}
-.bind_body img{width:85px;height:85px;}
+.bind_body img{width:85px;height:85px;object-fit: cover;}
 .input_mini{width:200px}
 .bind_right{border:1px solid #e4e3e3;width:380px;float:right;height:300px;background:#fff;}
 .bind_form {margin-top:35px;}

@@ -52,7 +52,7 @@ a:hover{color:#33aecc;text-decoration:underline;}
 .main_cont{padding:0 20px;}
 .yzm-member-center{overflow:hidden;padding:10px;margin-bottom:10px}
 .yzm-member-left{width: 210px;text-align:center;float:left;}
-.yzm-member-left img{width:150px;height:150px;border-radius:5px;}
+.yzm-member-left img{width:150px;height:150px;border-radius:5px;object-fit: cover;}
 .yzm-member-right{width: 560px;float:right;}
 .yzm-row{height:30px;line-height: 30px}
 .yzm-row label{width:70px;display: inline-block;}
@@ -70,7 +70,7 @@ a:hover{color:#33aecc;text-decoration:underline;}
 .yzm-item p{margin-top:5px;color:red;}
 .yzm-item cite{font-style: normal;margin-top:5px;display:block;color:#666;}
 .userimg{width:180px;}
-.userimg img{width:300px;height:300px;border-radius:5px;margin-bottom:30px}
+.userimg img{width:300px;height:300px;border-radius:5px;margin-bottom:30px;object-fit: cover;}
 .file{outline:none;background:#fff;box-sizing:border-box;padding:10px 15px;border-radius:3px;border:1px solid #e3eaef;display:block;width:100%;margin-bottom:20px;}
 
 /*网站底部 */
@@ -104,8 +104,8 @@ textarea{width:615px;height:80px;padding:2px 3px;border-radius:2px;border:1px so
 .yzm-checkbox,.yzm-radio{margin-right:2px}
 
 .required{color:#fd6161;margin-left:-12px;margin-right:3px;vertical-align:middle;font-weight:bold;}
-.main_cont table{}
 .main_cont table tr{height:50px;}
+.main_cont table img{max-height:30px;vertical-align:middle;}
 .codeimg{cursor:pointer;height:30px;margin-top:5px;margin-left:5px;}
 
 .tablelist{width:100%;}
@@ -115,7 +115,7 @@ textarea{width:615px;height:80px;padding:2px 3px;border-radius:2px;border:1px so
 .tablelist .tablast{background:#f6f6f6 none repeat scroll 0 0;height:30px;line-height: 30px;}
 
 .follow ul li{width:222px;height:95px;float:left;margin-right:10px;margin-bottom:20px}
-.follow ul li img{width:80px;height:80px;float:left;margin-right:5px;border:1px solid #dcdcdc;border-radius:3px}
+.follow ul li img{width:80px;height:80px;float:left;margin-right:5px;border:1px solid #dcdcdc;border-radius:3px;object-fit: cover;}
 .follow ul li strong{display:block;margin-bottom:5px;}
 
 .uploadfile{height:30px;line-height:30px;width:320px;padding:1px 3px;border-radius:2px;border:1px solid #e3eaef;outline:none;box-shadow: 0 1px 1px rgba(0, 0, 0, 0.075) inset;}

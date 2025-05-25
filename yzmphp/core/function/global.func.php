@@ -850,6 +850,7 @@ function watermark($source, $target = '') {
  * @return bool
  */
 function new_session_start(){
+	if(ini_get('session.auto_start')) return true;
 	// session_save_path(YZMPHP_PATH.'cache/sessions');
 	ini_set('session.cookie_httponly', true);
 	$session_name = session_name();
@@ -941,6 +942,55 @@ function config($key = '', $default = '') {
 
 
 /**
+ * 获取env 配置
+ * @param string $env_key 参数key
+ * @param string $default 默认值
+ * @return string|bool
+ */
+function env($env_key, $default = '') {
+    static $env_data = array();
+
+    if (empty($env_data)) {
+        $env_file = YZMPHP_PATH . '.env';
+
+        if (!is_file($env_file)) return $default;
+        $lines = file($env_file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+        foreach ($lines as $line) {
+            $line = trim($line);
+
+            if (empty($line) || strpos($line, '#') === 0) {
+                continue;
+            }
+
+            if (preg_match('/^([^=]+)=(.*)$/', $line, $matches)) {
+                $key = trim($matches[1]);
+                $value = trim($matches[2]);
+
+                $pattern = '/^[\s]*([\'"])(.*?)(?<!\\\\)\1(?=\s*#|$)/';
+                if (preg_match($pattern, $value, $matches)) {
+                    $value = $matches[2]; 
+                } else {
+                    $value = strtok($value, '#');
+                }
+
+                if (strtolower($value) === 'true') {
+                    $value = true;
+                } elseif (strtolower($value) === 'false') {
+                    $value = false;
+                } elseif (is_numeric($value)) {
+                    $value = $value + 0;
+                }
+
+                $env_data[$key] = $value;
+            }
+        }
+    }
+
+    return array_key_exists($env_key, $env_data) ? $env_data[$env_key] : $default;
+}
+
+
+/**
  * 用于实例化一个model对象
  * @param string $classname 模型名
  * @param string $m 模块
@@ -1011,8 +1061,10 @@ function U($url='', $vars='', $domain=null, $suffix=true) {
 		if($vars){
 			if(!is_array($vars)) parse_str($vars, $vars);			
             foreach ($vars as $var => $val){
-				$val = str_replace('/', '{YZM_PATH}', $val);
-                if(!is_array($val) && trim($val) !== '') $string .= '/'.urlencode($var).'/'.urlencode($val);
+				if(!is_array($val) && trim($val) !== '') {
+					$val = str_replace('/', '{YZM_PATH}', $val);
+					$string .= '/'.urlencode($var).'/'.urlencode($val);
+				}
             } 
 		}
         $string .= $suffix === true ? C('url_html_suffix') : $suffix;		
@@ -1346,7 +1398,7 @@ function return_json($arr = array(), $show_debug = false){
  */
 function write_log($message, $filename = '', $ext = '.log', $path = '') {
 	$message = is_array($message) ? new_json_encode($message, JSON_UNESCAPED_UNICODE) : $message;
-	$message = date('H:i:s').' '.$message."\r\n";
+	$message = date('Y-m-d H:i:s').' '.$message."\r\n";
 	if(!$path) $path = YZMPHP_PATH.'cache/syslog';
 	if(!is_dir($path)) @mkdir($path, 0777, true);
 	
@@ -1377,6 +1429,7 @@ function write_error_log($err_arr, $path = '') {
 	if(is_file($file) && filesize($file)>20971520){
 		@rename($file, $path.DIRECTORY_SEPARATOR.'error_log'.date('YmdHis').rand(100,999).'.php') ;
 	}
+	if(!is_writable($file)) return false;
 	if(!is_file($file)){
 		error_log("<?php exit;?>\r\n", 3, $file);
 	}

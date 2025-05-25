@@ -42,9 +42,8 @@ class db_pdo{
 	 */	
 	public function connect(){ 
 		try { 
-			$dns = 'mysql:host='.$this->config['db_host'].';dbname='.$this->config['db_name'].';port='.intval($this->config['db_port']);   
+			$dns = 'mysql:host='.$this->config['db_host'].';dbname='.$this->config['db_name'].';port='.intval($this->config['db_port']).';charset='.$this->config['db_charset'];   
 			self::$link = new PDO($dns, $this->config['db_user'], $this->config['db_pwd'], self::$params);
-			self::$link -> exec("SET names utf8, sql_mode=''");
 			return self::$link;
 		}catch(PDOException $e) {
 			self::$link = null;

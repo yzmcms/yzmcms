@@ -22,7 +22,7 @@
 						<span>密码：</span>
 					</li>
 					<li class="yzm-login-item">
-						<img src="<?php echo U('api/index/code');?>" title="点击切换验证码" id="codeimg" class="yzm-verifyimg" onclick="this.src=this.src+'?'"/>
+						<img src="<?php echo U('api/index/code');?>" title="点击切换验证码" id="codeimg" class="yzm-verifyimg" onclick="change_code()"/>
 						<input type="text" name="code" class="yzm-login-input yzm-verify-input" placeholder="请输入验证码">
 						<span>验证码：</span>
 					</li>
@@ -49,6 +49,11 @@
 	<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/jquery/1.8.2/jquery.min.js"></script> 
 	<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/layer/layer.js"></script>
 	<script type="text/javascript">
+		function change_code(){
+			var img_src = $("#codeimg").attr('src');
+			$("#codeimg").attr('src', img_src + (img_src.indexOf('?') === -1 ? '?' : '&') + Math.random());
+		}
+		
 		function dologin(obj) {
 			if(obj.username.value==''){
 				layer.msg('请输入用户名！', {icon:2});
@@ -69,7 +74,7 @@
 	            data: $(obj).serialize(),
 			    dataType: "json", 
 	            success: function (msg) {
-	            	$("#codeimg").attr('src',$("#codeimg").attr('src') + '?' + Math.random());
+	            	change_code();
 					if(msg.status == 1){
 						layer.msg(msg.message, {icon:1, time:1200}, function(){
 							window.location.href = msg.url;

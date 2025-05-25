@@ -20,7 +20,7 @@ class update_urls extends common {
 	public function init() {
 		$modelid = 0;
 		$modelinfo = get_site_modelinfo();
-		$select = select_category('catids[]', '0', '≡ 所有栏目 ≡', 0, 'multiple="multiple" style="height:250px;width:140px;"', false, false);
+		$select = select_category('catids[]', '0', '≡ 所有栏目 ≡', 0, 'multiple="multiple" style="height:300px;width:250px;"', false, false);
 		include $this->admin_tpl('update_urls_list');
 	}
 
@@ -31,7 +31,7 @@ class update_urls extends common {
 	public function change_model() {
 		$modelid = isset($_POST['modelid']) ? intval($_POST['modelid']) : 0;
 		$modelinfo = get_site_modelinfo();
-		$select = select_category('catids[]', '0', '≡ 所有栏目 ≡', 0, 'multiple="multiple" style="height:250px;width:140px;"', false, false, $modelid);
+		$select = select_category('catids[]', '0', '≡ 所有栏目 ≡', 0, 'multiple="multiple" style="height:300px;width:250px;"', false, false, $modelid);
 		
 		include $this->admin_tpl('update_urls_list');
 	}

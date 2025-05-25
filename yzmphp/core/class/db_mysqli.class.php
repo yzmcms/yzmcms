@@ -41,7 +41,7 @@ class db_mysqli{
 			application::halt($mysql_error, 550);
 		}    
 		self::$link->options(MYSQLI_OPT_INT_AND_FLOAT_NATIVE, true);
-		self::$link->query("SET names utf8, sql_mode=''"); 	
+		self::$link->set_charset($this->config['db_charset']);
 		return self::$link;
 	}
 	
