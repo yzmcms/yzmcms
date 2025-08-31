@@ -543,6 +543,50 @@ function is_utf8($string) {
 }
 
 
+/**
+ * 获取文件的真实MIME类型
+ * 
+ * @param string $file_path 文件路径
+ * @return string|bool
+ */
+function get_file_mime_type($file_path) {
+    if (!is_file($file_path)) {
+        return false;
+    }
+
+    if (function_exists('finfo_open') && function_exists('finfo_file')) {
+        $finfo = finfo_open(FILEINFO_MIME_TYPE);
+        if ($finfo) {
+            $mime = finfo_file($finfo, $file_path);
+            finfo_close($finfo);
+            if ($mime !== false && $mime !== '') {
+                return $mime;
+            }
+        }
+    }
+
+    if (function_exists('mime_content_type')) {
+        $mime = mime_content_type($file_path);
+        if ($mime !== false && $mime !== '') {
+            return $mime;
+        }
+    }
+
+    $extension = strtolower(pathinfo($file_path, PATHINFO_EXTENSION));
+    $mime_types = array(
+        'jpg'  => 'image/jpeg',
+        'jpeg' => 'image/jpeg',
+        'png'  => 'image/png',
+        'gif'  => 'image/gif',
+        'webp' => 'image/webp',
+        'bmp'  => 'image/bmp',
+        'svg'  => 'image/svg+xml'
+    );
+
+    return isset($mime_types[$extension]) ? $mime_types[$extension] : 'application/octet-stream';
+}
+
+
 
 /**
  * 文件下载
@@ -966,16 +1010,23 @@ function env($env_key, $default = '') {
                 $key = trim($matches[1]);
                 $value = trim($matches[2]);
 
+                if ($value === '') {
+                    $env_data[$key] = '';
+                    continue;
+                }
+
                 $pattern = '/^[\s]*([\'"])(.*?)(?<!\\\\)\1(?=\s*#|$)/';
                 if (preg_match($pattern, $value, $matches)) {
                     $value = $matches[2]; 
                 } else {
-                    $value = strtok($value, '#');
+                    $parts = explode('#', $value, 2);
+                    $value = trim($parts[0]);
                 }
 
-                if (strtolower($value) === 'true') {
+                $normalizedValue = strtolower($value);
+                if ($normalizedValue === 'true') {
                     $value = true;
-                } elseif (strtolower($value) === 'false') {
+                } elseif ($normalizedValue === 'false') {
                     $value = false;
                 } elseif (is_numeric($value)) {
                     $value = $value + 0;
@@ -986,7 +1037,7 @@ function env($env_key, $default = '') {
         }
     }
 
-    return array_key_exists($env_key, $env_data) ? $env_data[$env_key] : $default;
+    return isset($env_data[$env_key]) ? $env_data[$env_key] : $default;
 }
 
 
@@ -1426,10 +1477,13 @@ function write_error_log($err_arr, $path = '') {
 	if(!$path) $path = YZMPHP_PATH.'cache';
 	if(!is_dir($path)) @mkdir($path, 0777, true);
 	$file = $path.DIRECTORY_SEPARATOR.'error_log.php';
-	if(is_file($file) && filesize($file)>20971520){
-		@rename($file, $path.DIRECTORY_SEPARATOR.'error_log'.date('YmdHis').rand(100,999).'.php') ;
+	if(is_file($file)){
+		if(!is_writable($file)) return false;
+		if(filesize($file)>20971520){
+			@rename($file, $path.DIRECTORY_SEPARATOR.'error_log'.date('YmdHis').rand(100,999).'.php') ;
+		}
 	}
-	if(!is_writable($file)) return false;
+	
 	if(!is_file($file)){
 		error_log("<?php exit;?>\r\n", 3, $file);
 	}

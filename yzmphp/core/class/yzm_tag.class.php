@@ -340,7 +340,7 @@ class yzm_tag{
 		if(!$this->_set_model($modelid)) return false;
 		$format = $type == 1 ? '%Y-%m' : '%Y年%m月';
 		
-		return $this->db->field("FROM_UNIXTIME(inputtime, '$format') AS pubtime, count(*) AS total,inputtime")->where('`status`=1')->group("FROM_UNIXTIME(inputtime, '$format')")->order('pubtime DESC')->limit($limit)->select();
+		return $this->db->field("FROM_UNIXTIME(inputtime, '$format') AS pubtime, count(*) AS total,MAX(inputtime) AS inputtime")->where('`status`=1')->group("FROM_UNIXTIME(inputtime, '$format')")->order('pubtime DESC')->limit($limit)->select();
 	}
 
 

@@ -174,6 +174,7 @@ class category extends common {
 					$arr['catid'] = $catid;	
 					$arr['title'] = $_POST['catname'];										
 					$arr['description'] = $_POST['seo_description'];										
+					$arr['content'] = '';										
 					$arr['updatetime'] = SYS_TIME;										
 					D('page')->insert($arr, false, false); 
 				}

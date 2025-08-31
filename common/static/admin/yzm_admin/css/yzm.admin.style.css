@@ -86,10 +86,12 @@ select{background:#fff}
 .yzm-status-enable{color:#5eb95e;cursor:pointer;user-select:none}
 .yzm-status-disable{color:#9ea3a7;cursor:pointer;user-select:none}
 .yzm-status-enable i,.yzm-status-disable i{margin-right:1px;font-size:14px}
-.yzm-table-sort .yzm-caret-wrapper{display: inline-flex;-webkit-box-orient: vertical;-webkit-box-direction: normal;-ms-flex-direction: column;flex-direction: column;-webkit-box-align: center;-ms-flex-align: center;align-items: center;height: 27px;width: 18px;vertical-align: middle;cursor: pointer;overflow: initial;position: relative;}
-.yzm-table-sort .yzm-sort-caret{width:0px;height:0px;border:5px solid transparent;border-bottom-color: transparent;position: absolute;left: 4px;}
+.yzm-table-sort .yzm-caret-wrapper{display: inline-flex;-webkit-box-orient: vertical;-webkit-box-direction: normal;-ms-flex-direction: column;flex-direction: column;-webkit-box-align: center;-ms-flex-align: center;align-items: center;height: 27px;width: 18px;vertical-align: middle;overflow: initial;position: relative;}
+.yzm-table-sort .yzm-sort-caret{width:0px;height:0px;border:5px solid transparent;border-bottom-color: transparent;position: absolute;left: 4px;cursor: pointer;}
 .yzm-table-sort .yzm-sort-caret.yzm-ascending{border-bottom-color:#c0c4cc;top:2px;}
+.yzm-table-sort .yzm-sort-caret.yzm-ascending:hover{border-bottom-color:#69b0fa;}
 .yzm-table-sort .yzm-sort-caret.yzm-descending{border-top-color:#c0c4cc;bottom:2px;}
+.yzm-table-sort .yzm-sort-caret.yzm-descending:hover{border-top-color:#69b0fa;}
 .yzm-table-sort .asc .yzm-sort-caret.yzm-ascending{border-bottom-color: #409eff;}
 .yzm-table-sort .desc  .yzm-sort-caret.yzm-descending{border-top-color: #409eff;}
 

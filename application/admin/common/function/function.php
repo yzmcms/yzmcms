@@ -126,7 +126,7 @@ function downfile($url, $md5){
         $content = @file_get_contents($url);
     }
 
-    if(!$content) return array('status'=>0, 'message'=>'升级包不存在，请重试！');
+    if(!$content) return array('status'=>0, 'message'=>'升级包下载失败，请重试！');
 
     $filename = explode('/', $url);    
     $filename = end($filename);
@@ -135,7 +135,7 @@ function downfile($url, $md5){
     fwrite($fp, $content);
     fclose($fp);
 
-    if(!is_file($downname)) return array('status'=>0, 'message'=>'下载文件失败，请检查目录权限！');
+    if(!is_file($downname)) return array('status'=>0, 'message'=>'升级包下载失败，请检查目录权限！');
     if($md5 != md5_file($downname)) return array('status'=>0, 'message'=>'升级包损坏，请重新下载！');
 
     return array('status'=>1, 'message'=>'下载成功！', 'file_path'=>$downname);
@@ -147,7 +147,7 @@ function unzips($filename, $unzip_folder){
 
     $zip = new ZipArchive();
     if (!$zip->open($filename)) {
-        return array('status'=>0, 'message'=>'打开升级包失败！');
+        return array('status'=>0, 'message'=>'解压升级包失败！');
     }
 
     $zip->extractTo($unzip_folder);

@@ -65,7 +65,7 @@ class index{
 			$_POST['id'] = isset($_POST['id']) ? intval($_POST['id']) : 0; 
 			$_POST['commentid'] = $this->_get_commentid($_POST['modelid'], $_POST['catid'], $_POST['id']);
 			$_POST['url'] = get_content_url($_POST['catid'], $_POST['id']);
-			$_POST['status'] = !$site['comment_check']; 
+			$_POST['status'] = intval($site['comment_check']) ? 0 : 1; 
 			$_POST['total'] = 1;
 
 			if(empty($_POST['url'])) return_message(L('illegal_parameters'), 0);

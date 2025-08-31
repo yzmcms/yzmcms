@@ -34,6 +34,10 @@ class reset{
 		$_SESSION['step'] = isset($_SESSION['step']) ? $_SESSION['step'] : 1;
 
 		if($_SESSION['step']==1 && isset($_POST['dosubmit'])){
+
+			if(!isset($_POST['code']) || !isset($_SESSION['code'])){
+				showmsg(L('lose_parameters'),'',1);
+			}
 			
 			if(empty($_SESSION['code']) || strtolower($_POST['code']) != $_SESSION['code']){
 				$_SESSION['code'] = '';
@@ -61,6 +65,10 @@ class reset{
 			if($_SESSION['emc_times']=='' || $_SESSION['emc_times']<=0){
 				 $_SESSION['step'] = 1;
 				 showmsg("验证次数超过5次,请重新获取邮箱验证码！");
+			}
+
+			if(!isset($_POST['email_code']) || !isset($_SESSION['email_code'])){
+				showmsg(L('lose_parameters'),'',1);
 			}
 			
 			if(!empty($_SESSION['email_code']) && strtolower($_POST['email_code']) == strtolower($_SESSION['email_code'])){
@@ -92,6 +100,10 @@ class reset{
 		$_SESSION['step'] = isset($_SESSION['step']) ? $_SESSION['step'] : 1;
 
 		if($_SESSION['step']==1 && isset($_POST['dosubmit'])){
+
+			if(!isset($_POST['code']) || !isset($_SESSION['code'])){
+				showmsg(L('lose_parameters'),'',1);
+			}
 			
 			if(empty($_SESSION['code']) || strtolower($_POST['code']) != $_SESSION['code']){
 				$_SESSION['code'] = '';
@@ -114,6 +126,10 @@ class reset{
 				 D('member')->update(array('status' => 2), array('userid'=>$_SESSION['userid']));  //锁定用户
 				 unset($_SESSION['step'], $_SESSION['problem'], $_SESSION['answer'], $_SESSION['emc_times'], $_SESSION['userid']);
 				 showmsg('验证次数超过5次，您已被锁定，请联系管理员！');
+			}
+
+			if(!isset($_POST['answer']) || !isset($_SESSION['answer'])){
+				showmsg(L('lose_parameters'),'',1);
 			}
 			
 			if(!empty($_SESSION['answer']) && $_POST['answer'] == $_SESSION['answer']){

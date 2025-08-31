@@ -26,11 +26,11 @@ class page_form {
 			if($fieldtype == 'input' || $fieldtype == 'number' || $fieldtype == 'decimal'){
 					$errortips = !empty($val['errortips']) ? $val['errortips'] : '必填项不能为空';
 					$required = $val['isrequired'] ? ' required" errortips="'.$errortips : '';
-					$string .= $this->tag_start($val['name'], $val['isrequired']).'<input type="text" class="input-text'.$required.'" value="'.$data[$val['field']].'" name="'.$val['field'].'" placeholder="'.$val['tips'].'">'.$this->tag_end();		   
+					$string .= $this->tag_start($val['name'], $val['isrequired']).'<input type="text" class="input-text'.$required.'" value="'.$data[$val['field']].'" name="'.$val['field'].'" maxlength="'.$val['maxlength'].'" placeholder="'.$val['tips'].'">'.$this->tag_end();		   
 			}elseif($fieldtype == 'textarea'){
 					$errortips = !empty($val['errortips']) ? $val['errortips'] : '必填项不能为空';
 					$required = $val['isrequired'] ? ' required" errortips="'.$errortips : '';
-					$string .= $this->tag_start($val['name'], $val['isrequired']).'<textarea name="'.$val['field'].'" class="textarea'.$required.'"  placeholder="'.$val['tips'].'" >'.$data[$val['field']].'</textarea>'.$this->tag_end();
+					$string .= $this->tag_start($val['name'], $val['isrequired']).'<textarea name="'.$val['field'].'" class="textarea'.$required.'" maxlength="'.$val['maxlength'].'"  placeholder="'.$val['tips'].'" >'.$data[$val['field']].'</textarea>'.$this->tag_end();
 			}elseif($fieldtype == 'select'){
 					$string .= $this->tag_start($val['name'], $val['isrequired']).'<span class="select-box">'.form::select($val['field'],$data[$val['field']],string2array($val['setting'])).'</span>'.$this->tag_end();
 			}elseif($fieldtype == 'radio' || $fieldtype == 'checkbox'){

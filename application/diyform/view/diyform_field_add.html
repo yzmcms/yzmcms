@@ -61,7 +61,7 @@
 				<tr>
 					<td>字符长度取值范围</td> 
 					<td class="yzm-explain-box">最小值：<input class="input-text w_100" type="text" value="0" name="minlength">
-                        最大值：<input class="input-text w_100" type="text" value="100" name="maxlength">
+                        最大值：<input class="input-text w_100" type="text" value="250" name="maxlength">
                         <span class="yzm-explain">最小值为1则为必填项，为0则非必填项<br>最大值指的是数据库表字段的最大长度</span>
                     </td>
 				</tr>	
@@ -91,16 +91,17 @@
 <?php include $this->admin_tpl('footer', 'admin');?>
 <script type="text/javascript">
 	function field_setting(fieldtype) {
-	    if(fieldtype=='select' || fieldtype=='radio' || fieldtype=='checkbox') {
-			$('#options').css('display','');
-		}else{
-			$('#options').css('display','none');
-		} 
-	    if(fieldtype=='datetime') {
-			$('#dates').css('display','');
-		}else{
-			$('#dates').css('display','none');
-		} 		
+		var isOptionField = ['select', 'radio', 'checkbox'].includes(fieldtype);
+		$('#options').css('display', isOptionField ? '' : 'none');
+		
+		var isDatetimeField = fieldtype === 'datetime';
+		$('#dates').css('display', isDatetimeField ? '' : 'none');
+		
+		var defaultValue = 
+		    fieldtype === 'number' ? '0' : 
+		    fieldtype === 'decimal' ? '0.00' : 
+		    '';
+		$('input[name="defaultvalue"]').val(defaultValue);
 	}
 
 	function check_name(){ 

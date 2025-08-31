@@ -49,14 +49,14 @@ class sql{
 
 	public static function sql_add_field_mediumtext($tablename, $field){
 		self::set_tablename($tablename);
-		$sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `$field` mediumtext NOT NULL";
+		$sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `$field` mediumtext";
 		self::sql_exec($sql);			
 	}
 	
 	
 	public static function sql_add_field_text($tablename, $field){
 		self::set_tablename($tablename);
-		$sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `$field` text NOT NULL";
+		$sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `$field` text";
 		self::sql_exec($sql);			
 	}
 	

@@ -91,6 +91,18 @@ class index{
 			}
 		}
 
+		if(isset($data['email']) && !is_email($data['email'])){
+			return_message('邮箱格式不正确！', 0);
+		}
+
+		if(isset($data['phone']) && !is_mobile($data['phone'])){
+			return_message('手机号格式不正确！', 0);
+		}
+
+		if(isset($data['qq']) && strlen($data['qq'])>11){
+			return_message('QQ号码长度不正确！', 0);
+		}
+
 		// 开启重复验证
 		$res = D('guestbook')->field('title,name,bookmsg')->order('id DESC')->find();
 		if($res && $data['title']==$res['title'] && $data['bookmsg']==$res['bookmsg']){

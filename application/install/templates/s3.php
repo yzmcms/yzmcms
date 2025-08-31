@@ -71,12 +71,12 @@
                                 <td class="tar">数据表引擎/字符集：</td>
                                 <td>
                                     <select name="engine" class="select2">
-                                        <option value="myisam" selected>MyISAM</option>
-                                        <option value="innodb">InnoDB</option>
+                                        <option value="innodb" selected>InnoDB</option>
+                                        <option value="myisam">MyISAM</option>
 								    </select>
                                     <select name="charset" class="select2">
-                                        <option value="utf8" selected>utf8</option>
-                                        <option value="utf8mb4">utf8mb4</option>
+                                        <option value="utf8mb4" selected>utf8mb4</option>
+                                        <option value="utf8">utf8</option>
 								    </select>
                                 </td>
                                 <td><div id="J_install_tip_dbname"></div></td>

@@ -62,6 +62,7 @@
 		   layer.alert('请先勾选表！');
 		   return false;
 		}
+		layer.msg('正在操作中……', {icon:16, shade:0.21, time:false});
 		$.ajax({
 	        type: 'POST',
 	        url: url, 

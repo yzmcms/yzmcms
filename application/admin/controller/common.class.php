@@ -34,7 +34,7 @@ class common{
 	/**
 	 * 判断用户是否已经登录
 	 */
-	private function check_admin() {
+	protected function check_admin() {
 		if(ROUTE_M =='admin' && ROUTE_C =='index' && ROUTE_A =='login') {
 			return true;
 		} else {
@@ -50,7 +50,7 @@ class common{
 	/**
 	 * 权限判断
 	 */
-	private function check_priv() {
+	protected function check_priv() {
 		if(ROUTE_M =='admin' && ROUTE_C =='index' && in_array(ROUTE_A, array('login', 'init'))) return true;
 		if($_SESSION['roleid'] == 1) return true;
 		if(strpos(ROUTE_A, 'public_') === 0) return true;
@@ -62,7 +62,7 @@ class common{
 	/**
 	 * 记录日志 
 	 */
-	private function manage_log() {
+	protected function manage_log() {
 		if(ROUTE_A == '' || ROUTE_A == 'init' || strpos(ROUTE_A, '_list') || in_array(ROUTE_A, array('login', 'public_home'))) {
 			return false;
 		}else {
@@ -74,7 +74,7 @@ class common{
 	/**
 	 * 后台IP禁止判断
 	 */
-	private function check_ip(){
+	protected function check_ip(){
 		$admin_prohibit_ip = get_config('admin_prohibit_ip');
 		if(!$admin_prohibit_ip) return true;
 		$arr = explode(',', $admin_prohibit_ip);
@@ -87,7 +87,7 @@ class common{
  	/**
  	 * 检查锁屏状态
  	 */
-	private function lock_screen() {
+	protected function lock_screen() {
 		if(isset($_SESSION['yzm_lock_screen']) && $_SESSION['yzm_lock_screen']==1) {
 			if(strpos(ROUTE_A, 'public_') === 0 || ROUTE_A == 'login') return true;
 			include $this->admin_tpl('index');exit();
@@ -99,7 +99,7 @@ class common{
 	/**
 	 * 检查REFERER
 	 */
-	private function check_referer(){
+	protected function check_referer(){
 		if(strpos(ROUTE_A, 'public_') === 0) return true;
 		if(HTTP_REFERER && strpos(HTTP_REFERER, SERVER_PORT.HTTP_HOST) !== 0){
 			$arr = explode(':', HTTP_HOST);
@@ -112,7 +112,7 @@ class common{
 	/**
 	 * 检查TOKEN
 	 */
-	private function check_token(){
+	protected function check_token(){
 		if(!is_post()) return true;
 		if(strpos(ROUTE_A, 'public_') === 0 || (ROUTE_C =='index' && ROUTE_A =='login')) return true;
 		if(isset($_POST['yzm_csrf_token']) && $_SESSION['yzm_csrf_token']!='' && ($_SESSION['yzm_csrf_token'] == $_POST['yzm_csrf_token']))  return true;

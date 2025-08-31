@@ -197,9 +197,9 @@ class form {
 		$n = $n ? $n : 20;
 		$string = '';
 		$string .= '<fieldset class="fieldset_list"><legend>图片列表</legend><div class="fieldset_tip">您最多可以同时上传 <span style="color:red">'.$n.'</span> 个文件</div>
+					<input type="hidden" name="'.$name.'" value="">
 					<ul id="'.$name.'" class="file_ul">';
 		if($val){
-			$string .= '<input type="hidden" name="'.$name.'" value="">';
 			$arr = string2array($val);
 			foreach($arr as $key => $val){
 				$string .= '<li>文件：<input type="text" name="'.$name.'[url][]" value="'.$val['url'].'" id="'.$name.'_'.$key.'" onmouseover="yzm_img_preview(\''.$name.'_'.$key.'\', this.value)" onmouseout="layer.closeAll();" class="input-text yzm-input-url"> 描述：<input type="text" name="'.$name.'[alt][]" value="'.$val['alt'].'" class="input-text yzm-input-alt"><a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 1);">上移</a> <a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 0);">下移</a> <a href="javascript:;" class="danger" onclick="yzm_delete_li(this);">删除</a></li>';
@@ -252,9 +252,9 @@ class form {
 		$n = $n ? $n : 20;
 		$string = '';
 		$string .= '<fieldset class="fieldset_list"><legend>文件列表</legend><div class="fieldset_tip">您最多可以同时上传 <span style="color:red">'.$n.'</span> 个文件</div>
+					<input type="hidden" name="'.$name.'" value="">
 					<ul id="'.$name.'" class="file_ul">';
 		if($val){
-			$string .= '<input type="hidden" name="'.$name.'" value="">';
 			$arr = string2array($val);
 			foreach($arr as $key => $val){
 				$string .= '<li>文件：<input type="text" name="'.$name.'[url][]" value="'.$val['url'].'" id="'.$name.'_'.$key.'" class="input-text yzm-input-url"> 描述：<input type="text" name="'.$name.'[alt][]" value="'.$val['alt'].'" class="input-text yzm-input-alt"><a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 1);">上移</a> <a href="javascript:;" class="secondary" onclick="yzm_move_li(this, 0);">下移</a> <a href="javascript:;" class="danger" onclick="yzm_delete_li(this);">删除</a></li>';

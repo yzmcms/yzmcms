@@ -98,7 +98,7 @@ class member extends common{
 			if(D('member')->field('userid')->where(array('username' => $_POST['username']))->find()) return_json(array('status'=>0,'message'=>'用户名已存在！'));
 			if(D('member')->field('userid')->where(array('email' => $_POST['email']))->find()) return_json(array('status'=>0,'message'=>'邮箱已存在！'));
 
-			$data['username'] = $_POST['username'];
+			$data['username'] = trim($_POST['username']);
 			$data['password'] = password($_POST['password']);
 			$data['email'] = $_POST['email'];
 			$data['groupid'] = intval($_POST['groupid']);
@@ -116,7 +116,7 @@ class member extends common{
 			
 			$userid = D('member')->insert($data, true);
 			if($userid){
-				D('member_detail')->insert(array('userid' => $userid, 'nickname' => $_POST['nickname']), true, false); //插入附表
+				D('member_detail')->insert(array('userid'=>$userid, 'nickname'=>trim($_POST['nickname']), 'introduce'=>''), true, false); //插入附表
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json(array('status'=>0,'message'=>L('operation_failure')));

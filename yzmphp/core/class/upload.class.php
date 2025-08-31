@@ -47,6 +47,7 @@ class upload {
 	private function geterror(){
 		$str = '上传文件【'.$this->originname.'】时出错：';
 		switch($this->errornum){
+			case -6: $str .= '无效的图片文件'; break;
 			case -5: $str .= '必须指定上传文件的路径'; break;
 			case -4: $str .= '创建上传文件目录失败，请检查权限'; break;
 			case -3: $str .= '文件移动时出错'; break;
@@ -101,12 +102,18 @@ class upload {
 	 * 用于检查文件上传类型
 	 */
 	private function checkfiletype() {
-		if(in_array($this->filetype, $this->allowtype)) {
-			return true;
-		}else{
+		if(!in_array($this->filetype, $this->allowtype)) {
 			$this->setoption('errornum', -1);
 			return false;
 		}
+		if(is_img($this->filetype)){
+			$mime = get_file_mime_type($this->tmpfilename);
+			if($mime && strpos($mime, 'image/') !== 0) {
+		        $this->setoption('errornum', -6);
+				return false;
+		    }
+		}
+		return true;
 	}
 	
 	
