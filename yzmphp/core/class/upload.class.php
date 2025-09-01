@@ -107,7 +107,7 @@ class upload {
 			return false;
 		}
 		if(is_img($this->filetype)){
-			$mime = get_file_mime_type($this->tmpfilename);
+			$mime = get_file_mime_type($this->tmpfilename, $this->filetype);
 			if($mime && strpos($mime, 'image/') !== 0) {
 		        $this->setoption('errornum', -6);
 				return false;

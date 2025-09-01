@@ -547,9 +547,10 @@ function is_utf8($string) {
  * 获取文件的真实MIME类型
  * 
  * @param string $file_path 文件路径
+ * @param string $extension 文件后缀，finfo和mime_content_type未开启时返回准确类型
  * @return string|bool
  */
-function get_file_mime_type($file_path) {
+function get_file_mime_type($file_path, $extension = null) {
     if (!is_file($file_path)) {
         return false;
     }
@@ -572,7 +573,7 @@ function get_file_mime_type($file_path) {
         }
     }
 
-    $extension = strtolower(pathinfo($file_path, PATHINFO_EXTENSION));
+    $extension = $extension ? $extension : strtolower(pathinfo($file_path, PATHINFO_EXTENSION));
     $mime_types = array(
         'jpg'  => 'image/jpeg',
         'jpeg' => 'image/jpeg',
