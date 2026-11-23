@@ -100,7 +100,7 @@ class comment extends common {
 	 */
 	public function del_all() {
 		$comment = D('comment');
-		$data = $comment->field('id,commentid')->where(array('siteid'=>self::$siteid,'status'=>0,'reply'=>0))->select();
+		$data = $comment->field('id,commentid')->where(array('siteid'=>self::$siteid,'status'=>0))->select();
 		$i = 0;
 		foreach($data as $val){
 			$commentid = $val['commentid'];

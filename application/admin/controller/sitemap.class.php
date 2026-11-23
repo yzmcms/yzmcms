@@ -59,7 +59,7 @@ class sitemap extends common {
 			$model = isset($_POST['model']) ? intval($_POST['model']) : 0;
 			$limit_total = isset($_POST['limit_total']) ? intval($_POST['limit_total']) : 0;
 			$changefreq = isset($_POST['changefreq']) ? safe_replace($_POST['changefreq']) : 'weekly';
-			$priority = isset($_POST['priority']) ? $_POST['priority'] : 0.8;
+			$priority = isset($_POST['priority']) ? floatval($_POST['priority']) : 0.8;
 			$type = isset($_POST['type']) ? intval($_POST['type']) : 0;
 			$total = isset($_POST['total']) ? intval($_POST['total']) : 0;
 			$page = isset($_POST['page']) ? intval($_POST['page']) : 1;

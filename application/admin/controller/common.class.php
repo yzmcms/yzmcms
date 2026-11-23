@@ -40,10 +40,11 @@ class common{
 		} else {
 			$adminid = intval(get_cookie('adminid'));
 			if(!isset($_SESSION['adminid']) || !isset($_SESSION['roleid']) || !$_SESSION['adminid'] || !$_SESSION['roleid'] || $adminid != $_SESSION['adminid']) {
-				echo '<script type="text/javascript"> var url="'.U('admin/index/login').'"; if(top.location !== self.location){ top.location=url; }else{ window.location.href=url; } </script>';
-				exit();
+				self::handle_exit();
 			}	
 		}
+		$roleid = D('admin')->field('roleid')->where(array('adminid'=>$adminid))->one();
+        if(!$roleid || $roleid!=$_SESSION['roleid'])  self::handle_exit();
 	}
 
 
@@ -118,6 +119,17 @@ class common{
 		if(isset($_POST['yzm_csrf_token']) && $_SESSION['yzm_csrf_token']!='' && ($_SESSION['yzm_csrf_token'] == $_POST['yzm_csrf_token']))  return true;
 		return_message(L('token_error'), 0);
  	}
+
+	/**
+	 * 处理退出登录
+	 */
+	protected function handle_exit(){
+		unset($_SESSION['adminid'], $_SESSION['adminname'], $_SESSION['roleid'], $_SESSION['admininfo'], $_SESSION['yzm_csrf_token']);
+		del_cookie('adminid');
+		del_cookie('adminname');
+		echo '<script type="text/javascript"> var url="'.U('admin/index/login').'"; if(top.location !== self.location){ top.location=url; }else{ window.location.href=url; } </script>';
+		exit();
+	}
 	
 
 	/**

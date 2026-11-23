@@ -11,6 +11,8 @@
     <link href="{STATIC_URL}css/yzm-mobile-category.css?v=yzmcms" rel="stylesheet" type="text/css" />
     <script type="text/javascript" src="{STATIC_URL}js/jquery-1.8.2.min.js"></script>
     <script type="text/javascript" src="{STATIC_URL}js/yzm-mobile-simpler-sidebar.min.js"></script>
+    <script type="text/javascript" src="{STATIC_URL}plugin/layer/layer.js"></script>
+    <script type="text/javascript" src="{STATIC_URL}js/yzm-front.js"></script>
 </head>
 
 <body>
@@ -30,7 +32,7 @@
                 {if $allow_read}
                     {$content}
                 {else}
-                    <p class="yzm-content-read-tips">阅读此内容需要您支付<span>{$readpoint}</span>{if $paytype==1}点积分{else}元{/if}，<a href="{$pay_url}">点击支付</a></p>
+                    <p class="yzm-content-read-tips">阅读此内容需要您支付<span>{$readpoint}</span>{if $paytype==1}点积分{else}元{/if}，<a href="{$pay_url}" onclick="return confirm('确定要支付吗？')">点击支付</a></p>
                 {/if}
             </div>
             <div class="yzm-pre-next">
@@ -43,19 +45,19 @@
                 <h3 class="yzm-title-btn">评论区</h3>
                 <div class="yzm-comment-box">
                     <div class="yzm-comment-form">
-                    <form action="{U('comment/index/init')}" method="post"  onsubmit="return check_comm(this)">
+                    <form action="{U('comment/index/init')}" method="post"  onsubmit="return do_comment($(this))">
                     <input type="hidden" name="modelid" value="{$modelid}">
                     <input type="hidden" name="catid" value="{$catid}">
                     <input type="hidden" name="id" value="{$id}">
                     <input type="hidden" name="title" value="{$title}">
                     <input type="hidden" name="url" value="{$url}">
                     <textarea class="textarea" id="content" name="content" placeholder="我来说两句~"></textarea>
-                    <p>
+                    <div class="yzm-comment-bottom">
                         {if $site['comment_code']}
                         <span class="yzm-comment-code"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" title="看不清？点击更换"><input type="text" name="code" placeholder="请输入验证码" required="required"></span>
                         {/if}
                         <input type="submit" class="yzm-comment-submit" name="dosubmit" value="提交">
-                    </p>
+                    </div>
                     </form>
                     </div>
                 </div>
@@ -65,7 +67,7 @@
                     <div class="yzm-comment-list-body">
                     <ul>
                         {loop $data $v}
-                        <li>
+                        <li class="yzm-comment-item" data-info='{"modelid":{$modelid},"catid":{$catid},"id":{$id},"title":"{$title}","reply":{$v[id]},"reply_to":"{$v[username]}","comment_code":{$site['comment_code']},"site_path":"{SITE_PATH}"}'>
                             {if $v['userid']}
                             <a class="user_pic" href="{U('member/myhome/init', array('userid'=>$v['userid']))}" target="blank"><img src="{if !empty($v['userpic'])}{$v[userpic]}{else}{STATIC_URL}images/default.gif{/if}" height="35" width="35"></a>
                             {else}
@@ -78,23 +80,7 @@
                                 <a class="user_name" href="javascript:;">游客</a>
                                 {/if}
                                 <p>{nl2br($v['content'])}</p>
-                                <p><span class="comm_time">{date('Y-m-d H:i:s',$v['inputtime'])}</span> <a href="javascript:toreply('{$v[id]}');" class="comm_a">回复</a></p>
-                                <div id="rep_{$v[id]}" class="none">
-                                <form action="{U('comment/index/init')}" method="post"  onsubmit="return check_rep(this)">
-                                <input type="hidden" name="modelid" value="{$modelid}">
-                                <input type="hidden" name="catid" value="{$catid}">
-                                <input type="hidden" name="id" value="{$id}">
-                                <input type="hidden" name="title" value="{$title}">
-                                <input type="hidden" name="url" value="{$url}">
-                                <input type="hidden" name="reply" value="{$v[id]}">
-                                <input type="hidden" name="reply_to" value="{$v[username]}">
-                                <textarea name="content" class="textarea textarea2" placeholder="我来说两句~"></textarea>
-                                {if $site['comment_code']}
-                                <span class="yzm-comment-reply-code"><img src="{U('api/index/code')}" onclick="this.src=this.src+'?'" title="看不清？点击更换"><input type="text" name="code" placeholder="请输入验证码" required="required"></span>
-                                {/if}
-                                <input type="submit" class="yzm-comment-submit static" name="dosubmit" value="提交">
-                                </form>
-                                </div>
+                                <p><span class="comm_time">{date('Y-m-d H:i:s',$v['inputtime'])}</span> <span class="comm_reply">回复</span></p>
                             </div>
                         </li>
                         {/loop}
@@ -122,32 +108,4 @@
                 {/loop}
             </ul>
         </div>
-        <script type="text/javascript">
-            function toreply(obj) {
-                if ($("#rep_" + obj).css("display") == "none") {
-                    $("#rep_" + obj + " .yzm-comment-reply-code img").attr('src', $("#rep_" + obj + " .yzm-comment-reply-code img").attr("src") + "?");
-                    $("#rep_" + obj).css("display", "block");
-                } else {
-                    $("#rep_" + obj).css("display", "none");
-                }
-            }
-
-            function check_comm(obj) {
-                var content = obj.content.value;
-                if (content === '') {
-                    alert('你不打算说点什么吗？');
-                    return false;
-                }
-                return true;
-            }
-
-            function check_rep(obj) {
-                var content = obj.content.value;
-                if (content === '') {
-                    alert('你不打算说点什么吗？');
-                    return false;
-                }
-                return true;
-            }
-        </script>
         {m:include "mobile","footer"}

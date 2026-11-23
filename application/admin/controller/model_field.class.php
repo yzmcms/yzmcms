@@ -66,7 +66,7 @@ class model_field extends common {
 		   }elseif($_POST['fieldtype']=='datetime'){
 			   $_POST['setting'] = $_POST['dateset'] ? '{"0":"1"}' : '';
 		   }else{
-			   unset($_POST['setting']);
+			   $_POST['setting'] = '';
 		   }
 		   
 		   if(isset($_POST['setting_catid'])&&is_array($_POST['setting_catid'])) $_POST['setting_catid'] = join(',',$_POST['setting_catid']);
@@ -112,7 +112,7 @@ class model_field extends common {
 			}elseif($_POST['fieldtype']=='datetime'){
 			   $_POST['setting'] = $_POST['dateset'] ? '{"0":"1"}' : '';
 			}else{
-			   unset($_POST['setting']);
+			   $_POST['setting'] = '';
 			}
 		   	
 			unset($_POST['issystem'], $_POST['modelid'], $_POST['fieldtype']);	

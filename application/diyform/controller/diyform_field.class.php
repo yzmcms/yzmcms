@@ -54,7 +54,7 @@ class diyform_field extends common{
 		   }elseif($_POST['fieldtype']=='datetime'){
 			   $_POST['setting'] = $_POST['dateset'] ? '{"0":"1"}' : '';
 		   }else{
-			   unset($_POST['setting']);
+			   $_POST['setting'] = '';
 		   }
 		   
 		   if($_POST['minlength']) $_POST['isrequired'] = 1;
@@ -98,7 +98,7 @@ class diyform_field extends common{
 			}elseif($_POST['fieldtype']=='datetime'){
 			   $_POST['setting'] = $_POST['dateset'] ? '{"0":"1"}' : '';
 			}else{
-			   unset($_POST['setting']);
+			   $_POST['setting'] = '';
 			}
 		   	
 			unset($_POST['issystem'], $_POST['modelid'], $_POST['fieldtype']);	

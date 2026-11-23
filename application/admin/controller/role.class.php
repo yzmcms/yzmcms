@@ -88,32 +88,32 @@ class role extends common {
 	/**
 	 * 权限管理
 	 */
-	public function role_priv() {				
+	public function role_priv() {
+		$roleid = input('roleid', 0, 'intval');
+		if($roleid < $_SESSION['roleid']) return_message('无法修改该角色的权限！', 0);
+
 		if(isset($_POST['dosubmit'])) {
 			$admin_role_priv = D('admin_role_priv');
 			if (is_array($_POST['menuid']) && count($_POST['menuid']) > 0) {
 				
-				$admin_role_priv->delete(array('roleid'=>$_POST['roleid']));
+				$admin_role_priv->delete(array('roleid'=>$roleid));
 				$menuinfo = D('menu')->field('`id`,`m`,`c`,`a`,`data`')->select();
 				foreach ($menuinfo as $_v) $menu_info[$_v['id']] = $_v;
 				foreach($_POST['menuid'] as $menuid){
 					$info = array();
 					$info = $menu_info[$menuid];
 					if($info['m'] == '') continue;
-					$info['roleid'] = $_POST['roleid'];
+					$info['roleid'] = $roleid;
 					$admin_role_priv->insert($info, false, false);
 				}
 			} else {
-				$admin_role_priv->delete(array('roleid'=>$_POST['roleid']));
+				$admin_role_priv->delete(array('roleid'=>$roleid));
 			}
 			
-			delcache('menu_string_'.$_POST['roleid']);
+			delcache('menu_string_'.$roleid);
 			showmsg(L('operation_success'), U('init'), 1);
 			
 		}else{
-			$roleid = isset($_GET['roleid']) ? intval($_GET['roleid']) : 0;
-			if($roleid == 1) showmsg('超级管理员权限不允许修改！', 'stop');
-		
 			$tree = yzm_base::load_sys_class('tree');
 			$tree->icon = array('│ ','├─ ','└─ ');
 			$tree->nbsp = '&nbsp;&nbsp;&nbsp;';

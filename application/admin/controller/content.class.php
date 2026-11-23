@@ -235,7 +235,7 @@ class content extends common {
 					$content->wheres(array('id'=>array('in', $_POST['ids'], 'intval')))->update(array('is_push' => 1));
 					return_json(array('status'=>1,'message'=>'成功推送'.$result['success'].'条URL地址！'));
 				}else{
-					return_json(array('status'=>0,'message'=>'推送失败，错误码：'.$result['error']));
+					return_json(array('status'=>0,'message'=>'推送失败,错误详情：'.$result['message'].'('.$result['error'].')'));
 				}
 			}
 			return_json(array('status'=>0,'message'=>'没有数据被推送！'));

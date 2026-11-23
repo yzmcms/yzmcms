@@ -85,7 +85,8 @@ class admin_manage extends common {
 			$res = $admin->where(array('adminname'=>$_POST["adminname"]))->find();
 			if($res) return_json(array('status'=>0,'message'=>L('user_already_exists')));
 			
-			$_POST['password'] = password($_POST['password']);
+			$_POST['encrypt'] = create_randomstr();
+			$_POST['password'] = password($_POST['password'], $_POST['encrypt']);
 			$r = $admin_role->field('rolename')->where(array('roleid' => $_POST['roleid']))->find();
 			$_POST['rolename'] = $r['rolename'];	
 			$_POST['addtime'] = SYS_TIME;	
@@ -108,17 +109,18 @@ class admin_manage extends common {
 		$roles = $admin_role->where(array('disabled'=>'0'))->select();
 		if(isset($_POST['dosubmit'])) {
 			$adminid = isset($_POST['adminid']) ? intval($_POST['adminid']) : 0;
-			$roleid = $admin->field('roleid')->where(array('adminid'=>$adminid))->one();
-			if($roleid < $_SESSION['roleid']) return_json(array('status'=>0,'message'=>'您无权编辑该管理员.'));
+			$admininfo = $admin->field('roleid,encrypt')->where(array('adminid'=>$adminid))->find();
+			if($admininfo['roleid'] < $_SESSION['roleid']) return_json(array('status'=>0,'message'=>'您无权编辑该管理员.'));
 			if($_POST['roleid'] < $_SESSION['roleid']) return_json(array('status'=>0,'message'=>'您无权修改为更高的管理员角色.'));
 			if($adminid==1 && $_POST['roleid']>1) return_json(array('status'=>0,'message'=>'ID为1的管理员角色无法修改.'));
 
 			unset($_POST["adminname"]);
 			if($_POST['password']){
 				if(!is_password($_POST["password"])) return_json(array('status'=>0,'message'=>L('password_format_error')));
-				$_POST['password'] = password($_POST['password']);
+				$_POST['encrypt'] = $admininfo['encrypt'] ? $admininfo['encrypt'] : create_randomstr();
+				$_POST['password'] = password($_POST['password'], $_POST['encrypt']);
 			}else{
-				unset($_POST['password']);
+				unset($_POST['password'], $_POST['encrypt']);
 			}
 			
 			if($_POST["email"]!=''){
@@ -148,6 +150,8 @@ class admin_manage extends common {
 	public function change_role() {
 		$move_id  = input('post.move_id', 0, 'intval');
 		$id = input('post.id', array());
+		if($_SESSION['roleid'] > 1) return_json(array('status'=>0,'message'=>'仅超级管理员可操作！'));
+		
 		$rolename = D('admin_role')->field('rolename')->where(array('roleid'=>$move_id))->one();
 		$where['adminid'] = array('in', $id, 'intval');
 		if(D('admin')->wheres($where)->update(array('roleid'=>$move_id, 'rolename'=>$rolename))){
@@ -187,14 +191,16 @@ class admin_manage extends common {
 	public function public_edit_pwd() {		
 		$adminid = $_SESSION['adminid'];
 		if(isset($_POST['dosubmit'])) {
-			if(!$_POST['password']) return_json(array('status'=>0,'message'=>L('data_not_modified')));
-			$admin = D('admin');
-			if(!$admin->where(array('adminid' => $adminid,'password' => password($_POST['old_password'])))->find()) 
-				return_json(array('status'=>0,'message'=>'旧密码不正确！'));
+			if(!isset($_POST['password']) || !$_POST['password']) return_json(array('status'=>0,'message'=>L('data_not_modified')));
 
 			if(!is_password($_POST["password"])) return_json(array('status'=>0,'message'=>L('password_format_error')));
 
-			if($admin->update(array('password' => password($_POST['password'])), array('adminid' => $adminid))){
+			$admin = D('admin');
+			$admininfo = $admin->field('password,encrypt')->where(array('adminid' => $adminid))->find();
+			if($admininfo['password'] !== password($_POST['old_password'], $admininfo['encrypt'])) return_json(array('status'=>0,'message'=>'旧密码不正确！'));
+				
+			$encrypt = $admininfo['encrypt'] ? $admininfo['encrypt'] : create_randomstr();
+			if($admin->update(array('password'=>password($_POST['password'], $encrypt), 'encrypt'=>$encrypt), array('adminid'=>$adminid))){
 				if(!get_config('admin_log')){
 					D('admin_log')->insert(array('module'=>ROUTE_M,'controller'=>ROUTE_C,'adminname'=>$_SESSION['adminname'],'adminid'=>$_SESSION['adminid'],'querystring'=>'修改密码','logtime'=>SYS_TIME,'ip'=>self::$ip));
 				}				

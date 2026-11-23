@@ -155,7 +155,10 @@ function downfile($url, $md5){
     fclose($fp);
 
     if(!is_file($downname)) return array('status'=>0, 'message'=>'升级包下载失败，请检查目录权限！');
-    if($md5 != md5_file($downname)) return array('status'=>0, 'message'=>'升级包损坏，请重新下载！');
+    if($md5 != md5_file($downname)){
+    	@unlink($downname);
+    	return array('status'=>0, 'message'=>'升级包损坏，请重新下载！');
+    }
 
     return array('status'=>1, 'message'=>'下载成功！', 'file_path'=>$downname);
 }
@@ -189,7 +192,8 @@ function unzips($filename, $unzip_folder){
 
 
 function exec_sql($sqlstr) {
-    $sqlstr = preg_replace("/TYPE=(InnoDB|MyISAM|MEMORY)( DEFAULT CHARSET=[^; ]+)?/", "ENGINE=\\1 DEFAULT CHARSET=utf8", $sqlstr);
+    $db_charset = C('db_charset') ? C('db_charset') : 'utf8';
+    $sqlstr = preg_replace("/TYPE=(InnoDB|MyISAM|MEMORY)( DEFAULT CHARSET=[^; ]+)?/", "ENGINE=\\1 DEFAULT CHARSET=".$db_charset, $sqlstr);
     $sqlstr = str_replace("\r", "\n", $sqlstr);
     $queriesarray = explode(";\n", trim($sqlstr));
     $admin = D('admin');

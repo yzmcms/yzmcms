@@ -42,6 +42,7 @@
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='2'){?> selected <?php }?> value="2">用户ID</option>	
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='3'){?> selected <?php }?> value="3">邮箱</option>
 		<option <?php if(isset($_GET['type']) && $_GET['type']=='4'){?> selected <?php }?> value="4">注册IP</option>
+		<option <?php if(isset($_GET['type']) && $_GET['type']=='5'){?> selected <?php }?> value="5">最后登录IP</option>
 		</select>
 	</span>
      <input type="text" name="searinfo" class="input-text" style="width:170px" value="<?php if(isset($_GET['searinfo'])) echo $_GET['searinfo'];?>"><button name="dosubmit" class="btn btn-success btn-search" type="submit" value="1"><i class="yzm-iconfont yzm-iconsousuo"></i> 搜索</button>

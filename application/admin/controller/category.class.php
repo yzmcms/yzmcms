@@ -142,12 +142,13 @@ class category extends common {
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
 		$type = isset($_GET['type']) ? intval($_GET['type']) : intval($_POST['type']);
 
-		if(isset($_POST['dosubmit'])) { 
+		if(isset($_POST['dosubmit'])) {
 
 			if(isset($_POST['domain']) && $_POST['domain']) $this->set_domain();
 
 			$_POST['catname'] = isset($_POST['catname']) ? trim($_POST['catname']) : '';
 			$_POST['catdir'] = isset($_POST['catdir']) ? trim($_POST['catdir'], ' /') : '';
+			$_POST['parentid'] = isset($_POST['parentid']) ? intval($_POST['parentid']) : 0;
 
 			if($type != 2){   //非外部链接
 				$res = $this->db->where(array('siteid'=>self::$siteid, 'catdir'=>$_POST['catdir']))->find();
@@ -156,11 +157,11 @@ class category extends common {
 
 
 			if(!$_POST['mobname']) $_POST['mobname'] = $_POST['catname']; 
-			if($_POST['parentid']=='0') {
+			if($_POST['parentid'] == 0) {
 				$_POST['arrparentid'] = '0';
 			}else{
 				$data = $this->db->field('arrparentid,arrchildid,domain')->where(array('catid'=>$_POST['parentid']))->find();
-				$_POST['arrparentid'] = $data["arrparentid"].','.$_POST['parentid'];
+				$_POST['arrparentid'] = $data["arrparentid"].','.strval($_POST['parentid']);
 			}
 			
 			$_POST['siteid'] = self::$siteid;
@@ -186,7 +187,7 @@ class category extends common {
 			}					
 			
 			$this->db->update(array('arrchildid' => $catid, 'pclink' => $_POST['pclink']), array('catid' => $catid));  //更新本类的子分类及更新URL
-			if($_POST['parentid']!='0') $this->repairs($_POST['arrparentid']);
+			if($_POST['parentid']) $this->repairs($_POST['arrparentid']);
 			if(isset($_POST['domain']) && $_POST['domain']) $this->set_domain();
 			$this->delcache();
 			return_json(array('status'=>1,'message'=>L('operation_success')));
@@ -225,12 +226,13 @@ class category extends common {
 		$catid = isset($_GET['catid']) ? intval($_GET['catid']) : 0;
 		if(isset($_POST['dosubmit'])) { 
 			$type = isset($_POST['type']) ? intval($_POST['type']) : 0;
+			$_POST['parentid'] = isset($_POST['parentid']) ? intval($_POST['parentid']) : 0;
 			$catnames = explode("\r\n", $_POST['catnames']);	
-			if($_POST['parentid']=='0') {
+			if($_POST['parentid'] == 0) {
 				$_POST['arrparentid'] = '0';
 			}else{
 				$data = $this->db->field('arrparentid,arrchildid,domain')->where(array('catid'=>$_POST['parentid']))->find();
-				$_POST['arrparentid'] = $data["arrparentid"].','.$_POST['parentid'];
+				$_POST['arrparentid'] = $data["arrparentid"].','.strval($_POST['parentid']);
 			}
 			foreach ($catnames as $key => $val) {
 				if(!$val) continue;
@@ -259,7 +261,7 @@ class category extends common {
 				$_POST['pclink'] = $this->get_category_url($domain, $_POST['catdir']);				
 
 				$this->db->update(array('arrchildid' => $catid, 'pclink' => $_POST['pclink']), array('catid' => $catid));  //更新本类的子分类及更新URL
-				if($_POST['parentid']!='0') $this->repairs($_POST['arrparentid']);
+				if($_POST['parentid']) $this->repairs($_POST['arrparentid']);
 			}	
 
 			$this->delcache();
@@ -283,29 +285,32 @@ class category extends common {
 	/**
 	 * 编辑栏目
 	 */
-	public function edit() {				
+	public function edit() {
 
 		if(isset($_POST['dosubmit'])) {
+			
 			if(isset($_POST['domain']) && $_POST['domain']) $this->set_domain();
 
 			$catid = isset($_POST['catid']) ? strval(intval($_POST['catid'])) : 0;
 			$_POST['catname'] = isset($_POST['catname']) ? trim($_POST['catname']) : '';
 			$_POST['catdir'] = isset($_POST['catdir']) ? trim($_POST['catdir'], ' /') : '';
+			$_POST['parentid'] = isset($_POST['parentid']) ? intval($_POST['parentid']) : 0;
 			
-			if($_POST['parentid']=='0') {
+			if($_POST['parentid'] == 0) {
 				$_POST['arrparentid'] = '0';
 			}else{
 				$data = $this->db->field('arrparentid,arrchildid,domain')->where(array('catid'=>$_POST['parentid']))->find();
 				if(strpos($data['arrparentid'],$catid) !== false || $_POST['parentid']==$catid) return_json(array('status'=>0,'message'=>'不能将类别移动到自己或自己的子类别中！'));
-				$_POST['arrparentid'] = $data["arrparentid"].','.$_POST['parentid'];
+				$_POST['arrparentid'] = $data["arrparentid"].','.strval($_POST['parentid']);
 			}
 			
 			//如果有修改分类的动作
 			if($_POST['arrparentid']!=$_POST['cpath']){
-				$_POST['cpath'] = safe_replace($_POST['cpath']);
-				$_POST['arrparentid'] = safe_replace($_POST['arrparentid']);
+				$_POST['cpath'] = addslashes(safe_replace($_POST['cpath']));
+				$_POST['arrparentid'] = addslashes(safe_replace($_POST['arrparentid']));
 				$cpath = $_POST['cpath'].','.$catid;	//和现有的操作的分类id相连
-				$this->db->query("UPDATE yzmcms_category SET arrparentid=REPLACE(arrparentid, '{$_POST['cpath']}','{$_POST['arrparentid']}') WHERE arrparentid like '{$cpath}%'"); 
+				$cpath_like = addslashes(str_replace(array('%','_'), array('\\%','\\_'), $cpath));
+				$this->db->query("UPDATE yzmcms_category SET arrparentid=REPLACE(arrparentid, '{$_POST['cpath']}','{$_POST['arrparentid']}') WHERE arrparentid like '{$cpath_like}%'"); 
 			}
 			
 			// 根据系统设置生成URL
@@ -481,6 +486,7 @@ class category extends common {
 	 * @param $catid 栏目ID
 	 */
 	private function get_arrchildid($catid) {
+		$catid = intval($catid);
 		$arrchildid = $catid;
 		$data = $this->db->field('catid')->where("FIND_IN_SET('$catid',arrparentid)")->order('catid ASC')->select();
 		foreach($data as $val) {

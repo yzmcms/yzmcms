@@ -39,7 +39,7 @@ class messages extends common{
 		$messageid = isset($_GET['messageid']) ? intval($_GET['messageid']) : 0;
 		if(is_post()){
 			
-			$this->_check_code();
+			check_captcha();
 			$send_to = trim($_POST['send_to']);
 			
 			if(!is_username($send_to)) return_message('收件人格式不正确！', 0);

@@ -397,11 +397,7 @@ class member_content extends common{
 	 * 获取不同模型获取HTML表单
 	 */
 	private function _get_model_str($modelid, $field = false, $data = array()) {
-		$modelinfo = getcache($modelid.'_model');
-		if($modelinfo === false){
-			$modelinfo = D('model_field')->where(array('modelid' => $modelid, 'disabled' => 0))->order('listorder ASC,fieldid ASC')->select();
-			setcache($modelid.'_model', $modelinfo);
-		}
+		$modelinfo = get_model_field($modelid);
 		
 		$fields = $fieldstr = array();
 		foreach($modelinfo as $val){

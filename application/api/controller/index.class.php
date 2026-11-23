@@ -17,16 +17,12 @@ class index{
 	 * 请求方式：GET
 	 */
 	public function code(){	
-		$code = yzm_base::load_sys_class('code');
-		if(isset($_GET['width']) && intval($_GET['width'])) $code->width = intval($_GET['width']);
-		if(isset($_GET['height']) && intval($_GET['height'])) $code->height = intval($_GET['height']);
-		if(isset($_GET['code_len']) && intval($_GET['code_len'])) $code->code_len = intval($_GET['code_len']);
-		if(isset($_GET['font_size']) && intval($_GET['font_size'])) $code->font_size = intval($_GET['font_size']);
-		if($code->width > 500 || $code->width < 10)  $code->width = 100;
-		if($code->height > 300 || $code->height < 10)  $code->height = 35;
-		if($code->code_len > 8 || $code->code_len < 2)  $code->code_len = 4;
-		$code->show_code();
-		$_SESSION['code'] = $code->get_code();
+		$check_captcha = C('check_captcha', 'code_captcha');
+		$captcha_model = yzm_base::load_model($check_captcha, 'api');
+		if($captcha_model === false) {
+			return_message('缺少验证码模型！', -1);
+		}
+		$captcha_model->show_captcha();
 	}
 
 
@@ -145,9 +141,14 @@ class index{
 	 * @return {0错误;1正确;}
 	 */	
 	public function down_remote_img(){
-		if(!isset($_SESSION['adminid']) && !isset($_SESSION['_userid'])) return_json(array('status'=>0, 'message'=>L('login_website')));
+		if(!isset($_SESSION['adminid'])){
+			$groupid = intval(get_cookie('_groupid'));
+			if(!$groupid) return_json(array('status'=>0, 'message'=>L('login_website')));
+			if($groupid < 3) return_json(array('status'=>0, 'message'=>'提升会员等级后方可使用该功能！'));
+		}
 		$content = isset($_POST['content']) ? trim($_POST['content']) : return_json(array('status'=>0, 'message'=>L('lose_parameters')));
-
+		
+		function_exists('set_time_limit') && set_time_limit(0);
 		return_json(array('status'=>1, 'message'=>L('operation_success'), 'data'=>down_remote_img($content))); 
 	}
 

@@ -73,20 +73,6 @@ class common{
 		$this->memberinfo['inbox_msg'] = D('message')->where(array('send_to' => $this->memberinfo['username'], 'status' => '1', 'isread' => '0'))->total(); 
 	}
 
-	
-
-	/**
-	 * 检查验证码
-	 */	
-	protected function _check_code(){
-		$code = isset($_POST['code'])&&is_string($_POST['code']) ? trim($_POST['code']) : '';
-		if(empty($_SESSION['code']) || strtolower($code)!=$_SESSION['code']){
-			$_SESSION['code'] = '';
-			is_ajax() ? return_json(array('status'=>-1, 'message'=>L('code_error'))) : showmsg(L('code_error'), '', 1);
-		}
-		$_SESSION['code'] = '';
-	}
-
 
 	/**
 	 * 生成分页列表

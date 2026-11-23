@@ -20,35 +20,103 @@ class banner extends common {
 	 */
 	public function init() {
 		$banner = D('banner');
-		$total = $banner->total();
+		$where = array();
+		if(isset($_GET['dosubmit'])){
+			$status = isset($_GET['status']) ? intval($_GET['status']) : 99;
+			$tid = isset($_GET['tid']) ? intval($_GET['tid']) : 99;
+			$type = isset($_GET['type']) ? intval($_GET['type']) : 1;
+			$searinfo = isset($_GET['searinfo']) ? safe_replace($_GET['searinfo']) : '';
+
+			if($status != 99) $where['status'] = $status;
+			if($tid) $where['typeid'] = $tid;
+			if(isset($_GET["start"]) && $_GET["start"] != '' && $_GET["end"]){
+				$where['inputtime>='] = strtotime($_GET['start']);
+				$where['inputtime<='] = strtotime($_GET['end']);
+			}
+			if($searinfo){
+				if($type == '1'){
+					$where['title'] = '%'.$searinfo.'%';
+				}elseif($type == '2'){
+					$where['url'] = '%'.$searinfo.'%';
+				}else{
+					$where['introduce'] = '%'.$searinfo.'%';
+				}
+			}			
+		}
+		$total = $banner->where($where)->total();
 		$page = new page($total, 5);
-		$data = $banner->order('listorder ASC,id DESC')->limit($page->limit())->select();		
+		$data = $banner->where($where)->order('listorder ASC,id DESC')->limit($page->limit())->select();
+		$types = D('banner_type')->order('tid DESC')->select();	
 		include $this->admin_tpl('banner_list');
-	}	
+	}
 
-	
 	/**
-	 * 添加banner分类
+	 * 添加banner
 	 */
-	public function cat_add() {
+	public function add() {
 
-		if(isset($_POST['dosubmit'])) {
-			$name = input('post.name', '', 'trim');
-			$r = D('banner_type')->field('tid')->where(array('name'=>$name))->one();
-			if($r) return_json(array('status'=>0,'message'=>'分类名称已存在！'));
-			$typeid = D('banner_type')->insert(array('name'=>$name), true);
-			if($typeid){
-                $html = "<option value='{$typeid}' selected>{$name}</option>";
-				return_json(array('status'=>1,'message'=>L('operation_success'),'html'=>$html));
+		if(is_post()) {
+			$_POST['status'] = 1;
+			$_POST['inputtime'] = SYS_TIME;
+			$_POST['start_time'] = !empty($_POST['start_time']) ? strtotime($_POST['start_time']) : 0;
+			$_POST['end_time'] = !empty($_POST['end_time']) ? strtotime($_POST['end_time']) : 0;
+			if(D('banner')->insert($_POST, true)){
+				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json(array('status'=>0,'message'=>L('operation_failure')));
 			}
-		}else{
-			include $this->admin_tpl('cat_add');
+		}
+
+		$types = D('banner_type')->order('tid DESC')->select();
+		include $this->admin_tpl('banner_add');
+	}
+	
+	/**
+	 * 编辑banner
+	 */
+	public function edit() {
+		$id = input('id', 0, 'intval');
+		if(is_post()) {
+			$_POST['start_time'] = !empty($_POST['start_time']) ? strtotime($_POST['start_time']) : 0;
+			$_POST['end_time'] = !empty($_POST['end_time']) ? strtotime($_POST['end_time']) : 0;
+			if(D('banner')->update($_POST, array('id'=>$id), true)){
+				return_json(array('status'=>1,'message'=>L('operation_success')));
+			}else{
+				return_json(array('status'=>0,'message'=>L('data_not_modified')));
+			}
+		}
+
+		$types = D('banner_type')->order('tid DESC')->select();
+		$data = D('banner')->where(array('id'=>$id))->find();
+		include $this->admin_tpl('banner_edit');
+	}
+
+	/**
+	 * 删除banner
+	 */
+	public function del() {
+		if($_POST && is_array($_POST['id'])){
+			if(D('banner')->delete($_POST['id'], true)){
+				return_json(array('status'=>1,'message'=>L('operation_success')));
+			}else{
+				return_json(array('status'=>0,'message'=>L('operation_failure')));
+			}
 		}
 	}
 
-	
+	/**
+	 * 排序
+	 */
+	public function order() {
+		if(isset($_POST['order_id']) && is_array($_POST['order_id'])){
+			$banner = D('banner');
+			foreach($_POST['order_id'] as $key=>$val){
+				$banner->update(array('listorder'=>$_POST['listorder'][$key]),array('id'=>intval($val)));
+			}
+		}
+		showmsg(L('operation_success'), '', 1);
+	}
+
 	/**
 	 * banner分类管理
 	 */
@@ -66,74 +134,41 @@ class banner extends common {
 		}
 	}
 
-
-	/**
-	 * 添加banner
-	 */
-	public function add() {
-
-		if(isset($_POST['dosubmit'])) {
-			$_POST['inputtime'] = SYS_TIME;
-			if(D('banner')->insert($_POST, true)){
-				showmsg(L('operation_success'), U('init'), 1);
-			}else{
-				showmsg(L('operation_failure'));
-			}
-		}else{
-			$types = D('banner_type')->select();
-			include $this->admin_tpl('banner_add');
-		}
-	}
-
-
 	
 	/**
-	 * 编辑banner
+	 * 添加banner分类
 	 */
-	public function edit() {
-		$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
+	public function cat_add() {
+
 		if(isset($_POST['dosubmit'])) {
-			if(D('banner')->update($_POST, array('id'=>$id), true)){
-				showmsg(L('operation_success'), U('init'), 1);
+			$name = isset($_POST['name']) ? htmlspecialchars(trim($_POST['name'])) : '';
+			$r = D('banner_type')->field('tid')->where(array('name'=>$name))->one();
+			if($r) return_json(array('status'=>0,'message'=>'分类名称已存在！'));
+			$typeid = D('banner_type')->insert(array('name'=>$name));
+			if($typeid){
+                $html = "<option value='{$typeid}' selected>{$name}</option>";
+				return_json(array('status'=>1,'message'=>L('operation_success'),'html'=>$html));
 			}else{
-				showmsg(L('operation_failure'));
+				return_json(array('status'=>0,'message'=>L('operation_failure')));
 			}
 		}else{
-			
-			$types = D('banner_type')->select();
-			$data = D('banner')->where(array('id'=>$id))->find();
-			include $this->admin_tpl('banner_edit');			
+			include $this->admin_tpl('cat_add');
 		}
 	}
-
-	
-	/**
-	 * 删除banner
-	 */
-	public function del() {
-		if($_POST && is_array($_POST['id'])){
-			if(D('banner')->delete($_POST['id'], true)){
-				showmsg(L('operation_success'), '', 1);
-			}else{
-				showmsg(L('operation_failure'));
-			}
-		}
-	}
-
 
 	/**
-	 * 排序
+	 * 编辑banner分类
 	 */
-	public function order() {
-		if(isset($_POST['order_id']) && is_array($_POST['order_id'])){
-			$banner = D('banner');
-			foreach($_POST['order_id'] as $key=>$val){
-				$banner->update(array('listorder'=>$_POST['listorder'][$key]),array('id'=>intval($val)));
-			}
+	public function cat_edit() {
+		$tid = isset($_POST['tid']) ? intval($_POST['tid']) : 0;
+		$tname = isset($_POST['tname']) ? trim($_POST['tname']) : '';
+		if(!$tid || !$tname) return_json(array('status'=>0,'message'=>'参数错误！'));
+		if(D('banner_type')->update(array('name'=>$tname), array('tid'=>$tid), true)){
+			return_json(array('status'=>1,'message'=>L('operation_success')));
+		}else{
+			return_json(array('status'=>2,'message'=>L('data_not_modified')));
 		}
-		showmsg(L('operation_success'), '', 1);
 	}
-
 
 	/**
 	 * 隐藏显示
@@ -157,8 +192,8 @@ class banner extends common {
 	 */
 	public function get_banner_type($typeid) {
 		if(!$typeid) return '无分类';
-		$r = D('banner_type')->where(array('tid'=>$typeid))->find();
-		return $r ? $r['name'] : '';
+		$r = D('banner_type')->field('name')->where(array('tid'=>$typeid))->find();
+		return $r ? $r['name'] : '未知';
 	}
 	
 }

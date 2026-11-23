@@ -5,8 +5,8 @@
  * @license          http://www.yzmcms.com
  */
 
+*{margin:0px;padding:0px;box-sizing:border-box;}
 body{font-size:13px;font-family:Tahoma,Arial,sans-serif;line-height:22px;padding:0px;margin:0px;height:100%;width:100%;background:url(../images/yzm-background.jpg) no-repeat center center fixed;background-size:cover;background-color:#bbb;}
-div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0px;padding:0px;}
 table{border-collapse:collapse;}
 a,img{border:0;}
 ol,ul{list-style:none}
@@ -30,16 +30,21 @@ a:hover{text-decoration:underline;}
 .yzm-circles li:nth-child(10){left: 85%;width: 150px;height: 150px;animation-delay: 0s;animation-duration: 11s;}
 @keyframes animate{0%{transform: translateY(0) rotate(0deg);opacity: 1;border-radius: 0;}
 100%{transform: translateY(-1000px) rotate(720deg);opacity: 0;border-radius: 50%;}}
-.yzm-login-form{width:365px;margin:15px auto 0;}
-.yzm-login-item{padding:2px 8px;margin-top:10px;height:39px;line-height:39px;border-radius:3px;}
-.yzm-login-item span{text-align:right;width:58px;display:inline-block;}
-.yzm-login-input{height:35px;margin-top:2px;border:1px solid #b7bcc1;line-height:35px;width:285px;padding:0 8px;font-size:13px; outline:none;float:right;background:#fff;box-sizing:border-box;border-radius:3px;}
+.yzm-login-form{width:330px;margin:15px auto 0;}
+.yzm-login-item{margin-top:10px;height:39px;line-height:39px;border-radius:3px;}
+.yzm-login-input{height:35px;margin-top:2px;border:1px solid #b7bcc1;line-height:35px;width:100%;padding:0 8px;font-size:13px; outline:none;background:#fff;border-radius:3px;}
 .yzm-login-input:focus{border:1px solid #3890ff;box-shadow:0 0 0 3px rgba(56,144,255,.15);}
-.yzm-login-item .yzm-verify-input{width:177px;margin-right:8px;}
-.yzm-verifyimg{float:right;height:33px;width:100px;margin-top:3px;cursor:pointer;}
-.yzm-login-sub{text-align:right;margin-right:8px}
-.yzm-login-sub input{margin-top:15px;height:35px;line-height:33px;width:285px;color:#fff;font-size:14px;border-radius:3px;cursor:pointer;outline:none;transition:background 0.3s ease 0s;border:1px solid #409eff;background-color:#409eff;text-shadow: 0 -1px 0 rgba(0,0,0,.1);}
-.yzm-login-sub input:hover{background:#66b1ff;border:1px solid #66b1ff}
+.yzm-login-item .yzm-verify-input{width:177px;}
+.yzm_captcha_check{height:35px;font-size:13px;display:flex;align-items:center;justify-content:center;cursor:pointer;border-radius:3px;background:#f7f9fa;background:linear-gradient(180deg,#fff 0,#ebedf0 87%);border:1px solid #d0d0d0;color:#45494c;user-select:none;transition:.3s;}
+.yzm_captcha_check:hover{border-color:#3890ff;background-color:#e6f7ff;box-shadow:0 0 0 3px rgba(56,144,255,.12)}
+.yzm_captcha_check.success{background:linear-gradient(135deg,#42d97b,#27ae60);border-color:#27ae60;color:#fff;cursor:default;}
+.yzm_captcha_check.error{background:#ffcbcb;border-color:#ef5757;}
+.yzm_captcha_check::before{content:"";margin-right:3px;width:25px;height:25px;background-image:url("../images/yzm_captcha_bg.png");background-position:0 -2px;}
+.yzm_captcha_check.success::before{display:none;}
+.yzm_captcha_check.error::before{background-position:0 -70px;}
+.yzm-verifyimg{height:33px;width:100px;margin-top:3px;cursor:pointer;float:right;}
+.yzm-login-btn{height:35px;line-height:33px;width:100%;color:#fff;font-size:14px;border-radius:3px;cursor:pointer;outline:none;transition:background 0.3s ease 0s;border:1px solid #409eff;background-color:#409eff;text-shadow: 0 -1px 0 rgba(0,0,0,.1);}
+.yzm-login-btn:hover{background:#66b1ff;border:1px solid #66b1ff}
 .yzm-footer{color:#eee;position:fixed;_position:absolute;bottom:0px;text-align:center;width:100%;background:#453c5a;background:rgba(0,0,0,0.3);padding:10px 0;z-index:3}
 .yzm-footer a{color:#fff}
 .yzm-footer a:hover{color:#4395ff}
@@ -47,11 +52,7 @@ a:hover{text-decoration:underline;}
 @media screen and (max-width:640px) {
 	.yzm-logo{width:100%;margin:30px auto 20px}
 	.yzm-login-form{width:100%;}
-	.yzm-login-item span{display:none;}
 	.yzm-loginwarrp{width:90%;top:20%;left:5%;margin:0;height:320px;}
 	.yzm-login-item{width:70%;margin:0 auto;}
-	.yzm-login-input{width:100%;}
-	.yzm-login-item .yzm-verify-input{width:50%;float:left;margin-right:0px;}
-	.yzm-login-sub{width:70%;margin:0 auto;}
-	.yzm-login-sub input{width:100%;}
+	.yzm-login-item .yzm-verify-input{width:50%;}
 }

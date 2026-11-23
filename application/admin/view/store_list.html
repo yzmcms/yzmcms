@@ -53,17 +53,17 @@
 			?>
                 <tr class="text-c">
                     <td class="text-l">
-                        <i class="yzm-iconfont yzm-iconai-home"></i> <a href="<?php echo $val['url'];?>" target="_blank">
-                            <?php echo $val['title'];?></a>
+                        <i class="yzm-iconfont yzm-iconai-home"></i> <a href="<?php echo safe_replace($val['url']);?>" target="_blank">
+                            <?php echo htmlspecialchars($val['title']);?></a>
                     </td>
                     <td class="text-l">
-                        <?php echo $val['description'];?>
+                        <?php echo htmlspecialchars($val['description']);?>
                     </td>
                     <td>
-                        <?php echo $val['version'];?>
+                        <?php echo htmlspecialchars($val['version']);?>
                     </td>
                     <td>
-                        <?php echo $val['system'] ? '官方' : $val['username'];?>
+                        <?php echo $val['system'] ? '官方' : htmlspecialchars($val['username']);?>
                     </td>
                     <td>
                         <?php echo $val['point'] ? ($val['paytype']==2 ? '<span class="c-red">'.$val['point'].'元</span>' : '<span class="c-red">'.$val['point'].'积分</span>') : '免费';?>
@@ -71,7 +71,7 @@
                     <td>
                         <?php echo date('Y-m-d', $val['updatetime']);?>
                     </td>
-                    <td><a href="<?php echo $val['url'];?>" target="_blank" class="btn-mini btn-primary">查看购买</a></td>
+                    <td><a href="<?php echo safe_replace($val['url']);?>" target="_blank" class="btn-mini btn-primary">查看购买</a></td>
                 </tr>
                 <?php 
 			     }	 

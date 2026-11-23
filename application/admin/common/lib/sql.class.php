@@ -13,19 +13,35 @@ class sql{
 	public static $tablename;
 
 
+	/**
+	 * 校验字段名
+	 */
 	private static function is_valid_field_name($field){
 		return is_string($field) && preg_match('/^[a-zA-Z_][a-zA-Z0-9_]{0,63}$/', $field);
 	}
 
-	
-	public static function set_tablename($tablename){
-		self::$tablename = C('db_prefix').$tablename;
+	/**
+	 * 校验表名
+	 */
+	private static function is_valid_tablename($tablename){
+		return is_string($tablename) && preg_match('/^[a-zA-Z][a-zA-Z0-9_]{0,63}$/', $tablename);
 	}
 
-	
+	/**
+	 * 设置表名
+	 */
+	public static function set_tablename($tablename){
+		if(!self::is_valid_tablename($tablename)) return false;
+		self::$tablename = C('db_prefix').$tablename;
+		return true;
+	}
+
+
 	public static function sql_create($tablename){
-		self::set_tablename($tablename);
+		if(!self::set_tablename($tablename)) return false;
 		self::sql_delete($tablename);
+		$charset = C('db_charset') ? C('db_charset') : 'utf8mb4';
+		$charset = in_array(strtolower($charset), array('utf8', 'utf8mb4', 'gbk', 'latin1')) ? $charset : 'utf8mb4';
 		$sql = "CREATE TABLE `".self::$tablename."` (
 		  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
 		  `catid` smallint(5) unsigned NOT NULL DEFAULT '0',
@@ -53,22 +69,22 @@ class sql{
 		  `is_push` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '是否百度推送',
 		  PRIMARY KEY (`id`),
 		  KEY `status` (`status`,`listorder`),
-		  KEY `catid` (`status`,`catid`),
-		  KEY `userid` (`status`,`userid`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-        self::sql_exec($sql);			
+  		  KEY `catid` (`status`,`catid`),
+  		  KEY `userid` (`status`,`userid`)
+  			) ENGINE=MyISAM DEFAULT CHARSET=".$charset.";";
+        self::sql_exec($sql);
 	}
-	
-	
+
+
 	public static function sql_delete($tablename){
-		self::set_tablename($tablename);
+		if(!self::set_tablename($tablename)) return false;
 		$sql = "DROP TABLE IF EXISTS `".self::$tablename."`";
 		self::sql_exec($sql);			
 	}
 
 
 	public static function sql_add_field($tablename, $field, $defaultvalue='', $maxlength=255){
-		self::set_tablename($tablename);
+		if(!self::set_tablename($tablename)) return false;
 		if(!self::is_valid_field_name($field)) return false;
 		$maxlength = (int)$maxlength;
 		if($maxlength <1 || $maxlength>5000) $maxlength = 255;
@@ -79,7 +95,7 @@ class sql{
 
 
 	public static function sql_add_field_mediumtext($tablename, $field){
-		self::set_tablename($tablename);
+		if(!self::set_tablename($tablename)) return false;
 		if(!self::is_valid_field_name($field)) return false;
 		$sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `".$field."` mediumtext";
 		self::sql_exec($sql); 			
@@ -87,7 +103,7 @@ class sql{
 	
 	
 	public static function sql_add_field_text($tablename, $field){
-		self::set_tablename($tablename);
+		if(!self::set_tablename($tablename)) return false;
 		if(!self::is_valid_field_name($field)) return false;
 		$sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `".$field."` text";
 		self::sql_exec($sql); 			
@@ -95,7 +111,7 @@ class sql{
 	
 	
 	public static function sql_add_field_int($tablename, $field, $defaultvalue=0){
-		self::set_tablename($tablename);
+		if(!self::set_tablename($tablename)) return false;
 		if(!self::is_valid_field_name($field)) return false;
 		$defaultvalue = (int)$defaultvalue;
 		$sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `".$field."` int(10) UNSIGNED NOT NULL DEFAULT ".$defaultvalue;
@@ -104,7 +120,7 @@ class sql{
 
 
 	public static function sql_add_field_decimal($tablename, $field, $defaultvalue='0.00'){
-		self::set_tablename($tablename);
+		if(!self::set_tablename($tablename)) return false;
 		if(!self::is_valid_field_name($field)) return false;
 		$defaultvalue = number_format((float)$defaultvalue, 2, '.', '');
 		$sql = "ALTER TABLE `".self::$tablename."` ADD COLUMN `".$field."` decimal(8,2) unsigned NOT NULL DEFAULT ".$defaultvalue;
@@ -113,7 +129,7 @@ class sql{
 	
 
 	public static function sql_del_field($tablename, $field){
-		self::set_tablename($tablename);
+		if(!self::set_tablename($tablename)) return false;
 		if(!self::is_valid_field_name($field)) return false;
 		$sql = "ALTER TABLE `".self::$tablename."` DROP COLUMN `".$field."`";
 		self::sql_exec($sql); 			

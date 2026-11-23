@@ -23,7 +23,6 @@ class param {
 			if(C('set_pathinfo')) $this->set_pathinfo();
 			$this->pathinfo_url();
 		}
-		return true;
 	}
 
 	

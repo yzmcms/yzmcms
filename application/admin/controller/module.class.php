@@ -50,7 +50,7 @@ class module extends common {
 	 */
 	public function install() {
 		define('INSTALL', true);
-		$this->module = isset($_POST['module']) ? $_POST['module'] : $_GET['module'];
+		$this->module = isset($_POST['module']) ? $_POST['module'] : (isset($_GET['module']) ? $_GET['module'] : '');
 		$module_api = new module_api();
 		if(is_post()) {
 			if($module_api->install($this->module)){

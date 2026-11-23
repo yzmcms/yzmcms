@@ -38,17 +38,14 @@ class index{
 	 * 站点留言
 	 */
 	public function init(){	
-		new_session_start();
 		if(!get_config('is_words')) return_message('管理员已关闭留言功能！', 0);
 		
  		if(is_post()) {
-			if(get_config('words_code')){
-				!isset($_POST['code']) && return_message(L('code_error'), 0);
-				if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
-					$_SESSION['code'] = '';
-					return_message(L('code_error'), 0);
-				}
-				$_SESSION['code'] = '';
+			if(get_config('words_code')) check_captcha();
+
+			$this->ip = getip();
+			if(!rate_limit('guestbook', 3, 3600, $this->ip)) {
+			    return_message('留言太频繁了，请稍后再试！', 0);
 			}
 
 			$this->_check($_POST);
@@ -82,7 +79,6 @@ class index{
 		}
 
 		// IP黑名单验证
-		$this->ip = getip();
 		$blacklist_ip = get_config('blacklist_ip');
 		if($blacklist_ip){
 			$arr = explode(',', $blacklist_ip);

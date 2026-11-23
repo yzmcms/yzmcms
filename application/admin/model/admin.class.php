@@ -17,9 +17,16 @@ class admin {
 		$loginip = getip();
 		// $address = get_address($loginip);
 
+		if(!rate_limit('login_admin', 5, 600, $loginip)) {
+			$info = rate_limit_info('login_admin', 5, 600, $loginip);
+			$wait = max(1, $info['reset'] - SYS_TIME);
+			return array('status'=>0,'message'=>L('login_too_frequently').ceil($wait/60).L('minute_try_again'));
+		}
+
+
 		$res = $admin->where(array('adminname' => $adminname))->find();
 		if(!$res){
-			$admin_login_log->insert(array('adminname'=>$adminname,'logintime'=>SYS_TIME,'loginip'=>$loginip,'password'=>$_POST['password'],'loginresult'=>'0','cause'=>L('user_does_not_exist')));
+			$admin_login_log->insert(array('adminname'=>$adminname,'logintime'=>SYS_TIME,'loginip'=>$loginip,'password'=>$password,'loginresult'=>0,'cause'=>L('user_does_not_exist')));
 			return array('status'=>0,'message'=>L('user_or_password_error'));
 		} 
 
@@ -40,9 +47,12 @@ class admin {
 		}
 
 		// 验证密码
-		if($password == $res['password']){					
+		if(password($password, $res['encrypt']) === $res['password']){
+			if(!session_regenerate_id(true)){
+				return array('status'=>0,'message'=>L('session_init_failed'));
+			}
 			$admin->update(array('loginip'=>$loginip,'logintime'=>SYS_TIME,'errnum'=>0), array('adminid'=>$res['adminid']));
-			$admin_login_log->insert(array('adminname'=>$adminname,'logintime'=>SYS_TIME,'loginip'=>$loginip,'password'=>'','loginresult'=>'1','cause'=>L('login_success')));
+			$admin_login_log->insert(array('adminname'=>$adminname,'logintime'=>SYS_TIME,'loginip'=>$loginip,'password'=>'','loginresult'=>1,'cause'=>L('login_success')));
 			$_SESSION['adminid'] = $res['adminid'];
 			$_SESSION['adminname'] = $res['adminname'];
 			$_SESSION['roleid'] = $res['roleid'];
@@ -53,7 +63,7 @@ class admin {
 			set_cookie('adminname', $res['adminname'], 0, true);						
 			return array('status'=>1,'message'=>L('login_success'));
 		}else{
-			$admin_login_log->insert(array('adminname'=>$adminname,'logintime'=>SYS_TIME,'loginip'=>$loginip,'password'=>$_POST['password'],'loginresult'=>'0','cause'=>L('password_error')));
+			$admin_login_log->insert(array('adminname'=>$adminname,'logintime'=>SYS_TIME,'loginip'=>$loginip,'password'=>$password,'loginresult'=>0,'cause'=>L('password_error')));
 			$update = $res['errnum'] >= 12 ? '`errnum` = 0' : '`errnum` = `errnum`+1';
 			$admin->update($update, array('adminid'=>$res['adminid']));
 			return array('status'=>0,'message'=>L('user_or_password_error'));

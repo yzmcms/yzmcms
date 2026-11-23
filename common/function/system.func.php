@@ -167,7 +167,6 @@ function get_modelinfo($typeall = 0){
 		$where['type'] = 0;
 	}else{
 		$filename = 'modelinfo_all';
-		$where['type!='] = 2;
 	}
 	
 	if(!$modelinfo = getcache($filename)){
@@ -201,11 +200,11 @@ function sendmail($email, $title = '', $content = '', $mailtype = 'HTML'){
  * @return bool
  */
 function ismobile(){
-    if(isset ($_SERVER['HTTP_X_WAP_PROFILE'])){
+    if(isset($_SERVER['HTTP_X_WAP_PROFILE'])){
         return true;
     }
-    if(isset ($_SERVER['HTTP_USER_AGENT'])){
-        $clientkeywords = array ('android','iphone','ipod','mobile','comfront','midp','symbianos','wap');
+    if(isset($_SERVER['HTTP_USER_AGENT'])){
+        $clientkeywords = array('android','iphone','ipod','mobile','comfront','midp','symbianos','wap');
         foreach($clientkeywords as $value){
             if(stristr($_SERVER['HTTP_USER_AGENT'], $value)) return true;
         }
@@ -246,7 +245,6 @@ function url_referer($is_login = 1, $referer = ''){
  * @return string
  */
 function adver($id){
-	
 	global $adver;
 	$adver = isset($adver) ? $adver : D('adver');
 	$data = $adver->field('start_time, end_time, code')->where(array('id'=>$id))->find();
@@ -396,48 +394,114 @@ function select_category($name='parentid', $value='0', $root='', $member_publish
  * @return string
  */
 function down_remote_img($content, $targeturl = ''){
-	preg_match_all("/(src)=([\"|']?)([^ \"'>]+\.(gif|jpg|jpeg|bmp|png|webp))\\2/i", $content, $img_array);
-	$img_array = isset($img_array[3]) ? array_unique($img_array[3]) : array();
-	
-	if($img_array) {
-		$path =  C('upload_file').'/'.date('Ym/d');
-		$urlpath = SITE_PATH.$path;
-		$imgpath =  YZMPHP_PATH.$path;
-		if(!is_dir($imgpath)) @mkdir($imgpath, 0777, true);
-	}
+    preg_match_all('/src=([\'"]?)([^ \'">]+\.(gif|jpg|jpeg|bmp|png|webp))\1/i', $content, $img_array);
+    $img_array = isset($img_array[2]) ? array_unique($img_array[2]) : array();
 
-	$down_ignore_domain = get_config('down_ignore_domain');
-	$down_ignore_domain = $down_ignore_domain ? explode(',', $down_ignore_domain) : array();
-	array_push($down_ignore_domain, HTTP_HOST);
+    $urlpath = $imgpath = '';
+    if($img_array) {
+        $path =  C('upload_file').'/'.date('Ym/d');
+        $urlpath = SITE_PATH.$path;
+        $imgpath =  YZMPHP_PATH.$path;
+        if(!is_dir($imgpath)) @mkdir($imgpath, 0777, true);
+    }
 
-	foreach($img_array as $value){
+    $down_ignore_domain = get_config('down_ignore_domain');
+    $down_ignore_domain = $down_ignore_domain ? array_filter(array_map('trim', explode(',', $down_ignore_domain))) : array();
+    $http_host = defined('HTTP_HOST') ? HTTP_HOST : (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '');
+    if($http_host) $down_ignore_domain[] = strtolower($http_host);
+    $down_ignore_domain = array_unique($down_ignore_domain);
 
-		foreach($down_ignore_domain as $ignore_domain){
-		    if(stristr($value, $ignore_domain)) continue 2;
-		}
+    foreach($img_array as $origin_src){
+        $value = $origin_src;
+        if(strpos($value, 'http') === false){
+            if(!$targeturl) continue;
+            $value = rtrim($targeturl, '/').'/'.ltrim($value, '/');
+        }
+        $parse_url = @parse_url($value);
+        if(!$parse_url) continue;
+        if(isset($parse_url['path'])){
+            $value = $parse_url['scheme'] . '://' . $parse_url['host'] . (isset($parse_url['port']) ? ':'.$parse_url['port'] : '') . $parse_url['path'];
+        }
+        if(!preg_match('/^https?:\/\//i', $value)) continue;
 
-		$val = $value;		
-		if(strpos($value, 'http') === false){
-			if(!$targeturl) continue;
-			$value = $targeturl.$value;
-		}
-		if(strpos($value, '?')){ 
-			$value = explode('?', $value);
-			$value = $value[0];
-		}	
-		$ext = fileext($value);
-		if(!is_img($ext)) continue;
-		$imgname = date('YmdHis').rand(100,999).'.'.$ext;
-		$filename = $imgpath.'/'.$imgname;
-		$urlname = $urlpath.'/'.$imgname;
-		
-		ob_start();
-		readfile($value);
-		$data = ob_get_contents();
-		ob_end_clean();
-		$len = $data ? file_put_contents($filename, $data) : 0;
-		if($len){  
-			$arr = array(
+        $host = isset($parse_url['host']) ? strtolower(trim($parse_url['host'], '[]')) : '';
+        $port = isset($parse_url['port']) ? intval($parse_url['port']) : (strtolower($parse_url['scheme']) === 'https' ? 443 : 80);
+
+        if(in_array($host, $down_ignore_domain, true)) continue;
+
+        $local_host_list = array('localhost', '127.0.0.1', '::1');
+        if ($host === '' || substr($host, -1) === '.' || in_array($host, $local_host_list, true)) {
+            continue;
+        }
+        if(!in_array($port, array(80,443))) continue;
+
+        $resolved_ips = array();
+        $records = @dns_get_record($host, DNS_A);
+        if($records){
+            foreach($records as $r){
+                if(!empty($r['ip'])) $resolved_ips[] = $r['ip'];
+            }
+        }
+        if(!$resolved_ips) {
+            $tmpip = gethostbyname($host);
+            if($tmpip && $tmpip != $host) $resolved_ips[] = $tmpip;
+        }
+
+        $connect_ip = '';
+        foreach($resolved_ips as $ip){
+            if(!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) continue;
+            if(!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) continue 2;
+            if((ip2long($ip) & 0xFFC00000) === ip2long('100.64.0.0')) continue 2;
+            $connect_ip = $ip;
+            break;
+        }
+        if(!$connect_ip) continue;
+
+        $ext = fileext(isset($parse_url['path']) ? $parse_url['path'] : '');
+        if(!is_img($ext)) continue;
+
+        $ch = curl_init($value);
+        if(!$ch) continue;
+
+        curl_setopt_array($ch, array(
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_MAXREDIRS => 0,
+            CURLOPT_TIMEOUT => 15,
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_USERAGENT => 'Mozilla/5.0 (compatible; YzmCMS)',
+            CURLOPT_HEADER => false,
+            CURLOPT_RESOLVE => array($host.':'.$port.':'.$connect_ip),
+        ));
+        $data = curl_exec($ch);
+        if($data === false || curl_errno($ch) !== 0){
+            safe_curl_close($ch);
+            continue;
+        }
+        $http_code = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $download_size = strlen($data);
+        if($http_code < 200 || $http_code >= 300 || $download_size <= 0 || $download_size > 5 * 1024 * 1024){
+            safe_curl_close($ch);
+            continue;
+        }
+        safe_curl_close($ch);
+
+        $imginfo = @getimagesizefromstring($data);
+        $ext_arr = array(IMAGETYPE_GIF => 'gif', IMAGETYPE_JPEG => 'jpg', IMAGETYPE_PNG => 'png', IMAGETYPE_BMP => 'bmp');
+		if(defined('IMAGETYPE_WEBP')) {
+            $ext_arr[IMAGETYPE_WEBP] = 'webp';
+        }
+        if(!$imginfo || !isset($ext_arr[$imginfo[2]])) continue;
+        $ext = $ext_arr[$imginfo[2]];
+
+        $imgname = date('YmdHis').create_randomstr().'.'.$ext;
+        $filename = $imgpath.'/'.$imgname;
+        $urlname = $urlpath.'/'.$imgname;
+        $len = file_put_contents($filename, $data);
+        if($len){
+            $arr = array(
 				'siteid' => get_siteid(),
 				'originname' => '远程下载-'.htmlspecialchars(basename($value)),
 				'filename' => $imgname,
@@ -452,10 +516,10 @@ function down_remote_img($content, $targeturl = ''){
 				'uploadip' => getip()
 			);
 			D('attachment')->insert($arr);                       
-			$content = str_replace($val, $urlname, $content);
-		}
-	}
-	return $content;
+			$content = str_replace($origin_src, $urlname, $content);
+        }
+    }
+    return $content;
 }
 
 
@@ -545,7 +609,6 @@ function get_site($siteid = 0, $parameter = ''){
 }
 
 
-
 /**
  * 是否存在子栏目
  * @param  array  $data 栏目信息或栏目ID
@@ -556,7 +619,6 @@ function is_childid($data){
 	if(!is_array($data) || !isset($data['arrchildid'])) return false;
 	return strpos($data['arrchildid'], ',');
 }
-
 
 
 /**
@@ -700,9 +762,6 @@ function get_default_model($key = false){
 
 /**
  * 获取内容关键字
- *
- * @param  int $catid
- * @param  string $parameter
  * @return array|string
  */
 function get_content_keyword(){
@@ -773,7 +832,7 @@ function get_groupname($groupid){
  * 获取用户头像
  * @param $user userid或者username
  * @param $type 1为根据userid查询，其他为根据username查询, 建议根据userid查询
- * @param default 如果用户头像为空，是否显示默认头像
+ * @param $default 如果用户头像为空，是否显示默认头像
  * @return string
  */
 function get_memberavatar($user, $type=1, $default=true) {
@@ -814,7 +873,6 @@ function set_mapping($m) {
     }
     return array_merge($mapping, C('route_rules'));
 }
-
 
 
 /**
@@ -873,6 +931,44 @@ function content_total($modelid, $catid = 0){
 
 
 /**
+ * 获取模型字段
+ * @param   $modelid 模型id
+ * @param   $detail  是否获取字段详情
+ * @return  array          
+ */
+function get_model_field($modelid, $detail = true){
+	$modelinfo = getcache($modelid.'_model');
+	if($modelinfo === false){
+		if(!D('model')->where(array('modelid' => $modelid))->find()) return array();
+		$modelinfo = D('model_field')->where(array('modelid' => $modelid, 'disabled' => 0))->order('listorder ASC,fieldid ASC')->select();
+		setcache($modelid.'_model', $modelinfo);
+		delcache($modelid.'_model_string');
+	}
+
+	return $detail ? yzm_array_column($modelinfo, null, 'field') : yzm_array_column($modelinfo, 'field');
+}
+
+
+/**
+ * 获取模型所有字段(包含公共字段)
+ * @param   $modelid 模型id
+ * @return  array          
+ */
+function get_model_all_field($modelid){
+	$modelinfo = getcache('common_model');
+	if($modelinfo === false){
+		$modelinfo = D('model_field')->where(array('modelid' => 0, 'disabled' => 0))->order('listorder ASC,fieldid ASC')->select();
+		setcache('common_model', $modelinfo);
+	}
+
+	$common_field = yzm_array_column($modelinfo, 'field');
+	$field_res = get_model_field($modelid, false);
+
+	return array_merge(array('id', 'color'), $common_field, $field_res);
+}
+
+
+/**
  * 获取自定义多选字段生成的value值
  * 调用方式如：get_field_val($systems, 'systems', $modelid)
  * @param   $value  
@@ -881,14 +977,7 @@ function content_total($modelid, $catid = 0){
  * @return  string          
  */
 function get_field_val($value, $field, $modelid){
-	$modelinfo = getcache($modelid.'_model');
-	if($modelinfo === false){
-		if(!D('model')->where(array('modelid' => $modelid))->find()) return $value;
-		$modelinfo = D('model_field')->where(array('modelid' => $modelid, 'disabled' => 0))->order('listorder ASC,fieldid ASC')->select();
-		setcache($modelid.'_model', $modelinfo);
-	}
-
-	$data = yzm_array_column($modelinfo, null, 'field');
+	$data = get_model_field($modelid, true);
 	if(!isset($data[$field])) return $value;
 	$arr = string2array($data[$field]['setting']);
 
@@ -934,11 +1023,33 @@ function handle_upload_types($type = 1){
 }
 
 
+/**	
+ * 检测验证码是否有效
+ * @param $is_result 是否返回检测结果
+ * @return mixed 
+ */
+function check_captcha($is_result = false){
+	$check_captcha = C('check_captcha', 'code_captcha');
+	$captcha_model = yzm_base::load_model($check_captcha, 'api');
+	if($captcha_model === false) {
+		return_message('缺少验证码模型！', -1);
+	}
+	$captcha_result = $captcha_model->check_captcha();
+	if($is_result){
+		return $captcha_result;
+	}
+	if(!$captcha_result) {
+		return_message(L('code_error'), -1);
+	}
+}
+
+
 /**
  * 对用户的密码进行加密
- * @param $pass 字符串
+ * @param $password 明文密码
+ * @param $encrypt 加密串
  * @return string 
  */
-function password($pass) {
-	return md5(substr(md5(trim($pass)), 3, 26));
+function password($password, $encrypt='') {
+	return md5(substr(md5(trim($password)), 3, 26).$encrypt);
 }

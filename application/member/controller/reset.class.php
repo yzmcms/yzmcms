@@ -34,17 +34,7 @@ class reset{
 		$_SESSION['step'] = isset($_SESSION['step']) ? $_SESSION['step'] : 1;
 
 		if($_SESSION['step']==1 && isset($_POST['dosubmit'])){
-
-			if(!isset($_POST['code']) || !isset($_SESSION['code'])){
-				showmsg(L('lose_parameters'),'',1);
-			}
-			
-			if(empty($_SESSION['code']) || strtolower($_POST['code']) != $_SESSION['code']){
-				$_SESSION['code'] = '';
-				showmsg(L('code_error'), '', 1);
-			}
-			$_SESSION['code'] = '';
-			
+			check_captcha();
 			$data = $this->_check($_POST['email']);
 			if(empty($data['email'])) showmsg('您没有绑定邮箱，请选择其他方式找回密码！', 'stop');
 		   
@@ -82,7 +72,8 @@ class reset{
 			
 			if(!isset($_POST['password']) || !is_password($_POST['password'])) showmsg(L('password_format_error'));
 			
-			D('member')->update(array('password' => password($_POST['password'])),array('userid'=>$_SESSION['userid']));
+			$encrypt = create_randomstr();
+			D('member')->update(array('password'=>password($_POST['password'], $encrypt), 'encrypt'=>$encrypt), array('userid'=>$_SESSION['userid']));
 			unset($_SESSION['step'], $_SESSION['code'], $_SESSION['email_code'], $_SESSION['email_arr'], $_SESSION['userid']);
 			showmsg('更新密码成功！', U('member/index/login'));
 			
@@ -100,17 +91,7 @@ class reset{
 		$_SESSION['step'] = isset($_SESSION['step']) ? $_SESSION['step'] : 1;
 
 		if($_SESSION['step']==1 && isset($_POST['dosubmit'])){
-
-			if(!isset($_POST['code']) || !isset($_SESSION['code'])){
-				showmsg(L('lose_parameters'),'',1);
-			}
-			
-			if(empty($_SESSION['code']) || strtolower($_POST['code']) != $_SESSION['code']){
-				$_SESSION['code'] = '';
-				showmsg(L('code_error'), '', 1);
-			}
-			$_SESSION['code'] = '';
-			
+			check_captcha();
 			$data = $this->_check($_POST['email']);
 			if(empty($data['problem']) || empty($data['answer'])) showmsg('您没有设置安全问题，请选择其他方式找回密码！');
 		   
@@ -142,8 +123,9 @@ class reset{
 		}else if($_SESSION['step']==3 && isset($_POST['dosubmit'])){
 			
 			if(!isset($_POST['password']) || !is_password($_POST['password'])) showmsg(L('password_format_error'));
-			
-			D('member')->update(array('password' => password($_POST['password'])),array('userid'=>$_SESSION['userid']));
+
+			$encrypt = create_randomstr();
+			D('member')->update(array('password'=>password($_POST['password'], $encrypt), 'encrypt'=>$encrypt), array('userid'=>$_SESSION['userid']));
 			unset($_SESSION['step'], $_SESSION['problem'], $_SESSION['answer'], $_SESSION['userid']);
 			showmsg('更新密码成功！', U('member/index/login'));
 			

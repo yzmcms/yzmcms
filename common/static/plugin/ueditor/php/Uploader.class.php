@@ -1,11 +1,7 @@
 <?php
-
 /**
- * Created by JetBrains PhpStorm.
- * User: taoqili
- * Date: 12-7-18
- * Time: 上午11: 32
  * UEditor编辑器通用上传类
+ * YzmCMS改造版
  */
 class Uploader
 {
@@ -82,10 +78,10 @@ class Uploader
             $this->stateInfo = $this->getStateInfo($file['error']);
             return;
         } else if (!file_exists($file['tmp_name'])) {
-            // $this->stateInfo = $this->getStateInfo("ERROR_TMP_FILE_NOT_FOUND");
-            // return;
+            $this->stateInfo = $this->getStateInfo("ERROR_TMP_FILE_NOT_FOUND");
+            return;
         } else if (!is_uploaded_file($file['tmp_name'])) {
-            $this->stateInfo = $this->getStateInfo("ERROR_TMPFILE");
+            $this->stateInfo = $this->getStateInfo("ERROR_TMP_FILE");
             return;
         }
 
@@ -107,6 +103,18 @@ class Uploader
         if (!$this->checkType()) {
             $this->stateInfo = $this->getStateInfo("ERROR_TYPE_NOT_ALLOWED");
             return;
+        }
+
+        //检查是否为图片文件
+        if (function_exists('get_file_mime_type')) {
+            $mime = get_file_mime_type($file['tmp_name']);
+            if ($mime) {
+                $ext = strtolower(ltrim($this->getFileExt(), '.'));
+                if(is_img($ext) && strpos($mime, 'image/') !== 0){
+                    $this->stateInfo = $this->getStateInfo("ERROR_TYPE_NOT_ALLOWED");
+                    return;
+                }
+            }
         }
 
         //创建目录失败
@@ -169,6 +177,11 @@ class Uploader
 
     /**
      * 拉取远程图片
+     * 1) 仅允许 http/https，端口限定 80/443；
+     * 2) 解析域名后校验所有 A 记录必须为公网 IP（拒绝私网/回环/链路本地/保留段/CGNAT），防 SSRF；
+     * 3) 用 CURLOPT_RESOLVE 把连接钉在校验通过的 IP 上，防止 DNS 重绑定（TOCTOU）；
+     * 4) 禁止跟随重定向，防止重定向跳转至内网；
+     * 5) 下载后用 getimagesizefromstring 校验真实图片内容，不信任远端 Content-Type。
      * @return mixed
      */
     private function saveRemote()
@@ -176,59 +189,142 @@ class Uploader
         $imgUrl = htmlspecialchars($this->fileField);
         $imgUrl = str_replace("&amp;", "&", $imgUrl);
 
-        //http开头验证
-        if (strpos($imgUrl, "http") !== 0) {
+        // 仅允许 http/https 协议
+        if (!preg_match('/^https?:\/\//i', $imgUrl)) {
             $this->stateInfo = $this->getStateInfo("ERROR_HTTP_LINK");
             return;
         }
 
-        preg_match('/(^https*:\/\/[^:\/]+)/', $imgUrl, $matches);
-        $host_with_protocol = count($matches) > 1 ? $matches[1] : '';
-
-        // 判断是否是合法 url
-        if (!filter_var($host_with_protocol, FILTER_VALIDATE_URL)) {
+        $parseUrl = @parse_url($imgUrl);
+        if (!$parseUrl || empty($parseUrl['host'])) {
             $this->stateInfo = $this->getStateInfo("INVALID_URL");
             return;
         }
 
-        preg_match('/^https*:\/\/(.+)/', $host_with_protocol, $matches);
-        $host_without_protocol = count($matches) > 1 ? $matches[1] : '';
+        $scheme = strtolower($parseUrl['scheme']);
+        $host   = strtolower(trim($parseUrl['host'], '[]'));
+        $port   = isset($parseUrl['port']) ? intval($parseUrl['port']) : ($scheme === 'https' ? 443 : 80);
 
-        // 此时提取出来的可能是 ip 也有可能是域名，先获取 ip
-        $ip = gethostbyname($host_without_protocol);
-        // 判断是否是私有 ip
-        if(!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE)) {
+        // 本地主机名 / 空主机 / 末尾点 直接拒绝
+        $localHostList = array('localhost', '127.0.0.1', '::1');
+        if ($host === '' || substr($host, -1) === '.' || in_array($host, $localHostList, true)) {
+            $this->stateInfo = $this->getStateInfo("INVALID_IP");
+            return;
+        }
+        // 仅允许 80/443，避免探测任意端口
+        if (!in_array($port, array(80, 443), true)) {
+            $this->stateInfo = $this->getStateInfo("INVALID_URL");
+            return;
+        }
+
+        // 解析目标 IP：IP 字面量直接使用，域名走 DNS A 记录（兜底 gethostbyname）
+        $resolvedIps = array();
+        if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+            $resolvedIps[] = $host;
+        } else {
+            $records = @dns_get_record($host, DNS_A);
+            if ($records) {
+                foreach ($records as $r) {
+                    if (!empty($r['ip'])) $resolvedIps[] = $r['ip'];
+                }
+            }
+            if (!$resolvedIps) {
+                $tmpIp = gethostbyname($host);
+                if ($tmpIp && $tmpIp != $host) $resolvedIps[] = $tmpIp;
+            }
+        }
+
+        // 任一解析结果为私网/回环/链路本地/保留段/CGNAT 都拒绝，防止 SSRF
+        $connectIp = '';
+        foreach ($resolvedIps as $ip) {
+            if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+                continue;
+            }
+            if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+                $this->stateInfo = $this->getStateInfo("INVALID_IP");
+                return;
+            }
+            if ((ip2long($ip) & 0xFFC00000) === ip2long('100.64.0.0')) {
+                $this->stateInfo = $this->getStateInfo("INVALID_IP");
+                return;
+            }
+            $connectIp = $ip;
+            break;
+        }
+        if (!$connectIp) {
             $this->stateInfo = $this->getStateInfo("INVALID_IP");
             return;
         }
 
-        //获取请求头并检测死链
-        $heads = get_headers($imgUrl, 1);
-        if (!(stristr($heads[0], "200") && stristr($heads[0], "OK"))) {
+        // 用 cURL 拉取，禁止重定向
+        $ch = curl_init($imgUrl);
+        if (!$ch) {
             $this->stateInfo = $this->getStateInfo("ERROR_DEAD_LINK");
             return;
         }
-        //格式验证(扩展名验证和Content-Type验证)
-        $fileType = strtolower(strrchr($imgUrl, '.'));
-        if (!in_array($fileType, $this->config['allowFiles']) || !isset($heads['Content-Type']) || !stristr($heads['Content-Type'], "image")) {
+        curl_setopt_array($ch, array(
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_FOLLOWLOCATION => false,
+            CURLOPT_MAXREDIRS      => 0,
+            CURLOPT_TIMEOUT        => 15,
+            CURLOPT_CONNECTTIMEOUT => 5,
+            CURLOPT_SSL_VERIFYPEER => false,
+            CURLOPT_SSL_VERIFYHOST => false,
+            CURLOPT_USERAGENT      => 'Mozilla/5.0 (compatible; YzmCMS)',
+            CURLOPT_HEADER         => false,
+            CURLOPT_RESOLVE        => array($host . ':' . $port . ':' . $connectIp),
+        ));
+        $img = curl_exec($ch);
+        $curlErr = curl_errno($ch);
+        $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        safe_curl_close($ch);
+
+        if ($img === false || $curlErr !== 0) {
+            $this->stateInfo = $this->getStateInfo("ERROR_DEAD_LINK");
+            return;
+        }
+        if ($httpCode < 200 || $httpCode >= 300) {
+            $this->stateInfo = $this->getStateInfo("ERROR_DEAD_LINK");
+            return;
+        }
+
+        $downloadSize = strlen($img);
+        if ($downloadSize <= 0) {
+            $this->stateInfo = $this->getStateInfo("ERROR_DEAD_LINK");
+            return;
+        }
+
+        // 校验真实图片内容（不信任 Content-Type），并据此确定扩展名
+        $imgInfo = @getimagesizefromstring($img);
+        $extMap = array(
+            IMAGETYPE_GIF  => 'gif',
+            IMAGETYPE_JPEG => 'jpg',
+            IMAGETYPE_PNG  => 'png',
+            IMAGETYPE_BMP  => 'bmp',
+        );
+        if (defined('IMAGETYPE_WEBP')) {
+            $extMap[IMAGETYPE_WEBP] = 'webp';
+        }
+        if (!$imgInfo || !isset($extMap[$imgInfo[2]])) {
+            $this->stateInfo = $this->getStateInfo("ERROR_HTTP_CONTENTTYPE");
+            return;
+        }
+        $realExt = '.' . $extMap[$imgInfo[2]];
+        // 需在配置允许的抓取格式内
+        if (!in_array($realExt, $this->config['allowFiles'])) {
             $this->stateInfo = $this->getStateInfo("ERROR_HTTP_CONTENTTYPE");
             return;
         }
 
-        //打开输出缓冲区并获取远程图片
-        ob_start();
-        $context = stream_context_create(
-            array('http' => array(
-                'follow_location' => false // don't follow redirects
-            ))
-        );
-        readfile($imgUrl, false, $context);
-        $img = ob_get_contents();
-        ob_end_clean();
-        preg_match("/[\/]([^\/]*)[\.]?[^\.\/]*$/", $imgUrl, $m);
+        // 原始文件名：取 URL 路径 basename 并去掉原扩展名，统一用校验出的真实扩展名
+        $baseName = isset($parseUrl['path']) ? basename($parseUrl['path']) : 'remote';
+        $baseName = preg_replace('/\.[^.]+$/', '', $baseName);
+        if ($baseName === '') {
+            $baseName = 'remote';
+        }
+        $this->oriName = $baseName . $realExt;
 
-        $this->oriName = $m ? $m[1]:"";
-        $this->fileSize = strlen($img);
+        $this->fileSize = $downloadSize;
         $this->fileType = $this->getFileExt();
         $this->fullName = $this->getFullName();
         $this->filePath = $this->getFilePath();

@@ -20,6 +20,11 @@ select{background:#fff}
 .label, .badge{font-weight:normal;}
 .input-text, .btn, .input-text.size-M, .btn.size-M{font-size:13px;}
 .disabled{cursor:not-allowed;background-color:#f5f5f5;}
+.btn-group{font-size:0}
+.btn-group .btn-mini{margin-left:-1px;}
+.btn-group .btn-mini:not(:first-child):not(:last-child){border-radius:0;}
+.btn-group > .btn-mini:first-child:not(:last-child){border-bottom-right-radius:0;border-top-right-radius:0;}
+.btn-group > .btn-mini:last-child:not(:first-child){border-bottom-left-radius:0;border-top-left-radius:0;}
 .yzm-menubox{width:200px;overflow:hidden;position:absolute;top:44px;bottom:0;left:0;}
 .table img{max-height:35px;vertical-align:middle;}
 .table-bordered th,.table-bordered td{border-left:none}

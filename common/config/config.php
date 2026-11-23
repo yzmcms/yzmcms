@@ -17,7 +17,7 @@ return array(
     'db_user'            => 'root',         // 用户名
     'db_pwd'             => '123456',       // 密码
     'db_port'            => 3306,           // 端口
-    'db_charset'         => 'utf8',      // 字符集
+    'db_charset'         => 'utf8mb4',      	// 字符集
     'db_prefix'          => 'yzm_',         // 数据库表前缀
     
     //路由配置
@@ -53,7 +53,7 @@ return array(
         'timeout'        => 0,              // 超时时间(秒)
         'expire'         => 3600,           // 有效期(秒)
         'persistent'     => false,          // 是否长连接
-        'prefix'         => '',             // 前缀
+        'prefix'         => '',             // 前缀，同一服务器下安装多套系统时，请修改前缀
     ), 
     //缓存类型为memcache缓存时的配置项
     'memcache_config'    => array (
@@ -62,25 +62,24 @@ return array(
         'timeout'        => 0,              // 超时时间(秒)
         'expire'         => 3600,           // 有效期(秒)
         'persistent'     => false,          // 是否长连接
-        'prefix'         => '',             // 前缀
+        'prefix'         => '',             // 前缀，同一服务器下安装多套系统时，请修改前缀
     ),
 	
     //队列配置
     'queue_connection'   => 'database',      //队列驱动类型，支持 database 和 redis
     'queue_name'         => 'default',       //队列名称
     
-    //系统语言
-    'language'           => 'zh_cn',      //支持 简体中文zh_cn 和 美式英语en_us
-    
     //附件相关配置
-    'upload_type'        => 'host',       //文件上传类型，host:本地, qiniu:七牛云, aliyun:阿里云, tencent:腾讯云
-    'upload_file'        => 'uploads',    //上传文件目录，后面一定不要加斜杠（“/”）
-    'watermark_enable'   => 0,            //是否开启图片水印
-    'watermark_name'     => 'mark.png',   //水印名称
-    'watermark_position' => '9',          //水印位置
+    'upload_type'        => 'host',       	//文件上传类型，host:本地, qiniu:七牛云, aliyun:阿里云, tencent:腾讯云
+    'upload_file'        => 'uploads',    	//上传文件目录，后面一定不要加斜杠（“/”）
+    'watermark_enable'   => 0,            	//是否开启图片水印
+    'watermark_name'     => 'mark.png',   	//水印名称
+    'watermark_position' => '9',          	//水印位置
     
     //其他设置
-    'sql_execute'        => false,        //是否允许在线执行SQL命令
-    'edit_template'      => false,        //是否允许在线编辑模板
+	'language'           => 'zh_cn',      	//支持 简体中文zh_cn 和 美式英语en_us
+    'check_captcha'      => 'code_captcha', //系统验证码校验方式，支持自定义扩展
+    'sql_execute'        => false,        	//是否允许在线执行SQL命令
+    'edit_template'      => false,        	//是否允许在线编辑模板
 
 );

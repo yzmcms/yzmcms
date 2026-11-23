@@ -133,7 +133,7 @@ class image {
 		else
 			imagecopyresized($thumbimg, $srcimg, 0, 0, $psrc_x, $psrc_y, $width, $height,  $srcwidth, $srcheight); 
 
-		if($type=='gif' || $type=='png') {
+		if($type=='gif' || $type=='png' || $type=='webp') {
 		    $thumbimg = imagecreatetruecolor($createwidth, $createheight); 
 
 		    // 设置透明背景
@@ -195,6 +195,13 @@ class image {
 		else
 			$thumbimg = imagecreate($w, $h); 
  
+		if($type=='webp') {
+		    // 设置透明背景，保留透明通道
+		    $background_color = imagecolorallocatealpha($thumbimg, 255, 255, 255, 127);
+		    imagefill($thumbimg, 0, 0, $background_color);
+		    imagesavealpha($thumbimg, true);
+		}
+
 		imagecopyresampled($thumbimg, $srcimg, 0, 0, $x, $y, $w, $h, $w, $h);
 
 		if($type=='jpg' || $type=='jpeg') imageinterlace($thumbimg, $this->interlace);
@@ -239,6 +246,11 @@ class image {
 				imagealphablending($source_img, true);
     			imagesavealpha($source_img, true);
 				break;
+			case 18 :
+				$source_img = imagecreatefromwebp($source);
+				imagealphablending($source_img, true);
+				imagesavealpha($source_img, true);
+				break;
 			default :
 				return false;
 		}
@@ -256,6 +268,11 @@ class image {
 					break;
 				case 3 :
 					$water_img = imagecreatefrompng($w_img);
+					imagealphablending($water_img, true);
+					imagesavealpha($water_img, true);
+					break;
+				case 18 :
+					$water_img = imagecreatefromwebp($w_img);
 					imagealphablending($water_img, true);
 					imagesavealpha($water_img, true);
 					break;
@@ -316,7 +333,7 @@ class image {
 				break;
 		}
 		if($ifwaterimage) {
-			if($water_info[2] == 3) {
+			if($water_info[2] == 3 || $water_info[2] == 18) {
 				$temp_img = imagecreatetruecolor($source_w, $source_h);
 				imagealphablending($temp_img, false);
 				$transparent = imagecolorallocatealpha($temp_img, 0, 0, 0, 127);
@@ -351,6 +368,9 @@ class image {
 			case 3 :
 				imagepng($source_img, $target);
 				break;
+			case 18 :
+				imagewebp($source_img, $target, $this->w_quality);
+				break;
 			default :
 				return;
 		}
@@ -367,7 +387,7 @@ class image {
 	}
 
 	public function check($image) {
-		return extension_loaded('gd') && preg_match("/\.(jpg|jpeg|gif|png)/i", $image, $m) && is_file($image) && function_exists('imagecreatefrom'.($m[1] == 'jpg' ? 'jpeg' : $m[1]));
+		return extension_loaded('gd') && preg_match("/\.(jpg|jpeg|gif|png|webp)/i", $image, $m) && is_file($image) && function_exists('imagecreatefrom'.($m[1] == 'jpg' ? 'jpeg' : $m[1]));
 	}
 
 	/**

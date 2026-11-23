@@ -4,31 +4,28 @@
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>后台管理登录 - YzmCMS内容管理系统</title>
-	<link rel="stylesheet" href="<?php echo STATIC_URL;?>admin/yzm_admin/css/yzm.admin.login.css" />
+	<link rel="stylesheet" href="<?php echo STATIC_URL;?>admin/yzm_admin/css/yzm.admin.login.css?v=<?php echo date('Y');?>" />
 	<link rel="Shortcut Icon" href="<?php echo STATIC_URL;?>admin/yzm_admin/images/favicon.ico" />
 </head>
 <body>
 	<div class="yzm-loginwarrp">
 		<div class="yzm-logo">管理员登录</div>
         <div class="yzm-login-form">
-			<form method="post" action="" onsubmit="return dologin(this)">
+			<form method="post" action="" id="myform">
 			    <ul>
 					<li class="yzm-login-item">
 						<input type="text" name="username" class="yzm-login-input" autofocus="autofocus" placeholder="请输入用户名">
-						<span>用户名：</span>
 					</li>
 					<li class="yzm-login-item">					
 						<input type="password" name="password" class="yzm-login-input" placeholder="请输入密码">
-						<span>密码：</span>
 					</li>
 					<li class="yzm-login-item">
-						<img src="<?php echo U('api/index/code');?>" title="点击切换验证码" id="codeimg" class="yzm-verifyimg" onclick="change_code()"/>
 						<input type="text" name="code" class="yzm-login-input yzm-verify-input" placeholder="请输入验证码">
-						<span>验证码：</span>
+						<img src="<?php echo U('api/index/code');?>" title="点击切换验证码" id="codeimg" class="yzm-verifyimg" onclick="change_code()"/>
 					</li>
-					<li class="yzm-login-sub">
-						<input type="submit" name="dosubmit" value="登　录" />
-					</li> 
+					<li class="yzm-login-item">
+						<input type="submit" name="dosubmit" class="yzm-login-btn" value="登　录" />
+					</li>
 			    </ul>	
            </form>
 		</div>
@@ -53,45 +50,52 @@
 			var img_src = $("#codeimg").attr('src');
 			$("#codeimg").attr('src', img_src + (img_src.indexOf('?') === -1 ? '?' : '&') + Math.random());
 		}
-		
-		function dologin(obj) {
-			if(obj.username.value==''){
-				layer.msg('请输入用户名！', {icon:2});
-				return false;
+		$(function () {
+			function check_form() {
+				var username = $('input[name=username]').val();
+                var password = $('input[name=password]').val();
+                if (!username || !password) {
+                    layer.msg('用户名密码不能为空', {icon:2});
+                    return false;
+                }
+                if ($('input[name=code]').val() == '') {
+                    layer.msg('验证码不能为空', {icon:2});
+                    return false;
+                }
+                return true;
 			}
-			if(obj.password.value==''){
-				layer.msg('请输入密码！', {icon:2});
-				return false;
-			}
-			if(obj.code.value==''){
-				layer.msg('请输入验证码！', {icon:2});
-				return false;
-			}
-			layer.msg('正在登录……', {icon:16, time:0, shade:0.3});
-	        $.ajax({
-	            type: 'POST',
-	            url: '<?php echo U('login');?>', 
-	            data: $(obj).serialize(),
-			    dataType: "json", 
-	            success: function (msg) {
-	            	change_code();
-					if(msg.status == 1){
-						layer.msg(msg.message, {icon:1, time:1200}, function(){
-							window.location.href = msg.url;
-						});
-				    }else{
-						layer.msg(msg.message, {icon:2, time:2000}, function(){
-							$(".yzm-verify-input").val('');
-						});
-					}
-	            },
-		        error: function (xhr) {
-		            layer.alert('登录失败！XHR状态码：'+xhr.status,  {icon:2,title:"操作提示"});
-		            return false;
-		        }
-	        })		 
-			return false;			
-		}
+            function do_login() {
+				layer.msg('正在登录……', {icon:16, time:0, shade:0.3});
+                $.ajax({
+                    url: "<?php echo U('login');?>",
+                    type: 'post',
+                    dataType: 'json',
+                    data: $('#myform').serialize(),
+                    success: function (data) {
+						change_code();
+                        if (data.status == 1) {
+                            layer.msg(data.message, {icon:1, time:1200}, function(){
+								window.location.href = data.url;
+							});
+                        } else {
+							layer.msg(data.message, {icon:2, time:2000}, function(){
+								$(".yzm-verify-input").val('');
+							});
+                        }
+                    },
+                    error: function (xhr) {
+                        layer.alert('登录失败！XHR状态码：'+xhr.status,  {icon:2,title:"操作提示"});
+                    }
+                });
+            }
+            $('#myform').on('submit', function () {
+                if (!check_form()) {
+                    return false;
+                }
+                do_login();
+                return false;
+            });
+        });
 	</script>
 </body>
 </html>

@@ -7,6 +7,7 @@
   <div class="cl tb-top"> 
 	  <span class="l">  
 	  <a class="btn btn-primary radius" onclick="yzm_open('添加表单','<?php echo U('add');?>','700','505')" href="javascript:;"><i class="yzm-iconfont yzm-icontianjia"></i> 添加表单</a>
+	  <a onclick="yzm_open('导入表单','<?php echo U('import');?>','550','300')" href="javascript:;" class="btn btn-warning radius"><i class="yzm-iconfont yzm-icondaochu"></i> 导入表单</a>
 	  </span> 
 	  <span class="r">共有数据：<strong><?php echo $total?></strong> 条</span> 
   </div>
@@ -20,7 +21,7 @@
 		<th>创建时间</th>
 		<th>最后提交</th>
 		<th>启用</th>
-		<th>管理操作</th>
+		<th width="330">管理操作</th>
       </tr>
     </thead>
     <tbody>
@@ -28,7 +29,12 @@
 		foreach($data as $val){
 		?>
 		  <tr class="text-c">
-			<td><a href="<?php echo U('diyform_info/init', array('modelid'=>$val['modelid']))?>" style="text-decoration:none"><?php echo $val['name'].' ('.$val['items'].'条数据)';?></a></td>
+			<td>
+				<a href="<?php echo U('diyform_info/init', array('modelid'=>$val['modelid']))?>">
+				<?php echo $val['name'];?>
+				(<span class="c-red"><?php echo $val['items'];?>条</span>)
+				</a>
+			</td>
 			<td><?php echo $val['tablename'];?></td>
 			<td><?php echo $val['description'] ? str_cut($val['description'],30) : '无'; ?></td>
 			<td><?php echo date('Y-m-d H:i:s',$val['inputtime'])?></td>
@@ -41,11 +47,15 @@
 				<?php } ?>
 			</td>
 			<td>
-			<a href="<?php echo U('diyform_info/init', array('modelid'=>$val['modelid']))?>"  class="btn-mini btn-success" style="text-decoration:none">信息列表</a> 
-			<a href="<?php echo U('index/show', array('modelid'=>$val['modelid']))?>" target="_blank"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">前台浏览</a>
-			<a href="<?php echo U('diyform_field/init', array('modelid'=>$val['modelid']))?>"  class="btn-mini btn-primary ml-5" style="text-decoration:none">字段管理</a>
-			<a href="javascript:;" onclick="yzm_open('编辑表单','<?php echo U('edit', array('modelid'=>$val['modelid']));?>','700','505')"  class="btn-mini btn-secondary ml-5" style="text-decoration:none">修改</a>
-			<a href="javascript:;" onclick="yzm_confirm('<?php echo U('del',array('modelid'=>$val['modelid']));?>', '确定要删除【<?php echo $val['name'];?>】吗？', 1)"  class="btn-mini btn-danger ml-5" style="text-decoration:none">删除</a>
+				<div class="btn-group">
+						<a href="<?php echo U('diyform_info/init', array('modelid'=>$val['modelid']))?>"  class="btn-mini btn-success">信息列表</a> 
+						<a href="<?php echo U('index/show', array('modelid'=>$val['modelid']))?>" target="_blank"  class="btn-mini btn-secondary">前台浏览</a>
+						<a href="<?php echo U('diyform_field/init', array('modelid'=>$val['modelid']))?>"  class="btn-mini btn-secondary">字段管理</a>
+						<a href="javascript:;" onclick="yzm_open('编辑表单','<?php echo U('edit', array('modelid'=>$val['modelid']));?>','700','505')"  class="btn-mini btn-secondary">编辑</a>
+						<a href="<?php echo U('export',array('modelid'=>$val['modelid']));?>"  class="btn-mini btn-secondary">导出</a>
+						<a href="javascript:;" onclick="yzm_confirm('<?php echo U('del',array('modelid'=>$val['modelid']));?>', '确定要删除【<?php echo $val['name'];?>】吗？', 1)"  class="btn-mini btn-danger">删除</a>
+				</div>
+			
 			</td>
 		  </tr>		
 		<?php 

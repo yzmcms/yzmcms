@@ -104,8 +104,10 @@ class database extends common {
 	 */
 	public function databack_del() {
 		if(!isset($_GET['random']) || !isset($_GET['time'])) return_json(array('status'=>0, 'message'=>'请指定要删除的文件'));
+		$random = $this->_safe_random($_GET['random']);
+		if(!$random) return_json(array('status'=>0, 'message'=>L('illegal_parameters')));
 
-		$filename  = $_GET['random'].'-'.date('Ymd-His', intval($_GET['time'])) . '-*.sql*';
+		$filename  = $random.'-'.date('Ymd-His', intval($_GET['time'])) . '-*.sql*';
 		$path  = $this->config['path'].$filename;
 		array_map('unlink', glob($path));
 		if(count(glob($path))){
@@ -122,7 +124,10 @@ class database extends common {
 	public function databack_down() {
 		if(!isset($_GET['random']) || !isset($_GET['time']) || !isset($_GET['part'])) showmsg('请指定要下载的文件!', 'stop');
 
-		$filename = $_GET['random'].'-'.date('Ymd-His', intval($_GET['time'])).'-'.intval($_GET['part']).'.sql';
+		$random = $this->_safe_random($_GET['random']);
+		if(!$random) showmsg(L('illegal_parameters'), 'stop');
+
+		$filename = $random.'-'.date('Ymd-His', intval($_GET['time'])).'-'.intval($_GET['part']).'.sql';
 		if($this->config['compress']) $filename .= '.gz';
 		
 		if(!is_file($this->config['path'].$filename)) showmsg($filename.'文件不存在!', 'stop');
@@ -218,7 +223,10 @@ class database extends common {
 		function_exists('set_time_limit') && set_time_limit(0);
 		if(!function_exists('gzopen')) return_json(array('status'=>0, 'message'=>'检测到未安装zlib扩展，请先安装!'));
 		if(isset($_GET['time'])) {
-            $filename  = $_GET['random'].'-'.date('Ymd-His', intval($_GET['time'])) . '-*.sql*';
+			$random = $this->_safe_random(isset($_GET['random']) ? $_GET['random'] : '');
+			if(!$random) return_json(array('status'=>0, 'message'=>L('illegal_parameters')));
+
+            $filename  = $random.'-'.date('Ymd-His', intval($_GET['time'])) . '-*.sql*';
 			$path  = $this->config['path'].$filename;
             $files = glob($path);
             $list  = array();
@@ -280,5 +288,12 @@ class database extends common {
 	private function _safe_replace($string) {
 		if(!is_string($string)) return '';
 		return str_replace(array('`',';','%','{','}',"\\",'&',' ',"'",'"','/','*','<','>',"\r","\t","\n",'#'), '', $string);
+	}
+
+
+
+	private function _safe_random($random) {
+		$random = $this->_safe_replace($random);
+		return preg_match('/^[a-z]{6}$/', $random) ? $random : false;
 	}
 }

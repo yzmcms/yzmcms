@@ -16,28 +16,136 @@ class collection {
 	 * @param $url 目标网址url
 	 * @return string
 	 */
-    public static function get_content($url) {
+    public static function get_content($url, $depth = 0) {
 		
 		self::$url = $url;
 		
+		// 仅允许 http/https，且目标解析结果必须为公网 IP
+		$target = self::_resolve_target($url);
+		if (!$target) return '';
+
+		// 限制重定向跳转次数，防止死循环
+		if ($depth > 5) return '';
+
         $content = '';
         if (extension_loaded('curl')) {
-            $ch = curl_init();
-            curl_setopt($ch, CURLOPT_URL, $url);
+            $ch = curl_init($url);
             curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+            curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 0); // 手动跟随，逐跳校验目标 IP
+            curl_setopt($ch, CURLOPT_MAXREDIRS, 0);
+            curl_setopt($ch, CURLOPT_TIMEOUT, 15);
+            curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
 			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE); 
 			curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, FALSE);
             curl_setopt($ch, CURLOPT_HEADER, 0);
+            // 将连接钉死在校验通过的 IP 上，防止 DNS 重绑定
+            curl_setopt($ch, CURLOPT_RESOLVE, array($target['host'].':'.$target['port'].':'.$target['ip']));
             $content = curl_exec($ch);
+            $httpCode = (int)curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            $redirect = curl_getinfo($ch, CURLINFO_REDIRECT_URL);
             safe_curl_close($ch);
+
+            // 手动处理 3xx 跳转，每一跳都会重新做公网 IP 校验
+            if ($httpCode >= 300 && $httpCode < 400 && $redirect) {
+                $redirect = self::_absolutize_url($url, $redirect);
+                return $redirect ? self::get_content($redirect, $depth + 1) : '';
+            }
         } else {
-            $content = @file_get_contents($url);
+            $context = stream_context_create(array('http' => array(
+                'follow_location' => 0,
+                'max_redirects'   => 0,
+                'timeout'         => 15,
+            )));
+            $content = @file_get_contents($url, false, $context);
         }
 		
-		// 忽略SSRF攻击，采集时需支持302，详情联系QQ: 214243830
         return trim($content);
     }
+
+
+	/**
+	 * 解析并校验目标地址，返回可安全连接的 host/port/ip
+	 * 拒绝私网、回环、链路本地(云元数据)、保留段及 CGNAT 地址
+	 * @param string $url
+	 * @return array|false
+	 */
+	protected static function _resolve_target($url) {
+		if (!is_string($url) || !preg_match('/^https?:\/\//i', $url)) return false;
+		$parse = @parse_url($url);
+		if (!$parse || empty($parse['host'])) return false;
+
+		$scheme = strtolower($parse['scheme']);
+		$host = strtolower(trim($parse['host'], '[]'));
+		$port = isset($parse['port']) ? intval($parse['port']) : ($scheme === 'https' ? 443 : 80);
+
+		if ($host === '' || substr($host, -1) === '.' || in_array($host, array('localhost', '127.0.0.1', '::1'), true)) {
+			return false;
+		}
+		// 仅允许 80/443 端口，避免探测内网服务
+		if (!in_array($port, array(80, 443), true)) return false;
+
+		$ips = array();
+		if (filter_var($host, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+			$ips[] = $host;
+		} else {
+			$records = @dns_get_record($host, DNS_A);
+			if ($records) {
+				foreach ($records as $r) {
+					if (!empty($r['ip'])) $ips[] = $r['ip'];
+				}
+			}
+			if (!$ips) {
+				$tmp = gethostbyname($host);
+				if ($tmp && $tmp != $host) $ips[] = $tmp;
+			}
+		}
+		if (!$ips) return false;
+
+		$connectIp = '';
+		foreach ($ips as $ip) {
+			if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) continue;
+			// 任一解析结果为内网/保留地址即拒绝，防止 DNS 多记录绕过
+			if (!filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4 | FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE)) {
+				return false;
+			}
+			if ((ip2long($ip) & 0xFFC00000) === ip2long('100.64.0.0')) return false;
+			$connectIp = $ip;
+			break;
+		}
+		if (!$connectIp) return false;
+
+		return array('host' => $host, 'port' => $port, 'ip' => $connectIp);
+	}
+
+
+	/**
+	 * 将重定向 Location 解析为绝对 URL
+	 * @param string $base 当前地址
+	 * @param string $location 跳转地址
+	 * @return string
+	 */
+	protected static function _absolutize_url($base, $location) {
+		$location = trim($location);
+		if ($location === '') return '';
+		if (preg_match('/^https?:\/\//i', $location)) return $location;
+
+		$parse = @parse_url($base);
+		if (!$parse || empty($parse['host'])) return '';
+
+		$scheme = isset($parse['scheme']) ? strtolower($parse['scheme']) : 'http';
+		$host = $parse['host'];
+		$port = isset($parse['port']) ? ':'.$parse['port'] : '';
+
+		if (substr($location, 0, 2) === '//') {
+			return $scheme.':'.$location;
+		}
+		if (substr($location, 0, 1) === '/') {
+			return $scheme.'://'.$host.$port.$location;
+		}
+		$path = isset($parse['path']) ? $parse['path'] : '/';
+		$dir = substr($path, 0, strrpos($path, '/') + 1);
+		return $scheme.'://'.$host.$port.$dir.$location;
+	}
 
 
 

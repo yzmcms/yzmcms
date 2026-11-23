@@ -1,21 +1,20 @@
 <?php include $this->admin_tpl('meta', 'admin');?>
-<title>添加轮播 - YzmCMS内容管理系统</title>
+<title>编辑轮播 - YzmCMS内容管理系统</title>
 </head>
 <body>
-<nav class="breadcrumb"><i class="yzm-iconfont yzm-iconai-home"></i> 首页 <span class="c-gray en">&gt;</span> 模块管理 <span class="c-gray en">&gt;</span> 添加轮播 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="yzm-iconfont yzm-iconshuaxin"></i></a></nav>
 <article class="page-container">
-<div class="formdoby_normal"> 
-	<form method="post" onsubmit="return checkall()">
+<div class="formdoby_normal mb-50"> 
+	<form method="post" onsubmit="return checkall(this)">
 		<ul>
 			 <li><label><span class="c-red">*</span>标题名称：</label>
-			 	<input type="text" class="input" name="title" value="<?php echo $data['title'];?>" style="width:400px;">
-			 </li> 
-			 <li><label><span class="c-red">*</span>链接地址：</label>
-			 	<input type="text" class="input" value="<?php echo $data['url'];?>" name="url" style="width:400px;">
+			 	<input type="text" class="input" name="title" value="<?php echo $data['title'];?>" style="width:386px;">
 			 </li> 
 			 <li><label><span class="c-red">*</span>轮播图：</label>
 				<input class="input-text" type="text" name="image" value="<?php echo $data['image'];?>" style="width:400px" id="uploadfile" onmouseover="yzm_img_preview('uploadfile', this.value)"  onmouseout="layer.closeAll();">
 				<a href="javascript:;" onclick="yzm_upload_att('<?php echo U('attachment/api/upload_box', array('module'=>ROUTE_M));?>')" class="btn btn-primary radius upload-btn"><i class="yzm-iconfont yzm-iconshangchuan"></i> 浏览文件</a>
+			 </li>
+			 <li><label>链接地址：</label>
+			 	<input type="text" class="input" value="<?php echo $data['url'];?>" name="url" style="width:386px;">
 			 </li>			 
 			 <li><label>轮播分类：</label>			
 				 <select  name="typeid" style="width:230px;" id="typeid">
@@ -36,35 +35,65 @@
 			 	<input type="text" class="input"  value="<?php echo $data['listorder'];?>" name="listorder" style="width:120px">
 			 	<span class="yzm-explain">由小到大排列</span>
 			 </li>	
-			 <li><label>状态：</label>
-			 	<label class="label_radio"><input name="status" type="radio" value="1" <?php if($data['status']) echo 'checked' ;?>> 显示</label>
-			 	<label class="label_radio"><input name="status" type="radio" value="0" <?php if(!$data['status']) echo 'checked' ;?>> 隐藏</label>
+			 <li class="yzm-explain-box"><label>开始时间</label>
+			 	<input type="text" class="input-text laydate-icon" id="start" style="width:230px;height:30px;" name="start_time" value="<?php echo $data['start_time'] ? date('Y-m-d H:i:s', $data['start_time']) : '';?>">
+			 	<span class="yzm-explain">留空为不限制</span>
+			 </li>
+			 <li class="yzm-explain-box"><label>结束时间</label>
+			 	<input type="text" class="input-text laydate-icon" id="end" style="width:230px;height:30px;" name="end_time" value="<?php echo $data['end_time'] ? date('Y-m-d H:i:s', $data['end_time']) : '';?>">
+			 	<span class="yzm-explain">留空为不限制</span>
 			 </li>
 		</ul>
-		<input class="dosubmit w_100 btn-primary radius" name="dosubmit" type="submit" value="提交">
-		<input class="btn w_100 btn-default radius h35" type="button" value="后退" onclick="window.history.go(-1)">
+		<div class="footer_btn">
+			<input type="hidden" name="id" value="<?php echo $data['id'];?>">
+			<input class="btn btn-primary radius" type="submit" value="确 定">
+			<input class="btn btn-default radius" type="button" value="取 消" onclick="yzmcms_close()">	
+		</div>
 	</form>
 </div>
 </article>
-<?php include $this->admin_tpl('footer','admin');?> 
+<?php include $this->admin_tpl('footer','admin');?>
+<script type="text/javascript" src="<?php echo STATIC_URL;?>plugin/laydate/1.1/laydate.js"></script>
 <script type="text/javascript">
-
-function checkall(){
-		if($("input[name='title']").val()==''){
-			layer.msg('标题名称不能为空！');
+	var start = {elem:'#start',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){end.min = datas;end.start = datas}
+	};
+	var end = {elem:'#end',format:'YYYY-MM-DD hh:mm:ss',min:'1999-01-01',max:'2099-01-01',istime:true,istoday:false,choose:function(datas){start.max = datas;}};
+	laydate(start);
+	laydate(end);
+	function checkall(obj){
+			if(obj.title.value == ''){
+				layer.msg('标题名称不能为空！');
+				return false;
+			}
+			if(obj.image.value == ''){
+				layer.msg('请上传轮播图！');
+				return false;
+			}
+			if(obj.start_time.value != '' && obj.end_time.value == ''){
+				layer.msg('请选择结束时间！');
+				return false;
+			}
+			if(obj.end_time.value != '' && obj.start_time.value == ''){
+				layer.msg('请选择开始时间！');
+				return false;
+			}
+			$.ajax({
+	            type: "POST",
+	            url: "<?php echo U('edit');?>", 
+	            data: $(obj).serialize(),
+			    dataType: "json", 
+	            success: function (msg) {
+					if(msg.status == 1){
+						layer.msg(msg.message, {icon:1, time:800}, function(){
+							parent.location.reload();
+						});
+				    }else{
+						layer.msg(msg.message, {icon:2});
+					}
+	            }
+	        })		 
 			return false;
-		}
-		if($("input[name='url']").val()=='http://' || $("input[name='url']").val()==''){
-			layer.msg('链接地址不能为空！');
-			return false;
-		}
-		if($("input[name='image']").val()==''){
-			layer.msg('请上传轮播图！');
-			return false;
-		}
-		return true;
-
-}
+	}
 </script>
 </body>
 </html>

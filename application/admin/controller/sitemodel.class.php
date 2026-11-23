@@ -126,7 +126,7 @@ class sitemodel extends common {
 		if(isset($_POST['dosubmit'])) {
 			$data_import = $_FILES['data_import']['tmp_name'];
 			if(empty($data_import)) return_json(array('status'=>0,'message'=>'请上传文件！'));
-			if(fileext($_FILES['data_import']['name']) != 'model') return_json(array('status'=>0,'message'=>'上传文件类型错误！'));
+			if(fileext($_FILES['data_import']['name']) != 'model') return_json(array('status'=>0,'message'=>'文件类型需为【model】'));
 			$data_import = @file_get_contents($data_import);
 			if(empty($data_import)) return_json(array('status'=>0,'message'=>'上传文件数据为空！'));
 			$model_import_data = string2array($data_import);

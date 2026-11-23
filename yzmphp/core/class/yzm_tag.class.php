@@ -13,7 +13,7 @@ class yzm_tag{
 	
 	/**
 	 * 内容列表标签
-	 * @param $data
+	 * @param array $data
 	 */
 	public function lists($data) {
 		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 0;
@@ -79,7 +79,7 @@ class yzm_tag{
 
 	/**
 	 * 全站最近更新
-	 * @param $data
+	 * @param array $data
 	 */
 	public function all($data) {
 
@@ -95,7 +95,7 @@ class yzm_tag{
 	
 	/**
 	 * 点击排行榜标签
-	 * @param $data
+	 * @param array $data
 	 */
 	public function hits($data) {
 		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 0;
@@ -131,7 +131,7 @@ class yzm_tag{
 	
 	/**
 	 * 栏目导航标签
-	 * @param $data
+	 * @param array $data
 	 */
 	public function nav($data) {
 		$siteid = isset($data['siteid']) ? intval($data['siteid']) : get_siteid();
@@ -148,7 +148,7 @@ class yzm_tag{
 
 	/**
 	 * 友情链接标签
-	 * @param $data
+	 * @param array $data
 	 */
 	public function link($data) {
 		$siteid = isset($data['siteid']) ? intval($data['siteid']) : get_siteid();
@@ -171,7 +171,7 @@ class yzm_tag{
 	
 	/**
 	 * TAG标签(所有tag列表)
-	 * @param $data
+	 * @param array $data
 	 */
 	public function tag($data) {
 		$siteid = isset($data['siteid']) ? intval($data['siteid']) : get_siteid();
@@ -195,26 +195,28 @@ class yzm_tag{
 	
 	/**
 	 * 内容页TAG标签
-	 * @param $data
+	 * @param array $data
 	 */
 	public function centent_tag($data) {
 		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 1;
 		$id = isset($data['id']) ? intval($data['id']) : 0;
+		$order = isset($data['order']) ? $data['order'] : 'id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
-		return  D('tag_content')->field('id,tag')->join('yzmcms_tag b ON yzmcms_tag_content.tagid=b.id')->where('yzmcms_tag_content.modelid='.$modelid.' AND yzmcms_tag_content.aid='.$id)->limit($limit)->order('id ASC')->select();
+		return  D('tag_content')->field('id,tag')->join('yzmcms_tag b ON yzmcms_tag_content.tagid=b.id')->where('yzmcms_tag_content.modelid='.$modelid.' AND yzmcms_tag_content.aid='.$id)->limit($limit)->order($order)->select();
 	}	
 	
 	
 	
 	/**
 	 * 相关内容标签(根据tag标签获取)
-	 * @param $data
+	 * @param array $data
 	 */
 	public function relation($data) {
 		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 1;
 		$relation = isset($data['relation']) ? intval($data['relation']) : $modelid;
 		$id = isset($data['id']) ? intval($data['id']) : 0;
 		$field = isset($data['field']) ? $data['field'] : '*';
+		$order = isset($data['order']) ? $data['order'] : 'id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
 		
 		if(!$this->_set_model($modelid)) return false;
@@ -238,14 +240,14 @@ class yzm_tag{
 		if(empty($ids)) return false;
 
 		if($modelid!=$relation && !$this->_set_model($relation)) return false;
-		return $this->db->field($field)->where('status=1 AND id IN ('.implode(',', $ids).')')->order('id DESC')->limit($limit)->select();
+		return $this->db->field($field)->where('status=1 AND id IN ('.implode(',', $ids).')')->order($order)->limit($limit)->select();
 	}	
 	
 
 
 	/**
 	 * 留言板标签
-	 * @param $data
+	 * @param array $data
 	 */
 	public function guestbook($data) {
 		$field = isset($data['field']) ? $data['field'] : '*';
@@ -271,7 +273,7 @@ class yzm_tag{
 	
 	/**
 	 * 轮播图标签
-	 * @param $data
+	 * @param array $data
 	 */
 	public function banner($data) {
 		$field = isset($data['field']) ? $data['field'] : '*';
@@ -279,6 +281,7 @@ class yzm_tag{
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
 		$typeid = isset($data['typeid']) ? intval($data['typeid']) : 0;
 		$where = $typeid ? '`status` = 1 AND typeid='.$typeid : '`status` = 1';
+		$where .= ' AND start_time < '.SYS_TIME.' AND (end_time = 0 OR end_time > '.SYS_TIME.')';
 		return D('banner')->field($field)->where($where)->order($order)->limit($limit)->select();
 	}
 	
@@ -286,7 +289,7 @@ class yzm_tag{
 	
 	/**
 	 * 评论列表标签
-	 * @param $data
+	 * @param array $data
 	 */
 	public function comment_list($data) {
 		$field = isset($data['field']) ? $data['field'] : 'id,userid,username,userpic,inputtime,content';
@@ -303,7 +306,7 @@ class yzm_tag{
 
 	/**
 	 * 评论排行榜标签
-	 * @param $data
+	 * @param array $data
 	 */
 	public function comment_ranking($data) {
 		$where = 'siteid='.get_siteid();
@@ -318,18 +321,19 @@ class yzm_tag{
 	
 	/**
 	 * 最新评论标签
-	 * @param $data
+	 * @param array $data
 	 */
 	public function comment_newest($data) {
+		$order = isset($data['order']) ? $data['order'] : 'id DESC';
 		$limit = isset($data['limit']) ? $data['limit'] : '20';
-		return D('comment')->field('userid,username,userpic,inputtime,content,title,url,catid,modelid')->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->where('yzmcms_comment.siteid='.get_siteid().' AND `status`=1')->order('id DESC')->limit($limit)->select();
+		return D('comment')->field('userid,username,userpic,inputtime,content,title,url,catid,modelid')->join('yzmcms_comment_data b ON yzmcms_comment.commentid=b.commentid')->where('yzmcms_comment.siteid='.get_siteid().' AND `status`=1')->order($order)->limit($limit)->select();
 	}
 
 	
 	
 	/**
 	 * 内容归档标签
-	 * @param $data
+	 * @param array $data
 	 */
 	public function content_archives($data) {
 		$modelid = isset($data['modelid']) ? intval($data['modelid']) : 1;
@@ -345,7 +349,7 @@ class yzm_tag{
 
 	/**
 	 * 搜索标签
-	 * @param $data
+	 * @param array $data 搜索参数
 	 */
 	public function search($data) {
 		$siteid = isset($data['siteid']) ? intval($data['siteid']) : 0;
@@ -389,13 +393,7 @@ class yzm_tag{
 				if($modelid) return $db->field($field)->where($where)->order($order)->limit($limit)->select();
 
 				$data = $db->field('modelid,id')->where($where)->order('allid DESC')->limit($limit)->select();
-				$search_data = array();
-				foreach ($data as $value) {
-					$res = D(get_model($value['modelid']))->field($field)->where(array('id'=>$value['id']))->find();
-					if(!$res) continue;
-					$search_data[] = $res;
-				}
-				return $search_data;
+				return $this->_handle_group_data($data, $field);
 			case 'tag' : 
 				$tagid = isset($_GET['id']) ? intval($_GET['id']) : 0;
 				$where = array('siteid'=>$siteid,'tagid'=>$tagid);
@@ -407,14 +405,8 @@ class yzm_tag{
 					$limit = $this->page->limit();
 				}
 
-				$data = $db->field('modelid,aid')->where($where)->order('modelid ASC,aid DESC')->limit($limit)->select();
-				$search_data = array();
-				foreach ($data as $value) {
-					$res = D(get_model($value['modelid']))->field($field)->where(array('id'=>$value['aid'],'status'=>1))->find();
-					if(!$res) continue;
-					$search_data[] = $res;
-				}
-				return $search_data;
+				$data = $db->field('modelid,aid AS id')->where($where)->order('modelid ASC,id DESC')->limit($limit)->select();
+				return $this->_handle_group_data($data, $field, 1);
 			case 'archives' : 
 				$pubtime = isset($_GET['pubtime']) ? intval($_GET['pubtime']) : 0;
 				$date = date('Y-m', $pubtime);
@@ -443,7 +435,7 @@ class yzm_tag{
 	
 	/**
 	 * 自定义SQL标签
-	 * @param $data
+	 * @param array $data
 	 */
 	public function get($data) {
 		if(!isset($data['sql'])) return false;
@@ -471,7 +463,7 @@ class yzm_tag{
 	
 	/**
 	 * 设置模型
-	 * @param $modelid
+	 * @param int $modelid 模型ID
 	 */
 	private function _set_model($modelid) {
 		$model_info = yzm_array_column(get_site_modelinfo(), 'tablename', 'modelid');
@@ -479,6 +471,44 @@ class yzm_tag{
 		$this->tablename = $model_info[$modelid];
 		$this->db = D($this->tablename);
 		return true;
+	}
+
+
+	/**
+	 * 处理封装不同模型数据
+	 * @param array $data 包含modelid、id的key
+	 * @param string $field 用户查询field字段
+	 * @param int $status 是否查询status
+	 * @return array
+	 */
+	private function _handle_group_data($data, $field, $status = 0){
+		$model_group_ids = array_reduce($data, function($res, $row){
+		    $res[$row['modelid']][] = $row['id'];
+		    return $res;
+		}, array());
+		$search_data = array();
+		foreach($model_group_ids as $modelid => $ids){
+			$model_field = get_model_all_field($modelid);
+			$field_arr = explode(',', $field);
+			$ilter_field = array();
+			foreach($field_arr as $k => $v){
+				if(!in_array($v, $model_field)) {
+					$ilter_field[] = $v;
+					unset($field_arr[$k]);
+				}
+			}
+			$where = array('id'=>array('in', $ids));
+			if($status) $where['status'] = array('eq', 1);
+			$res = D(get_model($modelid))->field(join(',', $field_arr))->wheres($where)->order('id DESC')->select();
+			foreach($res as &$vv){
+				$vv['modelid'] = $modelid;
+				foreach($ilter_field as $item){
+					$vv[$item] = '';
+				}
+			}
+			$search_data = array_merge($search_data, $res);
+		}
+		return $search_data;
 	}
 	
 }

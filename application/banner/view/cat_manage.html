@@ -10,8 +10,8 @@
 			<thead>
 				<tr>
 					<th width="25"><input type="checkbox"></th>
-					<th>分类ID</th>
-					<th>分类名称</th>
+					<th width="50">分类ID</th>
+					<th>分类名称 (双击编辑)</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -21,17 +21,47 @@
 				<tr>
 					<td><input type="checkbox" value="<?php echo $val['tid']?>" name="id[]"></td>
 					<td><?php echo $val['tid']?></td>
-					<td><?php echo $val['name']?></td>
+					<td class="cat_name" data-tid="<?php echo $val['tid']?>"><?php echo $val['name']?></td>
 				</tr>
 				<?php 
 				}
 				?>
 		</table>
 		<?php if(!$data){ ?><div class="yzm_no_data"><i class="yzm-iconfont yzm-iconshuoming"></i> 暂无数据</div><?php } ?>
-		
 	</form>
 </div>
 </article>
-<?php include $this->admin_tpl('footer','admin');?> 
+<?php include $this->admin_tpl('footer','admin');?>
+<script>
+	$(function(){
+		// 双击编辑分类名称
+		$('td.cat_name').dblclick(function(){
+			$(this).html('<input type="text" class="input-text" value="'+yzm_htmlspecialchars($(this).text())+'" />').find('input').focus();
+		});
+
+		// 鼠标失去焦点修改分类名称
+		$('td.cat_name').on('blur', 'input', function(){
+			var this_obj = $(this);
+			var tid = this_obj.parent().data('tid');
+			var tname = this_obj.val().trim();
+			this_obj.parent().text(tname);
+			if(!tid || !tname) return;
+			$.ajax({
+				url: '<?php echo U('cat_edit');?>',
+				type: 'post',
+				data: {'tid':tid, 'tname':tname, 'yzm_csrf_token':yzm_csrf_token},
+				success: function(data){
+					if(data.status == 1){
+						layer.msg(data.message, {icon:1, time:1000}, function(){
+							parent.location.reload();
+						});
+					}else if(data.status == 0){
+						layer.msg(data.message, {icon:2, time:2000});
+					}
+				}
+			});
+		});
+	});
+</script>
 </body>
 </html>

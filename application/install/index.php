@@ -16,7 +16,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 define('APPDIR', _dir_path(substr(dirname(__FILE__), 0, -8)));
 define('SITEDIR', dirname(APPDIR).DIRECTORY_SEPARATOR);
-define("VERSION", 'YzmCMS V7.6');
+define("VERSION", 'YzmCMS V7.7');
 
 if(is_file(SITEDIR.'cache'.DIRECTORY_SEPARATOR.'install.lock')){
     exit("YzmCMS程序已运行安装，如果你确定要重新安装，请先从FTP中删除 cache/install.lock！");
@@ -168,7 +168,7 @@ switch ($step) {
                 // 检查数据库是否存在
                 $sql = "SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = :dbName";
                 $stmt = $pdo->prepare($sql);
-                $stmt->execute([':dbName' => $dbName]);
+                $stmt->execute(array(':dbName' => $dbName));
                 $is_db_exist = $stmt->fetchColumn();
             
                 if (!$is_db_exist) {
@@ -228,19 +228,21 @@ switch ($step) {
                 exit;
 
             //插入管理员
-            $password = md5(substr(md5(trim($password)), 3, 26));
-            $sql = "INSERT INTO `{$dbPrefix}admin` (`adminid`, `adminname`, `password`, `roleid`, `rolename`, `addtime`, `addpeople`) VALUES (:adminid, :adminname, :password, :roleid, :rolename, :addtime, :addpeople)";
+            $encrypt = random(6);
+            $password = md5(substr(md5(trim($password)), 3, 26).$encrypt);
+            $sql = "INSERT INTO `{$dbPrefix}admin` (`adminid`, `adminname`, `password`, `encrypt`, `roleid`, `rolename`, `addtime`, `addpeople`) VALUES (:adminid, :adminname, :password, :encrypt, :roleid, :rolename, :addtime, :addpeople)";
 
             $stmt = $pdo->prepare($sql);
-            $params = [
+            $params = array(
                 ':adminid' => 1,
                 ':adminname' => $adminname,
                 ':password' => $password,
+                ':encrypt' => $encrypt,
                 ':roleid' => 1,
                 ':rolename' => '超级管理员',
                 ':addtime' => time(),
                 ':addpeople' => '创始人'
-            ];
+            );
 
 
             $ret = $stmt->execute($params);

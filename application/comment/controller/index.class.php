@@ -36,17 +36,14 @@ class index{
 			if(intval($site['is_comment']) == 0){
 				return_message('评论功能已关闭！', 0);
 			}
-			if($site['comment_code']){
-				!isset($_POST['code']) && return_message(L('code_error'), 0);
-				if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
-					$_SESSION['code'] = '';
-					return_message(L('code_error'), 0);
-				}
-				$_SESSION['code'] = '';
+			if($site['comment_code']) check_captcha();
+
+			if(!rate_limit('comment', 1, 30)) {
+			    return_message('评论太频繁了，请稍后重试！', 0);
 			}
 			
-			$userid = $_POST['userid'] = isset($_SESSION['_userid']) ? $_SESSION['_userid']  : 0;
-			$username = $_POST['username'] = isset($_SESSION['_username']) ? $_SESSION['_username'] : '游客';
+			$userid = $_POST['userid'] = get_cookie('_userid') ? intval(get_cookie('_userid')) : 0	;
+			$username = $_POST['username'] = get_cookie('_username') ? safe_replace(get_cookie('_username')) : '游客';
 			if(!$userid && !$site['comment_tourist']){
 				is_ajax() && return_json(array('status'=>0, 'message'=>'登录后方可发布评论！'));
 				showmsg('登录后方可发布评论！', url_referer(1, HTTP_REFERER), 1);

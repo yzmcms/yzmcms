@@ -18,7 +18,7 @@ class content_form {
     }
 
 	public function content_add() {
-		$modelinfo = $this->get_modelinfo();
+		$modelinfo = get_model_field($this->modelid);
 		$string = getcache($this->modelid.'_model_string');
 		if($string === false){
 			$string = '';
@@ -52,7 +52,7 @@ class content_form {
 	
 	
 	public function content_edit($data) {
-		$modelinfo = $this->get_modelinfo();
+		$modelinfo = get_model_field($this->modelid);
 		$string = '';
 		foreach($modelinfo as $val){
 			$fieldtype = $val['fieldtype'];
@@ -88,15 +88,4 @@ class content_form {
 		return '</div></div>';
 	}
 
-	
-	public function get_modelinfo() {
-		$modelinfo = getcache($this->modelid.'_model');
-		if($modelinfo === false){
-			if(!D('model')->where(array('modelid' => $this->modelid))->find()) return_message('模型不存在！', 0);
-			$modelinfo = D('model_field')->where(array('modelid' => $this->modelid, 'disabled' => 0))->order('listorder ASC,fieldid ASC')->select();
-			setcache($this->modelid.'_model', $modelinfo);
-			delcache($this->modelid.'_model_string');
-		}
-		return $modelinfo;
-	}
 }

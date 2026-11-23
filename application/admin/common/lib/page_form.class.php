@@ -57,13 +57,7 @@ class page_form {
 
 	
 	public function get_modelinfo($data) {
-		$modelinfo = getcache($this->modelid.'_model');
-		if($modelinfo === false){
-			if(!D('model')->where(array('modelid' => $this->modelid))->find()) return_message('模型不存在！', 0);
-			$modelinfo = D('model_field')->where(array('modelid' => $this->modelid, 'disabled' => 0))->order('listorder ASC,fieldid ASC')->select();
-			setcache($this->modelid.'_model', $modelinfo);
-			delcache($this->modelid.'_model_string');
-		}
+		$modelinfo = get_model_field($this->modelid);
 
 		foreach($modelinfo as $key=>$val){
 			if($val['setting_catid']!='0' && strpos($val['setting_catid'], strval($data['catid']))===false) {

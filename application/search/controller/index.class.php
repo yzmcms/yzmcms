@@ -28,6 +28,12 @@ class index{
 			return_message('站点未开启搜索功能！', 0);
 		}
 		
+		if(!rate_limit('search', 30, 60)){
+			$info = rate_limit_info('search', 30, 60);
+			$wait = max(1, $info['reset'] - SYS_TIME);
+			return_message('搜索太频繁了，请 ' . $wait . ' 秒后再试！', 0);
+		}
+		
 		if(!isset($_GET['q']) || !is_string($_GET['q'])) showmsg(L('illegal_parameters'), 'stop');
 		$q = str_replace('%', '', new_html_special_chars(strip_tags(trim($_GET['q']))));
 		if(strlen($q) < 2 || strlen($q) > 30){

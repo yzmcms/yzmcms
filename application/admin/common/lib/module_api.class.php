@@ -61,7 +61,8 @@ class module_api {
 		if(is_array($model) && !empty($model)) {
 			$admin = D('admin');
 			foreach($model as $m) {
-				$admin->query('DROP TABLE IF EXISTS `yzmcms_'.$m.'`');
+				if(!is_string($m) || !preg_match('/^[a-zA-Z][a-zA-Z0-9_]{0,63}$/', $m)) continue;
+				$admin->query('DROP TABLE IF EXISTS `'.C('db_prefix').$m.'`');
 			}
 		}	
 		D('module')->delete(array('module' => $module));		

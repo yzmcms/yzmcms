@@ -85,12 +85,12 @@ class api{
 	 * 上传框
 	 */	
 	public function upload_box(){ 
-		$pid = isset($_GET['pid']) ? $_GET['pid'] : 'uploadfile';
-		$module = isset($_GET['module']) ? $_GET['module'] : '';
+		$pid = isset($_GET['pid']) ? htmlspecialchars($_GET['pid']) : 'uploadfile';
+		$module = isset($_GET['module']) ? htmlspecialchars($_GET['module']) : '';
 		$t = isset($_GET['t']) ? intval($_GET['t']) : 1; //上传类型，1为图片类型
 		$n = isset($_GET['n'])&&intval($_GET['n']) ? intval($_GET['n']) : 1;  //上传数量
 		$s = sizecount(get_config('upload_maxsize')*1024);  //允许上传附件大小
-		$originname = isset($_GET['originname']) ? safe_replace(trim($_GET['originname'])) : '';
+		$originname = isset($_GET['originname']) ? safe_replace($_GET['originname']) : '';
 		$uploadtime = isset($_GET['uploadtime']) ? htmlspecialchars($_GET['uploadtime']) : '';
 		$type = join(',', handle_upload_types($t));
 		
@@ -121,16 +121,21 @@ class api{
 	public function img_cropper(){
 		$yzmcms_path = SITE_PATH == '/' ? YZMPHP_PATH : str_replace(SITE_PATH, '', str_replace('\\', '/', YZMPHP_PATH));
 		if(isset($_POST['filepath'])){
-			$x = $_POST['x'];
-			$y = $_POST['y'];
-			$w = $_POST['w'];
-			$h = $_POST['h'];
+			$src_real = $this->_resolve_image_path($_POST['filepath'], $yzmcms_path);
+			if(!$src_real) return_message('非法或不存在图像文件！', 0);
+			$x = isset($_POST['x']) ? intval($_POST['x']) : 0;
+			$y = isset($_POST['y']) ? intval($_POST['y']) : 0;
+			$w = isset($_POST['w']) ? intval($_POST['w']) : 0;
+			$h = isset($_POST['h']) ? intval($_POST['h']) : 0;
 			$attid = isset($_POST['attid']) ? intval($_POST['attid']) : 0;
+			if(!$w || !$h) return_message('请选择裁剪区域！', 0);
+			
 			$image = yzm_base::load_sys_class('image');
 			$filepath = SITE_PATH.C('upload_file').'/'.date('Ym/d/');
 			$filename = date("ymdhis").rand(100,999);
-			$filetype = fileext($_POST['filepath']);
-			$fileinfo = $image->crop($yzmcms_path.$_POST['filepath'], $yzmcms_path.$filepath.$filename.'.'.$filetype, $w, $h, $x, $y);
+			$filetype = strtolower(pathinfo($src_real, PATHINFO_EXTENSION));
+			if(!in_array($filetype, array('jpg','jpeg','png','gif','bmp','webp'))) return_message('只允许裁剪图片文件！', 0);
+			$fileinfo = $image->crop($src_real, $yzmcms_path.$filepath.$filename.'.'.$filetype, $w, $h, $x, $y);
 			if($fileinfo){
 				$info = D('attachment')->field('userid,filepath,filename,originname')->where(array('id'=>$attid))->find();
 				$fileinfo['module'] = ROUTE_M;
@@ -154,10 +159,14 @@ class api{
 
 		$filepath = isset($_GET['f']) ? base64_decode($_GET['f']) : showmsg(L('lose_parameters'), 'stop');
 		$attid = D('attachment')->field('id')->where(array('filename'=>basename($filepath)))->one();
-		if(strpos($filepath, '://')) $filepath = strstr($filepath, SITE_PATH.'uploads');
-		if(!is_file($yzmcms_path.$filepath)) showmsg('请选择本地已存在的图像！', 'stop');
+		if(strpos($filepath, '://') !== false){
+			$pos = strpos($filepath, SITE_PATH.'uploads');
+			if($pos === false) return_message('非法的文件路径！', 0);
+			$filepath = substr($filepath, $pos);
+		}
+		if(!$this->_resolve_image_path($filepath, $yzmcms_path)) return_message('请选择本地已存在的图像！', 0);
 		$spec = isset($_GET['spec']) ? intval($_GET['spec']) : 1; 
-		$cid = isset($_GET['cid']) ? $_GET['cid'] : 'thumb';
+		$cid = isset($_GET['cid']) ? htmlspecialchars($_GET['cid']) : 'thumb';
 		switch ($spec){
 			case 1:
 			  $spec = '4 / 3';
@@ -185,6 +194,7 @@ class api{
 		$id = isset($_GET['id']) ? intval($_GET['id']) : return_json(array('status'=>0, 'message'=>L('lose_parameters')));
 		$attachment = D('attachment');
 		$info = $attachment->field('userid,filepath,filename')->where(array('id'=>$id))->find();
+		if(!$info) return_json(array('status'=>0, 'message'=>'附件不存在！'));
 		if(!$this->isadmin && $info['userid']!=$this->userid) return_json(array('status'=>0, 'message'=>'无权删除该文件！'));
 		if(!$this->isadmin){
 			if($info['userid']!=$this->userid) return_json(array('status'=>0, 'message'=>'无权删除该文件！'));
@@ -231,6 +241,28 @@ class api{
 	}
 
 	
+
+	/**
+	 * 校验并解析图片路径，限定在 uploads 目录内，防止路径遍历/任意文件读取
+	 * @param string $filepath 相对路径或路径片段
+	 * @param string $yzmcms_path 站点根前缀
+	 * @return string|false 通过校验的真实路径
+	 */
+	private function _resolve_image_path($filepath, $yzmcms_path){
+		if(!is_string($filepath) || $filepath === '') return false;
+		if(strpos($filepath, "\0") !== false) return false;
+		$filepath = str_replace('\\', '/', $filepath);
+		if(!preg_match('/\.(jpg|jpeg|png|gif|bmp|webp)$/i', $filepath)) return false;
+		$real = realpath($yzmcms_path.$filepath);
+		if(!$real) return false;
+		$upload_dir = realpath(YZMPHP_PATH.ltrim(C('upload_file'), '/'));
+		if(!$upload_dir) return false;
+		$real = str_replace('\\', '/', $real);
+		$upload_dir = str_replace('\\', '/', $upload_dir);
+		if($real !== $upload_dir && strpos($real, $upload_dir.'/') !== 0) return false;
+		return $real;
+	}
+
 
 	/**
 	 * 加载模板

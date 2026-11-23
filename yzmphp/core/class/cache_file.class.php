@@ -43,12 +43,18 @@ class cache_file{
         }
          
         $file = $this->_file($id);
-         
         $data = $this->_filegetcontents($file);
-         
+
+        if(!is_array($data) || !isset($data['expire'])){
+            @unlink($file);
+            return false;
+        }
+
         if($data['expire'] == 0 || SYS_TIME < $data['expire']){
             return $data['contents'];
         }
+        
+        @unlink($file);
         return false;
     }
      
@@ -171,7 +177,7 @@ class cache_file{
      * @return int | false 
      */
     protected function _fileputcontents($file, $contents){
-        if(!is_file($file)) touch($file) && @chmod($file, 0777);
+        if(!is_file($file)) touch($file);
         
         if($this->config['mode'] == 1){
             $contents = "<?php exit('NO.'); ?>\n".serialize($contents);

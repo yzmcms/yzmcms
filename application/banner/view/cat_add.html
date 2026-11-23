@@ -23,7 +23,7 @@
 <script type="text/javascript">
 
 function checkall(obj){
-		if($("input[name='name']").val()==''){
+		if($("input[name='name']").val().trim()==''){
 			layer.msg('分类名称不能为空！', {icon:2});
 			return false;
 		}

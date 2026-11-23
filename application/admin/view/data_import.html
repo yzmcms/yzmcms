@@ -1,4 +1,4 @@
-<?php include $this->admin_tpl('meta');?>
+<?php include $this->admin_tpl('meta', 'admin');?>
 <title>数据导入 - YzmCMS内容管理系统</title>
 </head>
 <body>
@@ -14,7 +14,7 @@
 			</li>
 			 <li><label><span class="c-red">*</span><?php echo $title;?>：</label>
 				<span class="btn-upload form-group">
-				  <input class="input-text upload-url radius" type="text" readonly style="display:inline;width:230px"><a href="javascript:void();" class="btn btn-primary radius" style="height: 30px;"><i class="yzm-iconfont yzm-iconshangchuan"></i> 浏览文件</a>
+				  <input class="input-text upload-url radius" type="text" placeholder="请选择文件" readonly style="display:inline;width:230px"><a href="javascript:void();" class="btn btn-primary radius" style="height: 30px;"><i class="yzm-iconfont yzm-iconshangchuan"></i> 浏览文件</a>
 				  <input type="file" name="data_import" class="input-file">
 				</span>
 			 </li>			 
@@ -27,7 +27,7 @@
 	</form>
 </div>
 </article>
-<?php include $this->admin_tpl('footer');?>
+<?php include $this->admin_tpl('footer', 'admin');?>
 
 <script type="text/javascript">
 

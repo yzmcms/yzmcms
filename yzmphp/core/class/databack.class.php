@@ -147,7 +147,14 @@ class databack{
             }
 
             //备份数据记录
-            $result = $db->query("SELECT * FROM `{$table}` LIMIT {$start}, 1000");
+            $key = $db->query("SHOW KEYS FROM `{$table}` WHERE Key_name = 'PRIMARY'", false);
+            if($key){
+                $key = array_change_key_case($key, CASE_LOWER);
+                $order = " ORDER BY `{$key['column_name']}`";
+            } else {
+                $order = '';
+            }
+            $result = $db->query("SELECT * FROM `{$table}`{$order} LIMIT {$start}, 1000");
             foreach ($result as $row) {
                 $sql = "INSERT INTO `{$table}` VALUES (";
 				foreach($row as $v){

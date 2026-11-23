@@ -49,7 +49,7 @@ class member_pay extends common{
 	 */	
 	public function create_order(){
 		if(is_post()){
-			$this->_check_code();
+			check_captcha();
 				
 			$paytype = intval($_POST['paytype']);
 			if(!$paytype) showmsg('请选择支付方式！', 'stop');
@@ -142,13 +142,19 @@ class member_pay extends common{
 		$readpoint = intval($auth_str[1]);
 		$paytype = intval($auth_str[2]);
 		$author_userid = intval($auth_str[3]);
-		M('point')->point_spend($paytype,$readpoint,'7',$this->memberinfo['userid'],$this->memberinfo['username'],$flag);
+
+		$exists = D('pay_spend')->field('id')->where(array('userid'=>$this->memberinfo['userid'], 'remarks'=>$flag))->find();
+		if($exists) showmsg('您已支付过此内容，无需重复支付。', 'stop');
+
+		$result = M('point')->point_spend($paytype,$readpoint,'7',$this->memberinfo['userid'],$this->memberinfo['username'],$flag);
+		if(!$result) showmsg('支付失败，请稍后重试。', 'stop');
 
 		// 增加原作者收入
 		if($author_userid){
 			$username = D('member')->field('username')->where(array('userid'=>$author_userid))->one();
 			M('point')->point_add($paytype,$readpoint,12,$author_userid,$username,0,'内容（'.$flag.'）收入','',false);
 		}
+
 		showmsg('支付成功，请刷新原页面！', '', 2);
 	}
 

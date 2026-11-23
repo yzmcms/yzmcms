@@ -231,7 +231,7 @@ class user extends wechat_common{
 			showmsg('获取用户信息失败！'.$json_arr['errmsg'], 'stop');
 		}
 		
-		return $json_arr;
+		return new_html_special_chars($json_arr);
     }
 
 }

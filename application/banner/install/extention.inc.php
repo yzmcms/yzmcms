@@ -7,5 +7,6 @@ $menu->insert(array('name'=>'添加轮播', 'parentid'=>$parentid, 'm'=>'banner'
 $menu->insert(array('name'=>'修改轮播', 'parentid'=>$parentid, 'm'=>'banner', 'c'=>'banner', 'a'=>'edit', 'data'=>'', 'listorder'=>0, 'display'=>'0'));
 $menu->insert(array('name'=>'删除轮播', 'parentid'=>$parentid, 'm'=>'banner', 'c'=>'banner', 'a'=>'del', 'data'=>'', 'listorder'=>0, 'display'=>'0'));
 $menu->insert(array('name'=>'轮播排序', 'parentid'=>$parentid, 'm'=>'banner', 'c'=>'banner', 'a'=>'order', 'data'=>'', 'listorder'=>0, 'display'=>'0'));
-$menu->insert(array('name'=>'添加轮播分类', 'parentid'=>$parentid, 'm'=>'banner', 'c'=>'banner', 'a'=>'cat_add', 'data'=>'', 'listorder'=>0, 'display'=>'0'));
 $menu->insert(array('name'=>'管理轮播分类', 'parentid'=>$parentid, 'm'=>'banner', 'c'=>'banner', 'a'=>'cat_manage', 'data'=>'', 'listorder'=>0, 'display'=>'0'));
+$menu->insert(array('name'=>'添加轮播分类', 'parentid'=>$parentid, 'm'=>'banner', 'c'=>'banner', 'a'=>'cat_add', 'data'=>'', 'listorder'=>0, 'display'=>'0'));
+$menu->insert(array('name'=>'编辑轮播分类', 'parentid'=>$parentid, 'm'=>'banner', 'c'=>'banner', 'a'=>'cat_edit', 'data'=>'', 'listorder'=>0, 'display'=>'0'));

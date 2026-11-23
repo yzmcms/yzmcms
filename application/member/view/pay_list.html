@@ -88,21 +88,28 @@
 	laydate(end);
 
 	$('.remarks').editable({
-	    url: '<?php echo U('public_edit_remarks');?>',
+	    url: '<?php echo U('edit_remarks');?>',
 	    name: 'remarks',
 	    title: '修改备注',
 	    type: 'textarea',
-	    params: {"type":"1"},
-	    dataType: "json", 
-	    validate:function (value) {
-	        if(value==''){
+	    params: {"type":1, "yzm_csrf_token":yzm_csrf_token},
+	    ajaxOptions: {dataType: 'json'},
+	    validate: function (value) {
+	        if($.trim(value) == ''){
 	            return '备注说明不能为空！';
 	        }
 	    },
 	    success: function(msg, newvalue) {
-	        if(!msg.status){
-	        	return msg.message; 
-		    }
+	        if(msg && msg.status == 1){
+	            return;
+	        }
+	        return (msg && msg.message) ? msg.message : '修改失败，请重试！';
+	    },
+	    error: function(xhr) {
+	        if(xhr.status == 200){
+	            return '返回数据格式错误，请稍后重试！';
+	        }
+	        return '请求失败（' + xhr.status + '），请稍后重试！';
 	    }
 	});
 </script>

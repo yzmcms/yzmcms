@@ -35,16 +35,24 @@ class index extends common{
 		if(is_post()){		
 			
 			//检查是否开启验证码
-			if(get_config('member_yzm')) $this->_check_code();
+			if(get_config('member_yzm')) check_captcha();
+
+			// 同IP 10 分钟内最多登录 10 次
+			if(!rate_limit('login_member', 10, 600)) {
+				$info = rate_limit_info('login_member', 10, 600);
+				$wait = max(1, $info['reset'] - SYS_TIME);
+				return_json(array('status'=>0, 'message'=>'登录尝试太频繁，请 '.ceil($wait/60).' 分钟后再试！'));
+			}
+
 			$member = D('member');
-			$username = isset($_POST['username']) ? trim($_POST['username']) : return_json(array('status'=>0, 'message'=>L('lose_parameters')));
-			$password = isset($_POST['password']) ? password(trim($_POST['password'])) : '';
+			$username = isset($_POST['username'])&&is_string($_POST['username']) ? trim($_POST['username']) : return_json(array('status'=>0, 'message'=>L('lose_parameters')));
+			$password = isset($_POST['password'])&&is_string($_POST['password']) ? trim($_POST['password']) : '';
 
 			//电子邮箱和用户名两种登录方式
 			$where = is_email($username) ? array('email'=>$username) : array('username'=>$username);
 			
 			$data = $member->where($where)->find();
-			if(!$data || ($data['password']!=$password)) return_json(array('status'=>0, 'message'=>L('user_or_password_error')));
+			if(!$data || ($data['password']!==password($password, $data['encrypt']))) return_json(array('status'=>0, 'message'=>L('user_or_password_error')));
 			if($data['status'] == '0') 
 				return_json(array('status'=>0, 'message'=>'用户未通过审核！'));
 			else if($data['status'] == '2') 
@@ -52,6 +60,7 @@ class index extends common{
 			else if($data['status'] == '3') 
 				return_json(array('status'=>0, 'message'=>'用户已被管理员拒绝登录！'));
 			
+			if(!session_regenerate_id(true)) return_json(array('status'=>0, 'message'=>'会话初始化失败，请重新登录！'));
 			$_SESSION['_userid'] = $data['userid'];
 			$_SESSION['_username'] = $data['username'];
 			set_cookie('_userid', $data['userid'], 0, true);
@@ -92,7 +101,7 @@ class index extends common{
 			
 		if(is_post()){
 			
-			$this->_check_code();
+			check_captcha();
 			$member = D('member');
 			$data = array();
 			$data['username'] = isset($_POST['username']) && is_username($_POST['username']) ? trim($_POST['username']) : return_json(array('status'=>0, 'message'=>L('user_name_format_error')));	
@@ -102,10 +111,16 @@ class index extends common{
 			$result = $member->field('userid')->where(array('username'=>$_POST['username']))->find();
 			if($result) return_json(array('status'=>0, 'message'=>'该用户名已注册！'));		
 			$result = $member->field('userid')->where(array('email'=>$_POST['email']))->find();
-			if($result) return_json(array('status'=>0, 'message'=>'该邮箱已注册！'));		
+			if($result) return_json(array('status'=>0, 'message'=>'该邮箱已注册！'));	
+
+			// 同IP 24 小时最多注册 3 次
+			if(!rate_limit('register_member', 3, 86400)) {
+				return_json(array('status'=>0, 'message'=>'本IP今日注册次数已达上限，请明天再试！'));	
+			}
 			
 			$data['nickname'] = $data['username'];
-			$data["password"] = password($data['password']);
+			$data["encrypt"] = create_randomstr();
+			$data["password"] = password($data['password'], $data["encrypt"]);
 			$data['regdate'] = $data['lastdate'] = SYS_TIME;
 			$data['regip'] = $data['lastip'] = getip();
 			$data['groupid'] = '1';
@@ -132,6 +147,7 @@ class index extends common{
 				return_json(array('status'=>1, 'message'=>'注册成功，由于管理员开启审核机制，请耐心等待！', 'url'=>U('member/index/login')));
 			}
 			
+			if(!session_regenerate_id(true)) return_json(array('status'=>0, 'message'=>'会话初始化失败，请重新注册！'));
 			$_SESSION['_userid'] = $data['userid'];
 			$_SESSION['_username'] = $data['username'];
 			set_cookie('_userid', $data['userid'], 0, true);
@@ -263,14 +279,14 @@ class index extends common{
 		extract($memberinfo);
 
 		if(is_post()){
-			$this->_check_code();
-
-			if(password($_POST['oldpass']) != $password) showmsg('原密码不正确！');
+			check_captcha();
 			if(!is_password($_POST['password'])) showmsg(L('password_format_error'));
-			if($this->db->update(array('password'=>password($_POST['password'])), array('userid'=>$this->userid))){
+			if(password($_POST['oldpass'], $encrypt) !== $password) showmsg('原密码不正确！');
+			$new_encrypt = $encrypt ? $encrypt : create_randomstr();
+			if($this->db->update(array('password'=>password($_POST['password'], $new_encrypt), 'encrypt'=>$new_encrypt), array('userid'=>$this->userid))){
 				showmsg(L('operation_success'),'',1);
 			}else{
-				showmsg(L('operation_failure'));
+				showmsg(L('data_not_modified'));
 			}
 		}
 			
@@ -286,8 +302,8 @@ class index extends common{
 		extract($memberinfo);
 		
 		if(is_post()){
-			$this->_check_code();
-			if(password($_POST['password']) != $password) showmsg(L('password_error'));
+			check_captcha();
+			if(password($_POST['password'], $encrypt) !== $password) showmsg(L('password_error'));
 			
 			$data = array();
 			if(!$email_status){

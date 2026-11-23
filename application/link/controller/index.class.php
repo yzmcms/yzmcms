@@ -42,14 +42,11 @@ class index{
 	 */
  	public function post() {
  		if(is_post()) {
-			
-			new_session_start();
-			!isset($_POST['code']) && return_message(L('code_error'), 0);
-			if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
-				$_SESSION['code'] = '';
-				return_message(L('code_error'), 0);
+			check_captcha();
+
+			if(!rate_limit('apply_link', 3, 600)) {
+			    return_message('操作太频繁了，请稍后重试！', 0);
 			}
-			$_SESSION['code'] = '';
 
 			if(!isset($_POST['name']) || !isset($_POST['url']) || !isset($_POST['email'])) return_message(L('lose_parameters'), 0);
 			if($_POST['name']=='' || strlen($_POST['name'])>150) return_message(L('lose_parameters'), 0);

@@ -76,7 +76,7 @@ class other{
 		$callback = U('member/other/weibo_login'); //回调地址 默认此方法，不能更改
 		
 		yzm_base::load_common('saetv2.ex.class.php', 'member');
-		if($appid=='' || $appkey=='') showmsg('微博配置项为空，请联系管理员！', 'stop');		
+		if($appid=='' || $appkey=='') showmsg('微博配置项为空，请联系管理员！', 'stop');
 		$obj = new SaeTOAuthV2( $appid , $appkey );
 
 		if(!isset($_GET['code'])){
@@ -89,6 +89,7 @@ class other{
 			try {
 				$token = $obj->getAccessToken( 'code', $keys ) ;
 			} catch (OAuthException $e) {
+				showmsg('获取Token失败，请联系管理员！', 'stop');
 			}
 			
 			if($token) $_SESSION['token'] = $token;
@@ -131,11 +132,10 @@ class other{
 		$member = D('member');
 		if(empty($_POST['username']) ||  empty($_POST['password'])) showmsg('用户名或密码不能为空！');
 		$username = isset($_POST['username']) && is_username($_POST['username']) ? trim($_POST['username']) : showmsg(L('user_name_format_error'));
-		$password = password($_POST['password']);
 		
-		$data = $member->field('userid,password')->where(array('username'=>$username))->find();
+		$data = $member->field('userid,password,encrypt')->where(array('username'=>$username))->find();
 		if(!$data) showmsg(L('user_does_not_exist'));
-		if($data['password'] != $password) showmsg(L('password_error'));
+		if($data['password'] !== password($_POST['password'], $data['encrypt'])) showmsg(L('password_error'));
 		
 		$this->_add_auth($data['userid'], $_SESSION['fromlogin'], $_SESSION['connectid'], $_SESSION['userinfo']);
 		unset($_SESSION['userinfo'], $_SESSION['fromlogin'], $_SESSION['connectid'], $_SESSION['fromname']);

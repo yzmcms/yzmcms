@@ -260,17 +260,15 @@ function get_url() {
  * @return string
  */
 function getip(){
-	$ip = '';
-	if(getenv('HTTP_CLIENT_IP') && strcasecmp(getenv('HTTP_CLIENT_IP'), 'unknown')) {
-		$ip = getenv('HTTP_CLIENT_IP');
-	} elseif(getenv('HTTP_X_FORWARDED_FOR') && strcasecmp(getenv('HTTP_X_FORWARDED_FOR'), 'unknown')) {
-		$ip = getenv('HTTP_X_FORWARDED_FOR');
-	} elseif(getenv('REMOTE_ADDR') && strcasecmp(getenv('REMOTE_ADDR'), 'unknown')) {
-		$ip = getenv('REMOTE_ADDR');
-	} elseif(isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) {
-		$ip = $_SERVER['REMOTE_ADDR'];
+	$ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : '';
+	if(!$ip && !empty($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+		$ips = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+		$ip = trim($ips[0]);
 	}
-	return preg_match ( '/[\d\.]{7,15}/', $ip, $matches ) ? $matches [0] : '127.0.0.1';
+	if(filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
+		return $ip;
+	}
+	return '127.0.0.1';
 }
 
 
@@ -845,55 +843,6 @@ function match_img($content){
 
 
 /**
- * 获取远程图片并把它保存到本地, 确定您有把文件写入本地服务器的权限
- * @param string $content 文章内容
- * @param string $targeturl 可选参数，对方网站的网址，防止对方网站的图片使用"/upload/1.jpg"这样的情况
- * @return string $content 处理后的内容
- */
-function grab_image($content, $targeturl = ''){
-	preg_match_all("/(src)=([\"|']?)([^ \"'>]+\.(gif|jpg|jpeg|bmp|png|webp))\\2/i", $content, $img_array);
-	$img_array = isset($img_array[3]) ? array_unique($img_array[3]) : array();
-	if(!$img_array) return $content;
-	
-	$path =  C('upload_file').'/'.date('Ym/d');
-	$urlpath = SITE_PATH.$path;
-	$imgpath =  YZMPHP_PATH.$path;
-	if(!is_dir($imgpath)) @mkdir($imgpath, 0777, true);
-	
-	foreach($img_array as $value){
-		$val = $value;		
-		if(strpos($value, 'http') === false){
-			if(!$targeturl) continue;
-			$value = $targeturl.$value;
-		}	
-		if(strpos($value, '?')){ 
-			$value = explode('?', $value);
-			$value = $value[0];
-		}
-		if(substr($value, 0, 4) != 'http'){
-			continue;
-		}
-		$ext = fileext($value);
-		if(!is_img($ext)) continue;
-		$imgname = date('YmdHis').rand(100,999).'.'.$ext;
-		$filename = $imgpath.'/'.$imgname;
-		$urlname = $urlpath.'/'.$imgname;
-		
-		ob_start();
-		@readfile($value);
-		$data = ob_get_contents();
-		ob_end_clean();
-		$data && file_put_contents($filename, $data);
-	 
-		if(is_file($filename)){                         
-			$content = str_replace($val, $urlname, $content);
-		}
-	}
-	return $content;        
-}
-
-
-/**
  * 生成缩略图函数
  * @param  string  $imgurl 图片路径
  * @param  int  $width  缩略图宽度
@@ -963,7 +912,7 @@ function watermark($source, $target = '') {
  * @return bool
  */
 function new_session_start(){
-	if(ini_get('session.auto_start')) return true;
+	if(ini_get('session.auto_start') || session_status() == PHP_SESSION_ACTIVE) return true;
 	// session_save_path(YZMPHP_PATH.'cache/sessions');
 	ini_set('session.cookie_httponly', true);
 	$session_name = session_name();
@@ -1327,6 +1276,111 @@ function delcache($name, $flush = false) {
 
 
 /**
+ * 速率限制器
+ * @param  string   $action        限流标识（如 'search' / 'login_admin' / 'login_member'）
+ * @param  int      $maxRequests   时间窗口内允许的最大请求数
+ * @param  int      $windowSeconds 时间窗口秒数（如 60 = 1 分钟）
+ * @param  string   $identifier    限流维度标识，默认取 getip()。可传 $_SESSION['adminid'] 等
+ * @return bool     true=允许  false=被限流
+ */
+function rate_limit($action, $maxRequests = 30, $windowSeconds = 60, $identifier = '') {
+	if(!$identifier){
+		$identifier = getip();
+	}
+	$cacheKey = 'rate_' . $action . '_' . preg_replace('/[^a-zA-Z0-9_\.\-]/', '_', $identifier);
+	$windowStart = SYS_TIME - $windowSeconds;
+
+	$timestamps = getcache($cacheKey);
+	if (!is_array($timestamps)) {
+		$timestamps = array();
+	}
+
+	$timestamps = array_values(array_filter($timestamps, function ($t) use ($windowStart) {
+		return $t > $windowStart;
+	}));
+
+	if(count($timestamps) >= $maxRequests){
+		setcache($cacheKey, $timestamps, $windowSeconds);
+		return false;
+	}
+
+	$timestamps[] = SYS_TIME;
+	setcache($cacheKey, $timestamps, $windowSeconds);
+
+	if(mt_rand(1, 100) === 1){
+		rate_limit_gc();
+	}
+
+	return true;
+}
+
+
+/**
+ * 清理过期的限流缓存文件
+ *
+ * @param  int $maxScan 单次最多扫描的文件数
+ * @return int 实际删除的文件数
+ */
+function rate_limit_gc($maxScan = 2000) {
+	$cache_dir = YZMPHP_PATH . 'cache/cache_file/';
+	if(!is_dir($cache_dir)) return 0;
+
+	$files = glob($cache_dir . 'rate_*.cache.php');
+	if(!$files) return 0;
+
+	shuffle($files);
+
+	$expire_before = SYS_TIME - 86400;
+	$deleted = 0;
+	$scanned = 0;
+
+	foreach($files as $file){
+		if(++$scanned > $maxScan) break;
+		$mtime = @filemtime($file);
+		if($mtime === false) continue;
+		if($mtime < $expire_before && @unlink($file)){
+			$deleted++;
+		}
+	}
+
+	return $deleted;
+}
+
+
+/**
+ * 批量查询某 action 的剩余次数（可用于前端显示倒计时）
+ *
+ * @param  string $action
+ * @param  int    $maxRequests
+ * @param  int    $windowSeconds
+ * @param  string $identifier
+ * @return array  ['count' => 当前窗口内次数, 'remaining' => 剩余次数, 'reset' => 窗口重置时间戳]
+ */
+function rate_limit_info($action, $maxRequests = 30, $windowSeconds = 60, $identifier = ''){
+	if(!$identifier){
+		$identifier = getip();
+	}
+	$cacheKey = 'rate_' . $action . '_' . preg_replace('/[^a-zA-Z0-9_\.\-]/', '_', $identifier);
+	$windowStart = SYS_TIME - $windowSeconds;
+
+	$timestamps = getcache($cacheKey);
+	if(!is_array($timestamps)){
+		$timestamps = array();
+	}
+	$timestamps = array_values(array_filter($timestamps, function ($t) use ($windowStart){
+		return $t > $windowStart;
+	}));
+
+	$count = count($timestamps);
+	return array(
+		'count'     => $count,
+		'remaining' => max(0, $maxRequests - $count),
+		'reset'     => $count > 0 ? reset($timestamps) + $windowSeconds : SYS_TIME
+	);
+}
+
+
+/**
  * 模板调用
  * @param  string $module   模块名
  * @param  string $template 模板名称
@@ -1413,7 +1467,7 @@ function return_message($message, $status = 1, $url = ''){
 	$data = array('status'=>$status, 'message'=>$message);
 	if($url) $data['url'] = $url;
 	is_ajax() && return_json($data);
-	showmsg($message, $url ? $url : ($status ? '' : 'stop'));
+	showmsg($message, $url ? $url : ($status>0 ? '' : 'stop'));
 }
 
 

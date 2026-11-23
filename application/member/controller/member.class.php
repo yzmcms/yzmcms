@@ -73,8 +73,10 @@ class member extends common{
 					$where .= ' AND userid = \''.$searinfo.'\'';
 				elseif($type == '3')
 					$where .= ' AND email LIKE \'%'.$searinfo.'%\'';
-				else
+				elseif($type == '4')
 					$where .= ' AND regip = \''.$searinfo.'\'';
+				else
+					$where .= ' AND lastip = \''.$searinfo.'\'';
 			}
 			
 		}
@@ -99,7 +101,8 @@ class member extends common{
 			if(D('member')->field('userid')->where(array('email' => $_POST['email']))->find()) return_json(array('status'=>0,'message'=>'邮箱已存在！'));
 
 			$data['username'] = trim($_POST['username']);
-			$data['password'] = password($_POST['password']);
+			$data["encrypt"] = create_randomstr();
+			$data['password'] = password($_POST['password'], $data["encrypt"]);
 			$data['email'] = $_POST['email'];
 			$data['groupid'] = intval($_POST['groupid']);
 			$data['point'] = intval($_POST['point']);
@@ -137,10 +140,14 @@ class member extends common{
 		$userid = isset($_GET['userid']) ? intval($_GET['userid']) : 0;
 		if(isset($_POST['dosubmit'])){
 
+			$userinfo = D('member')->field('encrypt')->where(array('userid' => $userid))->find();
+			if(!$userinfo) showmsg(L('user_does_not_exist'), 'stop');
+
 			if($_POST['password']){
-				$_POST['password'] = password($_POST['password']);
+				$_POST['encrypt'] = $userinfo['encrypt'] ? $userinfo['encrypt'] : create_randomstr();
+				$_POST['password'] = password($_POST['password'], $_POST['encrypt']);
 			}else{
-				unset($_POST['password']);
+				unset($_POST['password'], $_POST['encrypt']);
 			}
 
 			if($_POST['overduedate'] == ''){
@@ -184,8 +191,13 @@ class member extends common{
 		if(isset($_POST['dosubmit'])){
 			$userid = isset($_POST['userid']) ? intval($_POST['userid']) : 0;
 			if(!is_password($_POST['password'])) return_json(array('status'=>0,'message'=>'密码格式不正确！'));
-			$password = password($_POST['password']);
-			if(D('member')->update(array('password' => $password), array('userid' => $userid))){
+
+			$userinfo = D('member')->field('encrypt')->where(array('userid' => $userid))->find();
+			if(!$userinfo) return_json(array('status'=>0,'message'=>L('user_does_not_exist')));
+
+			$encrypt = $userinfo['encrypt'] ? $userinfo['encrypt'] : create_randomstr();
+			$password = password($_POST['password'], $encrypt);
+			if(D('member')->update(array('password'=>$password, 'encrypt'=>$encrypt), array('userid'=>$userid))){
 				return_json(array('status'=>1,'message'=>L('operation_success')));
 			}else{
 				return_json();
@@ -438,7 +450,7 @@ class member extends common{
 	/**
 	 * 入账/消费记录备注修改
 	 */	
-	public function public_edit_remarks(){
+	public function edit_remarks(){
 		$id = input('post.pk', 0, 'intval');
 		$value = input('post.value', '', 'trim');
 		$type = input('post.type', 0, 'intval');

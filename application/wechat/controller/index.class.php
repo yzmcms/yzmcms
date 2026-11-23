@@ -44,7 +44,7 @@ class index{
      *  初次校验
      */	
 	public function valid(){
-        $echostr = $_GET['echostr'];
+        $echostr = isset($_GET['echostr'])&&is_string($_GET['echostr']) ? trim($_GET['echostr']) : '';
         if($this->_check_signature()){
         	echo $echostr; exit;
         }
@@ -336,9 +336,9 @@ class index{
      */
     private function _check_signature(){	
 		if($this->token == '') return false;
-        $signature = $_GET['signature'];
-        $timestamp = $_GET['timestamp'];
-        $nonce = $_GET['nonce'];         
+        $signature = isset($_GET['signature'])&&is_string($_GET['signature']) ? trim($_GET['signature']) : '';
+        $timestamp = isset($_GET['timestamp'])&&is_string($_GET['timestamp']) ? trim($_GET['timestamp']) : '';
+        $nonce = isset($_GET['nonce'])&&is_string($_GET['nonce']) ? trim($_GET['nonce']) : '';
         $token = $this->token;
         $tmparr = array($token, $timestamp, $nonce);
         sort($tmparr, SORT_STRING);

@@ -60,7 +60,7 @@ class index{
 		$description = $modelinfo['description'] ? $modelinfo['description'] : $description;
 		
 		//获取当前位置
-		$location = '<a href="'.SITE_URL.'">'.L('total').'</a> &gt; <a href="'.U('init').'">'.$modelinfo['name'].'</a> &gt; '.L('detail_page');
+		$location = '<a href="'.SITE_URL.'">'.L('home_page').'</a> &gt; <a href="'.U('init').'">'.$modelinfo['name'].'</a> &gt; '.L('detail_page');
 		$fieldstr = $this->_get_model_str($modelid);
 		$field_check = $this->_get_model_str($modelid, true);
 		include template('index', $template);	
@@ -74,13 +74,7 @@ class index{
 	public function post(){	
 		if(is_post()) {
 
-			if($this->modelinfo['check_code']){
-				if(empty($_SESSION['code']) || strtolower($_POST['code'])!=$_SESSION['code']){
-					$_SESSION['code'] = '';
-					return_message(L('code_error'), 0);
-				}
-				$_SESSION['code'] = '';
-			}
+			if($this->modelinfo['check_code']) check_captcha();
 
 			$field_check = $this->_get_model_str($this->modelid, true);
 			foreach($field_check as $k => $v){
@@ -95,8 +89,8 @@ class index{
 				$_POST[$_k] = !is_array($_POST[$_k]) ? new_html_special_chars(trim_script($_v)) : $this->_content_dispose($_v);
 			}
 			
-			$_POST['userid'] = isset($_SESSION['_userid']) ? $_SESSION['_userid'] : 0;
-			$_POST['username'] = isset($_SESSION['_username']) ? $_SESSION['_username'] : '';
+			$_POST['userid'] = get_cookie('_userid') ? intval(get_cookie('_userid')) : 0;
+			$_POST['username'] = get_cookie('_username') ? safe_replace(get_cookie('_username')) : '游客';
 			$_POST['ip'] = getip();
 			$_POST['inputtime'] = SYS_TIME;
 			
@@ -122,14 +116,13 @@ class index{
 	 * 检查model
 	 */	
 	private function _check_model() {
-		new_session_start();
 		$data = D('model')->where(array('modelid'=>$this->modelid))->find();
 		if(!$data || $data['type']!=1 || $data['disabled']==1){
 			return_message('表单不存在或已禁用！', 0);
 		}
 		
 		$setting = json_decode($data['setting'], true);
-		if(!$setting['allowvisitor'] && empty($_SESSION['_userid'])) {
+		if(!$setting['allowvisitor'] && intval(get_cookie('_userid'))==0) {
 			is_ajax() && return_json(array('status'=>0, 'message'=>'请登录会员！'));
 			showmsg('请登录会员！', url_referer(), 2);
 		}
@@ -167,11 +160,7 @@ class index{
 	 */	
 	private function _get_model_str($modelid, $field = false, $data = array()) {
 		yzm_base::load_sys_class('form','',0);
-		$modelinfo = getcache($modelid.'_model');
-		if($modelinfo === false){
-			$modelinfo = D('model_field')->where(array('modelid' => $modelid, 'disabled' => 0))->order('listorder ASC, fieldid ASC')->select();
-			setcache($modelid.'_model', $modelinfo);
-		}
+		$modelinfo = get_model_field($modelid);
 		
 		$fields = $fieldstr = array();
 		foreach($modelinfo as $val){
