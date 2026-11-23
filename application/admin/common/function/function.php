@@ -179,7 +179,7 @@ function unzips($filename, $unzip_folder){
             ZipArchive::ER_NOZIP => '不是 ZIP 文件',
             ZipArchive::ER_OPEN => '无法打开文件',
             ZipArchive::ER_READ => '读取错误',
-            ZipArchive::ER_SEEK => '定位错误',
+            ZipArchive::ER_SEEK => '定位错误'
 		);
         $error_msg = isset($error_messages[$result]) ? $error_messages[$result] : '解压升级包失败！';
         return array('status'=>0, 'message'=>$error_msg);
@@ -206,11 +206,7 @@ function exec_sql($sqlstr) {
             if ($str1 != '-' && $str1 != '#') $query_sql .= $query;
         }
         if(!$query_sql) continue;
-        $result = $admin->query($query_sql);
-        if(!$result) {
-        	write_log($query_sql);
-        	return false;
-        }
+        $admin->query($query_sql);
     }
     return true;
 }
